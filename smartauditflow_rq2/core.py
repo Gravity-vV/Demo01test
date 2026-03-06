@@ -47,6 +47,8 @@ DEFAULT_MODEL_ORDER = [
     "deepseek",
     "auto",
 ]
+_SOURCE_INDEX_LOCK = threading.Lock()
+_SOURCE_INDEX_BY_DIR: Dict[str, Dict[str, Path]] = {}
 
 
 def now_iso() -> str:
@@ -579,9 +581,44 @@ def address_order(rows: Sequence[Dict[str, Any]]) -> List[str]:
 
 
 def read_contract_code(mainnet_dir: Path, address: str) -> Tuple[Optional[str], Optional[str]]:
-    path = mainnet_dir / f"{address}.sol"
-    if not path.exists():
-        return None, f"Contract source not found: {path}"
+    target = normalize_address(address)
+    if not mainnet_dir.exists():
+        return None, f"Mainnet directory not found: {mainnet_dir}"
+
+    def _build_source_index(directory: Path) -> Dict[str, Path]:
+        index: Dict[str, Path] = {}
+        try:
+            for item in directory.iterdir():
+                if not item.is_file():
+                    continue
+                if item.suffix.lower() != ".sol":
+                    continue
+                key = normalize_address(item.stem)
+                if key and key not in index:
+                    index[key] = item
+        except Exception:
+            return {}
+        return index
+
+    exact = mainnet_dir / f"{target}.sol"
+    if exact.exists():
+        path = exact
+    else:
+        dir_key = str(mainnet_dir.resolve())
+        with _SOURCE_INDEX_LOCK:
+            source_index = _SOURCE_INDEX_BY_DIR.get(dir_key)
+            if source_index is None:
+                source_index = _build_source_index(mainnet_dir)
+                _SOURCE_INDEX_BY_DIR[dir_key] = source_index
+        path = source_index.get(target)
+        if path is None:
+            # Handle files added after index initialization.
+            with _SOURCE_INDEX_LOCK:
+                refreshed = _build_source_index(mainnet_dir)
+                _SOURCE_INDEX_BY_DIR[dir_key] = refreshed
+                path = refreshed.get(target)
+    if path is None or not path.exists():
+        return None, f"Contract source not found (case-insensitive): {mainnet_dir}/{target}.sol"
     try:
         return path.read_text(encoding="utf-8", errors="replace"), None
     except Exception as exc:  # pragma: no cover

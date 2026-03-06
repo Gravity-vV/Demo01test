@@ -1,7 +1,12 @@
 #!/bin/zsh
 set -euo pipefail
 
-ROOT="/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT="${ROOT:-$SCRIPT_DIR/../SmartAuditFlow/smart-contract-audit}"
+if [[ ! -d "$ROOT" ]]; then
+  echo "ERROR: smart-contract-audit not found at: $ROOT"
+  exit 1
+fi
 ENV_FILE="$ROOT/.env"
 
 if [[ -f "$ENV_FILE" ]]; then

@@ -6,7 +6,12 @@ set -euo pipefail
 # 2) simulating empty task extraction,
 # 3) requesting final formatter and checking whether output is [].
 
-ROOT="/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="${ROOT:-$SCRIPT_DIR/../SmartAuditFlow/smart-contract-audit}"
+if [[ ! -d "$ROOT" ]]; then
+  echo "ERROR: smart-contract-audit not found at: $ROOT"
+  exit 1
+fi
 cd "$ROOT"
 
 if ! command -v jq >/dev/null 2>&1; then
