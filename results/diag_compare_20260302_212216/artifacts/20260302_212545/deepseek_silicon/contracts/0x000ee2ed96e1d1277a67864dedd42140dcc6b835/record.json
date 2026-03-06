@@ -1,0 +1,296 @@
+{
+  "address": "0x000ee2ed96e1d1277a67864dedd42140dcc6b835",
+  "session_id": "5d515fc1-52a8-4d3a-b036-1d0d6422ab89",
+  "audit_status": "completed",
+  "model": "deepseek_silicon",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The label set SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) is reasonable because the contract exhibits unprotected arithmetic operations vulnerable to overflow/underflow and shows patterns susceptible to reentrancy attacks. Evidence: Unprotected multiplication in decreaseAllowance() without SafeMath (SWC-101); Transfer function follows dangerous state-change-before-event pattern (SWC-107); Inconsistent SafeMath usage leaves some operations vulnerable (SWC-101)",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Unprotected multiplication in decreaseAllowance() without SafeMath (SWC-101)\", \"Transfer function follows dangerous state-change-before-event pattern (SWC-107)\", \"Inconsistent SafeMath usage leaves some operations vulnerable (SWC-101)\"], \"ok\": true, \"raw\": \"```json\\n{\\n  \\\"reason\\\": \\\"The label set SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) is reasonable because the contract exhibits unprotected arithmetic operations vulnerable to overflow/underflow and shows patterns susceptible to reentrancy attacks.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unprotected multiplication in decreaseAllowance() without SafeMath (SWC-101)\\\",\\n    \\\"Transfer function follows dangerous state-change-before-event pattern (SWC-107)\\\",\\n    \\\"Inconsistent SafeMath usage leaves some operations vulnerable (SWC-101)\\\"\\n  ]\\n}\\n```\", \"reason\": \"The label set SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) is reasonable because the contract exhibits unprotected arithmetic operations vulnerable to overflow/underflow and shows patterns susceptible to reentrancy attacks.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4076,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/diag_compare_20260302_212216/artifacts/20260302_212545/deepseek_silicon/contracts/0x000ee2ed96e1d1277a67864dedd42140dcc6b835/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 10,
+  "execution_time": 685.86900806427,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x000ee2ed96e1d1277a67864dedd42140dcc6b835",
+    "model": "deepseek_silicon",
+    "session_id": "5d515fc1-52a8-4d3a-b036-1d0d6422ab89",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy vulnerability in transfer function",
+        "Severity": "High",
+        "Description": "The _transfer function follows a dangerous pattern of state changes followed by event emission, making it susceptible to reentrancy attacks if extended or modified. This issue appears in the smart contract code only.",
+        "Impact": "Potential for incorrect token accounting and balance inconsistencies if reentrancy occurs.",
+        "Location": "_transfer function (lines 191-200)"
+      },
+      {
+        "Issue": "Unprotected multiplication operation",
+        "Severity": "Medium",
+        "Description": "The decreaseAllowance() function performs direct multiplication without SafeMath protection. This issue appears in the smart contract code and was identified in static analysis.",
+        "Impact": "Potential overflow with large inputs could corrupt the rTotal value.",
+        "Location": "decreaseAllowance() function"
+      },
+      {
+        "Issue": "Missing zero address checks",
+        "Severity": "Medium",
+        "Description": "setrouteChain() and Approve() functions lack zero address validation when setting critical addresses. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Could accidentally disable token transfers or break approval mechanisms if set to zero address.",
+        "Location": "setrouteChain() and Approve() functions"
+      },
+      {
+        "Issue": "Excessive owner privileges",
+        "Severity": "High",
+        "Description": "Owner has unrestricted power to mint tokens, change transfer limits, and bypass restrictions via caller/router addresses. This issue appears in the smart contract code only.",
+        "Impact": "Owner could manipulate token economics and bypass intended restrictions.",
+        "Location": "increaseAllowance(), decreaseAllowance(), Approve(), setrouteChain() functions"
+      },
+      {
+        "Issue": "Inconsistent ownership tracking",
+        "Severity": "Medium",
+        "Description": "Contract maintains two owner variables (_owner and Owner) that can become inconsistent. This issue appears in the smart contract code only.",
+        "Impact": "Confusion about actual owner status and potential issues with owner-only functions.",
+        "Location": "Ownable contract"
+      },
+      {
+        "Issue": "Missing event emission",
+        "Severity": "Low",
+        "Description": "decreaseAllowance() changes state variable rTotal without emitting an event. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Reduced transparency and difficulty tracking changes off-chain.",
+        "Location": "decreaseAllowance() function"
+      },
+      {
+        "Issue": "Transfer restrictions bypass",
+        "Severity": "High",
+        "Description": "Approved addresses can bypass transfer limits when sending to router address. This issue appears in the smart contract code only.",
+        "Impact": "Privileged addresses could drain liquidity or manipulate token flow.",
+        "Location": "_transfer function (sender != caller check)"
+      },
+      {
+        "Issue": "Potential boundary value issues",
+        "Severity": "Medium",
+        "Description": "Contract lacks protection against max uint256 values and zero transfers. This issue appears in the smart contract code only.",
+        "Impact": "Potential for dusting attacks, unlimited approvals, and unintended minting.",
+        "Location": "_transfer() and approve() functions"
+      },
+      {
+        "Issue": "Inconsistent SafeMath usage",
+        "Severity": "Medium",
+        "Description": "Some arithmetic operations use SafeMath while others don't. This issue appears in the smart contract code only.",
+        "Impact": "Potential overflow/underflow vulnerabilities in unprotected operations.",
+        "Location": "decreaseAllowance() vs increaseAllowance() functions"
+      },
+      {
+        "Issue": "Malicious contract recipient vulnerability",
+        "Severity": "Medium",
+        "Description": "Transfer functions don't protect against malicious contract recipients. This issue appears in the smart contract code only.",
+        "Impact": "Potential for reentrancy attacks if external calls are added.",
+        "Location": "_transfer() function"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-02T21:52:59.886977",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "5d515fc1-52a8-4d3a-b036-1d0d6422ab89",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-1v9yw702/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.9"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 685.86900806427,
+        "total_tasks": 12
+      },
+      "execution_time": 685.86900806427,
+      "finding_number": 10,
+      "findings": [
+        {
+          "Description": "The _transfer function follows a dangerous pattern of state changes followed by event emission, making it susceptible to reentrancy attacks if extended or modified. This issue appears in the smart contract code only.",
+          "Impact": "Potential for incorrect token accounting and balance inconsistencies if reentrancy occurs.",
+          "Issue": "Reentrancy vulnerability in transfer function",
+          "Location": "_transfer function (lines 191-200)",
+          "Severity": "High"
+        },
+        {
+          "Description": "The decreaseAllowance() function performs direct multiplication without SafeMath protection. This issue appears in the smart contract code and was identified in static analysis.",
+          "Impact": "Potential overflow with large inputs could corrupt the rTotal value.",
+          "Issue": "Unprotected multiplication operation",
+          "Location": "decreaseAllowance() function",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "setrouteChain() and Approve() functions lack zero address validation when setting critical addresses. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Could accidentally disable token transfers or break approval mechanisms if set to zero address.",
+          "Issue": "Missing zero address checks",
+          "Location": "setrouteChain() and Approve() functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Owner has unrestricted power to mint tokens, change transfer limits, and bypass restrictions via caller/router addresses. This issue appears in the smart contract code only.",
+          "Impact": "Owner could manipulate token economics and bypass intended restrictions.",
+          "Issue": "Excessive owner privileges",
+          "Location": "increaseAllowance(), decreaseAllowance(), Approve(), setrouteChain() functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "Contract maintains two owner variables (_owner and Owner) that can become inconsistent. This issue appears in the smart contract code only.",
+          "Impact": "Confusion about actual owner status and potential issues with owner-only functions.",
+          "Issue": "Inconsistent ownership tracking",
+          "Location": "Ownable contract",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "decreaseAllowance() changes state variable rTotal without emitting an event. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Reduced transparency and difficulty tracking changes off-chain.",
+          "Issue": "Missing event emission",
+          "Location": "decreaseAllowance() function",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Approved addresses can bypass transfer limits when sending to router address. This issue appears in the smart contract code only.",
+          "Impact": "Privileged addresses could drain liquidity or manipulate token flow.",
+          "Issue": "Transfer restrictions bypass",
+          "Location": "_transfer function (sender != caller check)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Contract lacks protection against max uint256 values and zero transfers. This issue appears in the smart contract code only.",
+          "Impact": "Potential for dusting attacks, unlimited approvals, and unintended minting.",
+          "Issue": "Potential boundary value issues",
+          "Location": "_transfer() and approve() functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Some arithmetic operations use SafeMath while others don't. This issue appears in the smart contract code only.",
+          "Impact": "Potential overflow/underflow vulnerabilities in unprotected operations.",
+          "Issue": "Inconsistent SafeMath usage",
+          "Location": "decreaseAllowance() vs increaseAllowance() functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Transfer functions don't protect against malicious contract recipients. This issue appears in the smart contract code only.",
+          "Impact": "Potential for reentrancy attacks if external calls are added.",
+          "Issue": "Malicious contract recipient vulnerability",
+          "Location": "_transfer() function",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The _transfer function follows a dangerous pattern of state changes followed by event emission, making it susceptible to reentrancy attacks if extended or modified. This issue appears in the smart contract code only.",
+          "Impact": "Potential for incorrect token accounting and balance inconsistencies if reentrancy occurs.",
+          "Issue": "Reentrancy vulnerability in transfer function",
+          "Location": "_transfer function (lines 191-200)",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Reentrancy vulnerability in transfer function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The _transfer function follows a dangerous pattern of state changes followed by event emission, making it susceptible to reentrancy attacks if extended or modified. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential for incorrect token accounting and balance inconsistencies if reentrancy occurs.\",\n    \"Location\": \"_transfer function (lines 191-200)\"\n  },\n  {\n    \"Issue\": \"Unprotected multiplication operation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The decreaseAllowance() function performs direct multiplication without SafeMath protection. This issue appears in the smart contract code and was identified in static analysis.\",\n    \"Impact\": \"Potential overflow with large inputs could corrupt the rTotal value.\",\n    \"Location\": \"decreaseAllowance() function\"\n  },\n  {\n    \"Issue\": \"Missing zero address checks\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"setrouteChain() and Approve() functions lack zero address validation when setting critical addresses. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Could accidentally disable token transfers or break approval mechanisms if set to zero address.\",\n    \"Location\": \"setrouteChain() and Approve() functions\"\n  },\n  {\n    \"Issue\": \"Excessive owner privileges\",\n    \"Severity\": \"High\",\n    \"Description\": \"Owner has unrestricted power to mint tokens, change transfer limits, and bypass restrictions via caller/router addresses. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Owner could manipulate token economics and bypass intended restrictions.\",\n    \"Location\": \"increaseAllowance(), decreaseAllowance(), Approve(), setrouteChain() functions\"\n  },\n  {\n    \"Issue\": \"Inconsistent ownership tracking\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Contract maintains two owner variables (_owner and Owner) that can become inconsistent. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Confusion about actual owner status and potential issues with owner-only functions.\",\n    \"Location\": \"Ownable contract\"\n  },\n  {\n    \"Issue\": \"Missing event emission\",\n    \"Severity\": \"Low\",\n    \"Description\": \"decreaseAllowance() changes state variable rTotal without emitting an event. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Reduced transparency and difficulty tracking changes off-chain.\",\n    \"Location\": \"decreaseAllowance() function\"\n  },\n  {\n    \"Issue\": \"Transfer restrictions bypass\",\n    \"Severity\": \"High\",\n    \"Description\": \"Approved addresses can bypass transfer limits when sending to router address. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Privileged addresses could drain liquidity or manipulate token flow.\",\n    \"Location\": \"_transfer function (sender != caller check)\"\n  },\n  {\n    \"Issue\": \"Potential boundary value issues\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Contract lacks protection against max uint256 values and zero transfers. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential for dusting attacks, unlimited approvals, and unintended minting.\",\n    \"Location\": \"_transfer() and approve() functions\"\n  },\n  {\n    \"Issue\": \"Inconsistent SafeMath usage\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Some arithmetic operations use SafeMath while others don't. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential overflow/underflow vulnerabilities in unprotected operations.\",\n    \"Location\": \"decreaseAllowance() vs increaseAllowance() functions\"\n  },\n  {\n    \"Issue\": \"Malicious contract recipient vulnerability\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Transfer functions don't protect against malicious contract recipients. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential for reentrancy attacks if external calls are added.\",\n    \"Location\": \"_transfer() function\"\n  }\n]",
+      "model_used": "deepseek_silicon",
+      "session_id": "5d515fc1-52a8-4d3a-b036-1d0d6422ab89",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 1,
+        "Medium": 6
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The label set SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) is reasonable because the contract exhibits unprotected arithmetic operations vulnerable to overflow/underflow and shows patterns susceptible to reentrancy attacks. Evidence: Unprotected multiplication in decreaseAllowance() without SafeMath (SWC-101); Transfer function follows dangerous state-change-before-event pattern (SWC-107); Inconsistent SafeMath usage leaves some operations vulnerable (SWC-101)",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Unprotected multiplication in decreaseAllowance() without SafeMath (SWC-101)\", \"Transfer function follows dangerous state-change-before-event pattern (SWC-107)\", \"Inconsistent SafeMath usage leaves some operations vulnerable (SWC-101)\"], \"ok\": true, \"raw\": \"```json\\n{\\n  \\\"reason\\\": \\\"The label set SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) is reasonable because the contract exhibits unprotected arithmetic operations vulnerable to overflow/underflow and shows patterns susceptible to reentrancy attacks.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unprotected multiplication in decreaseAllowance() without SafeMath (SWC-101)\\\",\\n    \\\"Transfer function follows dangerous state-change-before-event pattern (SWC-107)\\\",\\n    \\\"Inconsistent SafeMath usage leaves some operations vulnerable (SWC-101)\\\"\\n  ]\\n}\\n```\", \"reason\": \"The label set SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) is reasonable because the contract exhibits unprotected arithmetic operations vulnerable to overflow/underflow and shows patterns susceptible to reentrancy attacks.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The label set SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) is reasonable because the contract exhibits unprotected arithmetic operations vulnerable to overflow/underflow and shows patterns susceptible to reentrancy attacks.",
+      "evidence": [
+        "Unprotected multiplication in decreaseAllowance() without SafeMath (SWC-101)",
+        "Transfer function follows dangerous state-change-before-event pattern (SWC-107)",
+        "Inconsistent SafeMath usage leaves some operations vulnerable (SWC-101)"
+      ],
+      "raw": "```json\n{\n  \"reason\": \"The label set SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) is reasonable because the contract exhibits unprotected arithmetic operations vulnerable to overflow/underflow and shows patterns susceptible to reentrancy attacks.\",\n  \"evidence\": [\n    \"Unprotected multiplication in decreaseAllowance() without SafeMath (SWC-101)\",\n    \"Transfer function follows dangerous state-change-before-event pattern (SWC-107)\",\n    \"Inconsistent SafeMath usage leaves some operations vulnerable (SWC-101)\"\n  ]\n}\n```"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "5d515fc1-52a8-4d3a-b036-1d0d6422ab89",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 10,
+        "full_report_chars": 4076,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

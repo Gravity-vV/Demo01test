@@ -1,0 +1,271 @@
+{
+  "address": "0x000000e45ffaab3552f1eba4b2799b6803322c12",
+  "session_id": "a8950274-d5e0-4ef3-9453-86f8d34b06ff",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "Rule hits: SWC-101(5.0)",
+  "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"ok\": false, \"raw\": \"\", \"reason\": \"LLM explanation call failed: timed out\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4059,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260304_175512/deepseek_school/contracts/0x000000e45ffaab3552f1eba4b2799b6803322c12/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 8,
+  "execution_time": 3153.8186388015747,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x000000e45ffaab3552f1eba4b2799b6803322c12",
+    "model": "deepseek_school",
+    "session_id": "a8950274-d5e0-4ef3-9453-86f8d34b06ff",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Incorrect Total Supply Calculation",
+        "Severity": "High",
+        "Description": "The totalSupply() function incorrectly calculates total supply by multiplying weth[0] contract's balance by 1e9. This does not represent the actual token supply and could lead to incorrect integrations and economic manipulation. This issue appears in the auditing result.",
+        "Impact": "External systems relying on totalSupply() will receive incorrect data, potentially leading to economic exploitation and protocol malfunction.",
+        "Location": "totalSupply() function in the smart contract code"
+      },
+      {
+        "Issue": "Unsafe Arithmetic Operations",
+        "Severity": "Medium",
+        "Description": "The contract uses custom add/sub/mul/div functions instead of SafeMath, which is particularly risky given the use of Solidity 0.4.18 which lacks native overflow protection. This issue appears in the auditing result.",
+        "Impact": "Potential arithmetic overflows/underflows that could lead to incorrect token balances and financial losses.",
+        "Location": "add(), sub(), mul(), div() internal functions in the smart contract code"
+      },
+      {
+        "Issue": "Insufficient Access Control on Critical Functions",
+        "Severity": "High",
+        "Description": "Multiple administrative functions (ResetConfiguration, ResetName, ResetSymbol, ResetWETHContracts, ResetKeeper, ResetBot) are protected only by BotPower modifier, giving excessive control to bot/keeper addresses without timelocks or multi-sig requirements. This issue appears in the auditing result.",
+        "Impact": "If bot/keeper addresses are compromised, attacker can completely take over the contract, change critical parameters, and drain funds.",
+        "Location": "All Reset* functions and EncryptedSwap function in the smart contract code"
+      },
+      {
+        "Issue": "Incomplete Transfer Validation in EncryptedSwap",
+        "Severity": "High",
+        "Description": "The EncryptedSwap function allows transferring tokens from any address without checking if the sender has sufficient balance (only partially checked) and without proper authorization beyond the BotPower modifier. This issue appears in the auditing result.",
+        "Impact": "Authorized addresses can arbitrarily transfer tokens from any account, leading to potential theft of user funds.",
+        "Location": "EncryptedSwap() function in the smart contract code"
+      },
+      {
+        "Issue": "Missing ERC20 Compliance",
+        "Severity": "Medium",
+        "Description": "The contract implements some ERC20 functions but lacks standard events (Transfer, Approval are present but may not emit correctly in all cases) and doesn't fully comply with the ERC20 standard specification. This issue appears in the auditing result.",
+        "Impact": "May not be compatible with wallets, exchanges, and other systems expecting full ERC20 compliance.",
+        "Location": "Overall contract implementation in the smart contract code"
+      },
+      {
+        "Issue": "Unsafe External Call in Release Function",
+        "Severity": "Medium",
+        "Description": "The Release function performs an external call to an arbitrary ERC20 token without checking the return value of the transfer call, which could fail silently. This issue appears in the auditing result.",
+        "Impact": "Failed token transfers may go unnoticed, leading to incorrect assumption that funds were successfully transferred.",
+        "Location": "Release() function in the smart contract code"
+      },
+      {
+        "Issue": "Outdated Solidity Version",
+        "Severity": "Medium",
+        "Description": "The contract uses Solidity 0.4.18 which lacks many modern security features and has known vulnerabilities that have been fixed in later versions. This issue appears in the auditing result.",
+        "Impact": "Increased risk of exploiting known vulnerabilities in the older compiler version.",
+        "Location": "pragma solidity ^0.4.18; declaration in the smart contract code"
+      },
+      {
+        "Issue": "Incomplete Initialization",
+        "Severity": "Low",
+        "Description": "The constructor only initializes 3 out of 9 values returned by ShowConfiguration(), leaving other values unhandled which may be intentional but could indicate incomplete implementation. This issue appears in the auditing result.",
+        "Impact": "Potential unused variables or incomplete initialization logic that might affect future functionality.",
+        "Location": "Constructor in the smart contract code"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-04T18:47:48.534037",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "a8950274-d5e0-4ef3-9453-86f8d34b06ff",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.18"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.4.18/solc-0.4.18 --version' running '/Users/hh/.solc-select/artifacts/solc-0.4.18/solc-0.4.18 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation",
+          "status": "failed"
+        },
+        "total_execution_time": 3153.8186388015747,
+        "total_tasks": 0
+      },
+      "execution_time": 3153.8186388015747,
+      "finding_number": 8,
+      "findings": [
+        {
+          "Description": "The totalSupply() function incorrectly calculates total supply by multiplying weth[0] contract's balance by 1e9. This does not represent the actual token supply and could lead to incorrect integrations and economic manipulation. This issue appears in the auditing result.",
+          "Impact": "External systems relying on totalSupply() will receive incorrect data, potentially leading to economic exploitation and protocol malfunction.",
+          "Issue": "Incorrect Total Supply Calculation",
+          "Location": "totalSupply() function in the smart contract code",
+          "Severity": "High"
+        },
+        {
+          "Description": "The contract uses custom add/sub/mul/div functions instead of SafeMath, which is particularly risky given the use of Solidity 0.4.18 which lacks native overflow protection. This issue appears in the auditing result.",
+          "Impact": "Potential arithmetic overflows/underflows that could lead to incorrect token balances and financial losses.",
+          "Issue": "Unsafe Arithmetic Operations",
+          "Location": "add(), sub(), mul(), div() internal functions in the smart contract code",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Multiple administrative functions (ResetConfiguration, ResetName, ResetSymbol, ResetWETHContracts, ResetKeeper, ResetBot) are protected only by BotPower modifier, giving excessive control to bot/keeper addresses without timelocks or multi-sig requirements. This issue appears in the auditing result.",
+          "Impact": "If bot/keeper addresses are compromised, attacker can completely take over the contract, change critical parameters, and drain funds.",
+          "Issue": "Insufficient Access Control on Critical Functions",
+          "Location": "All Reset* functions and EncryptedSwap function in the smart contract code",
+          "Severity": "High"
+        },
+        {
+          "Description": "The EncryptedSwap function allows transferring tokens from any address without checking if the sender has sufficient balance (only partially checked) and without proper authorization beyond the BotPower modifier. This issue appears in the auditing result.",
+          "Impact": "Authorized addresses can arbitrarily transfer tokens from any account, leading to potential theft of user funds.",
+          "Issue": "Incomplete Transfer Validation in EncryptedSwap",
+          "Location": "EncryptedSwap() function in the smart contract code",
+          "Severity": "High"
+        },
+        {
+          "Description": "The contract implements some ERC20 functions but lacks standard events (Transfer, Approval are present but may not emit correctly in all cases) and doesn't fully comply with the ERC20 standard specification. This issue appears in the auditing result.",
+          "Impact": "May not be compatible with wallets, exchanges, and other systems expecting full ERC20 compliance.",
+          "Issue": "Missing ERC20 Compliance",
+          "Location": "Overall contract implementation in the smart contract code",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The Release function performs an external call to an arbitrary ERC20 token without checking the return value of the transfer call, which could fail silently. This issue appears in the auditing result.",
+          "Impact": "Failed token transfers may go unnoticed, leading to incorrect assumption that funds were successfully transferred.",
+          "Issue": "Unsafe External Call in Release Function",
+          "Location": "Release() function in the smart contract code",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract uses Solidity 0.4.18 which lacks many modern security features and has known vulnerabilities that have been fixed in later versions. This issue appears in the auditing result.",
+          "Impact": "Increased risk of exploiting known vulnerabilities in the older compiler version.",
+          "Issue": "Outdated Solidity Version",
+          "Location": "pragma solidity ^0.4.18; declaration in the smart contract code",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The constructor only initializes 3 out of 9 values returned by ShowConfiguration(), leaving other values unhandled which may be intentional but could indicate incomplete implementation. This issue appears in the auditing result.",
+          "Impact": "Potential unused variables or incomplete initialization logic that might affect future functionality.",
+          "Issue": "Incomplete Initialization",
+          "Location": "Constructor in the smart contract code",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The totalSupply() function incorrectly calculates total supply by multiplying weth[0] contract's balance by 1e9. This does not represent the actual token supply and could lead to incorrect integrations and economic manipulation. This issue appears in the auditing result.",
+          "Impact": "External systems relying on totalSupply() will receive incorrect data, potentially leading to economic exploitation and protocol malfunction.",
+          "Issue": "Incorrect Total Supply Calculation",
+          "Location": "totalSupply() function in the smart contract code",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Incorrect Total Supply Calculation\",\n    \"Severity\": \"High\",\n    \"Description\": \"The totalSupply() function incorrectly calculates total supply by multiplying weth[0] contract's balance by 1e9. This does not represent the actual token supply and could lead to incorrect integrations and economic manipulation.\",\n    \"Impact\": \"External systems relying on totalSupply() will receive incorrect data, potentially leading to economic exploitation and protocol malfunction.\",\n    \"Location\": \"totalSupply() function in the smart contract code\"\n  },\n  {\n    \"Issue\": \"Unsafe Arithmetic Operations\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract uses custom add/sub/mul/div functions instead of SafeMath, which is particularly risky given the use of Solidity 0.4.18 which lacks native overflow protection.\",\n    \"Impact\": \"Potential arithmetic overflows/underflows that could lead to incorrect token balances and financial losses.\",\n    \"Location\": \"add(), sub(), mul(), div() internal functions in the smart contract code\"\n  },\n  {\n    \"Issue\": \"Insufficient Access Control on Critical Functions\",\n    \"Severity\": \"High\",\n    \"Description\": \"Multiple administrative functions (ResetConfiguration, ResetName, ResetSymbol, ResetWETHContracts, ResetKeeper, ResetBot) are protected only by BotPower modifier, giving excessive control to bot/keeper addresses without timelocks or multi-sig requirements.\",\n    \"Impact\": \"If bot/keeper addresses are compromised, attacker can completely take over the contract, change critical parameters, and drain funds.\",\n    \"Location\": \"All Reset* functions and EncryptedSwap function in the smart contract code\"\n  },\n  {\n    \"Issue\": \"Incomplete Transfer Validation in EncryptedSwap\",\n    \"Severity\": \"High\",\n    \"Description\": \"The EncryptedSwap function allows transferring tokens from any address without checking if the sender has sufficient balance (only partially checked) and without proper authorization beyond the BotPower modifier.\",\n    \"Impact\": \"Authorized addresses can arbitrarily transfer tokens from any account, leading to potential theft of user funds.\",\n    \"Location\": \"EncryptedSwap() function in the smart contract code\"\n  },\n  {\n    \"Issue\": \"Missing ERC20 Compliance\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract implements some ERC20 functions but lacks standard events (Transfer, Approval are present but may not emit correctly in all cases) and doesn't fully comply with the ERC20 standard specification.\",\n    \"Impact\": \"May not be compatible with wallets, exchanges, and other systems expecting full ERC20 compliance.\",\n    \"Location\": \"Overall contract implementation in the smart contract code\"\n  },\n  {\n    \"Issue\": \"Unsafe External Call in Release Function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The Release function performs an external call to an arbitrary ERC20 token without checking the return value of the transfer call, which could fail silently.\",\n    \"Impact\": \"Failed token transfers may go unnoticed, leading to incorrect assumption that funds were successfully transferred.\",\n    \"Location\": \"Release() function in the smart contract code\"\n  },\n  {\n    \"Issue\": \"Outdated Solidity Version\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract uses Solidity 0.4.18 which lacks many modern security features and has known vulnerabilities that have been fixed in later versions.\",\n    \"Impact\": \"Increased risk of exploiting known vulnerabilities in the older compiler version.\",\n    \"Location\": \"pragma solidity ^0.4.18; declaration in the smart contract code\"\n  },\n  {\n    \"Issue\": \"Incomplete Initialization\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The constructor only initializes 3 out of 9 values returned by ShowConfiguration(), leaving other values unhandled which may be intentional but could indicate incomplete implementation.\",\n    \"Impact\": \"Potential unused variables or incomplete initialization logic that might affect future functionality.\",\n    \"Location\": \"Constructor in the smart contract code\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "a8950274-d5e0-4ef3-9453-86f8d34b06ff",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 1,
+        "Medium": 4
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 5.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(5.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "Rule hits: SWC-101(5.0)",
+    "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"ok\": false, \"raw\": \"\", \"reason\": \"LLM explanation call failed: timed out\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": false,
+      "reason": "LLM explanation call failed: timed out",
+      "raw": ""
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "a8950274-d5e0-4ef3-9453-86f8d34b06ff",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 8,
+        "full_report_chars": 4059,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

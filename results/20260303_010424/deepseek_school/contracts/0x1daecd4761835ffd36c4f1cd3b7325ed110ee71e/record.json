@@ -1,0 +1,321 @@
+{
+  "address": "0x1daecd4761835ffd36c4f1cd3b7325ed110ee71e",
+  "session_id": "8675bcc3-e4fd-40ab-8ca3-b7c7df73791e",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract uses Solidity v0.4.24 which lacks native overflow protection, making it dependent solely on SafeMath (SWC-101). Additionally, external calls in functions like `airdropTokens()` violate checks-effects-interactions, creating reentrancy risks (SWC-107). Evidence: Solidity v0.4.24 requires SafeMath for overflow protection per Task 6; `airdropTokens()` has external calls before state updates per Task 4; Multiple external calls violate CEI pattern as noted in Task 1",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:underflow\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Solidity v0.4.24 requires SafeMath for overflow protection per Task 6\", \"`airdropTokens()` has external calls before state updates per Task 4\", \"Multiple external calls violate CEI pattern as noted in Task 1\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract uses Solidity v0.4.24 which lacks native overflow protection, making it dependent solely on SafeMath (SWC-101). Additionally, external calls in functions like `airdropTokens()` violate checks-effects-interactions, creating reentrancy risks (SWC-107).\\\",\\n  \\\"evidence\\\": [\\n    \\\"Solidity v0.4.24 requires SafeMath for overflow protection per Task 6\\\",\\n    \\\"`airdropTokens()` has external calls before state updates per Task 4\\\",\\n    \\\"Multiple external calls violate CEI pattern as noted in Task 1\\\"\\n  ]\\n}\", \"reason\": \"The contract uses Solidity v0.4.24 which lacks native overflow protection, making it dependent solely on SafeMath (SWC-101). Additionally, external calls in functions like `airdropTokens()` violate checks-effects-interactions, creating reentrancy risks (SWC-107).\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1712.9342012405396,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x1daecd4761835ffd36c4f1cd3b7325ed110ee71e",
+    "model": "deepseek_school",
+    "session_id": "8675bcc3-e4fd-40ab-8ca3-b7c7df73791e",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - Map all external calls (`send()`, `transfer()`, `c...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes, there are critical security issues related to external calls in this contract.** The contract contains multiple external calls that violate the \"checks-effects-interaction... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: Map all external calls (`send()`, `transfer()`, `call()`) and their order of execution."
+      },
+      {
+        "Issue": "High Priority Security Issue - Assess the `airdropTokens()` function for potentia...",
+        "Severity": "High",
+        "Description": "Of course. Here is the detailed security audit report for the specified task. ### **Audit Report: Assessment of `airdropTokens()` for Reentrancy** **Audit Task:** Assess the `airdropTokens()` functi... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: Assess the `airdropTokens()` function for potential reentrancy via a malicious token contract in the `_recipient` array."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Critical:** Identify that the use of Solidity v0...",
+        "Severity": "High",
+        "Description": "**Audit Findings for Critical Audit Task: Solidity v0.4.24 and SafeMath Dependency** --- ### 1. Issue Analysis **Yes, there is a critical issue related to this audit task.** The contract uses Soli... This issue appears in the smart contract code, static analysis results, and retrieved external knowledge.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: **Critical:** Identify that the use of Solidity v0.4.24 means the SafeMath library is the *only* protection against over/underflows. This is a high-risk architectural decision."
+      },
+      {
+        "Issue": "High Priority Security Issue - Analyze the `burn()` function in `BurnableToken` f...",
+        "Severity": "High",
+        "Description": "Of course. I have completed the audit task for the `burn()` function in the `BurnableToken` contract. ### 1. Issue Analysis **Yes, there is a critical issue related to this audit task.** The `burn(... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: Analyze the `burn()` function in `BurnableToken` for underflow when subtracting from `balances[burner]` and `totalSupply`."
+      },
+      {
+        "Issue": "High Priority Security Issue - Identify if any user-facing functions (e.g., `crea...",
+        "Severity": "High",
+        "Description": "## Audit Report: Access Control Analysis ### 1. Issue Analysis **Yes, there is a critical issue related to access controls in user-facing functions.** The `createTokens` and `createTokensWithoutRef... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: Identify if any user-facing functions (e.g., `createTokens`, `burn`) lack necessary access controls."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Focus on the `forwardEherToOwner()` function's use...",
+        "Severity": "Medium",
+        "Description": "## Audit Report: Recursive Call Analysis for `forwardEtherToOwner()` **1. Issue Analysis** Yes, there is a potential issue related to this audit task. The `forwardEtherToOwner()` function uses `sen... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 2: Focus on the `forwardEherToOwner()` function's use of `send()`; while not immediately vulnerable due to state changes preceding the call, confirm it cannot be called recursively."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Check the `transfer` function in `BasicToken` and ...",
+        "Severity": "Medium",
+        "Description": "## Audit Findings: Checks-Effects-Interactions Pattern Compliance ### 1. Issue Analysis **No issues found** - Both the `transfer` function in `BasicToken` and the `transferFrom` function in `Standar... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 3: Check the `transfer` function in `BasicToken` and the `transferFrom` function in `StandardToken` for compliance with the Checks-Effects-Interactions pattern. (Note: They are compliant, but this must be verified)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Verify that all arithmetic operations in the `Crow...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes, there is a critical issue related to this audit task.** While the arithmetic operations in the `Crowdsale` contract are indeed using SafeMath functions (`mul()`, `div()`),... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: Verify that all arithmetic operations in the `Crowdsale` contract (e.g., `rate.mul(msg.value)`, `tokens.div(100).mul(refferBonus)`) are protected by SafeMath. (Note: They are, but the compiler version is not)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Confirm that all state-changing administrative fun...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Administrative Function Access Control ### 1. Issue Analysis **Issue Found: Yes** The audit has identified that **not all state-changing administrative functions are correctly pr... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: Confirm that all state-changing administrative functions (`refferBonusFunction`, `airdropTokens`, `manualWithdrawToken`, `transferOwnership`) are correctly protected by the `onlyOwner` modifier."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Evaluate the risk of the `owner` having unlimited ...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes, there is a critical issue related to this audit task.** The contract owner has unlimited minting capability through the `airdropTokens` function and can drain the entire t... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: Evaluate the risk of the `owner` having unlimited minting capability via `airdropTokens` and `manualWithdrawToken` (which can drain the entire contract balance)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Analyze the `approve` function in `StandardToken` ...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **Is there an issue related to this audit task?** No, there is no issue related to the classic ERC-20 race condition in the `approve` function of the `StandardToken` contract. ... This issue appears in the smart contract code, static analysis results, and retrieved external knowledge.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: Analyze the `approve` function in `StandardToken` for the classic ERC-20 race condition. (Note: It includes the required mitigation `require((_value == 0) || (allowed[msg.sender][_spender] == 0))`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Assess if any critical transactions (e.g., setting...",
+        "Severity": "High",
+        "Description": "Of course. Here is the detailed security audit assessment for the specified task. ### **Audit Task: Front-running Susceptibility Assessment for Critical Transactions** --- ### **1. Issue Analysis**... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: Assess if any critical transactions (e.g., setting a new owner, changing the bonus rate) are susceptible to being front-run."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T06:08:48.695061",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "8675bcc3-e4fd-40ab-8ca3-b7c7df73791e",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.24"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '<tmp> --version' running '<tmp> --version' running",
+          "status": "failed"
+        },
+        "total_execution_time": 1712.9342012405396,
+        "total_tasks": 12
+      },
+      "execution_time": 1712.9342012405396,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there are critical security issues related to external calls in this contract.** The contract contains multiple external calls that violate the \"checks-effects-interaction... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Map all external calls (`send()`, `transfer()`, `c...",
+          "Location": "Task 1: Map all external calls (`send()`, `transfer()`, `call()`) and their order of execution.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Of course. Here is the detailed security audit report for the specified task.\n\n### **Audit Report: Assessment of `airdropTokens()` for Reentrancy**\n\n**Audit Task:** Assess the `airdropTokens()` functi... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Assess the `airdropTokens()` function for potentia...",
+          "Location": "Task 4: Assess the `airdropTokens()` function for potential reentrancy via a malicious token contract in the `_recipient` array.",
+          "Severity": "High"
+        },
+        {
+          "Description": "**Audit Findings for Critical Audit Task: Solidity v0.4.24 and SafeMath Dependency**\n\n---\n\n### 1. Issue Analysis\n**Yes, there is a critical issue related to this audit task.**  \nThe contract uses Soli... This issue appears in the smart contract code, static analysis results, and retrieved external knowledge.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Critical:** Identify that the use of Solidity v0...",
+          "Location": "Task 6: **Critical:** Identify that the use of Solidity v0.4.24 means the SafeMath library is the *only* protection against over/underflows. This is a high-risk architectural decision.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Of course. I have completed the audit task for the `burn()` function in the `BurnableToken` contract.\n\n### 1. Issue Analysis\n\n**Yes, there is a critical issue related to this audit task.**\n\nThe `burn(... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Analyze the `burn()` function in `BurnableToken` f...",
+          "Location": "Task 7: Analyze the `burn()` function in `BurnableToken` for underflow when subtracting from `balances[burner]` and `totalSupply`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Access Control Analysis\n\n### 1. Issue Analysis\n\n**Yes, there is a critical issue related to access controls in user-facing functions.**\n\nThe `createTokens` and `createTokensWithoutRef... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Identify if any user-facing functions (e.g., `crea...",
+          "Location": "Task 9: Identify if any user-facing functions (e.g., `createTokens`, `burn`) lack necessary access controls.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Recursive Call Analysis for `forwardEtherToOwner()`\n\n**1. Issue Analysis**  \nYes, there is a potential issue related to this audit task. The `forwardEtherToOwner()` function uses `sen... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Focus on the `forwardEherToOwner()` function's use...",
+          "Location": "Task 2: Focus on the `forwardEherToOwner()` function's use of `send()`; while not immediately vulnerable due to state changes preceding the call, confirm it cannot be called recursively.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings: Checks-Effects-Interactions Pattern Compliance\n\n### 1. Issue Analysis\n\n**No issues found** - Both the `transfer` function in `BasicToken` and the `transferFrom` function in `Standar... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Check the `transfer` function in `BasicToken` and ...",
+          "Location": "Task 3: Check the `transfer` function in `BasicToken` and the `transferFrom` function in `StandardToken` for compliance with the Checks-Effects-Interactions pattern. (Note: They are compliant, but this must be verified).",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there is a critical issue related to this audit task.** While the arithmetic operations in the `Crowdsale` contract are indeed using SafeMath functions (`mul()`, `div()`),... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Verify that all arithmetic operations in the `Crow...",
+          "Location": "Task 5: Verify that all arithmetic operations in the `Crowdsale` contract (e.g., `rate.mul(msg.value)`, `tokens.div(100).mul(refferBonus)`) are protected by SafeMath. (Note: They are, but the compiler version is not).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Administrative Function Access Control\n\n### 1. Issue Analysis\n\n**Issue Found: Yes**\n\nThe audit has identified that **not all state-changing administrative functions are correctly pr... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Confirm that all state-changing administrative fun...",
+          "Location": "Task 8: Confirm that all state-changing administrative functions (`refferBonusFunction`, `airdropTokens`, `manualWithdrawToken`, `transferOwnership`) are correctly protected by the `onlyOwner` modifier.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there is a critical issue related to this audit task.** The contract owner has unlimited minting capability through the `airdropTokens` function and can drain the entire t... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Evaluate the risk of the `owner` having unlimited ...",
+          "Location": "Task 10: Evaluate the risk of the `owner` having unlimited minting capability via `airdropTokens` and `manualWithdrawToken` (which can drain the entire contract balance).",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n**Is there an issue related to this audit task?**  \nNo, there is no issue related to the classic ERC-20 race condition in the `approve` function of the `StandardToken` contract. ... This issue appears in the smart contract code, static analysis results, and retrieved external knowledge.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Analyze the `approve` function in `StandardToken` ...",
+          "Location": "Task 11: Analyze the `approve` function in `StandardToken` for the classic ERC-20 race condition. (Note: It includes the required mitigation `require((_value == 0) || (allowed[msg.sender][_spender] == 0))`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Of course. Here is the detailed security audit assessment for the specified task.\n\n### **Audit Task: Front-running Susceptibility Assessment for Critical Transactions**\n\n---\n\n### **1. Issue Analysis**... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Assess if any critical transactions (e.g., setting...",
+          "Location": "Task 12: Assess if any critical transactions (e.g., setting a new owner, changing the bonus rate) are susceptible to being front-run.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there are critical security issues related to external calls in this contract.** The contract contains multiple external calls that violate the \"checks-effects-interaction... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Map all external calls (`send()`, `transfer()`, `c...",
+          "Location": "Task 1: Map all external calls (`send()`, `transfer()`, `call()`) and their order of execution.",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "8675bcc3-e4fd-40ab-8ca3-b7c7df73791e",
+      "severity_breakdown": {
+        "High": 10,
+        "Low": 0,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:underflow",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract uses Solidity v0.4.24 which lacks native overflow protection, making it dependent solely on SafeMath (SWC-101). Additionally, external calls in functions like `airdropTokens()` violate checks-effects-interactions, creating reentrancy risks (SWC-107). Evidence: Solidity v0.4.24 requires SafeMath for overflow protection per Task 6; `airdropTokens()` has external calls before state updates per Task 4; Multiple external calls violate CEI pattern as noted in Task 1",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:underflow\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Solidity v0.4.24 requires SafeMath for overflow protection per Task 6\", \"`airdropTokens()` has external calls before state updates per Task 4\", \"Multiple external calls violate CEI pattern as noted in Task 1\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract uses Solidity v0.4.24 which lacks native overflow protection, making it dependent solely on SafeMath (SWC-101). Additionally, external calls in functions like `airdropTokens()` violate checks-effects-interactions, creating reentrancy risks (SWC-107).\\\",\\n  \\\"evidence\\\": [\\n    \\\"Solidity v0.4.24 requires SafeMath for overflow protection per Task 6\\\",\\n    \\\"`airdropTokens()` has external calls before state updates per Task 4\\\",\\n    \\\"Multiple external calls violate CEI pattern as noted in Task 1\\\"\\n  ]\\n}\", \"reason\": \"The contract uses Solidity v0.4.24 which lacks native overflow protection, making it dependent solely on SafeMath (SWC-101). Additionally, external calls in functions like `airdropTokens()` violate checks-effects-interactions, creating reentrancy risks (SWC-107).\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract uses Solidity v0.4.24 which lacks native overflow protection, making it dependent solely on SafeMath (SWC-101). Additionally, external calls in functions like `airdropTokens()` violate checks-effects-interactions, creating reentrancy risks (SWC-107).",
+      "evidence": [
+        "Solidity v0.4.24 requires SafeMath for overflow protection per Task 6",
+        "`airdropTokens()` has external calls before state updates per Task 4",
+        "Multiple external calls violate CEI pattern as noted in Task 1"
+      ],
+      "raw": "{\n  \"reason\": \"The contract uses Solidity v0.4.24 which lacks native overflow protection, making it dependent solely on SafeMath (SWC-101). Additionally, external calls in functions like `airdropTokens()` violate checks-effects-interactions, creating reentrancy risks (SWC-107).\",\n  \"evidence\": [\n    \"Solidity v0.4.24 requires SafeMath for overflow protection per Task 6\",\n    \"`airdropTokens()` has external calls before state updates per Task 4\",\n    \"Multiple external calls violate CEI pattern as noted in Task 1\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "8675bcc3-e4fd-40ab-8ca3-b7c7df73791e",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

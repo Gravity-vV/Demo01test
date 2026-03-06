@@ -1,0 +1,43 @@
+1. **Issue Analysis**
+   - **Is there an issue related to this audit task?** Yes.
+   - **Detailed Description:** The custom `Ownable` contract implementation contains a critical logic error regarding state variable synchronization. The contract maintains two state variables for ownership: a private `_owner` and a public `Owner`. The `onlyOwner` modifier, which guards administrative functions, relies exclusively on the private `_owner` variable. However, the `renounceOwnership()` function only updates the public `Owner` variable to `address(0)`, leaving the private `_owner` unchanged. Similarly, `transferOwnership()` updates `_owner` but fails to update the public `Owner` variable. This desynchronization means that even if ownership is publicly "renounced," the original owner retains full administrative privileges because the access control check (`onlyOwner`) still validates against the old private `_owner`.
+
+2. **Severity Assessment**
+   - **Severity:** **Critical**
+   - **Justification:** This vulnerability allows the deployer to misleadingly claim that ownership has been renounced (as indicated in the contract comments: "🤵 Renounced Ownership ✅" and the public `Owner` variable returning `address(0)`), while retaining the ability to execute privileged functions. Specifically, the owner can continue to mint unlimited tokens via `increaseAllowance`, manipulate trading limits via `decreaseAllowance`, and bypass sell restrictions via `Approve`. This constitutes a severe integrity breach and potential rug-pull vector.
+
+3. **Technical Details**
+   - **Specific Code Location:**
+     - Contract: `Ownable` (Lines ~125-160)
+     - Function: `renounceOwnership()` (Lines ~143-147)
+     - Function: `transferOwnership(address)` (Lines ~149-155)
+     - Modifier: `onlyOwner()` (Lines ~140-142)
+     - Contract: `HamtaroReloaded` (Functions using `onlyOwner`: `increaseAllowance`, `decreaseAllowance`, `Approve`, `setrouteChain`)
+   - **Technical Explanation:**
+     - The `Ownable` contract defines: `address private _owner;` and `address public Owner;`.
+     - The `onlyOwner` modifier checks: `require(_owner == _call(), ...)`.
+     - In `renounceOwnership()`, the code executes `Owner = address(0);` but **omits** `_owner = address(0);`.
+     - Consequently, subsequent calls to functions protected by `onlyOwner` (e.g., `HamtaroReloaded.increaseAllowance`) will succeed for the original deployer because `_owner` still holds their address.
+     - In `transferOwnership()`, the code executes `_owner = newOwner;` but **omits** `Owner = newOwner;`. This causes the public visibility of ownership to be stale, though access control remains functional for the new owner.
+   - **Attack Vectors:**
+     1. **Fake Renouncement:** Deployer calls `renounceOwnership()`. Public explorers and users see `Owner` as `0x00...00`. Users believe the contract is safe from admin manipulation.
+     2. **Privilege Retention:** Deployer calls `increaseAllowance(amount)` to mint tokens to themselves or `Approve(deployer)` to bypass sell limits (`_transfer` logic checks `sender != caller`).
+     3. **Market Manipulation:** Deployer can alter `_totalTokens` or `rTotal` (sell limit threshold) at will, affecting tokenomics and price stability.
+
+4. **Impact Assessment**
+   - **Financial Impact:** High. The owner can mint unlimited tokens (`increaseAllowance` adds to `_totalTokens` and balances), causing massive inflation and devaluing holder assets.
+   - **Operational Impact:** High. The contract's security guarantees are void. Trust mechanisms (like renounced ownership) are falsified. Trading restrictions (like sell limits defined by `rTotal`) can be bypassed by the owner setting themselves as the `caller`.
+   - **Reputational Impact:** Severe. Discovery of this issue post-launch would likely be classified as a scam or rug-pull due to the deceptive "Renounced Ownership" claim in the contract header.
+
+5. **Recommendations**
+   - **Immediate Fix:** Consolidate ownership state to a single variable. Do not maintain separate private and public variables for the same state unless strictly necessary (and if so, ensure both are updated atomically).
+   - **Code Correction:**
+     - Update `renounceOwnership()` to set `_owner = address(0);` in addition to `Owner = address(0);`.
+     - Update `transferOwnership()` to set `Owner = newOwner;` in addition to `_owner = newOwner;`.
+     - Ideally, remove the public `Owner` variable and use a public getter function for `_owner` (e.g., `function owner() public view returns (address)`) to avoid synchronization issues.
+   - **Best Practice:** Use the standard, audited **OpenZeppelin `Ownable`** contract instead of a custom implementation. This eliminates the risk of implementation errors in access control logic.
+   - **Verification:** After fixing, verify that calling `renounceOwnership()` results in `onlyOwner` checks failing for the previous owner. Ensure static analysis tools are configured to check for state variable consistency in access control patterns.
+   - **Transparency:** If the contract claims "Renounced Ownership" in comments or marketing, ensure the code strictly enforces this permanently before public launch.
+
+**Summary of Findings for Access Control Integrity:**
+The `Ownable` implementation is fundamentally broken regarding the `renounceOwnership` function. It creates a "backdoor" where the

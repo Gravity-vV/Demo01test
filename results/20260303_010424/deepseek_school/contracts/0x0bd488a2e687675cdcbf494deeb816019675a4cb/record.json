@@ -1,0 +1,274 @@
+{
+  "address": "0x0bd488a2e687675cdcbf494deeb816019675a4cb",
+  "session_id": "1dd8e334-0e6c-48bf-8c23-43c7ece31726",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-107",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-107 label applies as multiple high-severity findings demonstrate uncontrolled external control state manipulation, particularly the owner's ability to mint unlimited tokens and disable blacklist functionality via zero-address assignments. Evidence: Unrestricted minting via setFeeTotal() allows owner to arbitrarily inflate supply; Missing zero-address checks in setBlackListBot/setBlackAddress let owner disable security features; Inverted blacklist logic permits blacklisted addresses to bypass transfer restrictions",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Unrestricted minting via setFeeTotal() allows owner to arbitrarily inflate supply\", \"Missing zero-address checks in setBlackListBot/setBlackAddress let owner disable security features\", \"Inverted blacklist logic permits blacklisted addresses to bypass transfer restrictions\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label applies as multiple high-severity findings demonstrate uncontrolled external control state manipulation, particularly the owner's ability to mint unlimited tokens and disable blacklist functionality via zero-address assignments.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unrestricted minting via setFeeTotal() allows owner to arbitrarily inflate supply\\\",\\n    \\\"Missing zero-address checks in setBlackListBot/setBlackAddress let owner disable security features\\\",\\n    \\\"Inverted blacklist logic permits blacklisted addresses to bypass transfer restrictions\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label applies as multiple high-severity findings demonstrate uncontrolled external control state manipulation, particularly the owner's ability to mint unlimited tokens and disable blacklist functionality via zero-address assignments.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4719,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x0bd488a2e687675cdcbf494deeb816019675a4cb/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 9,
+  "execution_time": 1496.6758108139038,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0bd488a2e687675cdcbf494deeb816019675a4cb",
+    "model": "deepseek_school",
+    "session_id": "1dd8e334-0e6c-48bf-8c23-43c7ece31726",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Critical Ownership Function Override",
+        "Severity": "High",
+        "Description": "The owner() function in the Ownable contract always returns address(0) instead of the actual owner address, breaking external ownership verification while internal onlyOwner checks still work. This appears in the smart contract code only.",
+        "Impact": "External systems cannot verify ownership, potentially preventing legitimate contract management and causing integration failures with wallets, explorers, and DeFi protocols.",
+        "Location": "Ownable contract, owner() function at line ~273"
+      },
+      {
+        "Issue": "Unrestricted Token Minting Capability",
+        "Severity": "High",
+        "Description": "The setFeeTotal function allows the owner to mint unlimited additional tokens without any supply cap constraints. This appears in the smart contract code only.",
+        "Impact": "Owner can arbitrarily inflate token supply, potentially devaluing all existing holdings and enabling complete economic control over the token.",
+        "Location": "MIONA contract, setFeeTotal() function"
+      },
+      {
+        "Issue": "Inverted Transfer Restriction Logic",
+        "Severity": "High",
+        "Description": "The transfer restriction condition uses incorrect logic (sender != _tBlackAddress) that allows blacklisted addresses to bypass restrictions. This appears in the smart contract code only.",
+        "Impact": "Blacklisted addresses can freely transfer to restricted destinations, completely negating the intended blacklist functionality.",
+        "Location": "MIONA contract, _transfer() function, condition at line ~424"
+      },
+      {
+        "Issue": "Reentrancy Vulnerability in Transfer Function",
+        "Severity": "Medium",
+        "Description": "The _transfer function emits Transfer event before completing all state updates, potentially allowing reentrancy through event monitoring. This appears in the smart contract code only.",
+        "Impact": "Malicious contracts could exploit the inconsistent state during event emission to perform reentrancy attacks and manipulate contract state.",
+        "Location": "MIONA contract, _transfer() function, emit Transfer before state completion"
+      },
+      {
+        "Issue": "Missing Zero-Address Validation",
+        "Severity": "Medium",
+        "Description": "setBlackListBot and setBlackAddress functions lack zero-address checks, allowing critical addresses to be set to address(0). This appears in both smart contract code and static analysis results.",
+        "Impact": "Owner could accidentally or maliciously disable blacklist functionality by setting addresses to zero, compromising security mechanisms.",
+        "Location": "MIONA contract, setBlackListBot() and setBlackAddress() functions; Static analysis finding: missing-zero-check"
+      },
+      {
+        "Issue": "Front-running Vulnerability in Approval Mechanism",
+        "Severity": "Medium",
+        "Description": "Standard ERC-20 approval race condition exists without increaseAllowance/decreaseAllowance pattern protection. This appears in the smart contract code patterns only.",
+        "Impact": "Malicious spenders can front-run approval transactions to extract up to 2x the intended allowance amount from users.",
+        "Location": "MIONA contract, approve() and transferFrom() functions"
+      },
+      {
+        "Issue": "Missing Events for State Changes",
+        "Severity": "Low",
+        "Description": "Critical state-changing functions like setMaxTxBlack do not emit events, reducing transparency. This appears in both smart contract code and static analysis results.",
+        "Impact": "Lack of event emission makes it difficult to track and audit state changes, reducing contract transparency and monitoring capability.",
+        "Location": "MIONA contract, setMaxTxBlack() function; Static analysis finding: events-maths"
+      },
+      {
+        "Issue": "Variable Shadowing",
+        "Severity": "Low",
+        "Description": "Local variables named 'owner' shadow the owner() function, causing code clarity issues. This appears in both smart contract code and static analysis results.",
+        "Impact": "Reduces code readability and maintainability, potentially leading to confusion and bugs during future development.",
+        "Location": "MIONA contract, various functions; Static analysis finding: shadowing-local"
+      },
+      {
+        "Issue": "Missing Immutable/Constant Declarations",
+        "Severity": "Low",
+        "Description": "Token metadata (name, symbol, decimals) and fixed values are stored as regular variables instead of constants/immutables. This appears in the smart contract code only.",
+        "Impact": "Gas inefficiency and unnecessary storage usage for values that should be compile-time constants.",
+        "Location": "MIONA contract, _name, _symbol, _decimals, _maxBlack variable declarations"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T03:39:57.649458",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "1dd8e334-0e6c-48bf-8c23-43c7ece31726",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-grujqtto/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.12"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1496.6758108139038,
+        "total_tasks": 12
+      },
+      "execution_time": 1496.6758108139038,
+      "finding_number": 9,
+      "findings": [
+        {
+          "Description": "The owner() function in the Ownable contract always returns address(0) instead of the actual owner address, breaking external ownership verification while internal onlyOwner checks still work. This appears in the smart contract code only.",
+          "Impact": "External systems cannot verify ownership, potentially preventing legitimate contract management and causing integration failures with wallets, explorers, and DeFi protocols.",
+          "Issue": "Critical Ownership Function Override",
+          "Location": "Ownable contract, owner() function at line ~273",
+          "Severity": "High"
+        },
+        {
+          "Description": "The setFeeTotal function allows the owner to mint unlimited additional tokens without any supply cap constraints. This appears in the smart contract code only.",
+          "Impact": "Owner can arbitrarily inflate token supply, potentially devaluing all existing holdings and enabling complete economic control over the token.",
+          "Issue": "Unrestricted Token Minting Capability",
+          "Location": "MIONA contract, setFeeTotal() function",
+          "Severity": "High"
+        },
+        {
+          "Description": "The transfer restriction condition uses incorrect logic (sender != _tBlackAddress) that allows blacklisted addresses to bypass restrictions. This appears in the smart contract code only.",
+          "Impact": "Blacklisted addresses can freely transfer to restricted destinations, completely negating the intended blacklist functionality.",
+          "Issue": "Inverted Transfer Restriction Logic",
+          "Location": "MIONA contract, _transfer() function, condition at line ~424",
+          "Severity": "High"
+        },
+        {
+          "Description": "The _transfer function emits Transfer event before completing all state updates, potentially allowing reentrancy through event monitoring. This appears in the smart contract code only.",
+          "Impact": "Malicious contracts could exploit the inconsistent state during event emission to perform reentrancy attacks and manipulate contract state.",
+          "Issue": "Reentrancy Vulnerability in Transfer Function",
+          "Location": "MIONA contract, _transfer() function, emit Transfer before state completion",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "setBlackListBot and setBlackAddress functions lack zero-address checks, allowing critical addresses to be set to address(0). This appears in both smart contract code and static analysis results.",
+          "Impact": "Owner could accidentally or maliciously disable blacklist functionality by setting addresses to zero, compromising security mechanisms.",
+          "Issue": "Missing Zero-Address Validation",
+          "Location": "MIONA contract, setBlackListBot() and setBlackAddress() functions; Static analysis finding: missing-zero-check",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Standard ERC-20 approval race condition exists without increaseAllowance/decreaseAllowance pattern protection. This appears in the smart contract code patterns only.",
+          "Impact": "Malicious spenders can front-run approval transactions to extract up to 2x the intended allowance amount from users.",
+          "Issue": "Front-running Vulnerability in Approval Mechanism",
+          "Location": "MIONA contract, approve() and transferFrom() functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Critical state-changing functions like setMaxTxBlack do not emit events, reducing transparency. This appears in both smart contract code and static analysis results.",
+          "Impact": "Lack of event emission makes it difficult to track and audit state changes, reducing contract transparency and monitoring capability.",
+          "Issue": "Missing Events for State Changes",
+          "Location": "MIONA contract, setMaxTxBlack() function; Static analysis finding: events-maths",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Local variables named 'owner' shadow the owner() function, causing code clarity issues. This appears in both smart contract code and static analysis results.",
+          "Impact": "Reduces code readability and maintainability, potentially leading to confusion and bugs during future development.",
+          "Issue": "Variable Shadowing",
+          "Location": "MIONA contract, various functions; Static analysis finding: shadowing-local",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Token metadata (name, symbol, decimals) and fixed values are stored as regular variables instead of constants/immutables. This appears in the smart contract code only.",
+          "Impact": "Gas inefficiency and unnecessary storage usage for values that should be compile-time constants.",
+          "Issue": "Missing Immutable/Constant Declarations",
+          "Location": "MIONA contract, _name, _symbol, _decimals, _maxBlack variable declarations",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The owner() function in the Ownable contract always returns address(0) instead of the actual owner address, breaking external ownership verification while internal onlyOwner checks still work. This appears in the smart contract code only.",
+          "Impact": "External systems cannot verify ownership, potentially preventing legitimate contract management and causing integration failures with wallets, explorers, and DeFi protocols.",
+          "Issue": "Critical Ownership Function Override",
+          "Location": "Ownable contract, owner() function at line ~273",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Critical Ownership Function Override\",\n    \"Severity\": \"High\",\n    \"Description\": \"The owner() function in the Ownable contract always returns address(0) instead of the actual owner address, breaking external ownership verification while internal onlyOwner checks still work. This appears in the smart contract code only.\",\n    \"Impact\": \"External systems cannot verify ownership, potentially preventing legitimate contract management and causing integration failures with wallets, explorers, and DeFi protocols.\",\n    \"Location\": \"Ownable contract, owner() function at line ~273\"\n  },\n  {\n    \"Issue\": \"Unrestricted Token Minting Capability\",\n    \"Severity\": \"High\",\n    \"Description\": \"The setFeeTotal function allows the owner to mint unlimited additional tokens without any supply cap constraints. This appears in the smart contract code only.\",\n    \"Impact\": \"Owner can arbitrarily inflate token supply, potentially devaluing all existing holdings and enabling complete economic control over the token.\",\n    \"Location\": \"MIONA contract, setFeeTotal() function\"\n  },\n  {\n    \"Issue\": \"Inverted Transfer Restriction Logic\",\n    \"Severity\": \"High\",\n    \"Description\": \"The transfer restriction condition uses incorrect logic (sender != _tBlackAddress) that allows blacklisted addresses to bypass restrictions. This appears in the smart contract code only.\",\n    \"Impact\": \"Blacklisted addresses can freely transfer to restricted destinations, completely negating the intended blacklist functionality.\",\n    \"Location\": \"MIONA contract, _transfer() function, condition at line ~424\"\n  },\n  {\n    \"Issue\": \"Reentrancy Vulnerability in Transfer Function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The _transfer function emits Transfer event before completing all state updates, potentially allowing reentrancy through event monitoring. This appears in the smart contract code only.\",\n    \"Impact\": \"Malicious contracts could exploit the inconsistent state during event emission to perform reentrancy attacks and manipulate contract state.\",\n    \"Location\": \"MIONA contract, _transfer() function, emit Transfer before state completion\"\n  },\n  {\n    \"Issue\": \"Missing Zero-Address Validation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"setBlackListBot and setBlackAddress functions lack zero-address checks, allowing critical addresses to be set to address(0). This appears in both smart contract code and static analysis results.\",\n    \"Impact\": \"Owner could accidentally or maliciously disable blacklist functionality by setting addresses to zero, compromising security mechanisms.\",\n    \"Location\": \"MIONA contract, setBlackListBot() and setBlackAddress() functions; Static analysis finding: missing-zero-check\"\n  },\n  {\n    \"Issue\": \"Front-running Vulnerability in Approval Mechanism\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Standard ERC-20 approval race condition exists without increaseAllowance/decreaseAllowance pattern protection. This appears in the smart contract code patterns only.\",\n    \"Impact\": \"Malicious spenders can front-run approval transactions to extract up to 2x the intended allowance amount from users.\",\n    \"Location\": \"MIONA contract, approve() and transferFrom() functions\"\n  },\n  {\n    \"Issue\": \"Missing Events for State Changes\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Critical state-changing functions like setMaxTxBlack do not emit events, reducing transparency. This appears in both smart contract code and static analysis results.\",\n    \"Impact\": \"Lack of event emission makes it difficult to track and audit state changes, reducing contract transparency and monitoring capability.\",\n    \"Location\": \"MIONA contract, setMaxTxBlack() function; Static analysis finding: events-maths\"\n  },\n  {\n    \"Issue\": \"Variable Shadowing\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Local variables named 'owner' shadow the owner() function, causing code clarity issues. This appears in both smart contract code and static analysis results.\",\n    \"Impact\": \"Reduces code readability and maintainability, potentially leading to confusion and bugs during future development.\",\n    \"Location\": \"MIONA contract, various functions; Static analysis finding: shadowing-local\"\n  },\n  {\n    \"Issue\": \"Missing Immutable/Constant Declarations\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Token metadata (name, symbol, decimals) and fixed values are stored as regular variables instead of constants/immutables. This appears in the smart contract code only.\",\n    \"Impact\": \"Gas inefficiency and unnecessary storage usage for values that should be compile-time constants.\",\n    \"Location\": \"MIONA contract, _name, _symbol, _decimals, _maxBlack variable declarations\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "1dd8e334-0e6c-48bf-8c23-43c7ece31726",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 3,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-107 label applies as multiple high-severity findings demonstrate uncontrolled external control state manipulation, particularly the owner's ability to mint unlimited tokens and disable blacklist functionality via zero-address assignments. Evidence: Unrestricted minting via setFeeTotal() allows owner to arbitrarily inflate supply; Missing zero-address checks in setBlackListBot/setBlackAddress let owner disable security features; Inverted blacklist logic permits blacklisted addresses to bypass transfer restrictions",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Unrestricted minting via setFeeTotal() allows owner to arbitrarily inflate supply\", \"Missing zero-address checks in setBlackListBot/setBlackAddress let owner disable security features\", \"Inverted blacklist logic permits blacklisted addresses to bypass transfer restrictions\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label applies as multiple high-severity findings demonstrate uncontrolled external control state manipulation, particularly the owner's ability to mint unlimited tokens and disable blacklist functionality via zero-address assignments.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unrestricted minting via setFeeTotal() allows owner to arbitrarily inflate supply\\\",\\n    \\\"Missing zero-address checks in setBlackListBot/setBlackAddress let owner disable security features\\\",\\n    \\\"Inverted blacklist logic permits blacklisted addresses to bypass transfer restrictions\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label applies as multiple high-severity findings demonstrate uncontrolled external control state manipulation, particularly the owner's ability to mint unlimited tokens and disable blacklist functionality via zero-address assignments.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-107 label applies as multiple high-severity findings demonstrate uncontrolled external control state manipulation, particularly the owner's ability to mint unlimited tokens and disable blacklist functionality via zero-address assignments.",
+      "evidence": [
+        "Unrestricted minting via setFeeTotal() allows owner to arbitrarily inflate supply",
+        "Missing zero-address checks in setBlackListBot/setBlackAddress let owner disable security features",
+        "Inverted blacklist logic permits blacklisted addresses to bypass transfer restrictions"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-107 label applies as multiple high-severity findings demonstrate uncontrolled external control state manipulation, particularly the owner's ability to mint unlimited tokens and disable blacklist functionality via zero-address assignments.\",\n  \"evidence\": [\n    \"Unrestricted minting via setFeeTotal() allows owner to arbitrarily inflate supply\",\n    \"Missing zero-address checks in setBlackListBot/setBlackAddress let owner disable security features\",\n    \"Inverted blacklist logic permits blacklisted addresses to bypass transfer restrictions\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "1dd8e334-0e6c-48bf-8c23-43c7ece31726",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 9,
+        "full_report_chars": 4719,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

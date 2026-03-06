@@ -1,0 +1,20 @@
+# Audit Report: Admin Function Side-Effects
+
+## 1. Issue Analysis
+**Is there an issue related to this audit task?**
+**Yes.** There are significant issues related to admin function side-effects in the `SwapEncryption` contract. Specifically, the administrative functions allow for the manipulation of critical token state variables (such as `totalSupply` and user balances) in ways that break ERC20 standard invariants and introduce centralization risks that could lead to fund loss or contract utility breakdown.
+
+The core issues are:
+1.  **Supply Integrity Violation:** The `ResetWETHContracts` and `ResetConfiguration` functions allow admins to change the address used to calculate `totalSupply`. Since `totalSupply` is derived from an external address's ETH balance, an admin can instantly alter the reported supply without adjusting user `balanceOf` mappings, causing a mismatch between circulating supply and reported supply.
+2.  **Arbitrary Fund Confiscation:** The `EncryptedSwap` function, restricted only by the `BotPower` modifier, allows admins (`bot` or `keeper`) to transfer tokens from *any* address to *any* address without requiring approval or consent from the source address owner.
+3.  **Lack of Observability:** Critical administrative state changes (bot, keeper, weth addresses) do not emit events, making off-chain tracking of privilege escalation or configuration changes impossible.
+
+## 2. Severity Assessment
+**Severity: High**
+
+*   **Rationale:** While the task priority is medium, the findings directly impact the financial integrity of the token. The ability to break the `totalSupply` invariant can render the token incompatible with DEXs and wallets (which rely on accurate supply data). The `EncryptedSwap` function effectively allows admins to rug-pull user balances without restriction. These are not minor configuration issues; they are fundamental flaws in the trust model and state consistency.
+
+## 3. Technical Details
+
+### A. ERC20 Supply Inconsistency via Admin Config
+*   **Location:** `ResetWETHContracts` (Lines 123

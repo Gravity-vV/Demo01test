@@ -1,0 +1,236 @@
+{
+  "address": "0x2380a4be7726ff679da276cf499fedfd822e6a93",
+  "session_id": "cd048854-f1b9-4d43-a041-2e3a4913aacc",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 covers integer overflow/underflow vulnerabilities, which directly applies to Finding 1's unprotected subtraction operation and Finding 5's arithmetic overflow with maximum uint256 values. Both findings demonstrate arithmetic operations without proper safeguards that could lead to critical calculation errors. Evidence: Unprotected subtraction '_feeRateDen - _feeRateNum' in undoFee() creates underflow vulnerability; Multiplication operations in getFee() and undoFee() lack overflow checks for maximum uint256 values; Both vulnerabilities involve integer arithmetic errors matching SWC-101 classification",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Unprotected subtraction '_feeRateDen - _feeRateNum' in undoFee() creates underflow vulnerability\", \"Multiplication operations in getFee() and undoFee() lack overflow checks for maximum uint256 values\", \"Both vulnerabilities involve integer arithmetic errors matching SWC-101 classification\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 covers integer overflow/underflow vulnerabilities, which directly applies to Finding 1's unprotected subtraction operation and Finding 5's arithmetic overflow with maximum uint256 values. Both findings demonstrate arithmetic operations without proper safeguards that could lead to critical calculation errors.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unprotected subtraction '_feeRateDen - _feeRateNum' in undoFee() creates underflow vulnerability\\\",\\n    \\\"Multiplication operations in getFee() and undoFee() lack overflow checks for maximum uint256 values\\\",\\n    \\\"Both vulnerabilities involve integer arithmetic errors matching SWC-101 classification\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 covers integer overflow/underflow vulnerabilities, which directly applies to Finding 1's unprotected subtraction operation and Finding 5's arithmetic overflow with maximum uint256 values. Both findings demonstrate arithmetic operations without proper safeguards that could lead to critical calculation errors.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2844,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x2380a4be7726ff679da276cf499fedfd822e6a93/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 1190.1948688030243,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x2380a4be7726ff679da276cf499fedfd822e6a93",
+    "model": "deepseek_school",
+    "session_id": "cd048854-f1b9-4d43-a041-2e3a4913aacc",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Unprotected Subtraction in undoFee Calculation",
+        "Severity": "High",
+        "Description": "The undoFee function performs a subtraction operation without SafeMath protection, creating potential underflow vulnerability. This issue appears in the smart contract code only.",
+        "Impact": "Potential underflow could lead to incorrect fee calculations, fund loss, or contract functionality disruption if fee rates are manipulated.",
+        "Location": "FeeLogic.undoFee() function, line with '_feeRateDen - _feeRateNum' operation"
+      },
+      {
+        "Issue": "Missing Zero-Address Check in Constructor",
+        "Severity": "Low",
+        "Description": "The constructor lacks a zero-address validation check for the recipient parameter. This issue appears in the static analysis results only (Slither finding).",
+        "Impact": "Potential assignment of fee recipient to zero address, making fees unrecoverable.",
+        "Location": "FeeLogic.constructor() - missing require(recipient_ != address(0))"
+      },
+      {
+        "Issue": "Potential Division by Zero in undoFee",
+        "Severity": "Medium",
+        "Description": "The undoFee function could experience division by zero if denominator equals numerator, despite require check in setFeeRate. This issue appears in the smart contract code only.",
+        "Impact": "Transaction reversions and denial-of-service for fee calculation operations if invalid fee parameters are set.",
+        "Location": "FeeLogic.undoFee() function, division operation with denominator '_feeRateDen - _feeRateNum'"
+      },
+      {
+        "Issue": "Front-Running Vulnerability in Fee Parameter Changes",
+        "Severity": "Medium",
+        "Description": "The setFeeRate function allows immediate fee changes without time-lock mechanism, enabling front-running opportunities. This issue appears in the smart contract code only.",
+        "Impact": "MEV bots can extract value from fee changes, regular users may receive worse rates, and potential arbitrage profits for attackers.",
+        "Location": "FeeLogic.setFeeRate() function - no time-lock mechanism"
+      },
+      {
+        "Issue": "Arithmetic Overflow with Maximum uint256 Values",
+        "Severity": "Medium",
+        "Description": "Fee calculations may overflow when handling maximum uint256 values, particularly in multiplication operations. This issue appears in the smart contract code only.",
+        "Impact": "Incorrect fee calculations, potential fund loss, or transaction reversals when processing extremely large amounts.",
+        "Location": "FeeLogic.getFee() and undoFee() functions - multiplication operations without overflow boundary checks"
+      },
+      {
+        "Issue": "Permanent Loss of Administrative Control",
+        "Severity": "Medium",
+        "Description": "The renounceOwnership function allows permanent loss of administrative control without recovery mechanism. This issue appears in the smart contract code only.",
+        "Impact": "Contract becomes completely immutable, unable to adjust fee parameters or respond to changing conditions.",
+        "Location": "Ownable.renounceOwnership() function inherited by FeeLogic"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T06:38:04.317658",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "cd048854-f1b9-4d43-a041-2e3a4913aacc",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-9kaa66dv/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0",
+            "0.8.0",
+            "0.7.6",
+            "0.7.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1190.1948688030243,
+        "total_tasks": 12
+      },
+      "execution_time": 1190.1948688030243,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The undoFee function performs a subtraction operation without SafeMath protection, creating potential underflow vulnerability. This issue appears in the smart contract code only.",
+          "Impact": "Potential underflow could lead to incorrect fee calculations, fund loss, or contract functionality disruption if fee rates are manipulated.",
+          "Issue": "Unprotected Subtraction in undoFee Calculation",
+          "Location": "FeeLogic.undoFee() function, line with '_feeRateDen - _feeRateNum' operation",
+          "Severity": "High"
+        },
+        {
+          "Description": "The constructor lacks a zero-address validation check for the recipient parameter. This issue appears in the static analysis results only (Slither finding).",
+          "Impact": "Potential assignment of fee recipient to zero address, making fees unrecoverable.",
+          "Issue": "Missing Zero-Address Check in Constructor",
+          "Location": "FeeLogic.constructor() - missing require(recipient_ != address(0))",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The undoFee function could experience division by zero if denominator equals numerator, despite require check in setFeeRate. This issue appears in the smart contract code only.",
+          "Impact": "Transaction reversions and denial-of-service for fee calculation operations if invalid fee parameters are set.",
+          "Issue": "Potential Division by Zero in undoFee",
+          "Location": "FeeLogic.undoFee() function, division operation with denominator '_feeRateDen - _feeRateNum'",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The setFeeRate function allows immediate fee changes without time-lock mechanism, enabling front-running opportunities. This issue appears in the smart contract code only.",
+          "Impact": "MEV bots can extract value from fee changes, regular users may receive worse rates, and potential arbitrage profits for attackers.",
+          "Issue": "Front-Running Vulnerability in Fee Parameter Changes",
+          "Location": "FeeLogic.setFeeRate() function - no time-lock mechanism",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Fee calculations may overflow when handling maximum uint256 values, particularly in multiplication operations. This issue appears in the smart contract code only.",
+          "Impact": "Incorrect fee calculations, potential fund loss, or transaction reversals when processing extremely large amounts.",
+          "Issue": "Arithmetic Overflow with Maximum uint256 Values",
+          "Location": "FeeLogic.getFee() and undoFee() functions - multiplication operations without overflow boundary checks",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The renounceOwnership function allows permanent loss of administrative control without recovery mechanism. This issue appears in the smart contract code only.",
+          "Impact": "Contract becomes completely immutable, unable to adjust fee parameters or respond to changing conditions.",
+          "Issue": "Permanent Loss of Administrative Control",
+          "Location": "Ownable.renounceOwnership() function inherited by FeeLogic",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The undoFee function performs a subtraction operation without SafeMath protection, creating potential underflow vulnerability. This issue appears in the smart contract code only.",
+          "Impact": "Potential underflow could lead to incorrect fee calculations, fund loss, or contract functionality disruption if fee rates are manipulated.",
+          "Issue": "Unprotected Subtraction in undoFee Calculation",
+          "Location": "FeeLogic.undoFee() function, line with '_feeRateDen - _feeRateNum' operation",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[{\"Issue\":\"Unprotected Subtraction in undoFee Calculation\",\"Severity\":\"High\",\"Description\":\"The undoFee function performs a subtraction operation without SafeMath protection, creating potential underflow vulnerability. This issue appears in the smart contract code only.\",\"Impact\":\"Potential underflow could lead to incorrect fee calculations, fund loss, or contract functionality disruption if fee rates are manipulated.\",\"Location\":\"FeeLogic.undoFee() function, line with '_feeRateDen - _feeRateNum' operation\"},{\"Issue\":\"Missing Zero-Address Check in Constructor\",\"Severity\":\"Low\",\"Description\":\"The constructor lacks a zero-address validation check for the recipient parameter. This issue appears in the static analysis results only (Slither finding).\",\"Impact\":\"Potential assignment of fee recipient to zero address, making fees unrecoverable.\",\"Location\":\"FeeLogic.constructor() - missing require(recipient_ != address(0))\"},{\"Issue\":\"Potential Division by Zero in undoFee\",\"Severity\":\"Medium\",\"Description\":\"The undoFee function could experience division by zero if denominator equals numerator, despite require check in setFeeRate. This issue appears in the smart contract code only.\",\"Impact\":\"Transaction reversions and denial-of-service for fee calculation operations if invalid fee parameters are set.\",\"Location\":\"FeeLogic.undoFee() function, division operation with denominator '_feeRateDen - _feeRateNum'\"},{\"Issue\":\"Front-Running Vulnerability in Fee Parameter Changes\",\"Severity\":\"Medium\",\"Description\":\"The setFeeRate function allows immediate fee changes without time-lock mechanism, enabling front-running opportunities. This issue appears in the smart contract code only.\",\"Impact\":\"MEV bots can extract value from fee changes, regular users may receive worse rates, and potential arbitrage profits for attackers.\",\"Location\":\"FeeLogic.setFeeRate() function - no time-lock mechanism\"},{\"Issue\":\"Arithmetic Overflow with Maximum uint256 Values\",\"Severity\":\"Medium\",\"Description\":\"Fee calculations may overflow when handling maximum uint256 values, particularly in multiplication operations. This issue appears in the smart contract code only.\",\"Impact\":\"Incorrect fee calculations, potential fund loss, or transaction reversals when processing extremely large amounts.\",\"Location\":\"FeeLogic.getFee() and undoFee() functions - multiplication operations without overflow boundary checks\"},{\"Issue\":\"Permanent Loss of Administrative Control\",\"Severity\":\"Medium\",\"Description\":\"The renounceOwnership function allows permanent loss of administrative control without recovery mechanism. This issue appears in the smart contract code only.\",\"Impact\":\"Contract becomes completely immutable, unable to adjust fee parameters or respond to changing conditions.\",\"Location\":\"Ownable.renounceOwnership() function inherited by FeeLogic\"}]",
+      "model_used": "deepseek_school",
+      "session_id": "cd048854-f1b9-4d43-a041-2e3a4913aacc",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 1,
+        "Medium": 4
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 covers integer overflow/underflow vulnerabilities, which directly applies to Finding 1's unprotected subtraction operation and Finding 5's arithmetic overflow with maximum uint256 values. Both findings demonstrate arithmetic operations without proper safeguards that could lead to critical calculation errors. Evidence: Unprotected subtraction '_feeRateDen - _feeRateNum' in undoFee() creates underflow vulnerability; Multiplication operations in getFee() and undoFee() lack overflow checks for maximum uint256 values; Both vulnerabilities involve integer arithmetic errors matching SWC-101 classification",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Unprotected subtraction '_feeRateDen - _feeRateNum' in undoFee() creates underflow vulnerability\", \"Multiplication operations in getFee() and undoFee() lack overflow checks for maximum uint256 values\", \"Both vulnerabilities involve integer arithmetic errors matching SWC-101 classification\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 covers integer overflow/underflow vulnerabilities, which directly applies to Finding 1's unprotected subtraction operation and Finding 5's arithmetic overflow with maximum uint256 values. Both findings demonstrate arithmetic operations without proper safeguards that could lead to critical calculation errors.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unprotected subtraction '_feeRateDen - _feeRateNum' in undoFee() creates underflow vulnerability\\\",\\n    \\\"Multiplication operations in getFee() and undoFee() lack overflow checks for maximum uint256 values\\\",\\n    \\\"Both vulnerabilities involve integer arithmetic errors matching SWC-101 classification\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 covers integer overflow/underflow vulnerabilities, which directly applies to Finding 1's unprotected subtraction operation and Finding 5's arithmetic overflow with maximum uint256 values. Both findings demonstrate arithmetic operations without proper safeguards that could lead to critical calculation errors.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 covers integer overflow/underflow vulnerabilities, which directly applies to Finding 1's unprotected subtraction operation and Finding 5's arithmetic overflow with maximum uint256 values. Both findings demonstrate arithmetic operations without proper safeguards that could lead to critical calculation errors.",
+      "evidence": [
+        "Unprotected subtraction '_feeRateDen - _feeRateNum' in undoFee() creates underflow vulnerability",
+        "Multiplication operations in getFee() and undoFee() lack overflow checks for maximum uint256 values",
+        "Both vulnerabilities involve integer arithmetic errors matching SWC-101 classification"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 covers integer overflow/underflow vulnerabilities, which directly applies to Finding 1's unprotected subtraction operation and Finding 5's arithmetic overflow with maximum uint256 values. Both findings demonstrate arithmetic operations without proper safeguards that could lead to critical calculation errors.\",\n  \"evidence\": [\n    \"Unprotected subtraction '_feeRateDen - _feeRateNum' in undoFee() creates underflow vulnerability\",\n    \"Multiplication operations in getFee() and undoFee() lack overflow checks for maximum uint256 values\",\n    \"Both vulnerabilities involve integer arithmetic errors matching SWC-101 classification\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "cd048854-f1b9-4d43-a041-2e3a4913aacc",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 2844,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

@@ -1,0 +1,320 @@
+{
+  "address": "0x111d30967038b08d5f3b0502940f8a5df13216a7",
+  "session_id": "70be824b-9530-4dbd-a578-5ca15c1093b2",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "llm",
+  "pred_reason": "The contract uses unsafe external calls with limited gas (Finding 3) and lacks proper state updates before these calls (Finding 2), matching SWC-107. Additionally, arithmetic operations in SMTToken functions (Finding 5) and SafeMath issues (Finding 6) indicate integer overflow/underflow risks aligning with SWC-101. Evidence: ETH transfers use .send() with 2300 gas limit risking failures (Finding 3); State changes occur after external calls in payment functions (Finding 2); Unsafe arithmetic in transfer/transferFrom without overflow checks (Finding 5)",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 0.8, \"labels\": [\"SWC-101\", \"SWC-107\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-101\\\", \\\"SWC-107\\\"],\\n  \\\"confidence\\\": 0.8,\\n  \\\"reason\\\": \\\"Finding 2 indicates reentrancy risk (SWC-107) due to state changes after external calls. Findings 5,6,7,8,10 suggest integer overflow/underflow vulnerabilities (SWC-101) in arithmetic operations and boundary conditions.\\\"\\n}\", \"reason\": \"Finding 2 indicates reentrancy risk (SWC-107) due to state changes after external calls. Findings 5,6,7,8,10 suggest integer overflow/underflow vulnerabilities (SWC-101) in arithmetic operations and boundary conditions.\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"ETH transfers use .send() with 2300 gas limit risking failures (Finding 3)\", \"State changes occur after external calls in payment functions (Finding 2)\", \"Unsafe arithmetic in transfer/transferFrom without overflow checks (Finding 5)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract uses unsafe external calls with limited gas (Finding 3) and lacks proper state updates before these calls (Finding 2), matching SWC-107. Additionally, arithmetic operations in SMTToken functions (Finding 5) and SafeMath issues (Finding 6) indicate integer overflow/underflow risks aligning with SWC-101.\\\",\\n  \\\"evidence\\\": [\\n    \\\"ETH transfers use .send() with 2300 gas limit risking failures (Finding 3)\\\",\\n    \\\"State changes occur after external calls in payment functions (Finding 2)\\\",\\n    \\\"Unsafe arithmetic in transfer/transferFrom without overflow checks (Finding 5)\\\"\\n  ]\\n}\", \"reason\": \"The contract uses unsafe external calls with limited gas (Finding 3) and lacks proper state updates before these calls (Finding 2), matching SWC-107. Additionally, arithmetic operations in SMTToken functions (Finding 5) and SafeMath issues (Finding 6) indicate integer overflow/underflow risks aligning with SWC-101.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1581.1482510566711,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x111d30967038b08d5f3b0502940f8a5df13216a7",
+    "model": "deepseek_school",
+    "session_id": "70be824b-9530-4dbd-a578-5ca15c1093b2",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - [ ] Identify all external calls (ETH transfers via...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task of identifying all external calls (ETH transfers via `.send()`) in the PreICO fallback and `tokenAssign... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 1: [ ] Identify all external calls (ETH transfers via `.send()`) in PreICO fallback and `tokenAssignExchange`"
+      },
+      {
+        "Issue": "High Priority Security Issue - [ ] Verify state changes occur before external cal...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code for the specific audit task \"Verify state changes occur before external calls in payment processing functions,\" I have identified critical secu... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: [ ] Verify state changes occur before external calls in payment processing functions"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - [ ] Test ETH transfer failures to contracts (2300 ...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue related to ETH transfer failures to contracts with the 2300 gas limit. ## 1. Issue Analysis **Yes, there ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: [ ] Test ETH transfer failures to contracts (2300 gas limit)"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - [ ] Check for recursive call possibilities in BTC ...",
+        "Severity": "Medium",
+        "Description": "## Audit Report: Recursive Call Analysis for BTC Processing Functions ### 1. Issue Analysis **No recursive call vulnerabilities found in BTC processing functions.** After a thorough analysis of the... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 4: [ ] Check for recursive call possibilities in BTC processing functions"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - [ ] Review all arithmetic operations in SMTToken (...",
+        "Severity": "High",
+        "Description": "After reviewing the arithmetic operations in the `SMTToken` contract functions `transfer`, `transferFrom`, and `addToBalances`, I have identified several issues. Below is my detailed analysis: ### 1.... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: [ ] Review all arithmetic operations in SMTToken (transfer, transferFrom, addToBalances)"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - [ ] Verify SafeMath usage in PreICO (calNewTokens,...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the provided smart contract code focusing on **SafeMath usage in PreICO (calNewTokens, supply calculations)**, I have identified several critical issues. Here is my detail... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: [ ] Verify SafeMath usage in PreICO (calNewTokens, supply calculations)"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - [ ] Test boundary conditions for:...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided Solidity smart contract code, here are my detailed findings regarding boundary condition testing: ## 1. Issue Analysis **Yes, multiple boundary condition issues ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: [ ] Test boundary conditions for:"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Token balances (max uint256 values)...",
+        "Severity": "High",
+        "Description": "Based on the provided code and the specific audit task of \"Token balances (max uint256 values)\", I have conducted a thorough security analysis. ## 1. Issue Analysis **Yes, there is a critical issue ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: Token balances (max uint256 values)"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Supply caps (tokenCreationMaxPrivateSale, tokenCre...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code for the audit task \"Supply caps (tokenCreationMaxPrivateSale, tokenCreationMaxPreICO)\" with medium priority, here are my detailed findings: ##... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: Supply caps (tokenCreationMaxPrivateSale, tokenCreationMaxPreICO)"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Discount calculations with large inputs...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, here is the detailed audit assessment for the specific task: ## Audit Task: Discount calculations with large inputs **Priority: medium** ###... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: Discount calculations with large inputs"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - [ ] Map all privileged functions (onlyOwner, owner...",
+        "Severity": "High",
+        "Description": "### **Audit Report: Privileged Function Mapping for SMTToken Contract** --- #### **1. Issue Analysis** **Yes**, the contract contains privileged functions controlled by both the `onlyOwner` modifi... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: [ ] Map all privileged functions (onlyOwner, ownership mapping)"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - [ ] Verify `addToOwnership` has no upper limit on ...",
+        "Severity": "High",
+        "Description": "## Detailed Audit Findings: `addToOwnership` Upper Limit Verification ### 1. Issue Analysis **Issue Identified: Yes** The `addToOwnership` function in the `SMTToken` contract has **no upper limit**... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: [ ] Verify `addToOwnership` has no upper limit on privileged addresses"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T04:29:19.943402",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "70be824b-9530-4dbd-a578-5ca15c1093b2",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.11"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '<tmp> --version' running '<tmp> --version' running",
+          "status": "failed"
+        },
+        "total_execution_time": 1581.1482510566711,
+        "total_tasks": 12
+      },
+      "execution_time": 1581.1482510566711,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task of identifying all external calls (ETH transfers via `.send()`) in the PreICO fallback and `tokenAssign... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - [ ] Identify all external calls (ETH transfers via...",
+          "Location": "Task 1: [ ] Identify all external calls (ETH transfers via `.send()`) in PreICO fallback and `tokenAssignExchange`",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code for the specific audit task \"Verify state changes occur before external calls in payment processing functions,\" I have identified critical secu... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - [ ] Verify state changes occur before external cal...",
+          "Location": "Task 2: [ ] Verify state changes occur before external calls in payment processing functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue related to ETH transfer failures to contracts with the 2300 gas limit.\n\n## 1. Issue Analysis\n\n**Yes, there ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - [ ] Test ETH transfer failures to contracts (2300 ...",
+          "Location": "Task 3: [ ] Test ETH transfer failures to contracts (2300 gas limit)",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Recursive Call Analysis for BTC Processing Functions\n\n### 1. Issue Analysis\n**No recursive call vulnerabilities found in BTC processing functions.** \n\nAfter a thorough analysis of the... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - [ ] Check for recursive call possibilities in BTC ...",
+          "Location": "Task 4: [ ] Check for recursive call possibilities in BTC processing functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "After reviewing the arithmetic operations in the `SMTToken` contract functions `transfer`, `transferFrom`, and `addToBalances`, I have identified several issues. Below is my detailed analysis:\n\n### 1.... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - [ ] Review all arithmetic operations in SMTToken (...",
+          "Location": "Task 5: [ ] Review all arithmetic operations in SMTToken (transfer, transferFrom, addToBalances)",
+          "Severity": "High"
+        },
+        {
+          "Description": "After a thorough analysis of the provided smart contract code focusing on **SafeMath usage in PreICO (calNewTokens, supply calculations)**, I have identified several critical issues. Here is my detail... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - [ ] Verify SafeMath usage in PreICO (calNewTokens,...",
+          "Location": "Task 6: [ ] Verify SafeMath usage in PreICO (calNewTokens, supply calculations)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided Solidity smart contract code, here are my detailed findings regarding boundary condition testing:\n\n## 1. Issue Analysis\n\n**Yes, multiple boundary condition issues ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - [ ] Test boundary conditions for:...",
+          "Location": "Task 7: [ ] Test boundary conditions for:",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on the provided code and the specific audit task of \"Token balances (max uint256 values)\", I have conducted a thorough security analysis.\n\n## 1. Issue Analysis\n\n**Yes, there is a critical issue ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Token balances (max uint256 values)...",
+          "Location": "Task 8: Token balances (max uint256 values)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code for the audit task \"Supply caps (tokenCreationMaxPrivateSale, tokenCreationMaxPreICO)\" with medium priority, here are my detailed findings:\n\n##... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Supply caps (tokenCreationMaxPrivateSale, tokenCre...",
+          "Location": "Task 9: Supply caps (tokenCreationMaxPrivateSale, tokenCreationMaxPreICO)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, here is the detailed audit assessment for the specific task:\n\n## Audit Task: Discount calculations with large inputs\n**Priority: medium**\n\n###... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Discount calculations with large inputs...",
+          "Location": "Task 10: Discount calculations with large inputs",
+          "Severity": "High"
+        },
+        {
+          "Description": "### **Audit Report: Privileged Function Mapping for SMTToken Contract**\n\n---\n\n#### **1. Issue Analysis**  \n**Yes**, the contract contains privileged functions controlled by both the `onlyOwner` modifi... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - [ ] Map all privileged functions (onlyOwner, owner...",
+          "Location": "Task 11: [ ] Map all privileged functions (onlyOwner, ownership mapping)",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Detailed Audit Findings: `addToOwnership` Upper Limit Verification\n\n### 1. Issue Analysis\n**Issue Identified: Yes**  \nThe `addToOwnership` function in the `SMTToken` contract has **no upper limit**... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - [ ] Verify `addToOwnership` has no upper limit on ...",
+          "Location": "Task 12: [ ] Verify `addToOwnership` has no upper limit on privileged addresses",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task of identifying all external calls (ETH transfers via `.send()`) in the PreICO fallback and `tokenAssign... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - [ ] Identify all external calls (ETH transfers via...",
+          "Location": "Task 1: [ ] Identify all external calls (ETH transfers via `.send()`) in PreICO fallback and `tokenAssignExchange`",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "70be824b-9530-4dbd-a578-5ca15c1093b2",
+      "severity_breakdown": {
+        "High": 10,
+        "Low": 0,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "llm",
+      "confidence": 0.8,
+      "reason": "Finding 2 indicates reentrancy risk (SWC-107) due to state changes after external calls. Findings 5,6,7,8,10 suggest integer overflow/underflow vulnerabilities (SWC-101) in arithmetic operations and boundary conditions.",
+      "raw": "{\n  \"labels\": [\"SWC-101\", \"SWC-107\"],\n  \"confidence\": 0.8,\n  \"reason\": \"Finding 2 indicates reentrancy risk (SWC-107) due to state changes after external calls. Findings 5,6,7,8,10 suggest integer overflow/underflow vulnerabilities (SWC-101) in arithmetic operations and boundary conditions.\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "llm",
+    "is_other": 0,
+    "pred_reason": "The contract uses unsafe external calls with limited gas (Finding 3) and lacks proper state updates before these calls (Finding 2), matching SWC-107. Additionally, arithmetic operations in SMTToken functions (Finding 5) and SafeMath issues (Finding 6) indicate integer overflow/underflow risks aligning with SWC-101. Evidence: ETH transfers use .send() with 2300 gas limit risking failures (Finding 3); State changes occur after external calls in payment functions (Finding 2); Unsafe arithmetic in transfer/transferFrom without overflow checks (Finding 5)",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 0.8, \"labels\": [\"SWC-101\", \"SWC-107\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-101\\\", \\\"SWC-107\\\"],\\n  \\\"confidence\\\": 0.8,\\n  \\\"reason\\\": \\\"Finding 2 indicates reentrancy risk (SWC-107) due to state changes after external calls. Findings 5,6,7,8,10 suggest integer overflow/underflow vulnerabilities (SWC-101) in arithmetic operations and boundary conditions.\\\"\\n}\", \"reason\": \"Finding 2 indicates reentrancy risk (SWC-107) due to state changes after external calls. Findings 5,6,7,8,10 suggest integer overflow/underflow vulnerabilities (SWC-101) in arithmetic operations and boundary conditions.\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"ETH transfers use .send() with 2300 gas limit risking failures (Finding 3)\", \"State changes occur after external calls in payment functions (Finding 2)\", \"Unsafe arithmetic in transfer/transferFrom without overflow checks (Finding 5)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract uses unsafe external calls with limited gas (Finding 3) and lacks proper state updates before these calls (Finding 2), matching SWC-107. Additionally, arithmetic operations in SMTToken functions (Finding 5) and SafeMath issues (Finding 6) indicate integer overflow/underflow risks aligning with SWC-101.\\\",\\n  \\\"evidence\\\": [\\n    \\\"ETH transfers use .send() with 2300 gas limit risking failures (Finding 3)\\\",\\n    \\\"State changes occur after external calls in payment functions (Finding 2)\\\",\\n    \\\"Unsafe arithmetic in transfer/transferFrom without overflow checks (Finding 5)\\\"\\n  ]\\n}\", \"reason\": \"The contract uses unsafe external calls with limited gas (Finding 3) and lacks proper state updates before these calls (Finding 2), matching SWC-107. Additionally, arithmetic operations in SMTToken functions (Finding 5) and SafeMath issues (Finding 6) indicate integer overflow/underflow risks aligning with SWC-101.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract uses unsafe external calls with limited gas (Finding 3) and lacks proper state updates before these calls (Finding 2), matching SWC-107. Additionally, arithmetic operations in SMTToken functions (Finding 5) and SafeMath issues (Finding 6) indicate integer overflow/underflow risks aligning with SWC-101.",
+      "evidence": [
+        "ETH transfers use .send() with 2300 gas limit risking failures (Finding 3)",
+        "State changes occur after external calls in payment functions (Finding 2)",
+        "Unsafe arithmetic in transfer/transferFrom without overflow checks (Finding 5)"
+      ],
+      "raw": "{\n  \"reason\": \"The contract uses unsafe external calls with limited gas (Finding 3) and lacks proper state updates before these calls (Finding 2), matching SWC-107. Additionally, arithmetic operations in SMTToken functions (Finding 5) and SafeMath issues (Finding 6) indicate integer overflow/underflow risks aligning with SWC-101.\",\n  \"evidence\": [\n    \"ETH transfers use .send() with 2300 gas limit risking failures (Finding 3)\",\n    \"State changes occur after external calls in payment functions (Finding 2)\",\n    \"Unsafe arithmetic in transfer/transferFrom without overflow checks (Finding 5)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "70be824b-9530-4dbd-a578-5ca15c1093b2",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

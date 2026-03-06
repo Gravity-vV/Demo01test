@@ -1,0 +1,326 @@
+{
+  "address": "0x290852f7c10c5c67efaa9c1de41bdc142b2311d7",
+  "session_id": "ed892123-912c-458b-ae26-c0f06ad0f601",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract contains critical arithmetic underflow vulnerabilities in tick cumulative calculations (SWC-101) and potential reentrancy risks despite external calls being to view functions, indicating reliance on external state (SWC-107). These issues directly impact price oracle integrity and contract security. Evidence: Underflow confirmed in (tickCumulatives[1] - tickCumulatives[0]) when tickCumulatives[1] < tickCumulatives[0]; External calls to poolAddress (slot0, observe) introduce reentrancy assumptions despite being view functions; No state writes before/after calls but dependency on external pool state creates indirect reentrancy surface",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Underflow confirmed in (tickCumulatives[1] - tickCumulatives[0]) when tickCumulatives[1] < tickCumulatives[0]\", \"External calls to poolAddress (slot0, observe) introduce reentrancy assumptions despite being view functions\", \"No state writes before/after calls but dependency on external pool state creates indirect reentrancy surface\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains critical arithmetic underflow vulnerabilities in tick cumulative calculations (SWC-101) and potential reentrancy risks despite external calls being to view functions, indicating reliance on external state (SWC-107). These issues directly impact price oracle integrity and contract security.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Underflow confirmed in (tickCumulatives[1] - tickCumulatives[0]) when tickCumulatives[1] < tickCumulatives[0]\\\",\\n    \\\"External calls to poolAddress (slot0, observe) introduce reentrancy assumptions despite being view functions\\\",\\n    \\\"No state writes before/after calls but dependency on external pool state creates indirect reentrancy surface\\\"\\n  ]\\n}\", \"reason\": \"The contract contains critical arithmetic underflow vulnerabilities in tick cumulative calculations (SWC-101) and potential reentrancy risks despite external calls being to view functions, indicating reliance on external state (SWC-107). These issues directly impact price oracle integrity and contract security.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1226.423991203308,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x290852f7c10c5c67efaa9c1de41bdc142b2311d7",
+    "model": "deepseek_school",
+    "session_id": "ed892123-912c-458b-ae26-c0f06ad0f601",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+        "Severity": "Medium",
+        "Description": "Based on the provided code and the specific audit task of **Reentrancy Analysis**, I have conducted a thorough review of the `TWAPPriceGetter` contract and its dependencies. Below is my detailed asses... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 1: **Reentrancy Analysis**"
+      },
+      {
+        "Issue": "High Priority Security Issue - Verify that all external calls (to `poolAddress`) ...",
+        "Severity": "Medium",
+        "Description": "**Audit Report: External Call Reentrancy Verification** **1. Issue Analysis** No issues found related to state-changing reentrancy from external calls to `poolAddress`. The contract correctly interac... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 2: Verify that all external calls (to `poolAddress`) are to view functions (`slot0`, `observe`) that cannot initiate state-changing reentrancy."
+      },
+      {
+        "Issue": "High Priority Security Issue - Confirm no state is written before or after these ...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, I will perform the specific audit task related to reentrancy risk by confirming no state is written before or after external calls. ## 1. Iss... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 3: Confirm no state is written before or after these calls, eliminating reentrancy risk."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Integer Overflow/Underflow Checks**...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the provided smart contract code focusing specifically on **Integer Overflow/Underflow Checks**, here are my detailed findings: ## 1. Issue Analysis **Yes, there is a cr... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: **Integer Overflow/Underflow Checks**"
+      },
+      {
+        "Issue": "High Priority Security Issue - Examine `(tickCumulatives[1] - tickCumulatives[0])...",
+        "Severity": "High",
+        "Description": "### **Audit Findings: Underflow Vulnerability in `tickCumulatives` Calculation** #### **1. Issue Analysis** **Yes, there is a critical issue** related to the audit task. The expression `(tickCumulati... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: Examine `(tickCumulatives[1] - tickCumulatives[0])` for potential underflow (if `tickCumulatives[1] < tickCumulatives[0]`)."
+      },
+      {
+        "Issue": "High Priority Security Issue - Validate that `FullMath.mulDiv` operations (squari...",
+        "Severity": "Medium",
+        "Description": "## Security Audit Findings: FullMath.mulDiv Overflow Validation for sqrtPriceX96 Squaring ### 1. Issue Analysis **No overflow vulnerability found.** The `FullMath.mulDiv` operations when squaring `sq... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 7: Validate that `FullMath.mulDiv` operations (squaring `sqrtPriceX96`) cannot overflow given Q96 constraints."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Access Control Review**...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, I have completed the **Access Control Review** audit task. Here is my detailed assessment: ## 1. Issue Analysis **No access control vulnerab... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 8: **Access Control Review**"
+      },
+      {
+        "Issue": "High Priority Security Issue - Ensure no administrative functions exist that migh...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task regarding administrative functions and access control. ## 1. Issue Analysis **No issues found related... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 10: Ensure no administrative functions exist that might require access control."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Check `(tickCumulatives[1] - tickCumulatives[0]) /...",
+        "Severity": "Low",
+        "Description": "## Audit Findings: Division-by-Zero and Truncation Analysis in TWAP Calculation ### 1. Issue Analysis **Issue Identified**: Yes, there is a potential issue with truncation effects in the TWAP calcul... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential low impact on contract security and functionality.",
+        "Location": "Task 6: Check `(tickCumulatives[1] - tickCumulatives[0]) / twapInterval` for division-by-zero (though `twapInterval != 0` in this branch) and truncation effects."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Confirm the function is `public view` with no modi...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task regarding the permissionless nature of the `getPrice` function. ## 1. Issue Analysis **No issue found... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 9: Confirm the function is `public view` with no modifiers, intended to be permissionless."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Front-running Vulnerability Assessment**...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, here is my detailed security assessment for the front-running vulnerability audit task: ## 1. Issue Analysis **No front-running vulnerabilit... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 11: **Front-running Vulnerability Assessment**"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Determine if the function's output (price) could b...",
+        "Severity": "High",
+        "Description": "Based on the provided code and the specific audit task, here is my detailed security assessment: ## 1. Issue Analysis **Yes, there is a potential issue related to sandwich attack manipulation of the... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: Determine if the function's output (price) could be manipulated by sandwich attacks; since it's a view function, it cannot be front-run directly, but the underlying pool data might be manipulable."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T07:38:24.388968",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "ed892123-912c-458b-ae26-c0f06ad0f601",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.0",
+            "0.7.4",
+            "0.8.0",
+            "0.4.0"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.7.6/solc-0.7.6 --version' running '/Users/hh/.solc-select/artifacts/solc-0.7.6/solc-0.7.6 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation war",
+          "status": "failed"
+        },
+        "total_execution_time": 1226.423991203308,
+        "total_tasks": 12
+      },
+      "execution_time": 1226.423991203308,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "Based on the provided code and the specific audit task of **Reentrancy Analysis**, I have conducted a thorough review of the `TWAPPriceGetter` contract and its dependencies. Below is my detailed asses... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+          "Location": "Task 1: **Reentrancy Analysis**",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "**Audit Report: External Call Reentrancy Verification**\n\n**1. Issue Analysis**\nNo issues found related to state-changing reentrancy from external calls to `poolAddress`. The contract correctly interac... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Verify that all external calls (to `poolAddress`) ...",
+          "Location": "Task 2: Verify that all external calls (to `poolAddress`) are to view functions (`slot0`, `observe`) that cannot initiate state-changing reentrancy.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I will perform the specific audit task related to reentrancy risk by confirming no state is written before or after external calls.\n\n## 1. Iss... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Confirm no state is written before or after these ...",
+          "Location": "Task 3: Confirm no state is written before or after these calls, eliminating reentrancy risk.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "After a thorough analysis of the provided smart contract code focusing specifically on **Integer Overflow/Underflow Checks**, here are my detailed findings:\n\n## 1. Issue Analysis\n\n**Yes, there is a cr... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Integer Overflow/Underflow Checks**...",
+          "Location": "Task 4: **Integer Overflow/Underflow Checks**",
+          "Severity": "High"
+        },
+        {
+          "Description": "### **Audit Findings: Underflow Vulnerability in `tickCumulatives` Calculation**\n\n#### **1. Issue Analysis**\n**Yes, there is a critical issue** related to the audit task. The expression `(tickCumulati... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Examine `(tickCumulatives[1] - tickCumulatives[0])...",
+          "Location": "Task 5: Examine `(tickCumulatives[1] - tickCumulatives[0])` for potential underflow (if `tickCumulatives[1] < tickCumulatives[0]`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Security Audit Findings: FullMath.mulDiv Overflow Validation for sqrtPriceX96 Squaring\n\n### 1. Issue Analysis\n**No overflow vulnerability found.** The `FullMath.mulDiv` operations when squaring `sq... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Validate that `FullMath.mulDiv` operations (squari...",
+          "Location": "Task 7: Validate that `FullMath.mulDiv` operations (squaring `sqrtPriceX96`) cannot overflow given Q96 constraints.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have completed the **Access Control Review** audit task. Here is my detailed assessment:\n\n## 1. Issue Analysis\n\n**No access control vulnerab... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Access Control Review**...",
+          "Location": "Task 8: **Access Control Review**",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task regarding administrative functions and access control.\n\n## 1. Issue Analysis\n\n**No issues found related... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Ensure no administrative functions exist that migh...",
+          "Location": "Task 10: Ensure no administrative functions exist that might require access control.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings: Division-by-Zero and Truncation Analysis in TWAP Calculation\n\n### 1. Issue Analysis\n\n**Issue Identified**: Yes, there is a potential issue with truncation effects in the TWAP calcul... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential low impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Check `(tickCumulatives[1] - tickCumulatives[0]) /...",
+          "Location": "Task 6: Check `(tickCumulatives[1] - tickCumulatives[0]) / twapInterval` for division-by-zero (though `twapInterval != 0` in this branch) and truncation effects.",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task regarding the permissionless nature of the `getPrice` function.\n\n## 1. Issue Analysis\n\n**No issue found... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Confirm the function is `public view` with no modi...",
+          "Location": "Task 9: Confirm the function is `public view` with no modifiers, intended to be permissionless.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, here is my detailed security assessment for the front-running vulnerability audit task:\n\n## 1. Issue Analysis\n\n**No front-running vulnerabilit... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Front-running Vulnerability Assessment**...",
+          "Location": "Task 11: **Front-running Vulnerability Assessment**",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on the provided code and the specific audit task, here is my detailed security assessment:\n\n## 1. Issue Analysis\n\n**Yes, there is a potential issue related to sandwich attack manipulation of the... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Determine if the function's output (price) could b...",
+          "Location": "Task 12: Determine if the function's output (price) could be manipulated by sandwich attacks; since it's a view function, it cannot be front-run directly, but the underlying pool data might be manipulable.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Based on the provided code and the specific audit task of **Reentrancy Analysis**, I have conducted a thorough review of the `TWAPPriceGetter` contract and its dependencies. Below is my detailed asses... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+          "Location": "Task 1: **Reentrancy Analysis**",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "ed892123-912c-458b-ae26-c0f06ad0f601",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 1,
+        "Medium": 8
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract contains critical arithmetic underflow vulnerabilities in tick cumulative calculations (SWC-101) and potential reentrancy risks despite external calls being to view functions, indicating reliance on external state (SWC-107). These issues directly impact price oracle integrity and contract security. Evidence: Underflow confirmed in (tickCumulatives[1] - tickCumulatives[0]) when tickCumulatives[1] < tickCumulatives[0]; External calls to poolAddress (slot0, observe) introduce reentrancy assumptions despite being view functions; No state writes before/after calls but dependency on external pool state creates indirect reentrancy surface",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Underflow confirmed in (tickCumulatives[1] - tickCumulatives[0]) when tickCumulatives[1] < tickCumulatives[0]\", \"External calls to poolAddress (slot0, observe) introduce reentrancy assumptions despite being view functions\", \"No state writes before/after calls but dependency on external pool state creates indirect reentrancy surface\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains critical arithmetic underflow vulnerabilities in tick cumulative calculations (SWC-101) and potential reentrancy risks despite external calls being to view functions, indicating reliance on external state (SWC-107). These issues directly impact price oracle integrity and contract security.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Underflow confirmed in (tickCumulatives[1] - tickCumulatives[0]) when tickCumulatives[1] < tickCumulatives[0]\\\",\\n    \\\"External calls to poolAddress (slot0, observe) introduce reentrancy assumptions despite being view functions\\\",\\n    \\\"No state writes before/after calls but dependency on external pool state creates indirect reentrancy surface\\\"\\n  ]\\n}\", \"reason\": \"The contract contains critical arithmetic underflow vulnerabilities in tick cumulative calculations (SWC-101) and potential reentrancy risks despite external calls being to view functions, indicating reliance on external state (SWC-107). These issues directly impact price oracle integrity and contract security.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract contains critical arithmetic underflow vulnerabilities in tick cumulative calculations (SWC-101) and potential reentrancy risks despite external calls being to view functions, indicating reliance on external state (SWC-107). These issues directly impact price oracle integrity and contract security.",
+      "evidence": [
+        "Underflow confirmed in (tickCumulatives[1] - tickCumulatives[0]) when tickCumulatives[1] < tickCumulatives[0]",
+        "External calls to poolAddress (slot0, observe) introduce reentrancy assumptions despite being view functions",
+        "No state writes before/after calls but dependency on external pool state creates indirect reentrancy surface"
+      ],
+      "raw": "{\n  \"reason\": \"The contract contains critical arithmetic underflow vulnerabilities in tick cumulative calculations (SWC-101) and potential reentrancy risks despite external calls being to view functions, indicating reliance on external state (SWC-107). These issues directly impact price oracle integrity and contract security.\",\n  \"evidence\": [\n    \"Underflow confirmed in (tickCumulatives[1] - tickCumulatives[0]) when tickCumulatives[1] < tickCumulatives[0]\",\n    \"External calls to poolAddress (slot0, observe) introduce reentrancy assumptions despite being view functions\",\n    \"No state writes before/after calls but dependency on external pool state creates indirect reentrancy surface\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "ed892123-912c-458b-ae26-c0f06ad0f601",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

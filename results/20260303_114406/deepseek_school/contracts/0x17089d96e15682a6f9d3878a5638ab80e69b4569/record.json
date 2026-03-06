@@ -1,0 +1,262 @@
+{
+  "address": "0x17089d96e15682a6f9d3878a5638ab80e69b4569",
+  "session_id": "685688f6-c048-4a5b-9321-4acec5b7edb3",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract exhibits integer overflow vulnerabilities in arithmetic operations without proper bounds checking, directly aligning with SWC-101. This is evidenced by unsafe addition in fee calculations that could corrupt token economics. Evidence: setFeeBotTransfer uses .add without upper bounds, risking overflow in _tTotal; Unchecked arithmetic in critical functions violates safe math principles; Potential supply manipulation via overflow in fee adjustment mechanisms",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"setFeeBotTransfer uses .add without upper bounds, risking overflow in _tTotal\", \"Unchecked arithmetic in critical functions violates safe math principles\", \"Potential supply manipulation via overflow in fee adjustment mechanisms\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract exhibits integer overflow vulnerabilities in arithmetic operations without proper bounds checking, directly aligning with SWC-101. This is evidenced by unsafe addition in fee calculations that could corrupt token economics.\\\",\\n  \\\"evidence\\\": [\\n    \\\"setFeeBotTransfer uses .add without upper bounds, risking overflow in _tTotal\\\",\\n    \\\"Unchecked arithmetic in critical functions violates safe math principles\\\",\\n    \\\"Potential supply manipulation via overflow in fee adjustment mechanisms\\\"\\n  ]\\n}\", \"reason\": \"The contract exhibits integer overflow vulnerabilities in arithmetic operations without proper bounds checking, directly aligning with SWC-101. This is evidenced by unsafe addition in fee calculations that could corrupt token economics.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3522,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x17089d96e15682a6f9d3878a5638ab80e69b4569/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 7,
+  "execution_time": 592.6507110595703,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x17089d96e15682a6f9d3878a5638ab80e69b4569",
+    "model": "deepseek_school",
+    "session_id": "685688f6-c048-4a5b-9321-4acec5b7edb3",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Owner Transfer Function is Private",
+        "Severity": "High",
+        "Description": "The transferOwnership function in Ownable contract is declared as private, preventing any actual ownership transfer. This appears in the smart contract code only.",
+        "Impact": "Contract ownership cannot be transferred, violating the intended functionality and potentially locking administrative privileges permanently.",
+        "Location": "Ownable.transferOwnership(address) function (line with 'private' modifier)"
+      },
+      {
+        "Issue": "Incorrect Ownership Modifier Implementation",
+        "Severity": "High",
+        "Description": "The onlyOwner modifier in Ownable contract checks against newComer instead of _owner. This appears in the smart contract code only.",
+        "Impact": "Access control is broken, allowing unauthorized addresses to call restricted functions, potentially leading to privilege escalation.",
+        "Location": "Ownable.onlyOwner modifier (condition 'newComer == _msgSender()')"
+      },
+      {
+        "Issue": "Potential Integer Overflow in setFeeBotTransfer",
+        "Severity": "Medium",
+        "Description": "The setFeeBotTransfer function uses .add without upper bound checks, which could lead to integer overflow. This appears in the smart contract code only.",
+        "Impact": "If called with large values, could cause total supply overflow, breaking token economics and potentially allowing unauthorized minting.",
+        "Location": "PETSUINU.setFeeBotTransfer(uint256) function (_tTotal.add(amount) operation)"
+      },
+      {
+        "Issue": "Shadowed Local Variables",
+        "Severity": "Low",
+        "Description": "Local variables 'owner' in allowance and _approve functions shadow the owner() function from Ownable. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Reduces code clarity and may lead to confusion, though no direct security impact.",
+        "Location": "PETSUINU.allowance() and _approve() functions (parameter naming), confirmed by static analysis shadowing-local findings"
+      },
+      {
+        "Issue": "Missing Events for Critical Parameters",
+        "Severity": "Low",
+        "Description": "Functions setMaxBotFee and setMinBotFee change critical parameters without emitting events. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Reduces transparency and makes off-chain tracking of parameter changes difficult.",
+        "Location": "PETSUINU.setMaxBotFee() and setMinBotFee() functions, confirmed by static analysis events-maths findings"
+      },
+      {
+        "Issue": "Inconsistent Transfer Amount Restriction Logic",
+        "Severity": "Medium",
+        "Description": "The transfer restriction in _transfer function uses a hardcoded value (100) without context of decimals, potentially being too restrictive. This appears in the smart contract code only.",
+        "Impact": "May block legitimate transfers if sender balance is within bot fee range, causing functional issues.",
+        "Location": "PETSUINU._transfer() function (require(amount < 100, ...))"
+      },
+      {
+        "Issue": "Unused State Variables and Functions",
+        "Severity": "Low",
+        "Description": "The contract contains unused variables (newComer in Ownable) and inherited functions (e.g., from Address library) that are never utilized. This appears in the smart contract code only.",
+        "Impact": "Increases contract size and gas costs without providing functionality, reducing code efficiency.",
+        "Location": "Ownable.newComer variable and various inherited library functions"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T14:57:32.430711",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "685688f6-c048-4a5b-9321-4acec5b7edb3",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-tmamxm0s/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.12"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 592.6507110595703,
+        "total_tasks": 0
+      },
+      "execution_time": 592.6507110595703,
+      "finding_number": 7,
+      "findings": [
+        {
+          "Description": "The transferOwnership function in Ownable contract is declared as private, preventing any actual ownership transfer. This appears in the smart contract code only.",
+          "Impact": "Contract ownership cannot be transferred, violating the intended functionality and potentially locking administrative privileges permanently.",
+          "Issue": "Owner Transfer Function is Private",
+          "Location": "Ownable.transferOwnership(address) function (line with 'private' modifier)",
+          "Severity": "High"
+        },
+        {
+          "Description": "The onlyOwner modifier in Ownable contract checks against newComer instead of _owner. This appears in the smart contract code only.",
+          "Impact": "Access control is broken, allowing unauthorized addresses to call restricted functions, potentially leading to privilege escalation.",
+          "Issue": "Incorrect Ownership Modifier Implementation",
+          "Location": "Ownable.onlyOwner modifier (condition 'newComer == _msgSender()')",
+          "Severity": "High"
+        },
+        {
+          "Description": "The setFeeBotTransfer function uses .add without upper bound checks, which could lead to integer overflow. This appears in the smart contract code only.",
+          "Impact": "If called with large values, could cause total supply overflow, breaking token economics and potentially allowing unauthorized minting.",
+          "Issue": "Potential Integer Overflow in setFeeBotTransfer",
+          "Location": "PETSUINU.setFeeBotTransfer(uint256) function (_tTotal.add(amount) operation)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Local variables 'owner' in allowance and _approve functions shadow the owner() function from Ownable. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Reduces code clarity and may lead to confusion, though no direct security impact.",
+          "Issue": "Shadowed Local Variables",
+          "Location": "PETSUINU.allowance() and _approve() functions (parameter naming), confirmed by static analysis shadowing-local findings",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Functions setMaxBotFee and setMinBotFee change critical parameters without emitting events. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Reduces transparency and makes off-chain tracking of parameter changes difficult.",
+          "Issue": "Missing Events for Critical Parameters",
+          "Location": "PETSUINU.setMaxBotFee() and setMinBotFee() functions, confirmed by static analysis events-maths findings",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The transfer restriction in _transfer function uses a hardcoded value (100) without context of decimals, potentially being too restrictive. This appears in the smart contract code only.",
+          "Impact": "May block legitimate transfers if sender balance is within bot fee range, causing functional issues.",
+          "Issue": "Inconsistent Transfer Amount Restriction Logic",
+          "Location": "PETSUINU._transfer() function (require(amount < 100, ...))",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract contains unused variables (newComer in Ownable) and inherited functions (e.g., from Address library) that are never utilized. This appears in the smart contract code only.",
+          "Impact": "Increases contract size and gas costs without providing functionality, reducing code efficiency.",
+          "Issue": "Unused State Variables and Functions",
+          "Location": "Ownable.newComer variable and various inherited library functions",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The transferOwnership function in Ownable contract is declared as private, preventing any actual ownership transfer. This appears in the smart contract code only.",
+          "Impact": "Contract ownership cannot be transferred, violating the intended functionality and potentially locking administrative privileges permanently.",
+          "Issue": "Owner Transfer Function is Private",
+          "Location": "Ownable.transferOwnership(address) function (line with 'private' modifier)",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Owner Transfer Function is Private\",\n    \"Severity\": \"High\",\n    \"Description\": \"The transferOwnership function in Ownable contract is declared as private, preventing any actual ownership transfer. This appears in the smart contract code only.\",\n    \"Impact\": \"Contract ownership cannot be transferred, violating the intended functionality and potentially locking administrative privileges permanently.\",\n    \"Location\": \"Ownable.transferOwnership(address) function (line with 'private' modifier)\"\n  },\n  {\n    \"Issue\": \"Incorrect Ownership Modifier Implementation\",\n    \"Severity\": \"High\",\n    \"Description\": \"The onlyOwner modifier in Ownable contract checks against newComer instead of _owner. This appears in the smart contract code only.\",\n    \"Impact\": \"Access control is broken, allowing unauthorized addresses to call restricted functions, potentially leading to privilege escalation.\",\n    \"Location\": \"Ownable.onlyOwner modifier (condition 'newComer == _msgSender()')\"\n  },\n  {\n    \"Issue\": \"Potential Integer Overflow in setFeeBotTransfer\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The setFeeBotTransfer function uses .add without upper bound checks, which could lead to integer overflow. This appears in the smart contract code only.\",\n    \"Impact\": \"If called with large values, could cause total supply overflow, breaking token economics and potentially allowing unauthorized minting.\",\n    \"Location\": \"PETSUINU.setFeeBotTransfer(uint256) function (_tTotal.add(amount) operation)\"\n  },\n  {\n    \"Issue\": \"Shadowed Local Variables\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Local variables 'owner' in allowance and _approve functions shadow the owner() function from Ownable. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Reduces code clarity and may lead to confusion, though no direct security impact.\",\n    \"Location\": \"PETSUINU.allowance() and _approve() functions (parameter naming), confirmed by static analysis shadowing-local findings\"\n  },\n  {\n    \"Issue\": \"Missing Events for Critical Parameters\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Functions setMaxBotFee and setMinBotFee change critical parameters without emitting events. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Reduces transparency and makes off-chain tracking of parameter changes difficult.\",\n    \"Location\": \"PETSUINU.setMaxBotFee() and setMinBotFee() functions, confirmed by static analysis events-maths findings\"\n  },\n  {\n    \"Issue\": \"Inconsistent Transfer Amount Restriction Logic\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The transfer restriction in _transfer function uses a hardcoded value (100) without context of decimals, potentially being too restrictive. This appears in the smart contract code only.\",\n    \"Impact\": \"May block legitimate transfers if sender balance is within bot fee range, causing functional issues.\",\n    \"Location\": \"PETSUINU._transfer() function (require(amount < 100, ...))\"\n  },\n  {\n    \"Issue\": \"Unused State Variables and Functions\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The contract contains unused variables (newComer in Ownable) and inherited functions (e.g., from Address library) that are never utilized. This appears in the smart contract code only.\",\n    \"Impact\": \"Increases contract size and gas costs without providing functionality, reducing code efficiency.\",\n    \"Location\": \"Ownable.newComer variable and various inherited library functions\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "685688f6-c048-4a5b-9321-4acec5b7edb3",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 3,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract exhibits integer overflow vulnerabilities in arithmetic operations without proper bounds checking, directly aligning with SWC-101. This is evidenced by unsafe addition in fee calculations that could corrupt token economics. Evidence: setFeeBotTransfer uses .add without upper bounds, risking overflow in _tTotal; Unchecked arithmetic in critical functions violates safe math principles; Potential supply manipulation via overflow in fee adjustment mechanisms",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"setFeeBotTransfer uses .add without upper bounds, risking overflow in _tTotal\", \"Unchecked arithmetic in critical functions violates safe math principles\", \"Potential supply manipulation via overflow in fee adjustment mechanisms\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract exhibits integer overflow vulnerabilities in arithmetic operations without proper bounds checking, directly aligning with SWC-101. This is evidenced by unsafe addition in fee calculations that could corrupt token economics.\\\",\\n  \\\"evidence\\\": [\\n    \\\"setFeeBotTransfer uses .add without upper bounds, risking overflow in _tTotal\\\",\\n    \\\"Unchecked arithmetic in critical functions violates safe math principles\\\",\\n    \\\"Potential supply manipulation via overflow in fee adjustment mechanisms\\\"\\n  ]\\n}\", \"reason\": \"The contract exhibits integer overflow vulnerabilities in arithmetic operations without proper bounds checking, directly aligning with SWC-101. This is evidenced by unsafe addition in fee calculations that could corrupt token economics.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract exhibits integer overflow vulnerabilities in arithmetic operations without proper bounds checking, directly aligning with SWC-101. This is evidenced by unsafe addition in fee calculations that could corrupt token economics.",
+      "evidence": [
+        "setFeeBotTransfer uses .add without upper bounds, risking overflow in _tTotal",
+        "Unchecked arithmetic in critical functions violates safe math principles",
+        "Potential supply manipulation via overflow in fee adjustment mechanisms"
+      ],
+      "raw": "{\n  \"reason\": \"The contract exhibits integer overflow vulnerabilities in arithmetic operations without proper bounds checking, directly aligning with SWC-101. This is evidenced by unsafe addition in fee calculations that could corrupt token economics.\",\n  \"evidence\": [\n    \"setFeeBotTransfer uses .add without upper bounds, risking overflow in _tTotal\",\n    \"Unchecked arithmetic in critical functions violates safe math principles\",\n    \"Potential supply manipulation via overflow in fee adjustment mechanisms\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "685688f6-c048-4a5b-9321-4acec5b7edb3",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 7,
+        "full_report_chars": 3522,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

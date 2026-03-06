@@ -1,0 +1,279 @@
+{
+  "address": "0x1e8b362f354ca409c936f37d0cbae16b4f15bdf0",
+  "session_id": "9a1a2421-1c57-447d-84b9-9aed54dea446",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 is applicable due to multiple reentrancy vulnerabilities in withdraw and fallback functions where external calls precede state changes. SWC-107 fits as inconsistent SafeMath usage and unprotected division create arithmetic risks. Evidence: withdraw function violates CEI pattern (lines ~198-204); SafeMath div lacks zero check (lines ~45-48); Direct assignments bypass overflow checks in multiple locations",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"withdraw function violates CEI pattern (lines ~198-204)\", \"SafeMath div lacks zero check (lines ~45-48)\", \"Direct assignments bypass overflow checks in multiple locations\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to multiple reentrancy vulnerabilities in withdraw and fallback functions where external calls precede state changes. SWC-107 fits as inconsistent SafeMath usage and unprotected division create arithmetic risks.\\\",\\n  \\\"evidence\\\": [\\n    \\\"withdraw function violates CEI pattern (lines ~198-204)\\\",\\n    \\\"SafeMath div lacks zero check (lines ~45-48)\\\",\\n    \\\"Direct assignments bypass overflow checks in multiple locations\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to multiple reentrancy vulnerabilities in withdraw and fallback functions where external calls precede state changes. SWC-107 fits as inconsistent SafeMath usage and unprotected division create arithmetic risks.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3393,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x1e8b362f354ca409c936f37d0cbae16b4f15bdf0/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 9,
+  "execution_time": 1493.205127954483,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x1e8b362f354ca409c936f37d0cbae16b4f15bdf0",
+    "model": "deepseek_school",
+    "session_id": "9a1a2421-1c57-447d-84b9-9aed54dea446",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy in withdraw function",
+        "Severity": "High",
+        "Description": "The withdraw function makes external calls before state changes, violating checks-effects-interactions pattern. This appears in the smart contract code only.",
+        "Impact": "Potential complete drainage of contract funds through reentrancy attacks",
+        "Location": "withdraw() function, lines ~198-204"
+      },
+      {
+        "Issue": "Reentrancy in fallback function",
+        "Severity": "Medium",
+        "Description": "Fallback function performs external transfer before state updates, creating reentrancy vector. This appears in the smart contract code only.",
+        "Impact": "Could disrupt token sale mechanics and allow state manipulation if gas costs change",
+        "Location": "Fallback function, lines ~80-115"
+      },
+      {
+        "Issue": "Unprotected division in SafeMath",
+        "Severity": "Medium",
+        "Description": "SafeMath div function lacks zero-divisor check, causing revert on division by zero. This appears in the smart contract code only.",
+        "Impact": "Denial-of-service conditions and unexpected contract behavior",
+        "Location": "SafeMath library, div function, lines ~45-48"
+      },
+      {
+        "Issue": "Missing access control in setRaisedAmount",
+        "Severity": "Medium",
+        "Description": "setRaisedAmount function lacks owner restriction, allowing any user to modify fundraising state. This appears in the smart contract code only.",
+        "Impact": "Token sale disruption and fundraising metric manipulation",
+        "Location": "setRaisedAmount() function, missing require(msg.sender == owner)"
+      },
+      {
+        "Issue": "Incorrect access control in transferFrom",
+        "Severity": "High",
+        "Description": "transferFrom function checks frozen timestamp of msg.sender instead of _from, allowing bypass of frozen account restrictions. This appears in the smart contract code only.",
+        "Impact": "Unauthorized token transfers from frozen accounts",
+        "Location": "transferFrom() function, incorrect frozenTimestamp check"
+      },
+      {
+        "Issue": "Missing frozen account checks in approve",
+        "Severity": "Medium",
+        "Description": "approve function lacks frozen account validation, allowing frozen accounts to approve spenders. This appears in the smart contract code only.",
+        "Impact": "Frozen accounts can indirectly transfer tokens through approved addresses",
+        "Location": "approve() function, missing frozen account checks"
+      },
+      {
+        "Issue": "Inconsistent SafeMath usage",
+        "Severity": "High",
+        "Description": "Contract inconsistently applies SafeMath protection, with direct assignments bypassing overflow checks. This appears in the smart contract code only.",
+        "Impact": "Potential token supply manipulation and arithmetic overflow vulnerabilities",
+        "Location": "Multiple locations including totalSupply assignment and approve function"
+      },
+      {
+        "Issue": "Excessive owner privileges",
+        "Severity": "Medium",
+        "Description": "Owner has unlimited minting capability and uncontrolled fundraising parameter modification. This appears in the smart contract code only.",
+        "Impact": "Token inflation, fundraising manipulation, and centralization risks",
+        "Location": "generateToken() and parameter setter functions"
+      },
+      {
+        "Issue": "Front-running vulnerability in token sale",
+        "Severity": "Medium",
+        "Description": "Fixed-rate token sale mechanism is susceptible to front-running attacks. This appears in the smart contract code only.",
+        "Impact": "Unfair token distribution and potential market manipulation",
+        "Location": "Fallback function token sale mechanism"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T06:16:17.013659",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "9a1a2421-1c57-447d-84b9-9aed54dea446",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.24"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '<tmp> --version' running '<tmp> --version' running",
+          "status": "failed"
+        },
+        "total_execution_time": 1493.205127954483,
+        "total_tasks": 12
+      },
+      "execution_time": 1493.205127954483,
+      "finding_number": 9,
+      "findings": [
+        {
+          "Description": "The withdraw function makes external calls before state changes, violating checks-effects-interactions pattern. This appears in the smart contract code only.",
+          "Impact": "Potential complete drainage of contract funds through reentrancy attacks",
+          "Issue": "Reentrancy in withdraw function",
+          "Location": "withdraw() function, lines ~198-204",
+          "Severity": "High"
+        },
+        {
+          "Description": "Fallback function performs external transfer before state updates, creating reentrancy vector. This appears in the smart contract code only.",
+          "Impact": "Could disrupt token sale mechanics and allow state manipulation if gas costs change",
+          "Issue": "Reentrancy in fallback function",
+          "Location": "Fallback function, lines ~80-115",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "SafeMath div function lacks zero-divisor check, causing revert on division by zero. This appears in the smart contract code only.",
+          "Impact": "Denial-of-service conditions and unexpected contract behavior",
+          "Issue": "Unprotected division in SafeMath",
+          "Location": "SafeMath library, div function, lines ~45-48",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "setRaisedAmount function lacks owner restriction, allowing any user to modify fundraising state. This appears in the smart contract code only.",
+          "Impact": "Token sale disruption and fundraising metric manipulation",
+          "Issue": "Missing access control in setRaisedAmount",
+          "Location": "setRaisedAmount() function, missing require(msg.sender == owner)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "transferFrom function checks frozen timestamp of msg.sender instead of _from, allowing bypass of frozen account restrictions. This appears in the smart contract code only.",
+          "Impact": "Unauthorized token transfers from frozen accounts",
+          "Issue": "Incorrect access control in transferFrom",
+          "Location": "transferFrom() function, incorrect frozenTimestamp check",
+          "Severity": "High"
+        },
+        {
+          "Description": "approve function lacks frozen account validation, allowing frozen accounts to approve spenders. This appears in the smart contract code only.",
+          "Impact": "Frozen accounts can indirectly transfer tokens through approved addresses",
+          "Issue": "Missing frozen account checks in approve",
+          "Location": "approve() function, missing frozen account checks",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Contract inconsistently applies SafeMath protection, with direct assignments bypassing overflow checks. This appears in the smart contract code only.",
+          "Impact": "Potential token supply manipulation and arithmetic overflow vulnerabilities",
+          "Issue": "Inconsistent SafeMath usage",
+          "Location": "Multiple locations including totalSupply assignment and approve function",
+          "Severity": "High"
+        },
+        {
+          "Description": "Owner has unlimited minting capability and uncontrolled fundraising parameter modification. This appears in the smart contract code only.",
+          "Impact": "Token inflation, fundraising manipulation, and centralization risks",
+          "Issue": "Excessive owner privileges",
+          "Location": "generateToken() and parameter setter functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Fixed-rate token sale mechanism is susceptible to front-running attacks. This appears in the smart contract code only.",
+          "Impact": "Unfair token distribution and potential market manipulation",
+          "Issue": "Front-running vulnerability in token sale",
+          "Location": "Fallback function token sale mechanism",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The withdraw function makes external calls before state changes, violating checks-effects-interactions pattern. This appears in the smart contract code only.",
+          "Impact": "Potential complete drainage of contract funds through reentrancy attacks",
+          "Issue": "Reentrancy in withdraw function",
+          "Location": "withdraw() function, lines ~198-204",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[{\"Issue\": \"Reentrancy in withdraw function\", \"Severity\": \"High\", \"Description\": \"The withdraw function makes external calls before state changes, violating checks-effects-interactions pattern. This appears in the smart contract code only.\", \"Impact\": \"Potential complete drainage of contract funds through reentrancy attacks\", \"Location\": \"withdraw() function, lines ~198-204\"}, {\"Issue\": \"Reentrancy in fallback function\", \"Severity\": \"Medium\", \"Description\": \"Fallback function performs external transfer before state updates, creating reentrancy vector. This appears in the smart contract code only.\", \"Impact\": \"Could disrupt token sale mechanics and allow state manipulation if gas costs change\", \"Location\": \"Fallback function, lines ~80-115\"}, {\"Issue\": \"Unprotected division in SafeMath\", \"Severity\": \"Medium\", \"Description\": \"SafeMath div function lacks zero-divisor check, causing revert on division by zero. This appears in the smart contract code only.\", \"Impact\": \"Denial-of-service conditions and unexpected contract behavior\", \"Location\": \"SafeMath library, div function, lines ~45-48\"}, {\"Issue\": \"Missing access control in setRaisedAmount\", \"Severity\": \"Medium\", \"Description\": \"setRaisedAmount function lacks owner restriction, allowing any user to modify fundraising state. This appears in the smart contract code only.\", \"Impact\": \"Token sale disruption and fundraising metric manipulation\", \"Location\": \"setRaisedAmount() function, missing require(msg.sender == owner)\"}, {\"Issue\": \"Incorrect access control in transferFrom\", \"Severity\": \"High\", \"Description\": \"transferFrom function checks frozen timestamp of msg.sender instead of _from, allowing bypass of frozen account restrictions. This appears in the smart contract code only.\", \"Impact\": \"Unauthorized token transfers from frozen accounts\", \"Location\": \"transferFrom() function, incorrect frozenTimestamp check\"}, {\"Issue\": \"Missing frozen account checks in approve\", \"Severity\": \"Medium\", \"Description\": \"approve function lacks frozen account validation, allowing frozen accounts to approve spenders. This appears in the smart contract code only.\", \"Impact\": \"Frozen accounts can indirectly transfer tokens through approved addresses\", \"Location\": \"approve() function, missing frozen account checks\"}, {\"Issue\": \"Inconsistent SafeMath usage\", \"Severity\": \"High\", \"Description\": \"Contract inconsistently applies SafeMath protection, with direct assignments bypassing overflow checks. This appears in the smart contract code only.\", \"Impact\": \"Potential token supply manipulation and arithmetic overflow vulnerabilities\", \"Location\": \"Multiple locations including totalSupply assignment and approve function\"}, {\"Issue\": \"Excessive owner privileges\", \"Severity\": \"Medium\", \"Description\": \"Owner has unlimited minting capability and uncontrolled fundraising parameter modification. This appears in the smart contract code only.\", \"Impact\": \"Token inflation, fundraising manipulation, and centralization risks\", \"Location\": \"generateToken() and parameter setter functions\"}, {\"Issue\": \"Front-running vulnerability in token sale\", \"Severity\": \"Medium\", \"Description\": \"Fixed-rate token sale mechanism is susceptible to front-running attacks. This appears in the smart contract code only.\", \"Impact\": \"Unfair token distribution and potential market manipulation\", \"Location\": \"Fallback function token sale mechanism\"}]",
+      "model_used": "deepseek_school",
+      "session_id": "9a1a2421-1c57-447d-84b9-9aed54dea446",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 0,
+        "Medium": 6
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 is applicable due to multiple reentrancy vulnerabilities in withdraw and fallback functions where external calls precede state changes. SWC-107 fits as inconsistent SafeMath usage and unprotected division create arithmetic risks. Evidence: withdraw function violates CEI pattern (lines ~198-204); SafeMath div lacks zero check (lines ~45-48); Direct assignments bypass overflow checks in multiple locations",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"withdraw function violates CEI pattern (lines ~198-204)\", \"SafeMath div lacks zero check (lines ~45-48)\", \"Direct assignments bypass overflow checks in multiple locations\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to multiple reentrancy vulnerabilities in withdraw and fallback functions where external calls precede state changes. SWC-107 fits as inconsistent SafeMath usage and unprotected division create arithmetic risks.\\\",\\n  \\\"evidence\\\": [\\n    \\\"withdraw function violates CEI pattern (lines ~198-204)\\\",\\n    \\\"SafeMath div lacks zero check (lines ~45-48)\\\",\\n    \\\"Direct assignments bypass overflow checks in multiple locations\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to multiple reentrancy vulnerabilities in withdraw and fallback functions where external calls precede state changes. SWC-107 fits as inconsistent SafeMath usage and unprotected division create arithmetic risks.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 is applicable due to multiple reentrancy vulnerabilities in withdraw and fallback functions where external calls precede state changes. SWC-107 fits as inconsistent SafeMath usage and unprotected division create arithmetic risks.",
+      "evidence": [
+        "withdraw function violates CEI pattern (lines ~198-204)",
+        "SafeMath div lacks zero check (lines ~45-48)",
+        "Direct assignments bypass overflow checks in multiple locations"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 is applicable due to multiple reentrancy vulnerabilities in withdraw and fallback functions where external calls precede state changes. SWC-107 fits as inconsistent SafeMath usage and unprotected division create arithmetic risks.\",\n  \"evidence\": [\n    \"withdraw function violates CEI pattern (lines ~198-204)\",\n    \"SafeMath div lacks zero check (lines ~45-48)\",\n    \"Direct assignments bypass overflow checks in multiple locations\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "9a1a2421-1c57-447d-84b9-9aed54dea446",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 9,
+        "full_report_chars": 3393,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

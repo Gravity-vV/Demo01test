@@ -1,0 +1,259 @@
+{
+  "address": "0x01d2a52708d0d8fc4d639f09a13ae87a2aec4390",
+  "model": "deepseek",
+  "session_id": "753fc2e1-ea9e-4ffe-ab20-2394e290d40d",
+  "audit_status": "completed",
+  "error": "",
+  "findings": [
+    {
+      "Issue": "Reentrancy vulnerability in fallback function",
+      "Severity": "High",
+      "Description": "The fallback function is vulnerable to reentrancy attacks despite the ETH transfer being the last operation. This appears in both the smart contract code and static analysis results.",
+      "Impact": "An attacker could manipulate token balances and disrupt contract functionality through reentrant calls.",
+      "Location": "Unnamed fallback function in TokenERC20 contract"
+    },
+    {
+      "Issue": "Reentrancy in approveAndCall function",
+      "Severity": "High",
+      "Description": "The approveAndCall function is vulnerable to reentrancy via the receiveApproval callback. This appears in both the smart contract code and static analysis results.",
+      "Impact": "An attacker could exploit this to manipulate contract state or bypass approval checks.",
+      "Location": "approveAndCall function in TokenERC20 contract"
+    },
+    {
+      "Issue": "Unsafe arithmetic operations",
+      "Severity": "High",
+      "Description": "Several arithmetic operations lack SafeMath protection, particularly in the fallback function. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Potential overflow/underflow could lead to incorrect token calculations and supply manipulation.",
+      "Location": "Fallback function, transfer, and burn functions in TokenERC20 contract"
+    },
+    {
+      "Issue": "Violation of CEI pattern in approveAndCall",
+      "Severity": "High",
+      "Description": "The approveAndCall function violates Checks-Effects-Interactions pattern by making external calls before completing state changes. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Creates potential for reentrancy attacks and state manipulation.",
+      "Location": "approveAndCall function in TokenERC20 contract"
+    },
+    {
+      "Issue": "Unprotected contract destruction",
+      "Severity": "High",
+      "Description": "The destroycontract function lacks access controls and is public by default. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Any user could destroy the contract and potentially steal ETH.",
+      "Location": "destroycontract function in TokenERC20 contract"
+    },
+    {
+      "Issue": "Inconsistent decimal handling",
+      "Severity": "Medium",
+      "Description": "Functions handle decimal places inconsistently, with some multiplying by 10^8 and others not. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Could lead to incorrect token transfers and accounting inconsistencies.",
+      "Location": "transfer, transferFrom, and burn functions in TokenERC20 contract"
+    },
+    {
+      "Issue": "Missing visibility specifiers",
+      "Severity": "Medium",
+      "Description": "Critical functions like Airdrop and destroycontract lack explicit visibility specifiers. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Could lead to unauthorized access to sensitive functions.",
+      "Location": "Airdrop and destroycontract functions in TokenERC20 contract"
+    },
+    {
+      "Issue": "Cross-function reentrancy possibilities",
+      "Severity": "Medium",
+      "Description": "Potential reentrancy vectors exist between functions due to external calls. This appears in the static analysis results.",
+      "Impact": "Could allow manipulation of contract state through carefully crafted call sequences.",
+      "Location": "Interaction between approveAndCall and fallback function"
+    },
+    {
+      "Issue": "Unsafe fallback function multiplication",
+      "Severity": "Medium",
+      "Description": "Fallback function performs unsafe multiplication before using SafeMath. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Could lead to token minting overflow and incorrect accounting.",
+      "Location": "Fallback function in TokenERC20 contract"
+    },
+    {
+      "Issue": "Inconsistent burn event reporting",
+      "Severity": "Medium",
+      "Description": "Burn events report incorrect values due to inconsistent decimal handling. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Misleads external systems monitoring burn events with incorrect values.",
+      "Location": "burn and burnFrom functions in TokenERC20 contract"
+    },
+    {
+      "Issue": "Missing return value in Airdrop",
+      "Severity": "Low",
+      "Description": "Airdrop function lacks a return value specification. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Could cause integration issues with wallets and exchanges.",
+      "Location": "Airdrop function in TokenERC20 contract"
+    }
+  ],
+  "result_payload": {
+    "created_at": "2026-02-21T18:06:16.955361",
+    "execution_summary": {
+      "completed_tasks": 12,
+      "failed_tasks": 0,
+      "session_id": "753fc2e1-ea9e-4ffe-ab20-2394e290d40d",
+      "total_execution_time": 240.53461694717407,
+      "total_tasks": 12
+    },
+    "execution_time": 240.53461694717407,
+    "finding_number": 11,
+    "findings": [
+      {
+        "Description": "The fallback function is vulnerable to reentrancy attacks despite the ETH transfer being the last operation. This appears in both the smart contract code and static analysis results.",
+        "Impact": "An attacker could manipulate token balances and disrupt contract functionality through reentrant calls.",
+        "Issue": "Reentrancy vulnerability in fallback function",
+        "Location": "Unnamed fallback function in TokenERC20 contract",
+        "Severity": "High"
+      },
+      {
+        "Description": "The approveAndCall function is vulnerable to reentrancy via the receiveApproval callback. This appears in both the smart contract code and static analysis results.",
+        "Impact": "An attacker could exploit this to manipulate contract state or bypass approval checks.",
+        "Issue": "Reentrancy in approveAndCall function",
+        "Location": "approveAndCall function in TokenERC20 contract",
+        "Severity": "High"
+      },
+      {
+        "Description": "Several arithmetic operations lack SafeMath protection, particularly in the fallback function. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential overflow/underflow could lead to incorrect token calculations and supply manipulation.",
+        "Issue": "Unsafe arithmetic operations",
+        "Location": "Fallback function, transfer, and burn functions in TokenERC20 contract",
+        "Severity": "High"
+      },
+      {
+        "Description": "The approveAndCall function violates Checks-Effects-Interactions pattern by making external calls before completing state changes. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Creates potential for reentrancy attacks and state manipulation.",
+        "Issue": "Violation of CEI pattern in approveAndCall",
+        "Location": "approveAndCall function in TokenERC20 contract",
+        "Severity": "High"
+      },
+      {
+        "Description": "The destroycontract function lacks access controls and is public by default. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Any user could destroy the contract and potentially steal ETH.",
+        "Issue": "Unprotected contract destruction",
+        "Location": "destroycontract function in TokenERC20 contract",
+        "Severity": "High"
+      },
+      {
+        "Description": "Functions handle decimal places inconsistently, with some multiplying by 10^8 and others not. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Could lead to incorrect token transfers and accounting inconsistencies.",
+        "Issue": "Inconsistent decimal handling",
+        "Location": "transfer, transferFrom, and burn functions in TokenERC20 contract",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Critical functions like Airdrop and destroycontract lack explicit visibility specifiers. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Could lead to unauthorized access to sensitive functions.",
+        "Issue": "Missing visibility specifiers",
+        "Location": "Airdrop and destroycontract functions in TokenERC20 contract",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Potential reentrancy vectors exist between functions due to external calls. This appears in the static analysis results.",
+        "Impact": "Could allow manipulation of contract state through carefully crafted call sequences.",
+        "Issue": "Cross-function reentrancy possibilities",
+        "Location": "Interaction between approveAndCall and fallback function",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Fallback function performs unsafe multiplication before using SafeMath. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Could lead to token minting overflow and incorrect accounting.",
+        "Issue": "Unsafe fallback function multiplication",
+        "Location": "Fallback function in TokenERC20 contract",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Burn events report incorrect values due to inconsistent decimal handling. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Misleads external systems monitoring burn events with incorrect values.",
+        "Issue": "Inconsistent burn event reporting",
+        "Location": "burn and burnFrom functions in TokenERC20 contract",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Airdrop function lacks a return value specification. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Could cause integration issues with wallets and exchanges.",
+        "Issue": "Missing return value in Airdrop",
+        "Location": "Airdrop function in TokenERC20 contract",
+        "Severity": "Low"
+      }
+    ],
+    "format_validation": {
+      "findings_validated": true,
+      "required_fields": [
+        "Issue",
+        "Severity",
+        "Description",
+        "Impact",
+        "Location"
+      ],
+      "sample_finding": {
+        "Description": "The fallback function is vulnerable to reentrancy attacks despite the ETH transfer being the last operation. This appears in both the smart contract code and static analysis results.",
+        "Impact": "An attacker could manipulate token balances and disrupt contract functionality through reentrant calls.",
+        "Issue": "Reentrancy vulnerability in fallback function",
+        "Location": "Unnamed fallback function in TokenERC20 contract",
+        "Severity": "High"
+      }
+    },
+    "full_report": "```json\n[\n  {\n    \"Issue\": \"Reentrancy vulnerability in fallback function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The fallback function is vulnerable to reentrancy attacks despite the ETH transfer being the last operation. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"An attacker could manipulate token balances and disrupt contract functionality through reentrant calls.\",\n    \"Location\": \"Unnamed fallback function in TokenERC20 contract\"\n  },\n  {\n    \"Issue\": \"Reentrancy in approveAndCall function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The approveAndCall function is vulnerable to reentrancy via the receiveApproval callback. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"An attacker could exploit this to manipulate contract state or bypass approval checks.\",\n    \"Location\": \"approveAndCall function in TokenERC20 contract\"\n  },\n  {\n    \"Issue\": \"Unsafe arithmetic operations\",\n    \"Severity\": \"High\",\n    \"Description\": \"Several arithmetic operations lack SafeMath protection, particularly in the fallback function. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential overflow/underflow could lead to incorrect token calculations and supply manipulation.\",\n    \"Location\": \"Fallback function, transfer, and burn functions in TokenERC20 contract\"\n  },\n  {\n    \"Issue\": \"Violation of CEI pattern in approveAndCall\",\n    \"Severity\": \"High\",\n    \"Description\": \"The approveAndCall function violates Checks-Effects-Interactions pattern by making external calls before completing state changes. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Creates potential for reentrancy attacks and state manipulation.\",\n    \"Location\": \"approveAndCall function in TokenERC20 contract\"\n  },\n  {\n    \"Issue\": \"Unprotected contract destruction\",\n    \"Severity\": \"High\",\n    \"Description\": \"The destroycontract function lacks access controls and is public by default. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Any user could destroy the contract and potentially steal ETH.\",\n    \"Location\": \"destroycontract function in TokenERC20 contract\"\n  },\n  {\n    \"Issue\": \"Inconsistent decimal handling\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Functions handle decimal places inconsistently, with some multiplying by 10^8 and others not. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Could lead to incorrect token transfers and accounting inconsistencies.\",\n    \"Location\": \"transfer, transferFrom, and burn functions in TokenERC20 contract\"\n  },\n  {\n    \"Issue\": \"Missing visibility specifiers\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Critical functions like Airdrop and destroycontract lack explicit visibility specifiers. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Could lead to unauthorized access to sensitive functions.\",\n    \"Location\": \"Airdrop and destroycontract functions in TokenERC20 contract\"\n  },\n  {\n    \"Issue\": \"Cross-function reentrancy possibilities\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Potential reentrancy vectors exist between functions due to external calls. This appears in the static analysis results.\",\n    \"Impact\": \"Could allow manipulation of contract state through carefully crafted call sequences.\",\n    \"Location\": \"Interaction between approveAndCall and fallback function\"\n  },\n  {\n    \"Issue\": \"Unsafe fallback function multiplication\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Fallback function performs unsafe multiplication before using SafeMath. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Could lead to token minting overflow and incorrect accounting.\",\n    \"Location\": \"Fallback function in TokenERC20 contract\"\n  },\n  {\n    \"Issue\": \"Inconsistent burn event reporting\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Burn events report incorrect values due to inconsistent decimal handling. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Misleads external systems monitoring burn events with incorrect values.\",\n    \"Location\": \"burn and burnFrom functions in TokenERC20 contract\"\n  },\n  {\n    \"Issue\": \"Missing return value in Airdrop\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Airdrop function lacks a return value specification. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Could cause integration issues with wallets and exchanges.\",\n    \"Location\": \"Airdrop function in TokenERC20 contract\"\n  }\n]\n```",
+    "model_used": "deepseek",
+    "session_id": "753fc2e1-ea9e-4ffe-ab20-2394e290d40d",
+    "severity_breakdown": {
+      "High": 5,
+      "Low": 1,
+      "Medium": 5
+    }
+  },
+  "rule_result": {
+    "labels": [
+      "SWC-107",
+      "SWC-101"
+    ],
+    "source": "rule_multi",
+    "scores": {
+      "SWC-101": 8.0,
+      "SWC-105": 0.0,
+      "SWC-106": 0.0,
+      "SWC-107": 9.0,
+      "SWC-115": 0.0
+    },
+    "matched": {
+      "SWC-101": [
+        "kw:overflow",
+        "kw:underflow",
+        "re:\\boverflow\\b",
+        "re:\\bunderflow\\b"
+      ],
+      "SWC-105": [],
+      "SWC-106": [],
+      "SWC-107": [
+        "kw:reentrancy",
+        "kw:reentrant",
+        "re:\\bre-?entran",
+        "re:reentrancy"
+      ],
+      "SWC-115": []
+    },
+    "reason": "Rule hits: SWC-107(9.0), SWC-101(8.0)"
+  },
+  "llm_result": {},
+  "rule_labels": [
+    "SWC-101",
+    "SWC-107"
+  ],
+  "llm_labels": [],
+  "pred_labels": [
+    "SWC-101",
+    "SWC-107"
+  ],
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_source": "rule_multi",
+  "is_other": 0,
+  "pred_reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are appropriate due to multiple findings of unsafe arithmetic operations and reentrancy vulnerabilities in critical functions. Evidence: Reentrancy vulnerabilities found in fallback and approveAndCall functions (SWC-107); Multiple unsafe arithmetic operations without SafeMath protection (SWC-101); CEI pattern violation in approveAndCall enabling reentrancy (SWC-107)",
+  "static_tool_used": false,
+  "llm_explanation": {
+    "ok": true,
+    "reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are appropriate due to multiple findings of unsafe arithmetic operations and reentrancy vulnerabilities in critical functions.",
+    "evidence": [
+      "Reentrancy vulnerabilities found in fallback and approveAndCall functions (SWC-107)",
+      "Multiple unsafe arithmetic operations without SafeMath protection (SWC-101)",
+      "CEI pattern violation in approveAndCall enabling reentrancy (SWC-107)"
+    ],
+    "raw": "```json\n{\n  \"reason\": \"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are appropriate due to multiple findings of unsafe arithmetic operations and reentrancy vulnerabilities in critical functions.\",\n  \"evidence\": [\n    \"Reentrancy vulnerabilities found in fallback and approveAndCall functions (SWC-107)\",\n    \"Multiple unsafe arithmetic operations without SafeMath protection (SWC-101)\",\n    \"CEI pattern violation in approveAndCall enabling reentrancy (SWC-107)\"\n  ]\n}\n```"
+  }
+}

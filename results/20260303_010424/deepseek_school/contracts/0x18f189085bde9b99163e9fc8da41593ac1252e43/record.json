@@ -1,0 +1,320 @@
+{
+  "address": "0x18f189085bde9b99163e9fc8da41593ac1252e43",
+  "session_id": "3060b3c2-2de4-46fd-bcd6-b51a8d10a6cb",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract exhibits multiple reentrancy vulnerabilities (SWC-107) through state changes occurring after external calls, particularly in the buy() function. Additionally, the use of block.difficulty and block.timestamp for randomness generation (SWC-101) creates miner-influenceable outcomes. Evidence: buy() function updates state after _buyer.send(refund) call; Multiple state-changing functions violate Checks-Effects-Interactions pattern; Randomness generation uses block.difficulty and now (block.timestamp)",
+  "rule_scores_json": "{\"SWC-101\": 1.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:underflow\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"buy() function updates state after _buyer.send(refund) call\", \"Multiple state-changing functions violate Checks-Effects-Interactions pattern\", \"Randomness generation uses block.difficulty and now (block.timestamp)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract exhibits multiple reentrancy vulnerabilities (SWC-107) through state changes occurring after external calls, particularly in the buy() function. Additionally, the use of block.difficulty and block.timestamp for randomness generation (SWC-101) creates miner-influenceable outcomes.\\\",\\n  \\\"evidence\\\": [\\n    \\\"buy() function updates state after _buyer.send(refund) call\\\",\\n    \\\"Multiple state-changing functions violate Checks-Effects-Interactions pattern\\\",\\n    \\\"Randomness generation uses block.difficulty and now (block.timestamp)\\\"\\n  ]\\n}\", \"reason\": \"The contract exhibits multiple reentrancy vulnerabilities (SWC-107) through state changes occurring after external calls, particularly in the buy() function. Additionally, the use of block.difficulty and block.timestamp for randomness generation (SWC-101) creates miner-influenceable outcomes.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1497.16561627388,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x18f189085bde9b99163e9fc8da41593ac1252e43",
+    "model": "deepseek_school",
+    "session_id": "3060b3c2-2de4-46fd-bcd6-b51a8d10a6cb",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Task:** Trace all external calls (`address.send(...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided Solidity smart contract code, I have identified a critical security vulnerability related to the audit task of tracing external calls where state changes occur aft... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **Task:** Trace all external calls (`address.send()`, `token.transferFrom()`) to identify patterns where state changes occur *after* the call."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Task:** Recommend and plan the implementation of...",
+        "Severity": "High",
+        "Description": "## Audit Report: Checks-Effects-Interactions Pattern Implementation ### 1. Issue Analysis **Issue Identified**: Yes, the contract contains multiple state-changing functions with external calls that ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: **Task:** Recommend and plan the implementation of the Checks-Effects-Interactions pattern or the use of ReentrancyGuard modifiers for all state-changing functions with external calls."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Task:** Check loop counters and array length com...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Loop Counters and Array Length Comparisons for Potential Underflows ### 1. Issue Analysis **Yes, there is a critical issue related to this audit task.** The contract contains a ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: **Task:** Check loop counters and array length comparisons for potential underflows (e.g., `getRandomNumber(stage.winners.length - 1)` if `length` is 0)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Specifically analyze the `buy()` functio...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified a critical vulnerability in the `buy()` function related to the state update order. ## 1. Issue Analysis **Yes, there is a... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: **Task:** Specifically analyze the `buy()` function's `_buyer.send(refund)` call. Confirm if the buyer's state (`buyerStage.funded`, `stage.fundRaised`) is updated before the call (it is not, marking a critical vulnerability)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Analyze the `releasableViewOrSend()` fun...",
+        "Severity": "Medium",
+        "Description": "After thorough analysis of the `releasableViewOrSend()` function in the provided smart contract code, I have completed the specific audit task regarding the `token.transferFrom()` call and the state u... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 3: **Task:** Analyze the `releasableViewOrSend()` function's `token.transferFrom()` call. Confirm if the `bonusReleased` state is set before or after the call (it is set before, which is correct for this pattern)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Despite SafeMath usage, manually review ...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Arithmetic Operations and Type Conversion Review ### 1. Issue Analysis **Yes, multiple issues related to arithmetic operations and type conversions have been identified.** Despite... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: **Task:** Despite SafeMath usage, manually review all arithmetic operations, especially those involving multiple type conversions (e.g., `uint256` to `uint8`, `uint16`). Identify potential truncation points."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Scrutinize calculations in `getStageAver...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified several issues related to the audit task of scrutinizing calculations and verifying SafeMath usage. Here is my detailed asse... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: **Task:** Scrutinize calculations in `getStageAverageBonus()`, `releasableViewOrSend()`, and the `buy()` function (e.g., `amount = remain`). Verify that SafeMath is used for every single arithmetic operation."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Map all privileged functions (e.g., `onl...",
+        "Severity": "High",
+        "Description": "## Audit Report: Privileged Function Mapping and Permission Sensitivity Analysis ### 1. Issue Analysis **Issue Identified:** Yes, there are several issues related to privileged function permissions ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: **Task:** Map all privileged functions (e.g., `onlyOwner`, `onlyOperator`) and verify their sensitivity aligns with their permission level."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Verify that critical initialization func...",
+        "Severity": "High",
+        "Description": "## Audit Report: Verification of Critical Initialization Function Restrictions ### 1. Issue Analysis **Issue Found:** Yes, there is a critical issue with the `setStageOpeningTime` function that viol... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: **Task:** Verify that critical initialization functions (e.g., the constructor, `setStageOpeningTime`) are indeed restricted and cannot be called again."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Ensure there are no backdoors or hidden ...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified several concerning privileged functions and potential backdoors that could allow operators or owners to manipulate the sale ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: **Task:** Ensure there are no backdoors or hidden privileged functions that could allow an operator or owner to drain funds or manipulate the sale unfairly."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Identify transactions where order depend...",
+        "Severity": "High",
+        "Description": "After conducting a thorough analysis of the provided smart contract code for order dependency vulnerabilities, particularly focusing on the mechanism for selecting the `ultimateBonusWinner`, I have id... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: **Task:** Identify transactions where order dependency could be exploited (e.g., becoming the `ultimateBonusWinner`). Assess the risk level."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Analyze the randomness generation to see...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **Yes, there is a significant issue related to miner-influenceable randomness generation.** The contract uses `block.difficulty` and `now` (an alias for `block.timestamp`) in it... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: **Task:** Analyze the randomness generation to see if it can be influenced by miners via transaction ordering (it can, due to `block.difficulty` and `now`)."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T05:31:57.656800",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "3060b3c2-2de4-46fd-bcd6-b51a8d10a6cb",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.24"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '<tmp> --version' running '<tmp> --version' running",
+          "status": "failed"
+        },
+        "total_execution_time": 1497.16561627388,
+        "total_tasks": 12
+      },
+      "execution_time": 1497.16561627388,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "Based on my analysis of the provided Solidity smart contract code, I have identified a critical security vulnerability related to the audit task of tracing external calls where state changes occur aft... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Trace all external calls (`address.send(...",
+          "Location": "Task 1: **Task:** Trace all external calls (`address.send()`, `token.transferFrom()`) to identify patterns where state changes occur *after* the call.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Checks-Effects-Interactions Pattern Implementation\n\n### 1. Issue Analysis\n\n**Issue Identified**: Yes, the contract contains multiple state-changing functions with external calls that ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Recommend and plan the implementation of...",
+          "Location": "Task 4: **Task:** Recommend and plan the implementation of the Checks-Effects-Interactions pattern or the use of ReentrancyGuard modifiers for all state-changing functions with external calls.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Loop Counters and Array Length Comparisons for Potential Underflows\n\n### 1. Issue Analysis\n\n**Yes, there is a critical issue related to this audit task.** \n\nThe contract contains a ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Check loop counters and array length com...",
+          "Location": "Task 7: **Task:** Check loop counters and array length comparisons for potential underflows (e.g., `getRandomNumber(stage.winners.length - 1)` if `length` is 0).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified a critical vulnerability in the `buy()` function related to the state update order.\n\n## 1. Issue Analysis\n\n**Yes, there is a... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Specifically analyze the `buy()` functio...",
+          "Location": "Task 2: **Task:** Specifically analyze the `buy()` function's `_buyer.send(refund)` call. Confirm if the buyer's state (`buyerStage.funded`, `stage.fundRaised`) is updated before the call (it is not, marking a critical vulnerability).",
+          "Severity": "High"
+        },
+        {
+          "Description": "After thorough analysis of the `releasableViewOrSend()` function in the provided smart contract code, I have completed the specific audit task regarding the `token.transferFrom()` call and the state u... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Analyze the `releasableViewOrSend()` fun...",
+          "Location": "Task 3: **Task:** Analyze the `releasableViewOrSend()` function's `token.transferFrom()` call. Confirm if the `bonusReleased` state is set before or after the call (it is set before, which is correct for this pattern).",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings: Arithmetic Operations and Type Conversion Review\n\n### 1. Issue Analysis\n\n**Yes, multiple issues related to arithmetic operations and type conversions have been identified.** Despite... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Despite SafeMath usage, manually review ...",
+          "Location": "Task 5: **Task:** Despite SafeMath usage, manually review all arithmetic operations, especially those involving multiple type conversions (e.g., `uint256` to `uint8`, `uint16`). Identify potential truncation points.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified several issues related to the audit task of scrutinizing calculations and verifying SafeMath usage. Here is my detailed asse... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Scrutinize calculations in `getStageAver...",
+          "Location": "Task 6: **Task:** Scrutinize calculations in `getStageAverageBonus()`, `releasableViewOrSend()`, and the `buy()` function (e.g., `amount = remain`). Verify that SafeMath is used for every single arithmetic operation.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Privileged Function Mapping and Permission Sensitivity Analysis\n\n### 1. Issue Analysis\n\n**Issue Identified:** Yes, there are several issues related to privileged function permissions ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Map all privileged functions (e.g., `onl...",
+          "Location": "Task 8: **Task:** Map all privileged functions (e.g., `onlyOwner`, `onlyOperator`) and verify their sensitivity aligns with their permission level.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Verification of Critical Initialization Function Restrictions\n\n### 1. Issue Analysis\n\n**Issue Found:** Yes, there is a critical issue with the `setStageOpeningTime` function that viol... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Verify that critical initialization func...",
+          "Location": "Task 9: **Task:** Verify that critical initialization functions (e.g., the constructor, `setStageOpeningTime`) are indeed restricted and cannot be called again.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified several concerning privileged functions and potential backdoors that could allow operators or owners to manipulate the sale ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Ensure there are no backdoors or hidden ...",
+          "Location": "Task 10: **Task:** Ensure there are no backdoors or hidden privileged functions that could allow an operator or owner to drain funds or manipulate the sale unfairly.",
+          "Severity": "High"
+        },
+        {
+          "Description": "After conducting a thorough analysis of the provided smart contract code for order dependency vulnerabilities, particularly focusing on the mechanism for selecting the `ultimateBonusWinner`, I have id... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Identify transactions where order depend...",
+          "Location": "Task 11: **Task:** Identify transactions where order dependency could be exploited (e.g., becoming the `ultimateBonusWinner`). Assess the risk level.",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n\n**Yes, there is a significant issue related to miner-influenceable randomness generation.** The contract uses `block.difficulty` and `now` (an alias for `block.timestamp`) in it... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Analyze the randomness generation to see...",
+          "Location": "Task 12: **Task:** Analyze the randomness generation to see if it can be influenced by miners via transaction ordering (it can, due to `block.difficulty` and `now`).",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Based on my analysis of the provided Solidity smart contract code, I have identified a critical security vulnerability related to the audit task of tracing external calls where state changes occur aft... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Trace all external calls (`address.send(...",
+          "Location": "Task 1: **Task:** Trace all external calls (`address.send()`, `token.transferFrom()`) to identify patterns where state changes occur *after* the call.",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "3060b3c2-2de4-46fd-bcd6-b51a8d10a6cb",
+      "severity_breakdown": {
+        "High": 11,
+        "Low": 0,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 1.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:underflow"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(1.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract exhibits multiple reentrancy vulnerabilities (SWC-107) through state changes occurring after external calls, particularly in the buy() function. Additionally, the use of block.difficulty and block.timestamp for randomness generation (SWC-101) creates miner-influenceable outcomes. Evidence: buy() function updates state after _buyer.send(refund) call; Multiple state-changing functions violate Checks-Effects-Interactions pattern; Randomness generation uses block.difficulty and now (block.timestamp)",
+    "rule_scores_json": "{\"SWC-101\": 1.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:underflow\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"buy() function updates state after _buyer.send(refund) call\", \"Multiple state-changing functions violate Checks-Effects-Interactions pattern\", \"Randomness generation uses block.difficulty and now (block.timestamp)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract exhibits multiple reentrancy vulnerabilities (SWC-107) through state changes occurring after external calls, particularly in the buy() function. Additionally, the use of block.difficulty and block.timestamp for randomness generation (SWC-101) creates miner-influenceable outcomes.\\\",\\n  \\\"evidence\\\": [\\n    \\\"buy() function updates state after _buyer.send(refund) call\\\",\\n    \\\"Multiple state-changing functions violate Checks-Effects-Interactions pattern\\\",\\n    \\\"Randomness generation uses block.difficulty and now (block.timestamp)\\\"\\n  ]\\n}\", \"reason\": \"The contract exhibits multiple reentrancy vulnerabilities (SWC-107) through state changes occurring after external calls, particularly in the buy() function. Additionally, the use of block.difficulty and block.timestamp for randomness generation (SWC-101) creates miner-influenceable outcomes.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract exhibits multiple reentrancy vulnerabilities (SWC-107) through state changes occurring after external calls, particularly in the buy() function. Additionally, the use of block.difficulty and block.timestamp for randomness generation (SWC-101) creates miner-influenceable outcomes.",
+      "evidence": [
+        "buy() function updates state after _buyer.send(refund) call",
+        "Multiple state-changing functions violate Checks-Effects-Interactions pattern",
+        "Randomness generation uses block.difficulty and now (block.timestamp)"
+      ],
+      "raw": "{\n  \"reason\": \"The contract exhibits multiple reentrancy vulnerabilities (SWC-107) through state changes occurring after external calls, particularly in the buy() function. Additionally, the use of block.difficulty and block.timestamp for randomness generation (SWC-101) creates miner-influenceable outcomes.\",\n  \"evidence\": [\n    \"buy() function updates state after _buyer.send(refund) call\",\n    \"Multiple state-changing functions violate Checks-Effects-Interactions pattern\",\n    \"Randomness generation uses block.difficulty and now (block.timestamp)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "3060b3c2-2de4-46fd-bcd6-b51a8d10a6cb",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

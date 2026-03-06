@@ -1,0 +1,253 @@
+{
+  "address": "0x01221b21bb5cc0e29aaa4403afa29487bc62b358",
+  "session_id": "91ad1744-def7-4c82-ad14-3dac805015ef",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract contains multiple instances of reentrancy vulnerabilities in state-changing functions like addTokensToJackpot and _transferToExcluded, directly matching SWC-107. Additionally, Utils functions allow arbitrary ETH transfers to user-controlled addresses without safeguards, indicating SWC-101 integer overflow risks in fund handling. Evidence: Reentrancy risks in BURN.addTokensToJackpot and BURN._transferToExcluded due to external calls before state updates; Utils.swapETHForTokens and Utils.addLiquidity send ETH to arbitrary addresses without access controls; Static analysis indicates potential arithmetic issues in fund transfer calculations",
+  "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Reentrancy risks in BURN.addTokensToJackpot and BURN._transferToExcluded due to external calls before state updates\", \"Utils.swapETHForTokens and Utils.addLiquidity send ETH to arbitrary addresses without access controls\", \"Static analysis indicates potential arithmetic issues in fund transfer calculations\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple instances of reentrancy vulnerabilities in state-changing functions like addTokensToJackpot and _transferToExcluded, directly matching SWC-107. Additionally, Utils functions allow arbitrary ETH transfers to user-controlled addresses without safeguards, indicating SWC-101 integer overflow risks in fund handling.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Reentrancy risks in BURN.addTokensToJackpot and BURN._transferToExcluded due to external calls before state updates\\\",\\n    \\\"Utils.swapETHForTokens and Utils.addLiquidity send ETH to arbitrary addresses without access controls\\\",\\n    \\\"Static analysis indicates potential arithmetic issues in fund transfer calculations\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple instances of reentrancy vulnerabilities in state-changing functions like addTokensToJackpot and _transferToExcluded, directly matching SWC-107. Additionally, Utils functions allow arbitrary ETH transfers to user-controlled addresses without safeguards, indicating SWC-101 integer overflow risks in fund handling.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3504,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x01221b21bb5cc0e29aaa4403afa29487bc62b358/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 7,
+  "execution_time": 676.9473769664764,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x01221b21bb5cc0e29aaa4403afa29487bc62b358",
+    "model": "deepseek_school",
+    "session_id": "91ad1744-def7-4c82-ad14-3dac805015ef",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Arbitrary ETH Transfer in Utils Functions",
+        "Severity": "High",
+        "Description": "The static analysis results show that Utils.swapETHForTokens and Utils.addLiquidity functions send ETH to arbitrary user-specified addresses without proper access controls. This issue is present in the static analysis results only. This issue appears in the auditing result.",
+        "Impact": "Potential loss of contract ETH funds if malicious addresses are specified, leading to unauthorized transfers.",
+        "Location": "Utils.swapETHForTokens(address,address,uint256) and Utils.addLiquidity(address,address,uint256,uint256) in static analysis results"
+      },
+      {
+        "Issue": "Reentrancy Vulnerability in addTokensToJackpot",
+        "Severity": "High",
+        "Description": "The static analysis results indicate a reentrancy risk in BURN.addTokensToJackpot due to external calls before state updates. This issue is present in the static analysis results only. This issue appears in the auditing result.",
+        "Impact": "Potential reentrancy attacks could manipulate contract state during token transfers, leading to fund loss or state corruption.",
+        "Location": "BURN.addTokensToJackpot(uint256) in static analysis results"
+      },
+      {
+        "Issue": "Reentrancy Vulnerability in _transferToExcluded",
+        "Severity": "High",
+        "Description": "The static analysis results show reentrancy risks in BURN._transferToExcluded due to external calls and state changes. This issue is present in the static analysis results only. This issue appears in the auditing result.",
+        "Impact": "Reentrancy could allow attackers to manipulate fee calculations and token transfers during execution.",
+        "Location": "BURN._transferToExcluded(address,address,uint256) in static analysis results"
+      },
+      {
+        "Issue": "Use of Deprecated 'now' Keyword",
+        "Severity": "Low",
+        "Description": "The smart contract code uses 'now' for timestamping, which is deprecated in favor of 'block.timestamp'. This issue appears in the smart contract code only.",
+        "Impact": "Code maintainability and future compatibility issues, though no immediate security risk.",
+        "Location": "Multiple instances in BURN contract, e.g., round[1].startTime = now;"
+      },
+      {
+        "Issue": "Potential Integer Overflow in SafeMath Operations",
+        "Severity": "Low",
+        "Description": "While SafeMath library is used, the static analysis results indicate potential arithmetic issues. This issue is inferred from code patterns and static analysis. This issue appears in the auditing result.",
+        "Impact": "If not properly handled, integer overflows/underflows could lead to incorrect calculations.",
+        "Location": "SafeMath functions in smart contract code and static analysis references"
+      },
+      {
+        "Issue": "Lack of Access Control in Charity Address Change",
+        "Severity": "Medium",
+        "Description": "The changeCharityAddress function is onlyOwner protected, but the static analysis shows potential arbitrary send issues. This appears in both code and static analysis.",
+        "Impact": "If owner is compromised, charity funds could be redirected to malicious addresses.",
+        "Location": "BURN.changeCharityAddress(address) in code and static analysis"
+      },
+      {
+        "Issue": "Insufficient Event Emission for Critical Operations",
+        "Severity": "Low",
+        "Description": "Key functions like charity address changes and token migrations lack event emissions for transparency. This issue is based on code patterns only. This issue appears in the auditing result.",
+        "Impact": "Reduced transparency and auditability for important contract operations.",
+        "Location": "BURN.changeCharityAddress and BURN.migrateToken functions in code"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T01:22:55.726138",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "session_id": "91ad1744-def7-4c82-ad14-3dac805015ef",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-o_m4isf5/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.8"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 676.9473769664764,
+        "total_tasks": 0
+      },
+      "execution_time": 676.9473769664764,
+      "finding_number": 7,
+      "findings": [
+        {
+          "Description": "The static analysis results show that Utils.swapETHForTokens and Utils.addLiquidity functions send ETH to arbitrary user-specified addresses without proper access controls. This issue is present in the static analysis results only. This issue appears in the auditing result.",
+          "Impact": "Potential loss of contract ETH funds if malicious addresses are specified, leading to unauthorized transfers.",
+          "Issue": "Arbitrary ETH Transfer in Utils Functions",
+          "Location": "Utils.swapETHForTokens(address,address,uint256) and Utils.addLiquidity(address,address,uint256,uint256) in static analysis results",
+          "Severity": "High"
+        },
+        {
+          "Description": "The static analysis results indicate a reentrancy risk in BURN.addTokensToJackpot due to external calls before state updates. This issue is present in the static analysis results only. This issue appears in the auditing result.",
+          "Impact": "Potential reentrancy attacks could manipulate contract state during token transfers, leading to fund loss or state corruption.",
+          "Issue": "Reentrancy Vulnerability in addTokensToJackpot",
+          "Location": "BURN.addTokensToJackpot(uint256) in static analysis results",
+          "Severity": "High"
+        },
+        {
+          "Description": "The static analysis results show reentrancy risks in BURN._transferToExcluded due to external calls and state changes. This issue is present in the static analysis results only. This issue appears in the auditing result.",
+          "Impact": "Reentrancy could allow attackers to manipulate fee calculations and token transfers during execution.",
+          "Issue": "Reentrancy Vulnerability in _transferToExcluded",
+          "Location": "BURN._transferToExcluded(address,address,uint256) in static analysis results",
+          "Severity": "High"
+        },
+        {
+          "Description": "The smart contract code uses 'now' for timestamping, which is deprecated in favor of 'block.timestamp'. This issue appears in the smart contract code only.",
+          "Impact": "Code maintainability and future compatibility issues, though no immediate security risk.",
+          "Issue": "Use of Deprecated 'now' Keyword",
+          "Location": "Multiple instances in BURN contract, e.g., round[1].startTime = now;",
+          "Severity": "Low"
+        },
+        {
+          "Description": "While SafeMath library is used, the static analysis results indicate potential arithmetic issues. This issue is inferred from code patterns and static analysis. This issue appears in the auditing result.",
+          "Impact": "If not properly handled, integer overflows/underflows could lead to incorrect calculations.",
+          "Issue": "Potential Integer Overflow in SafeMath Operations",
+          "Location": "SafeMath functions in smart contract code and static analysis references",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The changeCharityAddress function is onlyOwner protected, but the static analysis shows potential arbitrary send issues. This appears in both code and static analysis.",
+          "Impact": "If owner is compromised, charity funds could be redirected to malicious addresses.",
+          "Issue": "Lack of Access Control in Charity Address Change",
+          "Location": "BURN.changeCharityAddress(address) in code and static analysis",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Key functions like charity address changes and token migrations lack event emissions for transparency. This issue is based on code patterns only. This issue appears in the auditing result.",
+          "Impact": "Reduced transparency and auditability for important contract operations.",
+          "Issue": "Insufficient Event Emission for Critical Operations",
+          "Location": "BURN.changeCharityAddress and BURN.migrateToken functions in code",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The static analysis results show that Utils.swapETHForTokens and Utils.addLiquidity functions send ETH to arbitrary user-specified addresses without proper access controls. This issue is present in the static analysis results only. This issue appears in the auditing result.",
+          "Impact": "Potential loss of contract ETH funds if malicious addresses are specified, leading to unauthorized transfers.",
+          "Issue": "Arbitrary ETH Transfer in Utils Functions",
+          "Location": "Utils.swapETHForTokens(address,address,uint256) and Utils.addLiquidity(address,address,uint256,uint256) in static analysis results",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Arbitrary ETH Transfer in Utils Functions\",\n    \"Severity\": \"High\",\n    \"Description\": \"The static analysis results show that Utils.swapETHForTokens and Utils.addLiquidity functions send ETH to arbitrary user-specified addresses without proper access controls. This issue is present in the static analysis results only.\",\n    \"Impact\": \"Potential loss of contract ETH funds if malicious addresses are specified, leading to unauthorized transfers.\",\n    \"Location\": \"Utils.swapETHForTokens(address,address,uint256) and Utils.addLiquidity(address,address,uint256,uint256) in static analysis results\"\n  },\n  {\n    \"Issue\": \"Reentrancy Vulnerability in addTokensToJackpot\",\n    \"Severity\": \"High\",\n    \"Description\": \"The static analysis results indicate a reentrancy risk in BURN.addTokensToJackpot due to external calls before state updates. This issue is present in the static analysis results only.\",\n    \"Impact\": \"Potential reentrancy attacks could manipulate contract state during token transfers, leading to fund loss or state corruption.\",\n    \"Location\": \"BURN.addTokensToJackpot(uint256) in static analysis results\"\n  },\n  {\n    \"Issue\": \"Reentrancy Vulnerability in _transferToExcluded\",\n    \"Severity\": \"High\",\n    \"Description\": \"The static analysis results show reentrancy risks in BURN._transferToExcluded due to external calls and state changes. This issue is present in the static analysis results only.\",\n    \"Impact\": \"Reentrancy could allow attackers to manipulate fee calculations and token transfers during execution.\",\n    \"Location\": \"BURN._transferToExcluded(address,address,uint256) in static analysis results\"\n  },\n  {\n    \"Issue\": \"Use of Deprecated 'now' Keyword\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The smart contract code uses 'now' for timestamping, which is deprecated in favor of 'block.timestamp'. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Code maintainability and future compatibility issues, though no immediate security risk.\",\n    \"Location\": \"Multiple instances in BURN contract, e.g., round[1].startTime = now;\"\n  },\n  {\n    \"Issue\": \"Potential Integer Overflow in SafeMath Operations\",\n    \"Severity\": \"Low\",\n    \"Description\": \"While SafeMath library is used, the static analysis results indicate potential arithmetic issues. This issue is inferred from code patterns and static analysis.\",\n    \"Impact\": \"If not properly handled, integer overflows/underflows could lead to incorrect calculations.\",\n    \"Location\": \"SafeMath functions in smart contract code and static analysis references\"\n  },\n  {\n    \"Issue\": \"Lack of Access Control in Charity Address Change\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The changeCharityAddress function is onlyOwner protected, but the static analysis shows potential arbitrary send issues. This appears in both code and static analysis.\",\n    \"Impact\": \"If owner is compromised, charity funds could be redirected to malicious addresses.\",\n    \"Location\": \"BURN.changeCharityAddress(address) in code and static analysis\"\n  },\n  {\n    \"Issue\": \"Insufficient Event Emission for Critical Operations\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Key functions like charity address changes and token migrations lack event emissions for transparency. This issue is based on code patterns only.\",\n    \"Impact\": \"Reduced transparency and auditability for important contract operations.\",\n    \"Location\": \"BURN.changeCharityAddress and BURN.migrateToken functions in code\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "91ad1744-def7-4c82-ad14-3dac805015ef",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 3,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 5.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(5.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract contains multiple instances of reentrancy vulnerabilities in state-changing functions like addTokensToJackpot and _transferToExcluded, directly matching SWC-107. Additionally, Utils functions allow arbitrary ETH transfers to user-controlled addresses without safeguards, indicating SWC-101 integer overflow risks in fund handling. Evidence: Reentrancy risks in BURN.addTokensToJackpot and BURN._transferToExcluded due to external calls before state updates; Utils.swapETHForTokens and Utils.addLiquidity send ETH to arbitrary addresses without access controls; Static analysis indicates potential arithmetic issues in fund transfer calculations",
+    "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Reentrancy risks in BURN.addTokensToJackpot and BURN._transferToExcluded due to external calls before state updates\", \"Utils.swapETHForTokens and Utils.addLiquidity send ETH to arbitrary addresses without access controls\", \"Static analysis indicates potential arithmetic issues in fund transfer calculations\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple instances of reentrancy vulnerabilities in state-changing functions like addTokensToJackpot and _transferToExcluded, directly matching SWC-107. Additionally, Utils functions allow arbitrary ETH transfers to user-controlled addresses without safeguards, indicating SWC-101 integer overflow risks in fund handling.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Reentrancy risks in BURN.addTokensToJackpot and BURN._transferToExcluded due to external calls before state updates\\\",\\n    \\\"Utils.swapETHForTokens and Utils.addLiquidity send ETH to arbitrary addresses without access controls\\\",\\n    \\\"Static analysis indicates potential arithmetic issues in fund transfer calculations\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple instances of reentrancy vulnerabilities in state-changing functions like addTokensToJackpot and _transferToExcluded, directly matching SWC-107. Additionally, Utils functions allow arbitrary ETH transfers to user-controlled addresses without safeguards, indicating SWC-101 integer overflow risks in fund handling.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract contains multiple instances of reentrancy vulnerabilities in state-changing functions like addTokensToJackpot and _transferToExcluded, directly matching SWC-107. Additionally, Utils functions allow arbitrary ETH transfers to user-controlled addresses without safeguards, indicating SWC-101 integer overflow risks in fund handling.",
+      "evidence": [
+        "Reentrancy risks in BURN.addTokensToJackpot and BURN._transferToExcluded due to external calls before state updates",
+        "Utils.swapETHForTokens and Utils.addLiquidity send ETH to arbitrary addresses without access controls",
+        "Static analysis indicates potential arithmetic issues in fund transfer calculations"
+      ],
+      "raw": "{\n  \"reason\": \"The contract contains multiple instances of reentrancy vulnerabilities in state-changing functions like addTokensToJackpot and _transferToExcluded, directly matching SWC-107. Additionally, Utils functions allow arbitrary ETH transfers to user-controlled addresses without safeguards, indicating SWC-101 integer overflow risks in fund handling.\",\n  \"evidence\": [\n    \"Reentrancy risks in BURN.addTokensToJackpot and BURN._transferToExcluded due to external calls before state updates\",\n    \"Utils.swapETHForTokens and Utils.addLiquidity send ETH to arbitrary addresses without access controls\",\n    \"Static analysis indicates potential arithmetic issues in fund transfer calculations\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "91ad1744-def7-4c82-ad14-3dac805015ef",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 7,
+        "full_report_chars": 3504,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

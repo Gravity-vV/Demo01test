@@ -1,0 +1,136 @@
+# Smart Contract Audit Plan: HamtaroReloaded (`HAMTRIX`)
+
+**Audit Objective:** To validate the security findings from the initial analysis, confirm the presence of malicious patterns (honeypot, hidden minting), and assess the overall integrity of the contract code against industry standards.
+
+**Target Contract:** `HamtaroReloaded`  
+**Compiler Version:** Solidity `^0.6.9`  
+**Risk Level:** Critical (Based on Initial Analysis)
+
+---
+
+## 1. Security Vulnerability Assessment
+
+1.  **Verify Access Control Integrity (`Ownable`)**
+    *   Inspect the `renounceOwnership()` function to confirm that the private `_owner` variable is *not* updated to `address(0)`.
+    *   Attempt to call an `onlyOwner` function (e.g., `increaseAllowance`) from a non-owner account after `renounceOwnership()` has been called to verify if access is truly revoked.
+    *   Check for synchronization issues between the private `_owner` and public `Owner` variables during `transferOwnership`.
+
+2.  **Validate Hidden Minting Mechanism**
+    *   Execute a transaction calling `increaseAllowance(uint256 amount)` as the owner.
+    *   Monitor state changes to verify if `_totalTokens` increases and if the caller's balance in `_router` increases correspondingly.
+    *   Confirm if this function violates the ERC-20 standard expectation that `increaseAllowance` only affects spender allowances, not supply.
+
+3.  **Assess Honeypot Sell Restrictions**
+    *   Analyze the `_transfer` function logic: `if (sender != caller && recipient == router) { require(amount < rTotal); }`.
+    *   Test a transfer to the `router` address with an amount greater than `rTotal` from a non-`caller` account to confirm the transaction reverts.
+    *   Test the same transfer from the `caller` account to confirm the restriction is bypassed.
+
+4.  **Inspect External Call Safety (`Address` Library)**
+    *   Review the usage of the `Address` library functions (`functionCall`, `sendValue`).
+    *   Verify if any low-level `.call` operations are executed before state changes in the main contract logic (Reentrancy check).
+    *   Confirm if the `Address` library is actually utilized; if unused, flag for removal to reduce attack surface.
+
+5.  **Check for Integer Overflow/Underflow**
+    *   Verify that all arithmetic operations involving user balances (`_router`) and total supply (`_totalTokens`) utilize the `SafeMath` library.
+    *   Specifically inspect `_transfer` for subtraction operations (`_router[sender].sub(amount)`) to ensure underflow protection is active.
+
+6.  **Evaluate Input Validation on Administrative Functions**
+    *   Test `setrouteChain(address)` and `Approve(address)` with `address(0)` as input.
+    *   Confirm if the contract lacks zero-address checks, potentially allowing the owner to brick the routing or whitelist functionality.
+
+---
+
+## 2. Business Logic Validation
+
+7.  **Validate Deflationary Claims vs. Code Reality**
+    *   Inspect the `_transfer` function for any logic that reduces `_totalTokens` or burns tokens (e.g., sending to `address(0)`).
+    *   Compare the code logic against the header comments claiming "2% of tokens are burned when sold."
+    *   Document the discrepancy as a critical integrity failure.
+
+8.  **Verify Balance Mapping Consistency**
+    *   Investigate the variable naming convention where `_router` stores user balances and `router` stores the DEX address.
+    *   Trace all reads/writes to `_router` to ensure no logic accidentally references the `router` address variable when intending to access balances.
+    *   Confirm `balanceOf(address)` correctly returns `_router[account]`.
+
+9.  **Assess Constructor Minting Event**
+    *   Analyze the `Transfer` event emitted in the constructor: `emit Transfer(address(0xAb58...), _call(), _totalTokens)`.
+    *   Verify if using a hardcoded non-zero address instead of `address(0)` affects token tracking on block explorers (Etherscan) or analytics platforms.
+
+10. **Test State Transition Logic**
+    *   Simulate a full lifecycle: Mint (via constructor) -> Approve Router -> Transfer to Router (Sell).
+    *   Verify that `totalSupply()` matches the sum of all balances in `_router` after administrative minting via `increaseAllowance`.
+
+11. **Review Allowance Logic**
+    *   Test the standard `approve` and `allowance` functions to ensure they interact with `_allowances` correctly and are independent of the custom `increaseAllowance` minting function.
+    *   Verify `transferFrom` correctly deducts from the allowance mapping.
+
+---
+
+## 3. Gas Optimization Analysis
+
+12. **Analyze Storage Slot Usage**
+    *   Evaluate the packing of state variables (`router`, `caller`, `_totalTokens`, `rTotal`, etc.) to minimize storage slots.
+    *   Check if `uint256` is used where smaller types (e.g., `uint8` for decimals) could suffice, though `_totalTokens` requires 256-bit.
+
+13. **Identify Redundant Operations**
+    *   Inspect the `decreaseAllowance` function. It updates `rTotal` but emits no event. Verify if this state change is necessary or if it can be optimized/removed.
+    *   Check for unused code in the `Address` library that contributes to bytecode size without providing functionality.
+
+14. **Evaluate Constant vs. Computed Values**
+    *   Review instances of `10**18` within functions (e.g., `decreaseAllowance`). Recommend moving these to immutable constants to save gas on computation.
+
+15. **Function Visibility Optimization**
+    *   Audit all functions to ensure `external` is used instead of `public` where the function is not called internally (e.g., `transfer`, `approve`).
+
+---
+
+## 4. Standards Compliance
+
+16. **ERC-20 Interface Compliance Check**
+    *   Verify that all function signatures (`transfer`, `approve`, `transferFrom`, `allowance`, `totalSupply`, `balanceOf`, `name`, `symbol`, `decimals`) match the `IERC20` and `IERC20Metadata` standards exactly.
+    *   Confirm return types (e.g., `transfer` returning `bool`).
+
+17. **Event Emission Standards**
+    *   Verify that every state change affecting balances emits a `Transfer` event.
+    *   Verify that every state change affecting allowances emits an `Approval` event.
+    *   Specifically flag `decreaseAllowance` (which changes `rTotal`) for missing event emission, hindering off-chain tracking.
+
+18. **Ownable Standard Adherence**
+    *   Compare the `Ownable` implementation against OpenZeppelin standards.
+    *   Highlight deviations, specifically the dual `_owner`/`Owner` variable structure and the broken `renounceOwnership` logic.
+
+19. **Solidity Version Assessment**
+    *   Document the risks associated with using Solidity `^0.6.9` (e.g., lack of built-in overflow checks, older ABI encoder).
+    *   Recommend upgrading to `^0.8.0` or higher for native safety features.
+
+---
+
+## 5. Specific Test Scenarios
+
+20. **Critical Function: `increaseAllowance` Exploit Simulation**
+    *   **Action:** Deploy contract, wait for liquidity, then call `increaseAllowance` with a large amount.
+    *   **Expected Result:** Owner balance increases, Total Supply increases.
+    *   **Audit Goal:** Confirm this allows the owner to dilute holder value instantly.
+
+21. **Critical Function: Sell Restriction Bypass**
+    *   **Action:** Set `rTotal` to a low value via `decreaseAllowance`.
+    *   **Action:** Attempt to sell a standard amount to the `router` as a regular user.
+    *   **Action:** Set a `caller` address via `Approve`. Attempt to sell the same amount as the `caller`.
+    *   **Audit Goal:** Confirm the existence of a privileged whitelist that bypasses sell limits.
+
+22. **Boundary Condition: Zero Value Transfers**
+    *   **Action:** Attempt to `transfer` 0 tokens.
+    *   **Audit Goal:** Ensure the contract handles zero-value transfers without reverting unnecessarily or emitting misleading events.
+
+23. **Boundary Condition: Max Uint256 Transfer**
+    *   **Action:** Attempt to transfer `type(uint256).max`.
+    *   **Audit Goal:** Ensure SafeMath handles the overflow check correctly during balance addition.
+
+24. **Integration Test: DEX Interaction**
+    *   **Action:** Simulate a Uniswap V2 `swapExactTokensForETH` interaction.
+    *   **Audit Goal:** Verify if the router address detection (`recipient == router`) works correctly with actual DEX router addresses, or if the hardcoding/setter logic prevents legitimate swaps.
+
+25. **Ownership Renouncement Verification**
+    *   **Action:** Call `renounceOwnership()`.
+    *   **Action:** Immediately call `increaseAllowance()`.
+    *   **Audit Goal:** Confirm that the transaction succeeds (proving ownership was not actually renounced), validating the "Broken Security" finding.

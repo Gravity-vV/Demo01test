@@ -1,0 +1,245 @@
+{
+  "address": "0x13a83fe455f51e57e11cbb3dda805774420ea671",
+  "session_id": "7b0a720d-b37a-43e2-84d0-875304774c01",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "",
+  "pred_swc_count": 0,
+  "is_other": 1,
+  "pred_source": "llm",
+  "pred_reason": "The SWC-OTHER label is appropriate as the findings include a mix of vulnerabilities not covered by standard SWC IDs, such as locked ether risks and inconsistent pausable modifiers. These issues collectively represent non-standard security flaws requiring custom categorization. Evidence: Locked ether vulnerability with no withdrawal mechanism in payable receive function.; Shadowed state variable references conflicting with inherited Ownable logic.; Inconsistent application of pausable modifiers on view functions.",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 0.95, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 0.95,\\n  \\\"reason\\\": \\\"No findings directly match specified SWC labels; locked ether is not an unprotected withdrawal or selfdestruct, others are different categories.\\\"\\n}\", \"reason\": \"No findings directly match specified SWC labels; locked ether is not an unprotected withdrawal or selfdestruct, others are different categories.\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"Locked ether vulnerability with no withdrawal mechanism in payable receive function.\", \"Shadowed state variable references conflicting with inherited Ownable logic.\", \"Inconsistent application of pausable modifiers on view functions.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-OTHER label is appropriate as the findings include a mix of vulnerabilities not covered by standard SWC IDs, such as locked ether risks and inconsistent pausable modifiers. These issues collectively represent non-standard security flaws requiring custom categorization.\\\",\\n  \\\"evidence\\\": [\\\"Locked ether vulnerability with no withdrawal mechanism in payable receive function.\\\", \\\"Shadowed state variable references conflicting with inherited Ownable logic.\\\", \\\"Inconsistent application of pausable modifiers on view functions.\\\"]\\n}\", \"reason\": \"The SWC-OTHER label is appropriate as the findings include a mix of vulnerabilities not covered by standard SWC IDs, such as locked ether risks and inconsistent pausable modifiers. These issues collectively represent non-standard security flaws requiring custom categorization.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2921,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x13a83fe455f51e57e11cbb3dda805774420ea671/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 525.5423638820648,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x13a83fe455f51e57e11cbb3dda805774420ea671",
+    "model": "deepseek_school",
+    "session_id": "7b0a720d-b37a-43e2-84d0-875304774c01",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Locked Ether Vulnerability",
+        "Severity": "Medium",
+        "Description": "The contract has a payable receive function but no withdrawal mechanism, potentially locking ether sent to the contract. This issue appears in both the static analysis results and the contract code.",
+        "Impact": "Any ether sent to the contract accidentally or intentionally becomes permanently inaccessible.",
+        "Location": "Static analysis: 'locked-ether' finding; Code: receive() function at contract ButterFlyEffectToken"
+      },
+      {
+        "Issue": "Shadowed State Variable Reference",
+        "Severity": "Low",
+        "Description": "Local variables in functions shadow the inherited owner() function from Ownable contract. This issue appears in both the static analysis results and the contract code.",
+        "Impact": "Potential confusion in code logic and unintended behavior when referring to the contract owner.",
+        "Location": "Static analysis: 'shadowing-local' findings; Code: _approve() and allowance() functions parameter named 'owner'"
+      },
+      {
+        "Issue": "Missing Event Emission for Critical State Changes",
+        "Severity": "Low",
+        "Description": "Functions that modify critical parameters (fees and transaction limits) do not emit events, reducing transparency. This issue appears in both the static analysis results and the contract code.",
+        "Impact": "Off-chain monitoring systems cannot track important parameter changes, reducing auditability.",
+        "Location": "Static analysis: 'events-maths' findings; Code: SetFee() and setMaxTxPercent() functions"
+      },
+      {
+        "Issue": "Missing Zero Address Check",
+        "Severity": "Low",
+        "Description": "setMarketingWallet function lacks validation for zero address input. This issue appears in both the static analysis results and the contract code.",
+        "Impact": "Potential loss of funds if marketing wallet is set to address(0) accidentally.",
+        "Location": "Static analysis: 'missing-zero-check' finding; Code: setMarketingWallet() function"
+      },
+      {
+        "Issue": "Potential Division Precision Loss",
+        "Severity": "Low",
+        "Description": "Fee calculations use integer division which may lead to precision loss. This issue appears in the contract code only.",
+        "Impact": "Small amounts of tokens may be lost in fee calculations due to rounding errors.",
+        "Location": "Code: calculateTaxFee() function and fee calculations throughout token transfers"
+      },
+      {
+        "Issue": "Inconsistent Pausable Modifier Application",
+        "Severity": "Low",
+        "Description": "Some view functions unnecessarily include pausable modifiers, while the pausable functionality might not be fully implemented. This issue appears in the contract code only.",
+        "Impact": "Redundant gas usage and potential confusion in contract state management.",
+        "Location": "Code: Multiple view functions with whenNotPaused modifier (e.g., balanceOf(), allowance())"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T14:36:36.871030",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "7b0a720d-b37a-43e2-84d0-875304774c01",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-hmt1inoo/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.12"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 525.5423638820648,
+        "total_tasks": 0
+      },
+      "execution_time": 525.5423638820648,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The contract has a payable receive function but no withdrawal mechanism, potentially locking ether sent to the contract. This issue appears in both the static analysis results and the contract code.",
+          "Impact": "Any ether sent to the contract accidentally or intentionally becomes permanently inaccessible.",
+          "Issue": "Locked Ether Vulnerability",
+          "Location": "Static analysis: 'locked-ether' finding; Code: receive() function at contract ButterFlyEffectToken",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Local variables in functions shadow the inherited owner() function from Ownable contract. This issue appears in both the static analysis results and the contract code.",
+          "Impact": "Potential confusion in code logic and unintended behavior when referring to the contract owner.",
+          "Issue": "Shadowed State Variable Reference",
+          "Location": "Static analysis: 'shadowing-local' findings; Code: _approve() and allowance() functions parameter named 'owner'",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Functions that modify critical parameters (fees and transaction limits) do not emit events, reducing transparency. This issue appears in both the static analysis results and the contract code.",
+          "Impact": "Off-chain monitoring systems cannot track important parameter changes, reducing auditability.",
+          "Issue": "Missing Event Emission for Critical State Changes",
+          "Location": "Static analysis: 'events-maths' findings; Code: SetFee() and setMaxTxPercent() functions",
+          "Severity": "Low"
+        },
+        {
+          "Description": "setMarketingWallet function lacks validation for zero address input. This issue appears in both the static analysis results and the contract code.",
+          "Impact": "Potential loss of funds if marketing wallet is set to address(0) accidentally.",
+          "Issue": "Missing Zero Address Check",
+          "Location": "Static analysis: 'missing-zero-check' finding; Code: setMarketingWallet() function",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Fee calculations use integer division which may lead to precision loss. This issue appears in the contract code only.",
+          "Impact": "Small amounts of tokens may be lost in fee calculations due to rounding errors.",
+          "Issue": "Potential Division Precision Loss",
+          "Location": "Code: calculateTaxFee() function and fee calculations throughout token transfers",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Some view functions unnecessarily include pausable modifiers, while the pausable functionality might not be fully implemented. This issue appears in the contract code only.",
+          "Impact": "Redundant gas usage and potential confusion in contract state management.",
+          "Issue": "Inconsistent Pausable Modifier Application",
+          "Location": "Code: Multiple view functions with whenNotPaused modifier (e.g., balanceOf(), allowance())",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The contract has a payable receive function but no withdrawal mechanism, potentially locking ether sent to the contract. This issue appears in both the static analysis results and the contract code.",
+          "Impact": "Any ether sent to the contract accidentally or intentionally becomes permanently inaccessible.",
+          "Issue": "Locked Ether Vulnerability",
+          "Location": "Static analysis: 'locked-ether' finding; Code: receive() function at contract ButterFlyEffectToken",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Locked Ether Vulnerability\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract has a payable receive function but no withdrawal mechanism, potentially locking ether sent to the contract. This issue appears in both the static analysis results and the contract code.\",\n    \"Impact\": \"Any ether sent to the contract accidentally or intentionally becomes permanently inaccessible.\",\n    \"Location\": \"Static analysis: 'locked-ether' finding; Code: receive() function at contract ButterFlyEffectToken\"\n  },\n  {\n    \"Issue\": \"Shadowed State Variable Reference\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Local variables in functions shadow the inherited owner() function from Ownable contract. This issue appears in both the static analysis results and the contract code.\",\n    \"Impact\": \"Potential confusion in code logic and unintended behavior when referring to the contract owner.\",\n    \"Location\": \"Static analysis: 'shadowing-local' findings; Code: _approve() and allowance() functions parameter named 'owner'\"\n  },\n  {\n    \"Issue\": \"Missing Event Emission for Critical State Changes\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Functions that modify critical parameters (fees and transaction limits) do not emit events, reducing transparency. This issue appears in both the static analysis results and the contract code.\",\n    \"Impact\": \"Off-chain monitoring systems cannot track important parameter changes, reducing auditability.\",\n    \"Location\": \"Static analysis: 'events-maths' findings; Code: SetFee() and setMaxTxPercent() functions\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Check\",\n    \"Severity\": \"Low\",\n    \"Description\": \"setMarketingWallet function lacks validation for zero address input. This issue appears in both the static analysis results and the contract code.\",\n    \"Impact\": \"Potential loss of funds if marketing wallet is set to address(0) accidentally.\",\n    \"Location\": \"Static analysis: 'missing-zero-check' finding; Code: setMarketingWallet() function\"\n  },\n  {\n    \"Issue\": \"Potential Division Precision Loss\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Fee calculations use integer division which may lead to precision loss. This issue appears in the contract code only.\",\n    \"Impact\": \"Small amounts of tokens may be lost in fee calculations due to rounding errors.\",\n    \"Location\": \"Code: calculateTaxFee() function and fee calculations throughout token transfers\"\n  },\n  {\n    \"Issue\": \"Inconsistent Pausable Modifier Application\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Some view functions unnecessarily include pausable modifiers, while the pausable functionality might not be fully implemented. This issue appears in the contract code only.\",\n    \"Impact\": \"Redundant gas usage and potential confusion in contract state management.\",\n    \"Location\": \"Code: Multiple view functions with whenNotPaused modifier (e.g., balanceOf(), allowance())\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "7b0a720d-b37a-43e2-84d0-875304774c01",
+      "severity_breakdown": {
+        "High": 0,
+        "Low": 5,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [],
+      "source": "llm",
+      "confidence": 0.95,
+      "reason": "No findings directly match specified SWC labels; locked ether is not an unprotected withdrawal or selfdestruct, others are different categories.",
+      "raw": "{\n  \"labels\": [],\n  \"confidence\": 0.95,\n  \"reason\": \"No findings directly match specified SWC labels; locked ether is not an unprotected withdrawal or selfdestruct, others are different categories.\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [],
+    "pred_labels": [],
+    "pred_swc_list": "",
+    "pred_source": "llm",
+    "is_other": 1,
+    "pred_reason": "The SWC-OTHER label is appropriate as the findings include a mix of vulnerabilities not covered by standard SWC IDs, such as locked ether risks and inconsistent pausable modifiers. These issues collectively represent non-standard security flaws requiring custom categorization. Evidence: Locked ether vulnerability with no withdrawal mechanism in payable receive function.; Shadowed state variable references conflicting with inherited Ownable logic.; Inconsistent application of pausable modifiers on view functions.",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 0.95, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 0.95,\\n  \\\"reason\\\": \\\"No findings directly match specified SWC labels; locked ether is not an unprotected withdrawal or selfdestruct, others are different categories.\\\"\\n}\", \"reason\": \"No findings directly match specified SWC labels; locked ether is not an unprotected withdrawal or selfdestruct, others are different categories.\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"Locked ether vulnerability with no withdrawal mechanism in payable receive function.\", \"Shadowed state variable references conflicting with inherited Ownable logic.\", \"Inconsistent application of pausable modifiers on view functions.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-OTHER label is appropriate as the findings include a mix of vulnerabilities not covered by standard SWC IDs, such as locked ether risks and inconsistent pausable modifiers. These issues collectively represent non-standard security flaws requiring custom categorization.\\\",\\n  \\\"evidence\\\": [\\\"Locked ether vulnerability with no withdrawal mechanism in payable receive function.\\\", \\\"Shadowed state variable references conflicting with inherited Ownable logic.\\\", \\\"Inconsistent application of pausable modifiers on view functions.\\\"]\\n}\", \"reason\": \"The SWC-OTHER label is appropriate as the findings include a mix of vulnerabilities not covered by standard SWC IDs, such as locked ether risks and inconsistent pausable modifiers. These issues collectively represent non-standard security flaws requiring custom categorization.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-OTHER label is appropriate as the findings include a mix of vulnerabilities not covered by standard SWC IDs, such as locked ether risks and inconsistent pausable modifiers. These issues collectively represent non-standard security flaws requiring custom categorization.",
+      "evidence": [
+        "Locked ether vulnerability with no withdrawal mechanism in payable receive function.",
+        "Shadowed state variable references conflicting with inherited Ownable logic.",
+        "Inconsistent application of pausable modifiers on view functions."
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-OTHER label is appropriate as the findings include a mix of vulnerabilities not covered by standard SWC IDs, such as locked ether risks and inconsistent pausable modifiers. These issues collectively represent non-standard security flaws requiring custom categorization.\",\n  \"evidence\": [\"Locked ether vulnerability with no withdrawal mechanism in payable receive function.\", \"Shadowed state variable references conflicting with inherited Ownable logic.\", \"Inconsistent application of pausable modifiers on view functions.\"]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "7b0a720d-b37a-43e2-84d0-875304774c01",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 2921,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

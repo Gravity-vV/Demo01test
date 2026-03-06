@@ -1,0 +1,235 @@
+{
+  "address": "0x109d8d46f00528fd043d13984026d8a3f811dd26",
+  "session_id": "54981151-6a8d-4fed-b889-42ea0c175053",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-101 label is reasonable due to the use of deprecated Solidity 0.4.21, which lacks built-in overflow protection, and the explicit integer overflow risk in the participants array length check. Evidence: pragma solidity ^0.4.21; lacks overflow/underflow safeguards; require(participants.length <= maxWiteList); susceptible to uint256 overflow; Array length wrap-around could bypass whitelist limits",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"pragma solidity ^0.4.21; lacks overflow/underflow safeguards\", \"require(participants.length <= maxWiteList); susceptible to uint256 overflow\", \"Array length wrap-around could bypass whitelist limits\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is reasonable due to the use of deprecated Solidity 0.4.21, which lacks built-in overflow protection, and the explicit integer overflow risk in the participants array length check.\\\",\\n  \\\"evidence\\\": [\\\"pragma solidity ^0.4.21; lacks overflow/underflow safeguards\\\", \\\"require(participants.length <= maxWiteList); susceptible to uint256 overflow\\\", \\\"Array length wrap-around could bypass whitelist limits\\\"]\\n}\", \"reason\": \"The SWC-101 label is reasonable due to the use of deprecated Solidity 0.4.21, which lacks built-in overflow protection, and the explicit integer overflow risk in the participants array length check.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2314,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x109d8d46f00528fd043d13984026d8a3f811dd26/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 453.1529207229614,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x109d8d46f00528fd043d13984026d8a3f811dd26",
+    "model": "deepseek_school",
+    "session_id": "54981151-6a8d-4fed-b889-42ea0c175053",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Use of deprecated solidity version 0.4.21",
+        "Severity": "Medium",
+        "Description": "The contract uses Solidity 0.4.21 which is deprecated and lacks important security features. This issue appears in the smart contract code only.",
+        "Impact": "Increased vulnerability to known compiler bugs, missing security features like overflow/underflow protection, and potential compatibility issues.",
+        "Location": "pragma solidity ^0.4.21; (line 1)"
+      },
+      {
+        "Issue": "Potential integer overflow in participants array",
+        "Severity": "Medium",
+        "Description": "The participants array length is compared against maxWiteList (9960) but can theoretically overflow if more than 2^256-1 addresses are added. This issue appears in the smart contract code only.",
+        "Impact": "Array length could wrap around causing incorrect whitelist limits and potential fund loss.",
+        "Location": "require(participants.length <= maxWiteList); in fallback function"
+      },
+      {
+        "Issue": "Misspelled beneficiary address variable",
+        "Severity": "Low",
+        "Description": "The beneficiary address variable is misspelled as 'benecifiary' throughout the contract. This issue appears in the smart contract code only.",
+        "Impact": "Reduced code readability and potential maintenance issues, though functionality remains correct.",
+        "Location": "benecifiary variable declaration and usage throughout contract"
+      },
+      {
+        "Issue": "No withdrawal mechanism for beneficiary",
+        "Severity": "Low",
+        "Description": "The contract transfers funds directly to beneficiary but provides no function for the beneficiary to withdraw accidentally sent funds or handle edge cases. This issue appears in the smart contract code only.",
+        "Impact": "Potential loss of funds if tokens are accidentally sent to the contract address.",
+        "Location": "Constructor and fallback function"
+      },
+      {
+        "Issue": "Lack of event emission for critical actions",
+        "Severity": "Low",
+        "Description": "The contract only emits WhiteListSuccess event but lacks events for contract creation and other state changes. This issue appears in the smart contract code only.",
+        "Impact": "Reduced transparency and off-chain monitoring capabilities.",
+        "Location": "Constructor and overall contract structure"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T14:09:50.414326",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "54981151-6a8d-4fed-b889-42ea0c175053",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.21"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.4.21/solc-0.4.21 --version' running '/Users/hh/.solc-select/artifacts/solc-0.4.21/solc-0.4.21 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation",
+          "status": "failed"
+        },
+        "total_execution_time": 453.1529207229614,
+        "total_tasks": 0
+      },
+      "execution_time": 453.1529207229614,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "The contract uses Solidity 0.4.21 which is deprecated and lacks important security features. This issue appears in the smart contract code only.",
+          "Impact": "Increased vulnerability to known compiler bugs, missing security features like overflow/underflow protection, and potential compatibility issues.",
+          "Issue": "Use of deprecated solidity version 0.4.21",
+          "Location": "pragma solidity ^0.4.21; (line 1)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The participants array length is compared against maxWiteList (9960) but can theoretically overflow if more than 2^256-1 addresses are added. This issue appears in the smart contract code only.",
+          "Impact": "Array length could wrap around causing incorrect whitelist limits and potential fund loss.",
+          "Issue": "Potential integer overflow in participants array",
+          "Location": "require(participants.length <= maxWiteList); in fallback function",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The beneficiary address variable is misspelled as 'benecifiary' throughout the contract. This issue appears in the smart contract code only.",
+          "Impact": "Reduced code readability and potential maintenance issues, though functionality remains correct.",
+          "Issue": "Misspelled beneficiary address variable",
+          "Location": "benecifiary variable declaration and usage throughout contract",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The contract transfers funds directly to beneficiary but provides no function for the beneficiary to withdraw accidentally sent funds or handle edge cases. This issue appears in the smart contract code only.",
+          "Impact": "Potential loss of funds if tokens are accidentally sent to the contract address.",
+          "Issue": "No withdrawal mechanism for beneficiary",
+          "Location": "Constructor and fallback function",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The contract only emits WhiteListSuccess event but lacks events for contract creation and other state changes. This issue appears in the smart contract code only.",
+          "Impact": "Reduced transparency and off-chain monitoring capabilities.",
+          "Issue": "Lack of event emission for critical actions",
+          "Location": "Constructor and overall contract structure",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The contract uses Solidity 0.4.21 which is deprecated and lacks important security features. This issue appears in the smart contract code only.",
+          "Impact": "Increased vulnerability to known compiler bugs, missing security features like overflow/underflow protection, and potential compatibility issues.",
+          "Issue": "Use of deprecated solidity version 0.4.21",
+          "Location": "pragma solidity ^0.4.21; (line 1)",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Use of deprecated solidity version 0.4.21\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract uses Solidity 0.4.21 which is deprecated and lacks important security features. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Increased vulnerability to known compiler bugs, missing security features like overflow/underflow protection, and potential compatibility issues.\",\n    \"Location\": \"pragma solidity ^0.4.21; (line 1)\"\n  },\n  {\n    \"Issue\": \"Potential integer overflow in participants array\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The participants array length is compared against maxWiteList (9960) but can theoretically overflow if more than 2^256-1 addresses are added. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Array length could wrap around causing incorrect whitelist limits and potential fund loss.\",\n    \"Location\": \"require(participants.length <= maxWiteList); in fallback function\"\n  },\n  {\n    \"Issue\": \"Misspelled beneficiary address variable\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The beneficiary address variable is misspelled as 'benecifiary' throughout the contract. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Reduced code readability and potential maintenance issues, though functionality remains correct.\",\n    \"Location\": \"benecifiary variable declaration and usage throughout contract\"\n  },\n  {\n    \"Issue\": \"No withdrawal mechanism for beneficiary\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The contract transfers funds directly to beneficiary but provides no function for the beneficiary to withdraw accidentally sent funds or handle edge cases. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential loss of funds if tokens are accidentally sent to the contract address.\",\n    \"Location\": \"Constructor and fallback function\"\n  },\n  {\n    \"Issue\": \"Lack of event emission for critical actions\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The contract only emits WhiteListSuccess event but lacks events for contract creation and other state changes. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Reduced transparency and off-chain monitoring capabilities.\",\n    \"Location\": \"Constructor and overall contract structure\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "54981151-6a8d-4fed-b889-42ea0c175053",
+      "severity_breakdown": {
+        "High": 0,
+        "Low": 3,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-101 label is reasonable due to the use of deprecated Solidity 0.4.21, which lacks built-in overflow protection, and the explicit integer overflow risk in the participants array length check. Evidence: pragma solidity ^0.4.21; lacks overflow/underflow safeguards; require(participants.length <= maxWiteList); susceptible to uint256 overflow; Array length wrap-around could bypass whitelist limits",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"pragma solidity ^0.4.21; lacks overflow/underflow safeguards\", \"require(participants.length <= maxWiteList); susceptible to uint256 overflow\", \"Array length wrap-around could bypass whitelist limits\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is reasonable due to the use of deprecated Solidity 0.4.21, which lacks built-in overflow protection, and the explicit integer overflow risk in the participants array length check.\\\",\\n  \\\"evidence\\\": [\\\"pragma solidity ^0.4.21; lacks overflow/underflow safeguards\\\", \\\"require(participants.length <= maxWiteList); susceptible to uint256 overflow\\\", \\\"Array length wrap-around could bypass whitelist limits\\\"]\\n}\", \"reason\": \"The SWC-101 label is reasonable due to the use of deprecated Solidity 0.4.21, which lacks built-in overflow protection, and the explicit integer overflow risk in the participants array length check.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-101 label is reasonable due to the use of deprecated Solidity 0.4.21, which lacks built-in overflow protection, and the explicit integer overflow risk in the participants array length check.",
+      "evidence": [
+        "pragma solidity ^0.4.21; lacks overflow/underflow safeguards",
+        "require(participants.length <= maxWiteList); susceptible to uint256 overflow",
+        "Array length wrap-around could bypass whitelist limits"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-101 label is reasonable due to the use of deprecated Solidity 0.4.21, which lacks built-in overflow protection, and the explicit integer overflow risk in the participants array length check.\",\n  \"evidence\": [\"pragma solidity ^0.4.21; lacks overflow/underflow safeguards\", \"require(participants.length <= maxWiteList); susceptible to uint256 overflow\", \"Array length wrap-around could bypass whitelist limits\"]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "54981151-6a8d-4fed-b889-42ea0c175053",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 2314,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

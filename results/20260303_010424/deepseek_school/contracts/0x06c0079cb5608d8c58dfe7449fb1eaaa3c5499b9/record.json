@@ -1,0 +1,321 @@
+{
+  "address": "0x06c0079cb5608d8c58dfe7449fb1eaaa3c5499b9",
+  "session_id": "7f978efa-3e52-4b86-a9fb-499f4691ac85",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 (Integer Overflow and Underflow) is applicable due to the critical edge case in investorIndex (uint8) potentially overflowing at 255 without proper checks. SWC-107 (Reentrancy) is supported as state-changing functions with external calls were identified, though no reentrancy was found in overridden functions. Evidence: investorIndex uint8 overflows at 255 in addInvestor (Finding 3); State-changing functions with external calls identified (Finding 1); Reentrancy check in overridden functions performed (Finding 2)",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"investorIndex uint8 overflows at 255 in addInvestor (Finding 3)\", \"State-changing functions with external calls identified (Finding 1)\", \"Reentrancy check in overridden functions performed (Finding 2)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 (Integer Overflow and Underflow) is applicable due to the critical edge case in investorIndex (uint8) potentially overflowing at 255 without proper checks. SWC-107 (Reentrancy) is supported as state-changing functions with external calls were identified, though no reentrancy was found in overridden functions.\\\",\\n  \\\"evidence\\\": [\\n    \\\"investorIndex uint8 overflows at 255 in addInvestor (Finding 3)\\\",\\n    \\\"State-changing functions with external calls identified (Finding 1)\\\",\\n    \\\"Reentrancy check in overridden functions performed (Finding 2)\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 (Integer Overflow and Underflow) is applicable due to the critical edge case in investorIndex (uint8) potentially overflowing at 255 without proper checks. SWC-107 (Reentrancy) is supported as state-changing functions with external calls were identified, though no reentrancy was found in overridden functions.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1616.190288066864,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x06c0079cb5608d8c58dfe7449fb1eaaa3c5499b9",
+    "model": "deepseek_school",
+    "session_id": "7f978efa-3e52-4b86-a9fb-499f4691ac85",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Task:** Identify all state-changing functions th...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the provided Miner5 smart contract code, I have identified state-changing functions that make external calls. Below is my detailed assessment: ## 1. Issue Analysis **Yes... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **Task:** Identify all state-changing functions that make external calls."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Action:** Ensure no other functions (e.g., `tran...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task regarding reentrancy vulnerabilities in overridden functions. ## 1. Issue Analysis **No reentrancy vu... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: **Action:** Ensure no other functions (e.g., `transfer`, `transferFrom`) are overridden in a way that introduces reentrancy before state updates."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Action:** Focus on `investorIndex` (type `uint8`...",
+        "Severity": "High",
+        "Description": "## Audit Findings: `investorIndex` Edge Case in `addInvestor` Function ### 1. Issue Analysis **Yes, there is a critical issue related to this audit task.** The `investorIndex` variable is declared a... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: **Action:** Focus on `investorIndex` (type `uint8`). Test the edge case in `addInvestor` to confirm it reverts correctly when `investorIndex` reaches 255, preventing a silent overflow to 0."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Action:** Confirm that the `_mint` call in `rele...",
+        "Severity": "Medium",
+        "Description": "## Audit Findings: Checks-Effects-Interactions Pattern in `releaseIthInvestorTokens` ### 1. Issue Analysis **No issue found** - The `_mint` call in `releaseIthInvestorTokens` correctly follows the C... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 2: **Action:** Confirm that the `_mint` call in `releaseIthInvestorTokens` follows the Checks-Effects-Interactions pattern. Since `_mint` is an internal function that updates state before emitting an event, the risk is low, but this must be verified."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Audit all arithmetic operations, even th...",
+        "Severity": "High",
+        "Description": "Of course. I have performed a detailed audit of the provided Miner5 smart contract, focusing on the specific task of auditing all arithmetic operations for logical errors that could lead to unexpected... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: **Task:** Audit all arithmetic operations, even those using SafeMath, for logical errors that could lead to unexpected reverts or logic bypass."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Action:** Validate the calculation in `computeTo...",
+        "Severity": "Medium",
+        "Description": "### 1. Issue Analysis **Yes, there is an issue related to this audit task.** The function `computeTokensPerVesting` performs a division operation that may truncate to zero when `token.supplyLeftToVest... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 6: **Action:** Validate the calculation in `computeTokensPerVesting` to ensure division does not truncate to zero for large token amounts with small `numVestingPeriods`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Action:** Verify the cap enforcement logic in `a...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue with the cap enforcement logic in the `addInvestor` function. Here is my detailed assessment: ## 1. Issue ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: **Action:** Verify the cap enforcement logic in `addInvestor`: `investorsClaimed.add(_tokensToVest) <= investorsCap`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Verify that the `onlyOwner` modifier is ...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Verification of `onlyOwner` Modifier Usage **Issue Analysis:** - **Issue Identified:** No vulnerability found related to the audit task - **Analysis Result:** The `onlyOwner` modif... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: **Task:** Verify that the `onlyOwner` modifier is applied to all intended functions (`addInvestor`, `releaseIthInvestorTokens`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Assess the risk of inheriting from `Owna...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Assessment of Ownable Inheritance and Renounce Ownership Risk ### 1. Issue Analysis **Yes, there is a significant issue related to the ability to renounce ownership in this specif... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: **Task:** Assess the risk of inheriting from `Ownable`, including the ability to renounce ownership, and determine if this aligns with the project's operational requirements."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Action:** Ensure no publicly accessible function...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified a critical security vulnerability related to the audit task of ensuring no publicly accessible functions allow unauthorized ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: **Action:** Ensure no publicly accessible functions allow unauthorized minting or manipulation of vesting schedules."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Identify transactions that could be fron...",
+        "Severity": "Medium",
+        "Description": "Based on the audit task of identifying transactions that could be front-run for profit, with a focus on `onlyOwner` functions, I have analyzed the provided Miner5 smart contract code. Below is my deta... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 11: **Task:** Identify transactions that could be front-run for profit. Since key functions are `onlyOwner`, the risk is minimal for users but should be considered for owner actions (e.g., a malicious owner could front-run their own transactions in a malicious fork, but this is not a protocol vulnerability)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Evaluate the use of `block.timestamp` (`...",
+        "Severity": "High",
+        "Description": "Of course. I have performed a detailed security audit focused on the use of `block.timestamp` (`now`) in the provided vesting contract. Here are my findings. ### 1. Issue Analysis **Yes, there is a ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: **Task:** Evaluate the use of `block.timestamp` (`now`) in vesting logic."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T02:44:56.577839",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "7f978efa-3e52-4b86-a9fb-499f4691ac85",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.16"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.5.17/solc-0.5.17 --version' running '/Users/hh/.solc-select/artifacts/solc-0.5.17/solc-0.5.17 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation",
+          "status": "failed"
+        },
+        "total_execution_time": 1616.190288066864,
+        "total_tasks": 12
+      },
+      "execution_time": 1616.190288066864,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "After a thorough analysis of the provided Miner5 smart contract code, I have identified state-changing functions that make external calls. Below is my detailed assessment:\n\n## 1. Issue Analysis\n\n**Yes... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Identify all state-changing functions th...",
+          "Location": "Task 1: **Task:** Identify all state-changing functions that make external calls.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task regarding reentrancy vulnerabilities in overridden functions.\n\n## 1. Issue Analysis\n\n**No reentrancy vu... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Action:** Ensure no other functions (e.g., `tran...",
+          "Location": "Task 3: **Action:** Ensure no other functions (e.g., `transfer`, `transferFrom`) are overridden in a way that introduces reentrancy before state updates.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: `investorIndex` Edge Case in `addInvestor` Function\n\n### 1. Issue Analysis\n**Yes, there is a critical issue related to this audit task.**\n\nThe `investorIndex` variable is declared a... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Action:** Focus on `investorIndex` (type `uint8`...",
+          "Location": "Task 5: **Action:** Focus on `investorIndex` (type `uint8`). Test the edge case in `addInvestor` to confirm it reverts correctly when `investorIndex` reaches 255, preventing a silent overflow to 0.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Checks-Effects-Interactions Pattern in `releaseIthInvestorTokens`\n\n### 1. Issue Analysis\n\n**No issue found** - The `_mint` call in `releaseIthInvestorTokens` correctly follows the C... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Action:** Confirm that the `_mint` call in `rele...",
+          "Location": "Task 2: **Action:** Confirm that the `_mint` call in `releaseIthInvestorTokens` follows the Checks-Effects-Interactions pattern. Since `_mint` is an internal function that updates state before emitting an event, the risk is low, but this must be verified.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Of course. I have performed a detailed audit of the provided Miner5 smart contract, focusing on the specific task of auditing all arithmetic operations for logical errors that could lead to unexpected... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Audit all arithmetic operations, even th...",
+          "Location": "Task 4: **Task:** Audit all arithmetic operations, even those using SafeMath, for logical errors that could lead to unexpected reverts or logic bypass.",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n**Yes, there is an issue related to this audit task.** The function `computeTokensPerVesting` performs a division operation that may truncate to zero when `token.supplyLeftToVest... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Action:** Validate the calculation in `computeTo...",
+          "Location": "Task 6: **Action:** Validate the calculation in `computeTokensPerVesting` to ensure division does not truncate to zero for large token amounts with small `numVestingPeriods`.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue with the cap enforcement logic in the `addInvestor` function. Here is my detailed assessment:\n\n## 1. Issue ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Action:** Verify the cap enforcement logic in `a...",
+          "Location": "Task 7: **Action:** Verify the cap enforcement logic in `addInvestor`: `investorsClaimed.add(_tokensToVest) <= investorsCap`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Verification of `onlyOwner` Modifier Usage\n\n**Issue Analysis:**\n- **Issue Identified:** No vulnerability found related to the audit task\n- **Analysis Result:** The `onlyOwner` modif... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Verify that the `onlyOwner` modifier is ...",
+          "Location": "Task 8: **Task:** Verify that the `onlyOwner` modifier is applied to all intended functions (`addInvestor`, `releaseIthInvestorTokens`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Assessment of Ownable Inheritance and Renounce Ownership Risk\n\n### 1. Issue Analysis\n\n**Yes, there is a significant issue related to the ability to renounce ownership in this specif... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Assess the risk of inheriting from `Owna...",
+          "Location": "Task 9: **Task:** Assess the risk of inheriting from `Ownable`, including the ability to renounce ownership, and determine if this aligns with the project's operational requirements.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified a critical security vulnerability related to the audit task of ensuring no publicly accessible functions allow unauthorized ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Action:** Ensure no publicly accessible function...",
+          "Location": "Task 10: **Action:** Ensure no publicly accessible functions allow unauthorized minting or manipulation of vesting schedules.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on the audit task of identifying transactions that could be front-run for profit, with a focus on `onlyOwner` functions, I have analyzed the provided Miner5 smart contract code. Below is my deta... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Identify transactions that could be fron...",
+          "Location": "Task 11: **Task:** Identify transactions that could be front-run for profit. Since key functions are `onlyOwner`, the risk is minimal for users but should be considered for owner actions (e.g., a malicious owner could front-run their own transactions in a malicious fork, but this is not a protocol vulnerability).",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Of course. I have performed a detailed security audit focused on the use of `block.timestamp` (`now`) in the provided vesting contract. Here are my findings.\n\n### 1. Issue Analysis\n\n**Yes, there is a ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Evaluate the use of `block.timestamp` (`...",
+          "Location": "Task 12: **Task:** Evaluate the use of `block.timestamp` (`now`) in vesting logic.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "After a thorough analysis of the provided Miner5 smart contract code, I have identified state-changing functions that make external calls. Below is my detailed assessment:\n\n## 1. Issue Analysis\n\n**Yes... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Identify all state-changing functions th...",
+          "Location": "Task 1: **Task:** Identify all state-changing functions that make external calls.",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "7f978efa-3e52-4b86-a9fb-499f4691ac85",
+      "severity_breakdown": {
+        "High": 9,
+        "Low": 0,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 (Integer Overflow and Underflow) is applicable due to the critical edge case in investorIndex (uint8) potentially overflowing at 255 without proper checks. SWC-107 (Reentrancy) is supported as state-changing functions with external calls were identified, though no reentrancy was found in overridden functions. Evidence: investorIndex uint8 overflows at 255 in addInvestor (Finding 3); State-changing functions with external calls identified (Finding 1); Reentrancy check in overridden functions performed (Finding 2)",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"investorIndex uint8 overflows at 255 in addInvestor (Finding 3)\", \"State-changing functions with external calls identified (Finding 1)\", \"Reentrancy check in overridden functions performed (Finding 2)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 (Integer Overflow and Underflow) is applicable due to the critical edge case in investorIndex (uint8) potentially overflowing at 255 without proper checks. SWC-107 (Reentrancy) is supported as state-changing functions with external calls were identified, though no reentrancy was found in overridden functions.\\\",\\n  \\\"evidence\\\": [\\n    \\\"investorIndex uint8 overflows at 255 in addInvestor (Finding 3)\\\",\\n    \\\"State-changing functions with external calls identified (Finding 1)\\\",\\n    \\\"Reentrancy check in overridden functions performed (Finding 2)\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 (Integer Overflow and Underflow) is applicable due to the critical edge case in investorIndex (uint8) potentially overflowing at 255 without proper checks. SWC-107 (Reentrancy) is supported as state-changing functions with external calls were identified, though no reentrancy was found in overridden functions.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 (Integer Overflow and Underflow) is applicable due to the critical edge case in investorIndex (uint8) potentially overflowing at 255 without proper checks. SWC-107 (Reentrancy) is supported as state-changing functions with external calls were identified, though no reentrancy was found in overridden functions.",
+      "evidence": [
+        "investorIndex uint8 overflows at 255 in addInvestor (Finding 3)",
+        "State-changing functions with external calls identified (Finding 1)",
+        "Reentrancy check in overridden functions performed (Finding 2)"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 (Integer Overflow and Underflow) is applicable due to the critical edge case in investorIndex (uint8) potentially overflowing at 255 without proper checks. SWC-107 (Reentrancy) is supported as state-changing functions with external calls were identified, though no reentrancy was found in overridden functions.\",\n  \"evidence\": [\n    \"investorIndex uint8 overflows at 255 in addInvestor (Finding 3)\",\n    \"State-changing functions with external calls identified (Finding 1)\",\n    \"Reentrancy check in overridden functions performed (Finding 2)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "7f978efa-3e52-4b86-a9fb-499f4691ac85",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

@@ -1,0 +1,238 @@
+{
+  "address": "0x27a83639fe7edbe2c935b4b7de4aaafd49b80a71",
+  "session_id": "591ee9b4-0d59-4dfe-ac14-cfdb1504e7e4",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-107",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-107 label is justified as the _transfer function contains external calls to Uniswap functions before state updates, creating classic reentrancy conditions. This matches the exact vulnerability pattern described in SWC-107 where external calls precede state changes. Evidence: External calls to swapAndLiquify/addLiquidityETH occur before state updates in _transfer; Reentrancy risk confirmed by static analysis finding in DAOofSecrets._transfer function; Impact aligns with SWC-107: potential state manipulation during external calls",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"External calls to swapAndLiquify/addLiquidityETH occur before state updates in _transfer\", \"Reentrancy risk confirmed by static analysis finding in DAOofSecrets._transfer function\", \"Impact aligns with SWC-107: potential state manipulation during external calls\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label is justified as the _transfer function contains external calls to Uniswap functions before state updates, creating classic reentrancy conditions. This matches the exact vulnerability pattern described in SWC-107 where external calls precede state changes.\\\",\\n  \\\"evidence\\\": [\\n    \\\"External calls to swapAndLiquify/addLiquidityETH occur before state updates in _transfer\\\",\\n    \\\"Reentrancy risk confirmed by static analysis finding in DAOofSecrets._transfer function\\\",\\n    \\\"Impact aligns with SWC-107: potential state manipulation during external calls\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label is justified as the _transfer function contains external calls to Uniswap functions before state updates, creating classic reentrancy conditions. This matches the exact vulnerability pattern described in SWC-107 where external calls precede state changes.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3049,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x27a83639fe7edbe2c935b4b7de4aaafd49b80a71/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 563.5591888427734,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x27a83639fe7edbe2c935b4b7de4aaafd49b80a71",
+    "model": "deepseek_school",
+    "session_id": "591ee9b4-0d59-4dfe-ac14-cfdb1504e7e4",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy Vulnerability in _transfer Function",
+        "Severity": "High",
+        "Description": "The static analysis results identify a reentrancy risk in the _transfer function due to external calls (swapAndLiquify, addLiquidityETH, swapExactTokensForETHSupportingFeeOnTransferTokens) that occur before state updates. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+        "Impact": "Potential for reentrancy attacks where an attacker could manipulate contract state during external calls, leading to loss of funds or unauthorized actions.",
+        "Location": "Static analysis reentrancy-eth finding; DAOofSecrets._transfer function"
+      },
+      {
+        "Issue": "Unchecked Return Value in addLiquidity",
+        "Severity": "Medium",
+        "Description": "The static analysis results indicate that addLiquidity ignores the return value of uniswapV2Router.addLiquidityETH, which could lead to unnoticed failures in liquidity addition. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+        "Impact": "Liquidity addition failures may not be detected, potentially causing contract malfunctions or loss of funds.",
+        "Location": "Static analysis unused-return finding; DAOofSecrets.addLiquidity function"
+      },
+      {
+        "Issue": "Missing Zero Address Check in Lottery Assignment",
+        "Severity": "Low",
+        "Description": "The static analysis results note that transferlottery function lacks a zero address check for the _lottery parameter. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+        "Impact": "Assignment of a zero address could lead to unintended behavior or errors in lottery functionality.",
+        "Location": "Static analysis missing-zero-check finding; DAOofSecrets.transferlottery function"
+      },
+      {
+        "Issue": "Shadowing of Built-in Symbol",
+        "Severity": "Low",
+        "Description": "The static analysis results identify local variable shadowing of the built-in owner symbol in _approve and allowance functions. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+        "Impact": "Code readability and maintainability issues; potential confusion between local variables and inherited functions.",
+        "Location": "Static analysis shadowing-local finding; DAOofSecrets._approve and DAOofSecrets.allowance functions"
+      },
+      {
+        "Issue": "Missing Events for Critical Parameter Changes",
+        "Severity": "Low",
+        "Description": "The static analysis results indicate that setMaxTxPercent, setLiquidityFeePercent, and setTaxFeePercent functions do not emit events when changing parameters. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+        "Impact": "Lack of transparency for off-chain monitoring; users and applications cannot easily track parameter changes.",
+        "Location": "Static analysis events-maths finding; DAOofSecrets.setMaxTxPercent, setLiquidityFeePercent, and setTaxFeePercent functions"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T16:54:33.057488",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "591ee9b4-0d59-4dfe-ac14-cfdb1504e7e4",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-yd_eckt3/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.12",
+            "0.5.0",
+            "0.6.2"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 563.5591888427734,
+        "total_tasks": 0
+      },
+      "execution_time": 563.5591888427734,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "The static analysis results identify a reentrancy risk in the _transfer function due to external calls (swapAndLiquify, addLiquidityETH, swapExactTokensForETHSupportingFeeOnTransferTokens) that occur before state updates. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+          "Impact": "Potential for reentrancy attacks where an attacker could manipulate contract state during external calls, leading to loss of funds or unauthorized actions.",
+          "Issue": "Reentrancy Vulnerability in _transfer Function",
+          "Location": "Static analysis reentrancy-eth finding; DAOofSecrets._transfer function",
+          "Severity": "High"
+        },
+        {
+          "Description": "The static analysis results indicate that addLiquidity ignores the return value of uniswapV2Router.addLiquidityETH, which could lead to unnoticed failures in liquidity addition. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+          "Impact": "Liquidity addition failures may not be detected, potentially causing contract malfunctions or loss of funds.",
+          "Issue": "Unchecked Return Value in addLiquidity",
+          "Location": "Static analysis unused-return finding; DAOofSecrets.addLiquidity function",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The static analysis results note that transferlottery function lacks a zero address check for the _lottery parameter. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+          "Impact": "Assignment of a zero address could lead to unintended behavior or errors in lottery functionality.",
+          "Issue": "Missing Zero Address Check in Lottery Assignment",
+          "Location": "Static analysis missing-zero-check finding; DAOofSecrets.transferlottery function",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The static analysis results identify local variable shadowing of the built-in owner symbol in _approve and allowance functions. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+          "Impact": "Code readability and maintainability issues; potential confusion between local variables and inherited functions.",
+          "Issue": "Shadowing of Built-in Symbol",
+          "Location": "Static analysis shadowing-local finding; DAOofSecrets._approve and DAOofSecrets.allowance functions",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The static analysis results indicate that setMaxTxPercent, setLiquidityFeePercent, and setTaxFeePercent functions do not emit events when changing parameters. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+          "Impact": "Lack of transparency for off-chain monitoring; users and applications cannot easily track parameter changes.",
+          "Issue": "Missing Events for Critical Parameter Changes",
+          "Location": "Static analysis events-maths finding; DAOofSecrets.setMaxTxPercent, setLiquidityFeePercent, and setTaxFeePercent functions",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The static analysis results identify a reentrancy risk in the _transfer function due to external calls (swapAndLiquify, addLiquidityETH, swapExactTokensForETHSupportingFeeOnTransferTokens) that occur before state updates. This issue is present in the static analysis results and relates to the smart contract code. This issue appears in the auditing result.",
+          "Impact": "Potential for reentrancy attacks where an attacker could manipulate contract state during external calls, leading to loss of funds or unauthorized actions.",
+          "Issue": "Reentrancy Vulnerability in _transfer Function",
+          "Location": "Static analysis reentrancy-eth finding; DAOofSecrets._transfer function",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Reentrancy Vulnerability in _transfer Function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The static analysis results identify a reentrancy risk in the _transfer function due to external calls (swapAndLiquify, addLiquidityETH, swapExactTokensForETHSupportingFeeOnTransferTokens) that occur before state updates. This issue is present in the static analysis results and relates to the smart contract code.\",\n    \"Impact\": \"Potential for reentrancy attacks where an attacker could manipulate contract state during external calls, leading to loss of funds or unauthorized actions.\",\n    \"Location\": \"Static analysis reentrancy-eth finding; DAOofSecrets._transfer function\"\n  },\n  {\n    \"Issue\": \"Unchecked Return Value in addLiquidity\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The static analysis results indicate that addLiquidity ignores the return value of uniswapV2Router.addLiquidityETH, which could lead to unnoticed failures in liquidity addition. This issue is present in the static analysis results and relates to the smart contract code.\",\n    \"Impact\": \"Liquidity addition failures may not be detected, potentially causing contract malfunctions or loss of funds.\",\n    \"Location\": \"Static analysis unused-return finding; DAOofSecrets.addLiquidity function\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Check in Lottery Assignment\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The static analysis results note that transferlottery function lacks a zero address check for the _lottery parameter. This issue is present in the static analysis results and relates to the smart contract code.\",\n    \"Impact\": \"Assignment of a zero address could lead to unintended behavior or errors in lottery functionality.\",\n    \"Location\": \"Static analysis missing-zero-check finding; DAOofSecrets.transferlottery function\"\n  },\n  {\n    \"Issue\": \"Shadowing of Built-in Symbol\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The static analysis results identify local variable shadowing of the built-in owner symbol in _approve and allowance functions. This issue is present in the static analysis results and relates to the smart contract code.\",\n    \"Impact\": \"Code readability and maintainability issues; potential confusion between local variables and inherited functions.\",\n    \"Location\": \"Static analysis shadowing-local finding; DAOofSecrets._approve and DAOofSecrets.allowance functions\"\n  },\n  {\n    \"Issue\": \"Missing Events for Critical Parameter Changes\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The static analysis results indicate that setMaxTxPercent, setLiquidityFeePercent, and setTaxFeePercent functions do not emit events when changing parameters. This issue is present in the static analysis results and relates to the smart contract code.\",\n    \"Impact\": \"Lack of transparency for off-chain monitoring; users and applications cannot easily track parameter changes.\",\n    \"Location\": \"Static analysis events-maths finding; DAOofSecrets.setMaxTxPercent, setLiquidityFeePercent, and setTaxFeePercent functions\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "591ee9b4-0d59-4dfe-ac14-cfdb1504e7e4",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 3,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 10.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "kw:reentrancy-eth",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(10.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-107 label is justified as the _transfer function contains external calls to Uniswap functions before state updates, creating classic reentrancy conditions. This matches the exact vulnerability pattern described in SWC-107 where external calls precede state changes. Evidence: External calls to swapAndLiquify/addLiquidityETH occur before state updates in _transfer; Reentrancy risk confirmed by static analysis finding in DAOofSecrets._transfer function; Impact aligns with SWC-107: potential state manipulation during external calls",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"External calls to swapAndLiquify/addLiquidityETH occur before state updates in _transfer\", \"Reentrancy risk confirmed by static analysis finding in DAOofSecrets._transfer function\", \"Impact aligns with SWC-107: potential state manipulation during external calls\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label is justified as the _transfer function contains external calls to Uniswap functions before state updates, creating classic reentrancy conditions. This matches the exact vulnerability pattern described in SWC-107 where external calls precede state changes.\\\",\\n  \\\"evidence\\\": [\\n    \\\"External calls to swapAndLiquify/addLiquidityETH occur before state updates in _transfer\\\",\\n    \\\"Reentrancy risk confirmed by static analysis finding in DAOofSecrets._transfer function\\\",\\n    \\\"Impact aligns with SWC-107: potential state manipulation during external calls\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label is justified as the _transfer function contains external calls to Uniswap functions before state updates, creating classic reentrancy conditions. This matches the exact vulnerability pattern described in SWC-107 where external calls precede state changes.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-107 label is justified as the _transfer function contains external calls to Uniswap functions before state updates, creating classic reentrancy conditions. This matches the exact vulnerability pattern described in SWC-107 where external calls precede state changes.",
+      "evidence": [
+        "External calls to swapAndLiquify/addLiquidityETH occur before state updates in _transfer",
+        "Reentrancy risk confirmed by static analysis finding in DAOofSecrets._transfer function",
+        "Impact aligns with SWC-107: potential state manipulation during external calls"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-107 label is justified as the _transfer function contains external calls to Uniswap functions before state updates, creating classic reentrancy conditions. This matches the exact vulnerability pattern described in SWC-107 where external calls precede state changes.\",\n  \"evidence\": [\n    \"External calls to swapAndLiquify/addLiquidityETH occur before state updates in _transfer\",\n    \"Reentrancy risk confirmed by static analysis finding in DAOofSecrets._transfer function\",\n    \"Impact aligns with SWC-107: potential state manipulation during external calls\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "591ee9b4-0d59-4dfe-ac14-cfdb1504e7e4",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 3049,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

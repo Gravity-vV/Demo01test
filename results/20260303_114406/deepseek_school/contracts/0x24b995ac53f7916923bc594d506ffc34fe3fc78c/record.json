@@ -1,0 +1,264 @@
+{
+  "address": "0x24b995ac53f7916923bc594d506ffc34fe3fc78c",
+  "session_id": "1929e84c-8268-4882-8f7b-d8893b064ad3",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-107",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-107 label applies because the contract allows user-controlled operations to grow arrays without bounds in deposit() and withdraw() functions. This creates a denial-of-service risk through gas exhaustion as documented in the high severity finding. Evidence: Controlled Array Length finding shows unbounded array growth in deposit/withdraw; Impact confirms potential for contract unusability due to gas exhaustion; Location explicitly identifies CrowdWallet.deposit() and withdraw() functions",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-no-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Controlled Array Length finding shows unbounded array growth in deposit/withdraw\", \"Impact confirms potential for contract unusability due to gas exhaustion\", \"Location explicitly identifies CrowdWallet.deposit() and withdraw() functions\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label applies because the contract allows user-controlled operations to grow arrays without bounds in deposit() and withdraw() functions. This creates a denial-of-service risk through gas exhaustion as documented in the high severity finding.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Controlled Array Length finding shows unbounded array growth in deposit/withdraw\\\",\\n    \\\"Impact confirms potential for contract unusability due to gas exhaustion\\\",\\n    \\\"Location explicitly identifies CrowdWallet.deposit() and withdraw() functions\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label applies because the contract allows user-controlled operations to grow arrays without bounds in deposit() and withdraw() functions. This creates a denial-of-service risk through gas exhaustion as documented in the high severity finding.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4012,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x24b995ac53f7916923bc594d506ffc34fe3fc78c/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 7,
+  "execution_time": 550.8218138217926,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x24b995ac53f7916923bc594d506ffc34fe3fc78c",
+    "model": "deepseek_school",
+    "session_id": "1929e84c-8268-4882-8f7b-d8893b064ad3",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Controlled Array Length",
+        "Severity": "High",
+        "Description": "This issue appears in both the static analysis results and the smart contract code. The CrowdWallet contract allows user-controlled values to push new entries into arrays without bounds checking, which could lead to denial-of-service through gas exhaustion.",
+        "Impact": "An attacker could repeatedly call deposit() or withdraw() to grow the arrays indefinitely, potentially making the contract unusable due to excessive gas costs.",
+        "Location": "CrowdWallet.deposit() and CrowdWallet.withdraw() functions; Static analysis finding: controlled-array-length"
+      },
+      {
+        "Issue": "Divide Before Multiply Precision Loss",
+        "Severity": "Medium",
+        "Description": "This issue appears in both the static analysis results and the smart contract code. The calculatePayoutForAddress function performs division before multiplication, which can lead to precision loss and incorrect payout calculations.",
+        "Impact": "Token holders may receive incorrect payout amounts due to rounding errors, potentially leading to loss of funds or unfair distribution.",
+        "Location": "CrowdWallet.calculatePayoutForAddress() function; Static analysis finding: divide-before-multiply"
+      },
+      {
+        "Issue": "Reentrancy Vulnerability",
+        "Severity": "Medium",
+        "Description": "This issue appears in the static analysis results only. The withdraw() function makes external calls before updating state variables, creating a potential reentrancy vulnerability despite not transferring ETH before state updates.",
+        "Impact": "Although no direct ETH transfer occurs before state changes, cross-function reentrancy could potentially be exploited to manipulate contract state.",
+        "Location": "Static analysis finding: reentrancy-no-eth in CrowdWallet.withdraw()"
+      },
+      {
+        "Issue": "Missing Ownership Transfer Events",
+        "Severity": "Low",
+        "Description": "This issue appears in both the static analysis results and the smart contract code. The transferOwnership function changes the owner state variable without emitting an event, reducing transparency.",
+        "Impact": "Off-chain monitoring systems cannot track ownership changes, reducing accountability and transparency.",
+        "Location": "Ownable.transferOwnership() function; Static analysis finding: events-access"
+      },
+      {
+        "Issue": "Missing Zero Address Checks",
+        "Severity": "Low",
+        "Description": "This issue appears in both the static analysis results and the smart contract code. Constructor functions lack zero address validation for owner parameters, which could lead to contract ownership being assigned to invalid addresses.",
+        "Impact": "If owner is set to address(0), the contract may become unusable as onlyOwner modifiers would prevent all operations.",
+        "Location": "GenesisToken.GenesisToken() and CrowdWallet.CrowdWallet() constructors; Static analysis finding: missing-zero-check"
+      },
+      {
+        "Issue": "Timestamp Dependency",
+        "Severity": "Low",
+        "Description": "This issue appears in both the static analysis results and the smart contract code. The contract uses block timestamps for critical payout period logic, which can be minimally manipulated by miners.",
+        "Impact": "Miners could potentially manipulate payout timing by a few seconds, though the impact is limited given the 30-day payout periods.",
+        "Location": "CrowdWallet.isAddressLocked() and CrowdWallet.isNewPayoutPeriod() functions; Static analysis finding: timestamp"
+      },
+      {
+        "Issue": "Missing Configuration Change Events",
+        "Severity": "Low",
+        "Description": "This issue appears in the static analysis results only. The setBlocksPerPayPeriod function changes a critical configuration parameter without emitting an event.",
+        "Impact": "Off-chain systems cannot track changes to the payout period configuration, reducing transparency.",
+        "Location": "Static analysis finding: events-maths in CrowdWallet.setBlocksPerPayPeriod()"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T16:25:06.832870",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "1929e84c-8268-4882-8f7b-d8893b064ad3",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-yr6oyr1t/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.13"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 550.8218138217926,
+        "total_tasks": 0
+      },
+      "execution_time": 550.8218138217926,
+      "finding_number": 7,
+      "findings": [
+        {
+          "Description": "This issue appears in both the static analysis results and the smart contract code. The CrowdWallet contract allows user-controlled values to push new entries into arrays without bounds checking, which could lead to denial-of-service through gas exhaustion.",
+          "Impact": "An attacker could repeatedly call deposit() or withdraw() to grow the arrays indefinitely, potentially making the contract unusable due to excessive gas costs.",
+          "Issue": "Controlled Array Length",
+          "Location": "CrowdWallet.deposit() and CrowdWallet.withdraw() functions; Static analysis finding: controlled-array-length",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in both the static analysis results and the smart contract code. The calculatePayoutForAddress function performs division before multiplication, which can lead to precision loss and incorrect payout calculations.",
+          "Impact": "Token holders may receive incorrect payout amounts due to rounding errors, potentially leading to loss of funds or unfair distribution.",
+          "Issue": "Divide Before Multiply Precision Loss",
+          "Location": "CrowdWallet.calculatePayoutForAddress() function; Static analysis finding: divide-before-multiply",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in the static analysis results only. The withdraw() function makes external calls before updating state variables, creating a potential reentrancy vulnerability despite not transferring ETH before state updates.",
+          "Impact": "Although no direct ETH transfer occurs before state changes, cross-function reentrancy could potentially be exploited to manipulate contract state.",
+          "Issue": "Reentrancy Vulnerability",
+          "Location": "Static analysis finding: reentrancy-no-eth in CrowdWallet.withdraw()",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in both the static analysis results and the smart contract code. The transferOwnership function changes the owner state variable without emitting an event, reducing transparency.",
+          "Impact": "Off-chain monitoring systems cannot track ownership changes, reducing accountability and transparency.",
+          "Issue": "Missing Ownership Transfer Events",
+          "Location": "Ownable.transferOwnership() function; Static analysis finding: events-access",
+          "Severity": "Low"
+        },
+        {
+          "Description": "This issue appears in both the static analysis results and the smart contract code. Constructor functions lack zero address validation for owner parameters, which could lead to contract ownership being assigned to invalid addresses.",
+          "Impact": "If owner is set to address(0), the contract may become unusable as onlyOwner modifiers would prevent all operations.",
+          "Issue": "Missing Zero Address Checks",
+          "Location": "GenesisToken.GenesisToken() and CrowdWallet.CrowdWallet() constructors; Static analysis finding: missing-zero-check",
+          "Severity": "Low"
+        },
+        {
+          "Description": "This issue appears in both the static analysis results and the smart contract code. The contract uses block timestamps for critical payout period logic, which can be minimally manipulated by miners.",
+          "Impact": "Miners could potentially manipulate payout timing by a few seconds, though the impact is limited given the 30-day payout periods.",
+          "Issue": "Timestamp Dependency",
+          "Location": "CrowdWallet.isAddressLocked() and CrowdWallet.isNewPayoutPeriod() functions; Static analysis finding: timestamp",
+          "Severity": "Low"
+        },
+        {
+          "Description": "This issue appears in the static analysis results only. The setBlocksPerPayPeriod function changes a critical configuration parameter without emitting an event.",
+          "Impact": "Off-chain systems cannot track changes to the payout period configuration, reducing transparency.",
+          "Issue": "Missing Configuration Change Events",
+          "Location": "Static analysis finding: events-maths in CrowdWallet.setBlocksPerPayPeriod()",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "This issue appears in both the static analysis results and the smart contract code. The CrowdWallet contract allows user-controlled values to push new entries into arrays without bounds checking, which could lead to denial-of-service through gas exhaustion.",
+          "Impact": "An attacker could repeatedly call deposit() or withdraw() to grow the arrays indefinitely, potentially making the contract unusable due to excessive gas costs.",
+          "Issue": "Controlled Array Length",
+          "Location": "CrowdWallet.deposit() and CrowdWallet.withdraw() functions; Static analysis finding: controlled-array-length",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Controlled Array Length\",\n    \"Severity\": \"High\",\n    \"Description\": \"This issue appears in both the static analysis results and the smart contract code. The CrowdWallet contract allows user-controlled values to push new entries into arrays without bounds checking, which could lead to denial-of-service through gas exhaustion.\",\n    \"Impact\": \"An attacker could repeatedly call deposit() or withdraw() to grow the arrays indefinitely, potentially making the contract unusable due to excessive gas costs.\",\n    \"Location\": \"CrowdWallet.deposit() and CrowdWallet.withdraw() functions; Static analysis finding: controlled-array-length\"\n  },\n  {\n    \"Issue\": \"Divide Before Multiply Precision Loss\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"This issue appears in both the static analysis results and the smart contract code. The calculatePayoutForAddress function performs division before multiplication, which can lead to precision loss and incorrect payout calculations.\",\n    \"Impact\": \"Token holders may receive incorrect payout amounts due to rounding errors, potentially leading to loss of funds or unfair distribution.\",\n    \"Location\": \"CrowdWallet.calculatePayoutForAddress() function; Static analysis finding: divide-before-multiply\"\n  },\n  {\n    \"Issue\": \"Reentrancy Vulnerability\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"This issue appears in the static analysis results only. The withdraw() function makes external calls before updating state variables, creating a potential reentrancy vulnerability despite not transferring ETH before state updates.\",\n    \"Impact\": \"Although no direct ETH transfer occurs before state changes, cross-function reentrancy could potentially be exploited to manipulate contract state.\",\n    \"Location\": \"Static analysis finding: reentrancy-no-eth in CrowdWallet.withdraw()\"\n  },\n  {\n    \"Issue\": \"Missing Ownership Transfer Events\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue appears in both the static analysis results and the smart contract code. The transferOwnership function changes the owner state variable without emitting an event, reducing transparency.\",\n    \"Impact\": \"Off-chain monitoring systems cannot track ownership changes, reducing accountability and transparency.\",\n    \"Location\": \"Ownable.transferOwnership() function; Static analysis finding: events-access\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Checks\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue appears in both the static analysis results and the smart contract code. Constructor functions lack zero address validation for owner parameters, which could lead to contract ownership being assigned to invalid addresses.\",\n    \"Impact\": \"If owner is set to address(0), the contract may become unusable as onlyOwner modifiers would prevent all operations.\",\n    \"Location\": \"GenesisToken.GenesisToken() and CrowdWallet.CrowdWallet() constructors; Static analysis finding: missing-zero-check\"\n  },\n  {\n    \"Issue\": \"Timestamp Dependency\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue appears in both the static analysis results and the smart contract code. The contract uses block timestamps for critical payout period logic, which can be minimally manipulated by miners.\",\n    \"Impact\": \"Miners could potentially manipulate payout timing by a few seconds, though the impact is limited given the 30-day payout periods.\",\n    \"Location\": \"CrowdWallet.isAddressLocked() and CrowdWallet.isNewPayoutPeriod() functions; Static analysis finding: timestamp\"\n  },\n  {\n    \"Issue\": \"Missing Configuration Change Events\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue appears in the static analysis results only. The setBlocksPerPayPeriod function changes a critical configuration parameter without emitting an event.\",\n    \"Impact\": \"Off-chain systems cannot track changes to the payout period configuration, reducing transparency.\",\n    \"Location\": \"Static analysis finding: events-maths in CrowdWallet.setBlocksPerPayPeriod()\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "1929e84c-8268-4882-8f7b-d8893b064ad3",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 4,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 10.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "kw:reentrancy-no-eth",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(10.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-107 label applies because the contract allows user-controlled operations to grow arrays without bounds in deposit() and withdraw() functions. This creates a denial-of-service risk through gas exhaustion as documented in the high severity finding. Evidence: Controlled Array Length finding shows unbounded array growth in deposit/withdraw; Impact confirms potential for contract unusability due to gas exhaustion; Location explicitly identifies CrowdWallet.deposit() and withdraw() functions",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-no-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Controlled Array Length finding shows unbounded array growth in deposit/withdraw\", \"Impact confirms potential for contract unusability due to gas exhaustion\", \"Location explicitly identifies CrowdWallet.deposit() and withdraw() functions\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label applies because the contract allows user-controlled operations to grow arrays without bounds in deposit() and withdraw() functions. This creates a denial-of-service risk through gas exhaustion as documented in the high severity finding.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Controlled Array Length finding shows unbounded array growth in deposit/withdraw\\\",\\n    \\\"Impact confirms potential for contract unusability due to gas exhaustion\\\",\\n    \\\"Location explicitly identifies CrowdWallet.deposit() and withdraw() functions\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label applies because the contract allows user-controlled operations to grow arrays without bounds in deposit() and withdraw() functions. This creates a denial-of-service risk through gas exhaustion as documented in the high severity finding.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-107 label applies because the contract allows user-controlled operations to grow arrays without bounds in deposit() and withdraw() functions. This creates a denial-of-service risk through gas exhaustion as documented in the high severity finding.",
+      "evidence": [
+        "Controlled Array Length finding shows unbounded array growth in deposit/withdraw",
+        "Impact confirms potential for contract unusability due to gas exhaustion",
+        "Location explicitly identifies CrowdWallet.deposit() and withdraw() functions"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-107 label applies because the contract allows user-controlled operations to grow arrays without bounds in deposit() and withdraw() functions. This creates a denial-of-service risk through gas exhaustion as documented in the high severity finding.\",\n  \"evidence\": [\n    \"Controlled Array Length finding shows unbounded array growth in deposit/withdraw\",\n    \"Impact confirms potential for contract unusability due to gas exhaustion\",\n    \"Location explicitly identifies CrowdWallet.deposit() and withdraw() functions\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "1929e84c-8268-4882-8f7b-d8893b064ad3",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 7,
+        "full_report_chars": 4012,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

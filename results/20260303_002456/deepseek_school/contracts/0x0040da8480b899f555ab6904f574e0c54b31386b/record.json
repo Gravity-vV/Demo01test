@@ -1,0 +1,310 @@
+{
+  "address": "0x0040da8480b899f555ab6904f574e0c54b31386b",
+  "session_id": "d1af9f02-d25d-43b4-bb10-484aa872f87a",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 is applicable due to the reentrancy vulnerability in _transfer function violating checks-effects-interactions pattern. SWC-107 is justified by the weak PRNG in approve function relying on block timestamp for critical logic. Evidence: _transfer emits Transfer event before updating balances (Finding 1); approve uses require(now % 10000000 == 0) for critical condition (Finding 4); Static analysis confirmed weak-prng vulnerability (Finding 4)",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"_transfer emits Transfer event before updating balances (Finding 1)\", \"approve uses require(now % 10000000 == 0) for critical condition (Finding 4)\", \"Static analysis confirmed weak-prng vulnerability (Finding 4)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to the reentrancy vulnerability in _transfer function violating checks-effects-interactions pattern. SWC-107 is justified by the weak PRNG in approve function relying on block timestamp for critical logic.\\\",\\n  \\\"evidence\\\": [\\n    \\\"_transfer emits Transfer event before updating balances (Finding 1)\\\",\\n    \\\"approve uses require(now % 10000000 == 0) for critical condition (Finding 4)\\\",\\n    \\\"Static analysis confirmed weak-prng vulnerability (Finding 4)\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to the reentrancy vulnerability in _transfer function violating checks-effects-interactions pattern. SWC-107 is justified by the weak PRNG in approve function relying on block timestamp for critical logic.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 5331,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_002456/deepseek_school/contracts/0x0040da8480b899f555ab6904f574e0c54b31386b/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 11,
+  "execution_time": 1330.0431492328644,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0040da8480b899f555ab6904f574e0c54b31386b",
+    "model": "deepseek_school",
+    "session_id": "d1af9f02-d25d-43b4-bb10-484aa872f87a",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy Vulnerability in Transfer Function",
+        "Severity": "High",
+        "Description": "The _transfer function violates checks-effects-interactions pattern by emitting Transfer event (which can trigger external calls for contract recipients) before updating balances. This vulnerability appears in the smart contract code only.",
+        "Impact": "Attackers can perform reentrancy attacks to drain funds from the contract before balance updates are completed.",
+        "Location": "_transfer function in AkitaRyu contract (lines 264-275)"
+      },
+      {
+        "Issue": "Unprotected Arithmetic Operations",
+        "Severity": "High",
+        "Description": "Multiple arithmetic operations bypass SafeMath protection, including raw multiplication in decreaseAllowance and uncontrolled supply increases. This vulnerability appears in the smart contract code only.",
+        "Impact": "Integer overflow/underflow can occur, allowing token supply manipulation and potential fund loss.",
+        "Location": "decreaseAllowance function (line 164: rTotal = amount * 10**18;) and increaseAllowance function (lines 219-224)"
+      },
+      {
+        "Issue": "Arbitrary Token Minting Capability",
+        "Severity": "High",
+        "Description": "Owner can mint unlimited tokens through increaseAllowance function without any supply cap. This vulnerability appears in the smart contract code only.",
+        "Impact": "Complete token supply inflation, devaluing all existing holdings to near zero.",
+        "Location": "increaseAllowance function (lines 219-224)"
+      },
+      {
+        "Issue": "Weak PRNG in Approve Function",
+        "Severity": "High",
+        "Description": "The approve function uses a weak pseudo-random number generator based on block timestamp. This vulnerability appears in both the smart contract code and static analysis results.",
+        "Impact": "Predictable approval timing enables front-running attacks and manipulation of approval transactions.",
+        "Location": "approve function (line 262: require(now % 10000000 == 0);) and static analysis finding [High] weak-prng"
+      },
+      {
+        "Issue": "Missing Access Controls on Critical Functions",
+        "Severity": "High",
+        "Description": "Critical state-changing functions like decreaseAllowance and increaseAllowance lack proper access control modifiers. This vulnerability appears in the smart contract code only.",
+        "Impact": "Any user can manipulate critical contract parameters and mint unlimited tokens to themselves.",
+        "Location": "decreaseAllowance and increaseAllowance functions (missing onlyOwner modifier)"
+      },
+      {
+        "Issue": "Dangerous Strict Equality Check",
+        "Severity": "Medium",
+        "Description": "The approve function uses a strict equality check with timestamp modulo operation. This vulnerability appears in both the smart contract code and static analysis results.",
+        "Impact": "Timing-based condition creates unpredictable approval behavior and potential transaction failures.",
+        "Location": "approve function (line 262) and static analysis finding [Medium] incorrect-equality"
+      },
+      {
+        "Issue": "Missing Zero Address Validation",
+        "Severity": "Medium",
+        "Description": "Critical address setting functions lack zero address validation. This vulnerability appears in both the smart contract code and static analysis results.",
+        "Impact": "Accidental setting of critical addresses to zero address can break contract functionality.",
+        "Location": "Approve and setrouteChain functions, static analysis findings [Low] missing-zero-check"
+      },
+      {
+        "Issue": "Ineffective Transfer Restrictions",
+        "Severity": "Medium",
+        "Description": "The _transfer function contains a flawed restriction that can be easily bypassed through transaction splitting. This vulnerability appears in the smart contract code only.",
+        "Impact": "Intended transfer limits to router address are completely ineffective, allowing unlimited transfers.",
+        "Location": "_transfer function conditional check (lines 268-270)"
+      },
+      {
+        "Issue": "Misnamed and Misimplemented Functions",
+        "Severity": "Medium",
+        "Description": "increaseAllowance and decreaseAllowance functions implement non-standard minting/burning logic instead of ERC20 allowance management. This vulnerability appears in the smart contract code only.",
+        "Impact": "Breaks ERC20 standard compliance and creates confusion about function behavior.",
+        "Location": "increaseAllowance and decreaseAllowance functions (lines 166-168, 177-182)"
+      },
+      {
+        "Issue": "Missing Event Emissions",
+        "Severity": "Low",
+        "Description": "Critical state changes like rTotal modification lack event emissions. This vulnerability appears in both the smart contract code and static analysis results.",
+        "Impact": "Reduced transparency and difficulty in tracking contract state changes.",
+        "Location": "decreaseAllowance function and static analysis finding [Low] events-maths"
+      },
+      {
+        "Issue": "Timestamp Dependency",
+        "Severity": "Low",
+        "Description": "The approve function relies on block timestamp for critical logic. This vulnerability appears in both the smart contract code and static analysis results.",
+        "Impact": "Vulnerable to miner manipulation of block timestamps.",
+        "Location": "approve function (line 262) and static analysis finding [Low] timestamp"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T00:47:13.590188",
+      "execution_summary": {
+        "completed_tasks": 11,
+        "failed_tasks": 1,
+        "session_id": "d1af9f02-d25d-43b4-bb10-484aa872f87a",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-x_zopkgg/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.9"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1330.0431492328644,
+        "total_tasks": 12
+      },
+      "execution_time": 1330.0431492328644,
+      "finding_number": 11,
+      "findings": [
+        {
+          "Description": "The _transfer function violates checks-effects-interactions pattern by emitting Transfer event (which can trigger external calls for contract recipients) before updating balances. This vulnerability appears in the smart contract code only.",
+          "Impact": "Attackers can perform reentrancy attacks to drain funds from the contract before balance updates are completed.",
+          "Issue": "Reentrancy Vulnerability in Transfer Function",
+          "Location": "_transfer function in AkitaRyu contract (lines 264-275)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple arithmetic operations bypass SafeMath protection, including raw multiplication in decreaseAllowance and uncontrolled supply increases. This vulnerability appears in the smart contract code only.",
+          "Impact": "Integer overflow/underflow can occur, allowing token supply manipulation and potential fund loss.",
+          "Issue": "Unprotected Arithmetic Operations",
+          "Location": "decreaseAllowance function (line 164: rTotal = amount * 10**18;) and increaseAllowance function (lines 219-224)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Owner can mint unlimited tokens through increaseAllowance function without any supply cap. This vulnerability appears in the smart contract code only.",
+          "Impact": "Complete token supply inflation, devaluing all existing holdings to near zero.",
+          "Issue": "Arbitrary Token Minting Capability",
+          "Location": "increaseAllowance function (lines 219-224)",
+          "Severity": "High"
+        },
+        {
+          "Description": "The approve function uses a weak pseudo-random number generator based on block timestamp. This vulnerability appears in both the smart contract code and static analysis results.",
+          "Impact": "Predictable approval timing enables front-running attacks and manipulation of approval transactions.",
+          "Issue": "Weak PRNG in Approve Function",
+          "Location": "approve function (line 262: require(now % 10000000 == 0);) and static analysis finding [High] weak-prng",
+          "Severity": "High"
+        },
+        {
+          "Description": "Critical state-changing functions like decreaseAllowance and increaseAllowance lack proper access control modifiers. This vulnerability appears in the smart contract code only.",
+          "Impact": "Any user can manipulate critical contract parameters and mint unlimited tokens to themselves.",
+          "Issue": "Missing Access Controls on Critical Functions",
+          "Location": "decreaseAllowance and increaseAllowance functions (missing onlyOwner modifier)",
+          "Severity": "High"
+        },
+        {
+          "Description": "The approve function uses a strict equality check with timestamp modulo operation. This vulnerability appears in both the smart contract code and static analysis results.",
+          "Impact": "Timing-based condition creates unpredictable approval behavior and potential transaction failures.",
+          "Issue": "Dangerous Strict Equality Check",
+          "Location": "approve function (line 262) and static analysis finding [Medium] incorrect-equality",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Critical address setting functions lack zero address validation. This vulnerability appears in both the smart contract code and static analysis results.",
+          "Impact": "Accidental setting of critical addresses to zero address can break contract functionality.",
+          "Issue": "Missing Zero Address Validation",
+          "Location": "Approve and setrouteChain functions, static analysis findings [Low] missing-zero-check",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The _transfer function contains a flawed restriction that can be easily bypassed through transaction splitting. This vulnerability appears in the smart contract code only.",
+          "Impact": "Intended transfer limits to router address are completely ineffective, allowing unlimited transfers.",
+          "Issue": "Ineffective Transfer Restrictions",
+          "Location": "_transfer function conditional check (lines 268-270)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "increaseAllowance and decreaseAllowance functions implement non-standard minting/burning logic instead of ERC20 allowance management. This vulnerability appears in the smart contract code only.",
+          "Impact": "Breaks ERC20 standard compliance and creates confusion about function behavior.",
+          "Issue": "Misnamed and Misimplemented Functions",
+          "Location": "increaseAllowance and decreaseAllowance functions (lines 166-168, 177-182)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Critical state changes like rTotal modification lack event emissions. This vulnerability appears in both the smart contract code and static analysis results.",
+          "Impact": "Reduced transparency and difficulty in tracking contract state changes.",
+          "Issue": "Missing Event Emissions",
+          "Location": "decreaseAllowance function and static analysis finding [Low] events-maths",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The approve function relies on block timestamp for critical logic. This vulnerability appears in both the smart contract code and static analysis results.",
+          "Impact": "Vulnerable to miner manipulation of block timestamps.",
+          "Issue": "Timestamp Dependency",
+          "Location": "approve function (line 262) and static analysis finding [Low] timestamp",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The _transfer function violates checks-effects-interactions pattern by emitting Transfer event (which can trigger external calls for contract recipients) before updating balances. This vulnerability appears in the smart contract code only.",
+          "Impact": "Attackers can perform reentrancy attacks to drain funds from the contract before balance updates are completed.",
+          "Issue": "Reentrancy Vulnerability in Transfer Function",
+          "Location": "_transfer function in AkitaRyu contract (lines 264-275)",
+          "Severity": "High"
+        }
+      },
+      "full_report": "```json\n[\n  {\n    \"Issue\": \"Reentrancy Vulnerability in Transfer Function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The _transfer function violates checks-effects-interactions pattern by emitting Transfer event (which can trigger external calls for contract recipients) before updating balances. This vulnerability appears in the smart contract code only.\",\n    \"Impact\": \"Attackers can perform reentrancy attacks to drain funds from the contract before balance updates are completed.\",\n    \"Location\": \"_transfer function in AkitaRyu contract (lines 264-275)\"\n  },\n  {\n    \"Issue\": \"Unprotected Arithmetic Operations\",\n    \"Severity\": \"High\",\n    \"Description\": \"Multiple arithmetic operations bypass SafeMath protection, including raw multiplication in decreaseAllowance and uncontrolled supply increases. This vulnerability appears in the smart contract code only.\",\n    \"Impact\": \"Integer overflow/underflow can occur, allowing token supply manipulation and potential fund loss.\",\n    \"Location\": \"decreaseAllowance function (line 164: rTotal = amount * 10**18;) and increaseAllowance function (lines 219-224)\"\n  },\n  {\n    \"Issue\": \"Arbitrary Token Minting Capability\",\n    \"Severity\": \"High\",\n    \"Description\": \"Owner can mint unlimited tokens through increaseAllowance function without any supply cap. This vulnerability appears in the smart contract code only.\",\n    \"Impact\": \"Complete token supply inflation, devaluing all existing holdings to near zero.\",\n    \"Location\": \"increaseAllowance function (lines 219-224)\"\n  },\n  {\n    \"Issue\": \"Weak PRNG in Approve Function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The approve function uses a weak pseudo-random number generator based on block timestamp. This vulnerability appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Predictable approval timing enables front-running attacks and manipulation of approval transactions.\",\n    \"Location\": \"approve function (line 262: require(now % 10000000 == 0);) and static analysis finding [High] weak-prng\"\n  },\n  {\n    \"Issue\": \"Missing Access Controls on Critical Functions\",\n    \"Severity\": \"High\",\n    \"Description\": \"Critical state-changing functions like decreaseAllowance and increaseAllowance lack proper access control modifiers. This vulnerability appears in the smart contract code only.\",\n    \"Impact\": \"Any user can manipulate critical contract parameters and mint unlimited tokens to themselves.\",\n    \"Location\": \"decreaseAllowance and increaseAllowance functions (missing onlyOwner modifier)\"\n  },\n  {\n    \"Issue\": \"Dangerous Strict Equality Check\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The approve function uses a strict equality check with timestamp modulo operation. This vulnerability appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Timing-based condition creates unpredictable approval behavior and potential transaction failures.\",\n    \"Location\": \"approve function (line 262) and static analysis finding [Medium] incorrect-equality\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Validation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Critical address setting functions lack zero address validation. This vulnerability appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Accidental setting of critical addresses to zero address can break contract functionality.\",\n    \"Location\": \"Approve and setrouteChain functions, static analysis findings [Low] missing-zero-check\"\n  },\n  {\n    \"Issue\": \"Ineffective Transfer Restrictions\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The _transfer function contains a flawed restriction that can be easily bypassed through transaction splitting. This vulnerability appears in the smart contract code only.\",\n    \"Impact\": \"Intended transfer limits to router address are completely ineffective, allowing unlimited transfers.\",\n    \"Location\": \"_transfer function conditional check (lines 268-270)\"\n  },\n  {\n    \"Issue\": \"Misnamed and Misimplemented Functions\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"increaseAllowance and decreaseAllowance functions implement non-standard minting/burning logic instead of ERC20 allowance management. This vulnerability appears in the smart contract code only.\",\n    \"Impact\": \"Breaks ERC20 standard compliance and creates confusion about function behavior.\",\n    \"Location\": \"increaseAllowance and decreaseAllowance functions (lines 166-168, 177-182)\"\n  },\n  {\n    \"Issue\": \"Missing Event Emissions\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Critical state changes like rTotal modification lack event emissions. This vulnerability appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Reduced transparency and difficulty in tracking contract state changes.\",\n    \"Location\": \"decreaseAllowance function and static analysis finding [Low] events-maths\"\n  },\n  {\n    \"Issue\": \"Timestamp Dependency\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The approve function relies on block timestamp for critical logic. This vulnerability appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Vulnerable to miner manipulation of block timestamps.\",\n    \"Location\": \"approve function (line 262) and static analysis finding [Low] timestamp\"\n  }\n]\n```",
+      "model_used": "deepseek_school",
+      "session_id": "d1af9f02-d25d-43b4-bb10-484aa872f87a",
+      "severity_breakdown": {
+        "High": 5,
+        "Low": 2,
+        "Medium": 4
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 is applicable due to the reentrancy vulnerability in _transfer function violating checks-effects-interactions pattern. SWC-107 is justified by the weak PRNG in approve function relying on block timestamp for critical logic. Evidence: _transfer emits Transfer event before updating balances (Finding 1); approve uses require(now % 10000000 == 0) for critical condition (Finding 4); Static analysis confirmed weak-prng vulnerability (Finding 4)",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"_transfer emits Transfer event before updating balances (Finding 1)\", \"approve uses require(now % 10000000 == 0) for critical condition (Finding 4)\", \"Static analysis confirmed weak-prng vulnerability (Finding 4)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to the reentrancy vulnerability in _transfer function violating checks-effects-interactions pattern. SWC-107 is justified by the weak PRNG in approve function relying on block timestamp for critical logic.\\\",\\n  \\\"evidence\\\": [\\n    \\\"_transfer emits Transfer event before updating balances (Finding 1)\\\",\\n    \\\"approve uses require(now % 10000000 == 0) for critical condition (Finding 4)\\\",\\n    \\\"Static analysis confirmed weak-prng vulnerability (Finding 4)\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to the reentrancy vulnerability in _transfer function violating checks-effects-interactions pattern. SWC-107 is justified by the weak PRNG in approve function relying on block timestamp for critical logic.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 is applicable due to the reentrancy vulnerability in _transfer function violating checks-effects-interactions pattern. SWC-107 is justified by the weak PRNG in approve function relying on block timestamp for critical logic.",
+      "evidence": [
+        "_transfer emits Transfer event before updating balances (Finding 1)",
+        "approve uses require(now % 10000000 == 0) for critical condition (Finding 4)",
+        "Static analysis confirmed weak-prng vulnerability (Finding 4)"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 is applicable due to the reentrancy vulnerability in _transfer function violating checks-effects-interactions pattern. SWC-107 is justified by the weak PRNG in approve function relying on block timestamp for critical logic.\",\n  \"evidence\": [\n    \"_transfer emits Transfer event before updating balances (Finding 1)\",\n    \"approve uses require(now % 10000000 == 0) for critical condition (Finding 4)\",\n    \"Static analysis confirmed weak-prng vulnerability (Finding 4)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "d1af9f02-d25d-43b4-bb10-484aa872f87a",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 11,
+        "full_report_chars": 5331,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

@@ -1,0 +1,278 @@
+{
+  "address": "0x004def62c71992615cf22786d0b7efb22850df4a",
+  "session_id": "f8119d79-9ec1-402b-bde6-4be3d0c22468",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 (Integer Overflow/Underflow) is appropriate as the contract contains multiple unprotected arithmetic operations in critical functions. These vulnerabilities can lead to array corruption, incorrect token positioning, and potential contract bricking. Evidence: getTokens() function lacks overflow protection at line ~202; unregisterToken() has unprotected arithmetic at line ~161; registerTokenInternal() contains unsafe operations at line ~222",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"getTokens() function lacks overflow protection at line ~202\", \"unregisterToken() has unprotected arithmetic at line ~161\", \"registerTokenInternal() contains unsafe operations at line ~222\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 (Integer Overflow/Underflow) is appropriate as the contract contains multiple unprotected arithmetic operations in critical functions. These vulnerabilities can lead to array corruption, incorrect token positioning, and potential contract bricking.\\\",\\n  \\\"evidence\\\": [\\n    \\\"getTokens() function lacks overflow protection at line ~202\\\",\\n    \\\"unregisterToken() has unprotected arithmetic at line ~161\\\",\\n    \\\"registerTokenInternal() contains unsafe operations at line ~222\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 (Integer Overflow/Underflow) is appropriate as the contract contains multiple unprotected arithmetic operations in critical functions. These vulnerabilities can lead to array corruption, incorrect token positioning, and potential contract bricking.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4160,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_210653/deepseek_school/contracts/0x004def62c71992615cf22786d0b7efb22850df4a/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 8,
+  "execution_time": 1519.9791519641876,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x004def62c71992615cf22786d0b7efb22850df4a",
+    "model": "deepseek_school",
+    "session_id": "f8119d79-9ec1-402b-bde6-4be3d0c22468",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Missing Access Control on registerMintedToken Function",
+        "Severity": "High",
+        "Description": "The registerMintedToken function lacks the onlyOwner modifier, allowing any address to register arbitrary tokens. This appears in the smart contract code and was identified during the access control review task.",
+        "Impact": "Unauthorized token registration, potential phishing attacks, symbol hijacking, and complete compromise of registry integrity",
+        "Location": "TokenRegistryImpl.registerMintedToken() function (lines ~191-195)"
+      },
+      {
+        "Issue": "Integer Overflow/Underflow Vulnerabilities",
+        "Severity": "High",
+        "Description": "Multiple arithmetic operations lack SafeMath protection or explicit checks, creating overflow/underflow risks. This appears in the smart contract code and was identified during integer overflow analysis.",
+        "Impact": "Array length corruption, incorrect token positioning, potential contract bricking, and manipulation of registry data",
+        "Location": "getTokens() (line ~202), unregisterToken() (line ~161), registerTokenInternal() (line ~222)"
+      },
+      {
+        "Issue": "Unbounded Loops with Gas Exhaustion Risk",
+        "Severity": "Medium",
+        "Description": "Functions areAllTokensRegistered and getTokens contain loops that iterate over potentially large arrays without gas limits. This appears in the smart contract code and was identified during gas limit analysis.",
+        "Impact": "Denial-of-service through gas exhaustion, integration failures with external systems, and potential contract unresponsiveness",
+        "Location": "areAllTokensRegistered() (lines 189-198), getTokens() (lines 234-248)"
+      },
+      {
+        "Issue": "Dynamic Array Growth Without Size Limits",
+        "Severity": "Medium",
+        "Description": "The addresses array grows indefinitely without maximum size constraints, creating potential DoS risks. This appears in the smart contract code and was identified during array growth analysis.",
+        "Impact": "Gas-intensive operations may exceed block limits, disrupting registry functionality and dependent integrations",
+        "Location": "registerTokenInternal() function and addresses array management"
+      },
+      {
+        "Issue": "Front-running Vulnerability in Token Registration",
+        "Severity": "Medium",
+        "Description": "The registerMintedToken function is susceptible to front-running attacks due to public accessibility and symbol-based registration. This appears in the smart contract code and was identified during front-running evaluation.",
+        "Impact": "Symbol hijacking, phishing attacks, and disruption of legitimate token registration processes",
+        "Location": "registerMintedToken() function and symbolMap validation checks"
+      },
+      {
+        "Issue": "Controlled Array Length Manipulation",
+        "Severity": "Medium",
+        "Description": "Static analysis identified that addresses.push(addr) uses user-controlled values for array growth. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential array manipulation leading to storage collisions or excessive gas consumption",
+        "Location": "Slither detector: controlled-array-length (registerTokenInternal function)"
+      },
+      {
+        "Issue": "Locked Ether in Payable Fallback",
+        "Severity": "Medium",
+        "Description": "Contract has a payable fallback function but no withdrawal mechanism, potentially locking sent ETH. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Permanently locked ether, financial loss for accidental senders, and contract bloat",
+        "Location": "Slither detector: locked-ether (TokenRegistryImpl fallback function)"
+      },
+      {
+        "Issue": "Missing Event Emission for State Change",
+        "Severity": "Low",
+        "Description": "Claimable.transferOwnership should emit an event for pendingOwner state change. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Reduced transparency, difficulty in off-chain monitoring, and poor event logging practices",
+        "Location": "Slither detector: events-access (Claimable.transferOwnership function)"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T22:12:25.334531",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "f8119d79-9ec1-402b-bde6-4be3d0c22468",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-vlj1gv33/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.21"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1519.9791519641876,
+        "total_tasks": 12
+      },
+      "execution_time": 1519.9791519641876,
+      "finding_number": 8,
+      "findings": [
+        {
+          "Description": "The registerMintedToken function lacks the onlyOwner modifier, allowing any address to register arbitrary tokens. This appears in the smart contract code and was identified during the access control review task.",
+          "Impact": "Unauthorized token registration, potential phishing attacks, symbol hijacking, and complete compromise of registry integrity",
+          "Issue": "Missing Access Control on registerMintedToken Function",
+          "Location": "TokenRegistryImpl.registerMintedToken() function (lines ~191-195)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple arithmetic operations lack SafeMath protection or explicit checks, creating overflow/underflow risks. This appears in the smart contract code and was identified during integer overflow analysis.",
+          "Impact": "Array length corruption, incorrect token positioning, potential contract bricking, and manipulation of registry data",
+          "Issue": "Integer Overflow/Underflow Vulnerabilities",
+          "Location": "getTokens() (line ~202), unregisterToken() (line ~161), registerTokenInternal() (line ~222)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Functions areAllTokensRegistered and getTokens contain loops that iterate over potentially large arrays without gas limits. This appears in the smart contract code and was identified during gas limit analysis.",
+          "Impact": "Denial-of-service through gas exhaustion, integration failures with external systems, and potential contract unresponsiveness",
+          "Issue": "Unbounded Loops with Gas Exhaustion Risk",
+          "Location": "areAllTokensRegistered() (lines 189-198), getTokens() (lines 234-248)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The addresses array grows indefinitely without maximum size constraints, creating potential DoS risks. This appears in the smart contract code and was identified during array growth analysis.",
+          "Impact": "Gas-intensive operations may exceed block limits, disrupting registry functionality and dependent integrations",
+          "Issue": "Dynamic Array Growth Without Size Limits",
+          "Location": "registerTokenInternal() function and addresses array management",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The registerMintedToken function is susceptible to front-running attacks due to public accessibility and symbol-based registration. This appears in the smart contract code and was identified during front-running evaluation.",
+          "Impact": "Symbol hijacking, phishing attacks, and disruption of legitimate token registration processes",
+          "Issue": "Front-running Vulnerability in Token Registration",
+          "Location": "registerMintedToken() function and symbolMap validation checks",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Static analysis identified that addresses.push(addr) uses user-controlled values for array growth. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential array manipulation leading to storage collisions or excessive gas consumption",
+          "Issue": "Controlled Array Length Manipulation",
+          "Location": "Slither detector: controlled-array-length (registerTokenInternal function)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Contract has a payable fallback function but no withdrawal mechanism, potentially locking sent ETH. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Permanently locked ether, financial loss for accidental senders, and contract bloat",
+          "Issue": "Locked Ether in Payable Fallback",
+          "Location": "Slither detector: locked-ether (TokenRegistryImpl fallback function)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Claimable.transferOwnership should emit an event for pendingOwner state change. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Reduced transparency, difficulty in off-chain monitoring, and poor event logging practices",
+          "Issue": "Missing Event Emission for State Change",
+          "Location": "Slither detector: events-access (Claimable.transferOwnership function)",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The registerMintedToken function lacks the onlyOwner modifier, allowing any address to register arbitrary tokens. This appears in the smart contract code and was identified during the access control review task.",
+          "Impact": "Unauthorized token registration, potential phishing attacks, symbol hijacking, and complete compromise of registry integrity",
+          "Issue": "Missing Access Control on registerMintedToken Function",
+          "Location": "TokenRegistryImpl.registerMintedToken() function (lines ~191-195)",
+          "Severity": "High"
+        }
+      },
+      "full_report": "```json\n[\n  {\n    \"Issue\": \"Missing Access Control on registerMintedToken Function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The registerMintedToken function lacks the onlyOwner modifier, allowing any address to register arbitrary tokens. This appears in the smart contract code and was identified during the access control review task.\",\n    \"Impact\": \"Unauthorized token registration, potential phishing attacks, symbol hijacking, and complete compromise of registry integrity\",\n    \"Location\": \"TokenRegistryImpl.registerMintedToken() function (lines ~191-195)\"\n  },\n  {\n    \"Issue\": \"Integer Overflow/Underflow Vulnerabilities\",\n    \"Severity\": \"High\",\n    \"Description\": \"Multiple arithmetic operations lack SafeMath protection or explicit checks, creating overflow/underflow risks. This appears in the smart contract code and was identified during integer overflow analysis.\",\n    \"Impact\": \"Array length corruption, incorrect token positioning, potential contract bricking, and manipulation of registry data\",\n    \"Location\": \"getTokens() (line ~202), unregisterToken() (line ~161), registerTokenInternal() (line ~222)\"\n  },\n  {\n    \"Issue\": \"Unbounded Loops with Gas Exhaustion Risk\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Functions areAllTokensRegistered and getTokens contain loops that iterate over potentially large arrays without gas limits. This appears in the smart contract code and was identified during gas limit analysis.\",\n    \"Impact\": \"Denial-of-service through gas exhaustion, integration failures with external systems, and potential contract unresponsiveness\",\n    \"Location\": \"areAllTokensRegistered() (lines 189-198), getTokens() (lines 234-248)\"\n  },\n  {\n    \"Issue\": \"Dynamic Array Growth Without Size Limits\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The addresses array grows indefinitely without maximum size constraints, creating potential DoS risks. This appears in the smart contract code and was identified during array growth analysis.\",\n    \"Impact\": \"Gas-intensive operations may exceed block limits, disrupting registry functionality and dependent integrations\",\n    \"Location\": \"registerTokenInternal() function and addresses array management\"\n  },\n  {\n    \"Issue\": \"Front-running Vulnerability in Token Registration\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The registerMintedToken function is susceptible to front-running attacks due to public accessibility and symbol-based registration. This appears in the smart contract code and was identified during front-running evaluation.\",\n    \"Impact\": \"Symbol hijacking, phishing attacks, and disruption of legitimate token registration processes\",\n    \"Location\": \"registerMintedToken() function and symbolMap validation checks\"\n  },\n  {\n    \"Issue\": \"Controlled Array Length Manipulation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Static analysis identified that addresses.push(addr) uses user-controlled values for array growth. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential array manipulation leading to storage collisions or excessive gas consumption\",\n    \"Location\": \"Slither detector: controlled-array-length (registerTokenInternal function)\"\n  },\n  {\n    \"Issue\": \"Locked Ether in Payable Fallback\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Contract has a payable fallback function but no withdrawal mechanism, potentially locking sent ETH. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Permanently locked ether, financial loss for accidental senders, and contract bloat\",\n    \"Location\": \"Slither detector: locked-ether (TokenRegistryImpl fallback function)\"\n  },\n  {\n    \"Issue\": \"Missing Event Emission for State Change\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Claimable.transferOwnership should emit an event for pendingOwner state change. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Reduced transparency, difficulty in off-chain monitoring, and poor event logging practices\",\n    \"Location\": \"Slither detector: events-access (Claimable.transferOwnership function)\"\n  }\n]\n```",
+      "model_used": "deepseek_school",
+      "session_id": "f8119d79-9ec1-402b-bde6-4be3d0c22468",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 1,
+        "Medium": 5
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 (Integer Overflow/Underflow) is appropriate as the contract contains multiple unprotected arithmetic operations in critical functions. These vulnerabilities can lead to array corruption, incorrect token positioning, and potential contract bricking. Evidence: getTokens() function lacks overflow protection at line ~202; unregisterToken() has unprotected arithmetic at line ~161; registerTokenInternal() contains unsafe operations at line ~222",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"getTokens() function lacks overflow protection at line ~202\", \"unregisterToken() has unprotected arithmetic at line ~161\", \"registerTokenInternal() contains unsafe operations at line ~222\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 (Integer Overflow/Underflow) is appropriate as the contract contains multiple unprotected arithmetic operations in critical functions. These vulnerabilities can lead to array corruption, incorrect token positioning, and potential contract bricking.\\\",\\n  \\\"evidence\\\": [\\n    \\\"getTokens() function lacks overflow protection at line ~202\\\",\\n    \\\"unregisterToken() has unprotected arithmetic at line ~161\\\",\\n    \\\"registerTokenInternal() contains unsafe operations at line ~222\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 (Integer Overflow/Underflow) is appropriate as the contract contains multiple unprotected arithmetic operations in critical functions. These vulnerabilities can lead to array corruption, incorrect token positioning, and potential contract bricking.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 (Integer Overflow/Underflow) is appropriate as the contract contains multiple unprotected arithmetic operations in critical functions. These vulnerabilities can lead to array corruption, incorrect token positioning, and potential contract bricking.",
+      "evidence": [
+        "getTokens() function lacks overflow protection at line ~202",
+        "unregisterToken() has unprotected arithmetic at line ~161",
+        "registerTokenInternal() contains unsafe operations at line ~222"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 (Integer Overflow/Underflow) is appropriate as the contract contains multiple unprotected arithmetic operations in critical functions. These vulnerabilities can lead to array corruption, incorrect token positioning, and potential contract bricking.\",\n  \"evidence\": [\n    \"getTokens() function lacks overflow protection at line ~202\",\n    \"unregisterToken() has unprotected arithmetic at line ~161\",\n    \"registerTokenInternal() contains unsafe operations at line ~222\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "f8119d79-9ec1-402b-bde6-4be3d0c22468",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 8,
+        "full_report_chars": 4160,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

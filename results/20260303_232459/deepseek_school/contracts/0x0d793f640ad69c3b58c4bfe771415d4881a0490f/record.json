@@ -1,0 +1,312 @@
+{
+  "address": "0x0d793f640ad69c3b58c4bfe771415d4881a0490f",
+  "session_id": "c0d46c5e-c3fc-4159-afa8-5e4d4ae84d19",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The Arbitrary ERC20 TransferFrom vulnerability (SWC-105) is present as the finalise function allows unauthorized token transfers. The Dangerous Strict Equality Checks (SWC-107) are identified in multiple functions, risking incorrect state handling due to exact equality requirements. Evidence: finalise() uses arbitrary from address in transferFrom, enabling token theft (Finding 1).; Strict equality checks in finalise() and allFinalised() may cause locked funds (Finding 2).; Both issues are confirmed in static analysis as arbitrary-send-erc20 and incorrect-equality.",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 2.5, \"SWC-106\": 0.0, \"SWC-107\": 12.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-benign\", \"kw:reentrancy-no-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"finalise() uses arbitrary from address in transferFrom, enabling token theft (Finding 1).\", \"Strict equality checks in finalise() and allFinalised() may cause locked funds (Finding 2).\", \"Both issues are confirmed in static analysis as arbitrary-send-erc20 and incorrect-equality.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The Arbitrary ERC20 TransferFrom vulnerability (SWC-105) is present as the finalise function allows unauthorized token transfers. The Dangerous Strict Equality Checks (SWC-107) are identified in multiple functions, risking incorrect state handling due to exact equality requirements.\\\",\\n  \\\"evidence\\\": [\\n    \\\"finalise() uses arbitrary from address in transferFrom, enabling token theft (Finding 1).\\\",\\n    \\\"Strict equality checks in finalise() and allFinalised() may cause locked funds (Finding 2).\\\",\\n    \\\"Both issues are confirmed in static analysis as arbitrary-send-erc20 and incorrect-equality.\\\"\\n  ]\\n}\", \"reason\": \"The Arbitrary ERC20 TransferFrom vulnerability (SWC-105) is present as the finalise function allows unauthorized token transfers. The Dangerous Strict Equality Checks (SWC-107) are identified in multiple functions, risking incorrect state handling due to exact equality requirements.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4772,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_232459/deepseek_school/contracts/0x0d793f640ad69c3b58c4bfe771415d4881a0490f/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 10,
+  "execution_time": 385.2548408508301,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0d793f640ad69c3b58c4bfe771415d4881a0490f",
+    "model": "deepseek_school",
+    "session_id": "c0d46c5e-c3fc-4159-afa8-5e4d4ae84d19",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Arbitrary ERC20 TransferFrom",
+        "Severity": "High",
+        "Description": "The finalise function uses arbitrary from address in transferFrom call, allowing potential unauthorized token transfers. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Possible theft of tokens from treasury if malicious actor can manipulate transferFrom parameters.",
+        "Location": "SecondPriceAuction.finalise() function, static analysis finding: arbitrary-send-erc20"
+      },
+      {
+        "Issue": "Dangerous Strict Equality Checks",
+        "Severity": "Medium",
+        "Description": "Multiple functions use strict equality checks that could lead to unexpected behavior. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential incorrect state transitions or locked funds if equality conditions are not met exactly.",
+        "Location": "SecondPriceAuction.finalise() and allFinalised() functions, static analysis finding: incorrect-equality"
+      },
+      {
+        "Issue": "Divide Before Multiply",
+        "Severity": "Medium",
+        "Description": "calculateEndTime() performs division before multiplication, which can lead to precision loss. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Incorrect calculation of end time due to integer division precision loss.",
+        "Location": "SecondPriceAuction.calculateEndTime() function, static analysis finding: divide-before-multiply"
+      },
+      {
+        "Issue": "Uninitialized Local Variable",
+        "Severity": "Medium",
+        "Description": "Local variable claimCount in _preventedByNationalityBlacklist is never initialized. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Undefined behavior and potential incorrect nationality blacklist checks.",
+        "Location": "NotakeyVerifierForICOP._preventedByNationalityBlacklist() function, static analysis finding: uninitialized-local"
+      },
+      {
+        "Issue": "Missing Zero Address Checks",
+        "Severity": "Low",
+        "Description": "Multiple constructor parameters lack zero address validation. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential assignment of critical roles to zero address, causing contract malfunction.",
+        "Location": "SecondPriceAuction and NotakeyVerifierForICOP constructors, static analysis finding: missing-zero-check"
+      },
+      {
+        "Issue": "Potential Reentrancy Vulnerabilities",
+        "Severity": "Medium",
+        "Description": "Multiple functions show patterns that could enable reentrancy attacks. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Possible reentrancy attacks leading to state corruption or fund loss.",
+        "Location": "SecondPriceAuction.buyin() and finalise() functions, static analysis findings: reentrancy-no-eth, reentrancy-benign, reentrancy-events"
+      },
+      {
+        "Issue": "Unused Return Values",
+        "Severity": "Medium",
+        "Description": "Return values from external calls are ignored in _hasIcoContributorType function. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential loss of important information from external contract calls.",
+        "Location": "NotakeyVerifierForICOP._hasIcoContributorType() function, static analysis finding: unused-return"
+      },
+      {
+        "Issue": "View Function Contains Assembly",
+        "Severity": "Medium",
+        "Description": "isBasicAccount function is declared view but contains assembly code. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential state modification in a view function, violating expected behavior.",
+        "Location": "SecondPriceAuction.isBasicAccount() function, static analysis finding: constant-function-asm"
+      },
+      {
+        "Issue": "Missing Event Emission for State Changes",
+        "Severity": "Low",
+        "Description": "State-changing functions lack event emissions for critical parameters. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Reduced transparency and off-chain monitoring capability for important state changes.",
+        "Location": "SecondPriceAuction.moveStartDate() function, static analysis finding: events-maths"
+      },
+      {
+        "Issue": "Local Variable Shadowing",
+        "Severity": "Low",
+        "Description": "Local variable shadows existing function name in inject function. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Code confusion and potential unintended behavior due to naming conflicts.",
+        "Location": "SecondPriceAuction.inject() function, static analysis finding: shadowing-local"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-04T10:39:34.939078",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "c0d46c5e-c3fc-4159-afa8-5e4d4ae84d19",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-b82sslzu/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.19"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 385.2548408508301,
+        "total_tasks": 0
+      },
+      "execution_time": 385.2548408508301,
+      "finding_number": 10,
+      "findings": [
+        {
+          "Description": "The finalise function uses arbitrary from address in transferFrom call, allowing potential unauthorized token transfers. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Possible theft of tokens from treasury if malicious actor can manipulate transferFrom parameters.",
+          "Issue": "Arbitrary ERC20 TransferFrom",
+          "Location": "SecondPriceAuction.finalise() function, static analysis finding: arbitrary-send-erc20",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple functions use strict equality checks that could lead to unexpected behavior. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential incorrect state transitions or locked funds if equality conditions are not met exactly.",
+          "Issue": "Dangerous Strict Equality Checks",
+          "Location": "SecondPriceAuction.finalise() and allFinalised() functions, static analysis finding: incorrect-equality",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "calculateEndTime() performs division before multiplication, which can lead to precision loss. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Incorrect calculation of end time due to integer division precision loss.",
+          "Issue": "Divide Before Multiply",
+          "Location": "SecondPriceAuction.calculateEndTime() function, static analysis finding: divide-before-multiply",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Local variable claimCount in _preventedByNationalityBlacklist is never initialized. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Undefined behavior and potential incorrect nationality blacklist checks.",
+          "Issue": "Uninitialized Local Variable",
+          "Location": "NotakeyVerifierForICOP._preventedByNationalityBlacklist() function, static analysis finding: uninitialized-local",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Multiple constructor parameters lack zero address validation. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential assignment of critical roles to zero address, causing contract malfunction.",
+          "Issue": "Missing Zero Address Checks",
+          "Location": "SecondPriceAuction and NotakeyVerifierForICOP constructors, static analysis finding: missing-zero-check",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Multiple functions show patterns that could enable reentrancy attacks. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Possible reentrancy attacks leading to state corruption or fund loss.",
+          "Issue": "Potential Reentrancy Vulnerabilities",
+          "Location": "SecondPriceAuction.buyin() and finalise() functions, static analysis findings: reentrancy-no-eth, reentrancy-benign, reentrancy-events",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Return values from external calls are ignored in _hasIcoContributorType function. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential loss of important information from external contract calls.",
+          "Issue": "Unused Return Values",
+          "Location": "NotakeyVerifierForICOP._hasIcoContributorType() function, static analysis finding: unused-return",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "isBasicAccount function is declared view but contains assembly code. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential state modification in a view function, violating expected behavior.",
+          "Issue": "View Function Contains Assembly",
+          "Location": "SecondPriceAuction.isBasicAccount() function, static analysis finding: constant-function-asm",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "State-changing functions lack event emissions for critical parameters. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Reduced transparency and off-chain monitoring capability for important state changes.",
+          "Issue": "Missing Event Emission for State Changes",
+          "Location": "SecondPriceAuction.moveStartDate() function, static analysis finding: events-maths",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Local variable shadows existing function name in inject function. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Code confusion and potential unintended behavior due to naming conflicts.",
+          "Issue": "Local Variable Shadowing",
+          "Location": "SecondPriceAuction.inject() function, static analysis finding: shadowing-local",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The finalise function uses arbitrary from address in transferFrom call, allowing potential unauthorized token transfers. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Possible theft of tokens from treasury if malicious actor can manipulate transferFrom parameters.",
+          "Issue": "Arbitrary ERC20 TransferFrom",
+          "Location": "SecondPriceAuction.finalise() function, static analysis finding: arbitrary-send-erc20",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Arbitrary ERC20 TransferFrom\",\n    \"Severity\": \"High\",\n    \"Description\": \"The finalise function uses arbitrary from address in transferFrom call, allowing potential unauthorized token transfers. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Possible theft of tokens from treasury if malicious actor can manipulate transferFrom parameters.\",\n    \"Location\": \"SecondPriceAuction.finalise() function, static analysis finding: arbitrary-send-erc20\"\n  },\n  {\n    \"Issue\": \"Dangerous Strict Equality Checks\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Multiple functions use strict equality checks that could lead to unexpected behavior. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential incorrect state transitions or locked funds if equality conditions are not met exactly.\",\n    \"Location\": \"SecondPriceAuction.finalise() and allFinalised() functions, static analysis finding: incorrect-equality\"\n  },\n  {\n    \"Issue\": \"Divide Before Multiply\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"calculateEndTime() performs division before multiplication, which can lead to precision loss. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Incorrect calculation of end time due to integer division precision loss.\",\n    \"Location\": \"SecondPriceAuction.calculateEndTime() function, static analysis finding: divide-before-multiply\"\n  },\n  {\n    \"Issue\": \"Uninitialized Local Variable\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Local variable claimCount in _preventedByNationalityBlacklist is never initialized. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Undefined behavior and potential incorrect nationality blacklist checks.\",\n    \"Location\": \"NotakeyVerifierForICOP._preventedByNationalityBlacklist() function, static analysis finding: uninitialized-local\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Checks\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Multiple constructor parameters lack zero address validation. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential assignment of critical roles to zero address, causing contract malfunction.\",\n    \"Location\": \"SecondPriceAuction and NotakeyVerifierForICOP constructors, static analysis finding: missing-zero-check\"\n  },\n  {\n    \"Issue\": \"Potential Reentrancy Vulnerabilities\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Multiple functions show patterns that could enable reentrancy attacks. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Possible reentrancy attacks leading to state corruption or fund loss.\",\n    \"Location\": \"SecondPriceAuction.buyin() and finalise() functions, static analysis findings: reentrancy-no-eth, reentrancy-benign, reentrancy-events\"\n  },\n  {\n    \"Issue\": \"Unused Return Values\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Return values from external calls are ignored in _hasIcoContributorType function. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential loss of important information from external contract calls.\",\n    \"Location\": \"NotakeyVerifierForICOP._hasIcoContributorType() function, static analysis finding: unused-return\"\n  },\n  {\n    \"Issue\": \"View Function Contains Assembly\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"isBasicAccount function is declared view but contains assembly code. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential state modification in a view function, violating expected behavior.\",\n    \"Location\": \"SecondPriceAuction.isBasicAccount() function, static analysis finding: constant-function-asm\"\n  },\n  {\n    \"Issue\": \"Missing Event Emission for State Changes\",\n    \"Severity\": \"Low\",\n    \"Description\": \"State-changing functions lack event emissions for critical parameters. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Reduced transparency and off-chain monitoring capability for important state changes.\",\n    \"Location\": \"SecondPriceAuction.moveStartDate() function, static analysis finding: events-maths\"\n  },\n  {\n    \"Issue\": \"Local Variable Shadowing\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Local variable shadows existing function name in inject function. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Code confusion and potential unintended behavior due to naming conflicts.\",\n    \"Location\": \"SecondPriceAuction.inject() function, static analysis finding: shadowing-local\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "c0d46c5e-c3fc-4159-afa8-5e4d4ae84d19",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 3,
+        "Medium": 6
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-105"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 2.5,
+        "SWC-106": 0.0,
+        "SWC-107": 12.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [
+          "re:arbitrary-send"
+        ],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "kw:reentrancy-benign",
+          "kw:reentrancy-no-eth",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(12.0), SWC-105(2.5)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-105",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-105",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-105|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The Arbitrary ERC20 TransferFrom vulnerability (SWC-105) is present as the finalise function allows unauthorized token transfers. The Dangerous Strict Equality Checks (SWC-107) are identified in multiple functions, risking incorrect state handling due to exact equality requirements. Evidence: finalise() uses arbitrary from address in transferFrom, enabling token theft (Finding 1).; Strict equality checks in finalise() and allFinalised() may cause locked funds (Finding 2).; Both issues are confirmed in static analysis as arbitrary-send-erc20 and incorrect-equality.",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 2.5, \"SWC-106\": 0.0, \"SWC-107\": 12.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-benign\", \"kw:reentrancy-no-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"finalise() uses arbitrary from address in transferFrom, enabling token theft (Finding 1).\", \"Strict equality checks in finalise() and allFinalised() may cause locked funds (Finding 2).\", \"Both issues are confirmed in static analysis as arbitrary-send-erc20 and incorrect-equality.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The Arbitrary ERC20 TransferFrom vulnerability (SWC-105) is present as the finalise function allows unauthorized token transfers. The Dangerous Strict Equality Checks (SWC-107) are identified in multiple functions, risking incorrect state handling due to exact equality requirements.\\\",\\n  \\\"evidence\\\": [\\n    \\\"finalise() uses arbitrary from address in transferFrom, enabling token theft (Finding 1).\\\",\\n    \\\"Strict equality checks in finalise() and allFinalised() may cause locked funds (Finding 2).\\\",\\n    \\\"Both issues are confirmed in static analysis as arbitrary-send-erc20 and incorrect-equality.\\\"\\n  ]\\n}\", \"reason\": \"The Arbitrary ERC20 TransferFrom vulnerability (SWC-105) is present as the finalise function allows unauthorized token transfers. The Dangerous Strict Equality Checks (SWC-107) are identified in multiple functions, risking incorrect state handling due to exact equality requirements.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The Arbitrary ERC20 TransferFrom vulnerability (SWC-105) is present as the finalise function allows unauthorized token transfers. The Dangerous Strict Equality Checks (SWC-107) are identified in multiple functions, risking incorrect state handling due to exact equality requirements.",
+      "evidence": [
+        "finalise() uses arbitrary from address in transferFrom, enabling token theft (Finding 1).",
+        "Strict equality checks in finalise() and allFinalised() may cause locked funds (Finding 2).",
+        "Both issues are confirmed in static analysis as arbitrary-send-erc20 and incorrect-equality."
+      ],
+      "raw": "{\n  \"reason\": \"The Arbitrary ERC20 TransferFrom vulnerability (SWC-105) is present as the finalise function allows unauthorized token transfers. The Dangerous Strict Equality Checks (SWC-107) are identified in multiple functions, risking incorrect state handling due to exact equality requirements.\",\n  \"evidence\": [\n    \"finalise() uses arbitrary from address in transferFrom, enabling token theft (Finding 1).\",\n    \"Strict equality checks in finalise() and allFinalised() may cause locked funds (Finding 2).\",\n    \"Both issues are confirmed in static analysis as arbitrary-send-erc20 and incorrect-equality.\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "c0d46c5e-c3fc-4159-afa8-5e4d4ae84d19",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 10,
+        "full_report_chars": 4772,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

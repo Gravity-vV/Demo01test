@@ -1,0 +1,325 @@
+{
+  "address": "0x2646cbb689bce70dd7d8e041ea35b1879412059c",
+  "session_id": "d5436be6-0d81-47d4-9524-4589f6d143a5",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The label SWC-101 (Integer Overflow and Underflow) is applicable due to identified arithmetic vulnerabilities in reward calculations, including an underflow in `unpaidRewards`. SWC-107 (Reentrancy) is justified by multiple findings of cross-function reentrancy risks and ineffective lock modifiers in state-modifying functions. Evidence: UnpaidRewards arithmetic contains a potential underflow vulnerability (Finding 4); Lock modifier implementation is ineffective against reentrant calls (Finding 5); External calls are made before state updates in onSushiReward (Finding 2)",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 9.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrant\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"UnpaidRewards arithmetic contains a potential underflow vulnerability (Finding 4)\", \"Lock modifier implementation is ineffective against reentrant calls (Finding 5)\", \"External calls are made before state updates in onSushiReward (Finding 2)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The label SWC-101 (Integer Overflow and Underflow) is applicable due to identified arithmetic vulnerabilities in reward calculations, including an underflow in `unpaidRewards`. SWC-107 (Reentrancy) is justified by multiple findings of cross-function reentrancy risks and ineffective lock modifiers in state-modifying functions.\\\",\\n  \\\"evidence\\\": [\\n    \\\"UnpaidRewards arithmetic contains a potential underflow vulnerability (Finding 4)\\\",\\n    \\\"Lock modifier implementation is ineffective against reentrant calls (Finding 5)\\\",\\n    \\\"External calls are made before state updates in onSushiReward (Finding 2)\\\"\\n  ]\\n}\", \"reason\": \"The label SWC-101 (Integer Overflow and Underflow) is applicable due to identified arithmetic vulnerabilities in reward calculations, including an underflow in `unpaidRewards`. SWC-107 (Reentrancy) is justified by multiple findings of cross-function reentrancy risks and ineffective lock modifiers in state-modifying functions.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1483.7633929252625,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x2646cbb689bce70dd7d8e041ea35b1879412059c",
+    "model": "deepseek_school",
+    "session_id": "d5436be6-0d81-47d4-9524-4589f6d143a5",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - Test `onSushiReward` for cross-function reentrancy...",
+        "Severity": "High",
+        "Description": "Based on the audit task to test `onSushiReward` for cross-function reentrancy by simulating calls to `pendingToken` during reward distribution, I have analyzed the provided Solidity code and the stati... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: Test `onSushiReward` for cross-function reentrancy by simulating calls to `pendingToken` during reward distribution"
+      },
+      {
+        "Issue": "High Priority Security Issue - Check for external calls made before state updates...",
+        "Severity": "High",
+        "Description": "## Audit Findings: External Calls Before State Updates ### 1. Issue Analysis **Yes, there is a critical issue related to external calls made before state updates.** In the `onSushiReward` function ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: Check for external calls made before state updates in all functions"
+      },
+      {
+        "Issue": "High Priority Security Issue - Test reward calculations with maximum values (2^25...",
+        "Severity": "Low",
+        "Description": "## Detailed Audit Findings: Reward Calculation Overflow Risk Analysis ### 1. Issue Analysis **Yes, there are overflow risks in reward calculations when using maximum values (2^256-1).** The contract... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential low impact on contract security and functionality.",
+        "Location": "Task 4: Test reward calculations with maximum values (2^256-1) to identify overflow risks"
+      },
+      {
+        "Issue": "High Priority Security Issue - Validate `unpaidRewards` arithmetic to prevent und...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis Yes, there is a critical issue related to this audit task. The `unpaidRewards` arithmetic in the `onSushiReward` function contains a potential underflow vulnerability. **Detaile... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: Validate `unpaidRewards` arithmetic to prevent underflow conditions"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Verify `lock` modifier effectiveness by attempting...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Reentrancy Protection Assessment for SOSRewarder Contract ### 1. Issue Analysis **Yes, there is a critical issue related to the audit task.** The `lock` modifier implementation in ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: Verify `lock` modifier effectiveness by attempting reentrant calls to all state-modifying functions"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Verify all mathematical operations use BoringMath ...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Verification of BoringMath Safe Functions Usage ### 1. Issue Analysis **Yes, there is an issue related to this audit task.** The contract `SOSRewarder` contains mathematical operat... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: Verify all mathematical operations use BoringMath safe functions"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Test edge cases where `lpSupply = 0` in division o...",
+        "Severity": "Medium",
+        "Description": "## Audit Findings: Edge Cases with `lpSupply = 0` in Division Operations ### 1. Issue Analysis **Yes, there is an issue related to this audit task.** The contract contains a division operation where ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 6: Test edge cases where `lpSupply = 0` in division operations"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Verify `onlyOwner` modifier protects all owner fun...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Verification of `onlyOwner` Modifier Protection ### 1. Issue Analysis **No issue found.** The `onlyOwner` modifier correctly protects both owner-restricted functions (`setRewardPer... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: Verify `onlyOwner` modifier protects all owner functions (`setRewardPerSecond`, `reclaimTokens`)"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Test `onlyMCV2` modifier to ensure only MasterChef...",
+        "Severity": "Medium",
+        "Description": "## 1. Issue Analysis **No issue found** with the `onlyMCV2` modifier implementation. The modifier correctly restricts access to the `onSushiReward` function to only the MasterChefV2 contract. The mo... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 9: Test `onlyMCV2` modifier to ensure only MasterChefV2 can call `onSushiReward`"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Attempt unauthorized calls to restricted functions...",
+        "Severity": "High",
+        "Description": "## Security Audit Findings: Unauthorized Calls to Restricted Functions ### 1. Issue Analysis **Issue Found:** Yes. The contract contains multiple functions with access control restrictions that could... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: Attempt unauthorized calls to restricted functions from different addresses"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Verify ownership transfer process (two-step with p...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Ownership Transfer Process (Two-Step with Pending Owner) ### 1. Issue Analysis **Issue Identified: Yes** The ownership transfer mechanism in the `BoringOwnable` contract (inherit... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: Verify ownership transfer process (two-step with pending owner)"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Test reward distribution for susceptibility to tra...",
+        "Severity": "Medium",
+        "Description": "## Audit Findings: Transaction Ordering Attack Susceptibility in Reward Distribution ### 1. Issue Analysis **Yes**, this contract is susceptible to transaction ordering attacks (also known as front-... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 12: Test reward distribution for susceptibility to transaction ordering attacks"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T07:13:01.833474",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "d5436be6-0d81-47d4-9524-4589f6d143a5",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-k7t69exk/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.12"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1483.7633929252625,
+        "total_tasks": 12
+      },
+      "execution_time": 1483.7633929252625,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "Based on the audit task to test `onSushiReward` for cross-function reentrancy by simulating calls to `pendingToken` during reward distribution, I have analyzed the provided Solidity code and the stati... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Test `onSushiReward` for cross-function reentrancy...",
+          "Location": "Task 1: Test `onSushiReward` for cross-function reentrancy by simulating calls to `pendingToken` during reward distribution",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: External Calls Before State Updates\n\n### 1. Issue Analysis\n**Yes, there is a critical issue related to external calls made before state updates.** \n\nIn the `onSushiReward` function ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Check for external calls made before state updates...",
+          "Location": "Task 3: Check for external calls made before state updates in all functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Detailed Audit Findings: Reward Calculation Overflow Risk Analysis\n\n### 1. Issue Analysis\n**Yes, there are overflow risks in reward calculations when using maximum values (2^256-1).**\n\nThe contract... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential low impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Test reward calculations with maximum values (2^25...",
+          "Location": "Task 4: Test reward calculations with maximum values (2^256-1) to identify overflow risks",
+          "Severity": "Low"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\nYes, there is a critical issue related to this audit task. The `unpaidRewards` arithmetic in the `onSushiReward` function contains a potential underflow vulnerability.\n\n**Detaile... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Validate `unpaidRewards` arithmetic to prevent und...",
+          "Location": "Task 7: Validate `unpaidRewards` arithmetic to prevent underflow conditions",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Reentrancy Protection Assessment for SOSRewarder Contract\n\n### 1. Issue Analysis\n**Yes, there is a critical issue related to the audit task.** The `lock` modifier implementation in ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Verify `lock` modifier effectiveness by attempting...",
+          "Location": "Task 2: Verify `lock` modifier effectiveness by attempting reentrant calls to all state-modifying functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Verification of BoringMath Safe Functions Usage\n\n### 1. Issue Analysis\n**Yes, there is an issue related to this audit task.** The contract `SOSRewarder` contains mathematical operat... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Verify all mathematical operations use BoringMath ...",
+          "Location": "Task 5: Verify all mathematical operations use BoringMath safe functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Edge Cases with `lpSupply = 0` in Division Operations\n\n### 1. Issue Analysis\n**Yes, there is an issue related to this audit task.** The contract contains a division operation where ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Test edge cases where `lpSupply = 0` in division o...",
+          "Location": "Task 6: Test edge cases where `lpSupply = 0` in division operations",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings: Verification of `onlyOwner` Modifier Protection\n\n### 1. Issue Analysis\n**No issue found.** The `onlyOwner` modifier correctly protects both owner-restricted functions (`setRewardPer... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Verify `onlyOwner` modifier protects all owner fun...",
+          "Location": "Task 8: Verify `onlyOwner` modifier protects all owner functions (`setRewardPerSecond`, `reclaimTokens`)",
+          "Severity": "High"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\n**No issue found** with the `onlyMCV2` modifier implementation. The modifier correctly restricts access to the `onSushiReward` function to only the MasterChefV2 contract.\n\nThe mo... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Test `onlyMCV2` modifier to ensure only MasterChef...",
+          "Location": "Task 9: Test `onlyMCV2` modifier to ensure only MasterChefV2 can call `onSushiReward`",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Security Audit Findings: Unauthorized Calls to Restricted Functions\n\n### 1. Issue Analysis\n**Issue Found:** Yes. The contract contains multiple functions with access control restrictions that could... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Attempt unauthorized calls to restricted functions...",
+          "Location": "Task 10: Attempt unauthorized calls to restricted functions from different addresses",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Ownership Transfer Process (Two-Step with Pending Owner)\n\n### 1. Issue Analysis\n**Issue Identified: Yes**  \nThe ownership transfer mechanism in the `BoringOwnable` contract (inherit... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Verify ownership transfer process (two-step with p...",
+          "Location": "Task 11: Verify ownership transfer process (two-step with pending owner)",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Transaction Ordering Attack Susceptibility in Reward Distribution\n\n### 1. Issue Analysis\n\n**Yes**, this contract is susceptible to transaction ordering attacks (also known as front-... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Test reward distribution for susceptibility to tra...",
+          "Location": "Task 12: Test reward distribution for susceptibility to transaction ordering attacks",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Based on the audit task to test `onSushiReward` for cross-function reentrancy by simulating calls to `pendingToken` during reward distribution, I have analyzed the provided Solidity code and the stati... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Test `onSushiReward` for cross-function reentrancy...",
+          "Location": "Task 1: Test `onSushiReward` for cross-function reentrancy by simulating calls to `pendingToken` during reward distribution",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "d5436be6-0d81-47d4-9524-4589f6d143a5",
+      "severity_breakdown": {
+        "High": 8,
+        "Low": 1,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 9.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "kw:reentrant",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(9.0), SWC-101(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The label SWC-101 (Integer Overflow and Underflow) is applicable due to identified arithmetic vulnerabilities in reward calculations, including an underflow in `unpaidRewards`. SWC-107 (Reentrancy) is justified by multiple findings of cross-function reentrancy risks and ineffective lock modifiers in state-modifying functions. Evidence: UnpaidRewards arithmetic contains a potential underflow vulnerability (Finding 4); Lock modifier implementation is ineffective against reentrant calls (Finding 5); External calls are made before state updates in onSushiReward (Finding 2)",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 9.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrant\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"UnpaidRewards arithmetic contains a potential underflow vulnerability (Finding 4)\", \"Lock modifier implementation is ineffective against reentrant calls (Finding 5)\", \"External calls are made before state updates in onSushiReward (Finding 2)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The label SWC-101 (Integer Overflow and Underflow) is applicable due to identified arithmetic vulnerabilities in reward calculations, including an underflow in `unpaidRewards`. SWC-107 (Reentrancy) is justified by multiple findings of cross-function reentrancy risks and ineffective lock modifiers in state-modifying functions.\\\",\\n  \\\"evidence\\\": [\\n    \\\"UnpaidRewards arithmetic contains a potential underflow vulnerability (Finding 4)\\\",\\n    \\\"Lock modifier implementation is ineffective against reentrant calls (Finding 5)\\\",\\n    \\\"External calls are made before state updates in onSushiReward (Finding 2)\\\"\\n  ]\\n}\", \"reason\": \"The label SWC-101 (Integer Overflow and Underflow) is applicable due to identified arithmetic vulnerabilities in reward calculations, including an underflow in `unpaidRewards`. SWC-107 (Reentrancy) is justified by multiple findings of cross-function reentrancy risks and ineffective lock modifiers in state-modifying functions.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The label SWC-101 (Integer Overflow and Underflow) is applicable due to identified arithmetic vulnerabilities in reward calculations, including an underflow in `unpaidRewards`. SWC-107 (Reentrancy) is justified by multiple findings of cross-function reentrancy risks and ineffective lock modifiers in state-modifying functions.",
+      "evidence": [
+        "UnpaidRewards arithmetic contains a potential underflow vulnerability (Finding 4)",
+        "Lock modifier implementation is ineffective against reentrant calls (Finding 5)",
+        "External calls are made before state updates in onSushiReward (Finding 2)"
+      ],
+      "raw": "{\n  \"reason\": \"The label SWC-101 (Integer Overflow and Underflow) is applicable due to identified arithmetic vulnerabilities in reward calculations, including an underflow in `unpaidRewards`. SWC-107 (Reentrancy) is justified by multiple findings of cross-function reentrancy risks and ineffective lock modifiers in state-modifying functions.\",\n  \"evidence\": [\n    \"UnpaidRewards arithmetic contains a potential underflow vulnerability (Finding 4)\",\n    \"Lock modifier implementation is ineffective against reentrant calls (Finding 5)\",\n    \"External calls are made before state updates in onSushiReward (Finding 2)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "d5436be6-0d81-47d4-9524-4589f6d143a5",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

@@ -1,0 +1,247 @@
+{
+  "address": "0x095527f5bea113e9575b662c5ba01d990a280f2f",
+  "session_id": "7a8dfd2d-a5df-47be-a356-ffca78a30728",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "",
+  "pred_swc_count": 0,
+  "is_other": 1,
+  "pred_source": "llm",
+  "pred_reason": "The SWC-OTHER label is appropriate as these findings represent a mix of security concerns not cleanly mapped to a single SWC identifier. The issues include protocol-specific risks like unchecked transfers and epoch equality checks alongside general best practice violations. Evidence: High-risk unchecked ERC20 transfer could lead to stuck funds without reversion; Medium-risk strict equality in epoch logic may cause incorrect token locking behavior; Multiple low-risk issues including missing events, zero checks, and timestamp dependence",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 1.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 1.0,\\n  \\\"reason\\\": \\\"None of the findings match the specified SWC labels. Unchecked transfers are SWC-104, strict equality is not a standard SWC, missing events are SWC-119, missing zero checks are SWC-132, external calls in loops relate to gas/DoS, and timestamp dependence is SWC-116.\\\"\\n}\", \"reason\": \"None of the findings match the specified SWC labels. Unchecked transfers are SWC-104, strict equality is not a standard SWC, missing events are SWC-119, missing zero checks are SWC-132, external calls in loops relate to gas/DoS, and timestamp dependence is SWC-116.\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"High-risk unchecked ERC20 transfer could lead to stuck funds without reversion\", \"Medium-risk strict equality in epoch logic may cause incorrect token locking behavior\", \"Multiple low-risk issues including missing events, zero checks, and timestamp dependence\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-OTHER label is appropriate as these findings represent a mix of security concerns not cleanly mapped to a single SWC identifier. The issues include protocol-specific risks like unchecked transfers and epoch equality checks alongside general best practice violations.\\\",\\n  \\\"evidence\\\": [\\n    \\\"High-risk unchecked ERC20 transfer could lead to stuck funds without reversion\\\",\\n    \\\"Medium-risk strict equality in epoch logic may cause incorrect token locking behavior\\\",\\n    \\\"Multiple low-risk issues including missing events, zero checks, and timestamp dependence\\\"\\n  ]\\n}\", \"reason\": \"The SWC-OTHER label is appropriate as these findings represent a mix of security concerns not cleanly mapped to a single SWC identifier. The issues include protocol-specific risks like unchecked transfers and epoch equality checks alongside general best practice violations.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4061,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x095527f5bea113e9575b662c5ba01d990a280f2f/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 549.0417201519012,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x095527f5bea113e9575b662c5ba01d990a280f2f",
+    "model": "deepseek_school",
+    "session_id": "7a8dfd2d-a5df-47be-a356-ffca78a30728",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Unchecked ERC20 Transfer Return Value",
+        "Severity": "High",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. The reclaimToken function in Registry.sol does not check the return value of the ERC20 transfer call, which could lead to silent failures if the token contract does not revert on failure but returns false instead.",
+        "Impact": "If a token transfer fails but returns false instead of reverting, the function would not revert, giving a false impression of success while tokens remain stuck in the contract.",
+        "Location": "Registry.reclaimToken(IERC20,address) at line where token.transfer(_to,balance) is called; also flagged by Slither as 'unchecked-transfer'."
+      },
+      {
+        "Issue": "Dangerous Strict Equality in TimeLockedToken",
+        "Severity": "Medium",
+        "Description": "This issue is present in the smart contract code and was identified by static analysis. The functions latestEpoch() and nextEpoch() use strict equality checks (==) for state-dependent comparisons, which can be dangerous due to potential rounding errors or unexpected state changes. This issue appears in the auditing result.",
+        "Impact": "Incorrect epoch calculations could lead to improper locking/unlocking of tokens, affecting user balances and transfer capabilities.",
+        "Location": "TimeLockedToken.latestEpoch() and TimeLockedToken.nextEpoch(); flagged by Slither as 'incorrect-equality'."
+      },
+      {
+        "Issue": "Missing Events for Critical Functions",
+        "Severity": "Low",
+        "Description": "This issue is identified in the static analysis results. Functions that change critical state variables (like ownership transfer and registry address update) do not emit events, reducing transparency and off-chain monitoring capabilities. This issue appears in the auditing result.",
+        "Impact": "Lack of events makes it harder for external systems to track state changes, potentially leading to off-chain synchronization issues or reduced auditability.",
+        "Location": "Registry.transferOwnership(address), ClaimableContract.transferOwnership(address), and TimeLockedToken.setTimeLockRegistry(address); flagged by Slither as 'events-access'."
+      },
+      {
+        "Issue": "Missing Zero Address Checks",
+        "Severity": "Low",
+        "Description": "This issue is present in the smart contract code and noted in static analysis. Functions that set addresses (like new owner or transfer recipient) lack zero address checks, which could lead to irrecoverable loss of funds or ownership. This issue appears in the auditing result.",
+        "Impact": "Setting critical addresses to zero could result in locked funds, lost ownership, or failed transactions.",
+        "Location": "ClaimableContract.transferOwnership(address), Registry.reclaimEther(address), and Registry.transferOwnership(address); flagged by Slither as 'missing-zero-check'."
+      },
+      {
+        "Issue": "External Calls in Loops",
+        "Severity": "Low",
+        "Description": "This issue is present in the smart contract code and identified by static analysis. Multiple functions in Registry.sol make external calls within loops, which could lead to out-of-gas errors or high gas costs if the loop iterates over many elements. This issue appears in the auditing result.",
+        "Impact": "High gas consumption or transaction failures due to block gas limits, especially if the subscriber list grows large.",
+        "Location": "Registry.setAttributeValue(), Registry.syncAttribute(), and Registry.setAttribute(); flagged by Slither as 'calls-loop'."
+      },
+      {
+        "Issue": "Timestamp Dependence",
+        "Severity": "Low",
+        "Description": "This issue is present in the smart contract code and noted in static analysis. Several functions in TimeLockedToken.sol rely on block.timestamp for critical logic (e.g., epoch calculations, balance locking), which can be manipulated by miners to some extent. This issue appears in the auditing result.",
+        "Impact": "Potential manipulation of locking/unlocking mechanisms, though the impact is mitigated by the long epoch durations and public constants.",
+        "Location": "TimeLockedToken.epochsPassed(), latestEpoch(), nextEpoch(), transferToOwner(), _burn(), and _transfer(); flagged by Slither as 'timestamp'."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T13:25:48.021139",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "7a8dfd2d-a5df-47be-a356-ffca78a30728",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-oro685ek/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0",
+            "0.6.10",
+            "0.6.2"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 549.0417201519012,
+        "total_tasks": 0
+      },
+      "execution_time": 549.0417201519012,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The reclaimToken function in Registry.sol does not check the return value of the ERC20 transfer call, which could lead to silent failures if the token contract does not revert on failure but returns false instead.",
+          "Impact": "If a token transfer fails but returns false instead of reverting, the function would not revert, giving a false impression of success while tokens remain stuck in the contract.",
+          "Issue": "Unchecked ERC20 Transfer Return Value",
+          "Location": "Registry.reclaimToken(IERC20,address) at line where token.transfer(_to,balance) is called; also flagged by Slither as 'unchecked-transfer'.",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue is present in the smart contract code and was identified by static analysis. The functions latestEpoch() and nextEpoch() use strict equality checks (==) for state-dependent comparisons, which can be dangerous due to potential rounding errors or unexpected state changes. This issue appears in the auditing result.",
+          "Impact": "Incorrect epoch calculations could lead to improper locking/unlocking of tokens, affecting user balances and transfer capabilities.",
+          "Issue": "Dangerous Strict Equality in TimeLockedToken",
+          "Location": "TimeLockedToken.latestEpoch() and TimeLockedToken.nextEpoch(); flagged by Slither as 'incorrect-equality'.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue is identified in the static analysis results. Functions that change critical state variables (like ownership transfer and registry address update) do not emit events, reducing transparency and off-chain monitoring capabilities. This issue appears in the auditing result.",
+          "Impact": "Lack of events makes it harder for external systems to track state changes, potentially leading to off-chain synchronization issues or reduced auditability.",
+          "Issue": "Missing Events for Critical Functions",
+          "Location": "Registry.transferOwnership(address), ClaimableContract.transferOwnership(address), and TimeLockedToken.setTimeLockRegistry(address); flagged by Slither as 'events-access'.",
+          "Severity": "Low"
+        },
+        {
+          "Description": "This issue is present in the smart contract code and noted in static analysis. Functions that set addresses (like new owner or transfer recipient) lack zero address checks, which could lead to irrecoverable loss of funds or ownership. This issue appears in the auditing result.",
+          "Impact": "Setting critical addresses to zero could result in locked funds, lost ownership, or failed transactions.",
+          "Issue": "Missing Zero Address Checks",
+          "Location": "ClaimableContract.transferOwnership(address), Registry.reclaimEther(address), and Registry.transferOwnership(address); flagged by Slither as 'missing-zero-check'.",
+          "Severity": "Low"
+        },
+        {
+          "Description": "This issue is present in the smart contract code and identified by static analysis. Multiple functions in Registry.sol make external calls within loops, which could lead to out-of-gas errors or high gas costs if the loop iterates over many elements. This issue appears in the auditing result.",
+          "Impact": "High gas consumption or transaction failures due to block gas limits, especially if the subscriber list grows large.",
+          "Issue": "External Calls in Loops",
+          "Location": "Registry.setAttributeValue(), Registry.syncAttribute(), and Registry.setAttribute(); flagged by Slither as 'calls-loop'.",
+          "Severity": "Low"
+        },
+        {
+          "Description": "This issue is present in the smart contract code and noted in static analysis. Several functions in TimeLockedToken.sol rely on block.timestamp for critical logic (e.g., epoch calculations, balance locking), which can be manipulated by miners to some extent. This issue appears in the auditing result.",
+          "Impact": "Potential manipulation of locking/unlocking mechanisms, though the impact is mitigated by the long epoch durations and public constants.",
+          "Issue": "Timestamp Dependence",
+          "Location": "TimeLockedToken.epochsPassed(), latestEpoch(), nextEpoch(), transferToOwner(), _burn(), and _transfer(); flagged by Slither as 'timestamp'.",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The reclaimToken function in Registry.sol does not check the return value of the ERC20 transfer call, which could lead to silent failures if the token contract does not revert on failure but returns false instead.",
+          "Impact": "If a token transfer fails but returns false instead of reverting, the function would not revert, giving a false impression of success while tokens remain stuck in the contract.",
+          "Issue": "Unchecked ERC20 Transfer Return Value",
+          "Location": "Registry.reclaimToken(IERC20,address) at line where token.transfer(_to,balance) is called; also flagged by Slither as 'unchecked-transfer'.",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Unchecked ERC20 Transfer Return Value\",\n    \"Severity\": \"High\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. The reclaimToken function in Registry.sol does not check the return value of the ERC20 transfer call, which could lead to silent failures if the token contract does not revert on failure but returns false instead.\",\n    \"Impact\": \"If a token transfer fails but returns false instead of reverting, the function would not revert, giving a false impression of success while tokens remain stuck in the contract.\",\n    \"Location\": \"Registry.reclaimToken(IERC20,address) at line where token.transfer(_to,balance) is called; also flagged by Slither as 'unchecked-transfer'.\"\n  },\n  {\n    \"Issue\": \"Dangerous Strict Equality in TimeLockedToken\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"This issue is present in the smart contract code and was identified by static analysis. The functions latestEpoch() and nextEpoch() use strict equality checks (==) for state-dependent comparisons, which can be dangerous due to potential rounding errors or unexpected state changes.\",\n    \"Impact\": \"Incorrect epoch calculations could lead to improper locking/unlocking of tokens, affecting user balances and transfer capabilities.\",\n    \"Location\": \"TimeLockedToken.latestEpoch() and TimeLockedToken.nextEpoch(); flagged by Slither as 'incorrect-equality'.\"\n  },\n  {\n    \"Issue\": \"Missing Events for Critical Functions\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue is identified in the static analysis results. Functions that change critical state variables (like ownership transfer and registry address update) do not emit events, reducing transparency and off-chain monitoring capabilities.\",\n    \"Impact\": \"Lack of events makes it harder for external systems to track state changes, potentially leading to off-chain synchronization issues or reduced auditability.\",\n    \"Location\": \"Registry.transferOwnership(address), ClaimableContract.transferOwnership(address), and TimeLockedToken.setTimeLockRegistry(address); flagged by Slither as 'events-access'.\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Checks\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue is present in the smart contract code and noted in static analysis. Functions that set addresses (like new owner or transfer recipient) lack zero address checks, which could lead to irrecoverable loss of funds or ownership.\",\n    \"Impact\": \"Setting critical addresses to zero could result in locked funds, lost ownership, or failed transactions.\",\n    \"Location\": \"ClaimableContract.transferOwnership(address), Registry.reclaimEther(address), and Registry.transferOwnership(address); flagged by Slither as 'missing-zero-check'.\"\n  },\n  {\n    \"Issue\": \"External Calls in Loops\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue is present in the smart contract code and identified by static analysis. Multiple functions in Registry.sol make external calls within loops, which could lead to out-of-gas errors or high gas costs if the loop iterates over many elements.\",\n    \"Impact\": \"High gas consumption or transaction failures due to block gas limits, especially if the subscriber list grows large.\",\n    \"Location\": \"Registry.setAttributeValue(), Registry.syncAttribute(), and Registry.setAttribute(); flagged by Slither as 'calls-loop'.\"\n  },\n  {\n    \"Issue\": \"Timestamp Dependence\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue is present in the smart contract code and noted in static analysis. Several functions in TimeLockedToken.sol rely on block.timestamp for critical logic (e.g., epoch calculations, balance locking), which can be manipulated by miners to some extent.\",\n    \"Impact\": \"Potential manipulation of locking/unlocking mechanisms, though the impact is mitigated by the long epoch durations and public constants.\",\n    \"Location\": \"TimeLockedToken.epochsPassed(), latestEpoch(), nextEpoch(), transferToOwner(), _burn(), and _transfer(); flagged by Slither as 'timestamp'.\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "7a8dfd2d-a5df-47be-a356-ffca78a30728",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 4,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [],
+      "source": "llm",
+      "confidence": 1.0,
+      "reason": "None of the findings match the specified SWC labels. Unchecked transfers are SWC-104, strict equality is not a standard SWC, missing events are SWC-119, missing zero checks are SWC-132, external calls in loops relate to gas/DoS, and timestamp dependence is SWC-116.",
+      "raw": "{\n  \"labels\": [],\n  \"confidence\": 1.0,\n  \"reason\": \"None of the findings match the specified SWC labels. Unchecked transfers are SWC-104, strict equality is not a standard SWC, missing events are SWC-119, missing zero checks are SWC-132, external calls in loops relate to gas/DoS, and timestamp dependence is SWC-116.\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [],
+    "pred_labels": [],
+    "pred_swc_list": "",
+    "pred_source": "llm",
+    "is_other": 1,
+    "pred_reason": "The SWC-OTHER label is appropriate as these findings represent a mix of security concerns not cleanly mapped to a single SWC identifier. The issues include protocol-specific risks like unchecked transfers and epoch equality checks alongside general best practice violations. Evidence: High-risk unchecked ERC20 transfer could lead to stuck funds without reversion; Medium-risk strict equality in epoch logic may cause incorrect token locking behavior; Multiple low-risk issues including missing events, zero checks, and timestamp dependence",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 1.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 1.0,\\n  \\\"reason\\\": \\\"None of the findings match the specified SWC labels. Unchecked transfers are SWC-104, strict equality is not a standard SWC, missing events are SWC-119, missing zero checks are SWC-132, external calls in loops relate to gas/DoS, and timestamp dependence is SWC-116.\\\"\\n}\", \"reason\": \"None of the findings match the specified SWC labels. Unchecked transfers are SWC-104, strict equality is not a standard SWC, missing events are SWC-119, missing zero checks are SWC-132, external calls in loops relate to gas/DoS, and timestamp dependence is SWC-116.\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"High-risk unchecked ERC20 transfer could lead to stuck funds without reversion\", \"Medium-risk strict equality in epoch logic may cause incorrect token locking behavior\", \"Multiple low-risk issues including missing events, zero checks, and timestamp dependence\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-OTHER label is appropriate as these findings represent a mix of security concerns not cleanly mapped to a single SWC identifier. The issues include protocol-specific risks like unchecked transfers and epoch equality checks alongside general best practice violations.\\\",\\n  \\\"evidence\\\": [\\n    \\\"High-risk unchecked ERC20 transfer could lead to stuck funds without reversion\\\",\\n    \\\"Medium-risk strict equality in epoch logic may cause incorrect token locking behavior\\\",\\n    \\\"Multiple low-risk issues including missing events, zero checks, and timestamp dependence\\\"\\n  ]\\n}\", \"reason\": \"The SWC-OTHER label is appropriate as these findings represent a mix of security concerns not cleanly mapped to a single SWC identifier. The issues include protocol-specific risks like unchecked transfers and epoch equality checks alongside general best practice violations.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-OTHER label is appropriate as these findings represent a mix of security concerns not cleanly mapped to a single SWC identifier. The issues include protocol-specific risks like unchecked transfers and epoch equality checks alongside general best practice violations.",
+      "evidence": [
+        "High-risk unchecked ERC20 transfer could lead to stuck funds without reversion",
+        "Medium-risk strict equality in epoch logic may cause incorrect token locking behavior",
+        "Multiple low-risk issues including missing events, zero checks, and timestamp dependence"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-OTHER label is appropriate as these findings represent a mix of security concerns not cleanly mapped to a single SWC identifier. The issues include protocol-specific risks like unchecked transfers and epoch equality checks alongside general best practice violations.\",\n  \"evidence\": [\n    \"High-risk unchecked ERC20 transfer could lead to stuck funds without reversion\",\n    \"Medium-risk strict equality in epoch logic may cause incorrect token locking behavior\",\n    \"Multiple low-risk issues including missing events, zero checks, and timestamp dependence\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "7a8dfd2d-a5df-47be-a356-ffca78a30728",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 4061,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

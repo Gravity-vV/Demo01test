@@ -1,0 +1,237 @@
+{
+  "address": "0x242a0ff224731922fd5bbf5b9bbcb6190164220e",
+  "session_id": "1b03ee93-aad0-4bad-a9eb-70b150cc2f87",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "llm",
+  "pred_reason": "SWC-105 is appropriate because uninitialized state variables (_maxSale, _minSale, _saleNum) default to zero values, which can cause unintended transfer restrictions. This matches the SWC-105 pattern of uninitialized storage pointers leading to unintended behavior. The impact directly affects core token functionality by potentially blocking all transfers. Evidence: Uninitialized variables _maxSale, _minSale, _saleNum used in condition function with default 0 values; Impact includes blocking all transfers or imposing unintended restrictions; Finding severity is High with location in MetaSouls contract state variables",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 0.8, \"labels\": [\"SWC-105\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-105\\\"],\\n  \\\"confidence\\\": 0.8,\\n  \\\"reason\\\": \\\"Locked Ether finding indicates unprotected ether withdrawal vulnerability due to lack of withdrawal mechanism\\\"\\n}\", \"reason\": \"Locked Ether finding indicates unprotected ether withdrawal vulnerability due to lack of withdrawal mechanism\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"Uninitialized variables _maxSale, _minSale, _saleNum used in condition function with default 0 values\", \"Impact includes blocking all transfers or imposing unintended restrictions\", \"Finding severity is High with location in MetaSouls contract state variables\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-105 is appropriate because uninitialized state variables (_maxSale, _minSale, _saleNum) default to zero values, which can cause unintended transfer restrictions. This matches the SWC-105 pattern of uninitialized storage pointers leading to unintended behavior. The impact directly affects core token functionality by potentially blocking all transfers.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Uninitialized variables _maxSale, _minSale, _saleNum used in condition function with default 0 values\\\",\\n    \\\"Impact includes blocking all transfers or imposing unintended restrictions\\\",\\n    \\\"Finding severity is High with location in MetaSouls contract state variables\\\"\\n  ]\\n}\", \"reason\": \"SWC-105 is appropriate because uninitialized state variables (_maxSale, _minSale, _saleNum) default to zero values, which can cause unintended transfer restrictions. This matches the SWC-105 pattern of uninitialized storage pointers leading to unintended behavior. The impact directly affects core token functionality by potentially blocking all transfers.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3024,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x242a0ff224731922fd5bbf5b9bbcb6190164220e/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 510.44839811325073,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x242a0ff224731922fd5bbf5b9bbcb6190164220e",
+    "model": "deepseek_school",
+    "session_id": "1b03ee93-aad0-4bad-a9eb-70b150cc2f87",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Uninitialized State Variables",
+        "Severity": "High",
+        "Description": "The variables _maxSale, _minSale, and _saleNum are declared but never initialized in the MetaSouls contract. This issue is identified in both the static analysis results and the smart contract code. This issue appears in the auditing result.",
+        "Impact": "These variables are used in the condition function to impose transfer restrictions. Since they are uninitialized, their default value is 0, which may cause the condition function to incorrectly block all transfers or impose unintended restrictions, potentially breaking core token functionality.",
+        "Location": "MetaSouls contract, variables _maxSale, _minSale, _saleNum; Static Analysis: uninitialized-state findings"
+      },
+      {
+        "Issue": "Locked Ether",
+        "Severity": "Medium",
+        "Description": "The MetaSouls contract has payable functions but lacks a mechanism to withdraw any Ether sent to it. This issue is identified in both the static analysis results and the smart contract code. This issue appears in the auditing result.",
+        "Impact": "Any Ether sent to the contract (e.g., via the payable transfer or approve functions) will be permanently locked, as there is no function to retrieve it.",
+        "Location": "MetaSouls contract payable functions; Static Analysis: locked-ether finding"
+      },
+      {
+        "Issue": "Shadowing Local Variables",
+        "Severity": "Low",
+        "Description": "The constructor parameters in ERC20Detailed shadow the function names name, symbol, and decimals. This issue is identified in both the static analysis results and the smart contract code. This issue appears in the auditing result.",
+        "Impact": "This can cause confusion and potential errors during development and maintenance, but does not directly affect contract execution or security.",
+        "Location": "ERC20Detailed constructor; Static Analysis: shadowing-local findings"
+      },
+      {
+        "Issue": "Missing Zero Address Check",
+        "Severity": "Low",
+        "Description": "The transferownership function in MetaSouls does not check if the input address is the zero address. This issue is identified in both the static analysis results and the smart contract code. This issue appears in the auditing result.",
+        "Impact": "If the zero address is accidentally set as the tradeAddress, it could disrupt intended contract functionality, such as bypassing transfer restrictions in the ensure function.",
+        "Location": "MetaSouls.transferownership; Static Analysis: missing-zero-check finding"
+      },
+      {
+        "Issue": "Non-Standard ERC20 Implementation",
+        "Severity": "Low",
+        "Description": "The MetaSouls contract implements a custom ERC20-like token but deviates from the standard ERC20 interface and behavior, such as having payable transfer functions and custom transfer restrictions. This issue is identified in the smart contract code only. This issue appears in the auditing result.",
+        "Impact": "May cause compatibility issues with wallets, exchanges, and other smart contracts that expect standard ERC20 behavior, potentially leading to failed transactions or integration problems.",
+        "Location": "MetaSouls contract functions transfer, transferFrom, approve"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T16:20:50.652541",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "1b03ee93-aad0-4bad-a9eb-70b150cc2f87",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-ymlxcpfo/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.17"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 510.44839811325073,
+        "total_tasks": 0
+      },
+      "execution_time": 510.44839811325073,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "The variables _maxSale, _minSale, and _saleNum are declared but never initialized in the MetaSouls contract. This issue is identified in both the static analysis results and the smart contract code. This issue appears in the auditing result.",
+          "Impact": "These variables are used in the condition function to impose transfer restrictions. Since they are uninitialized, their default value is 0, which may cause the condition function to incorrectly block all transfers or impose unintended restrictions, potentially breaking core token functionality.",
+          "Issue": "Uninitialized State Variables",
+          "Location": "MetaSouls contract, variables _maxSale, _minSale, _saleNum; Static Analysis: uninitialized-state findings",
+          "Severity": "High"
+        },
+        {
+          "Description": "The MetaSouls contract has payable functions but lacks a mechanism to withdraw any Ether sent to it. This issue is identified in both the static analysis results and the smart contract code. This issue appears in the auditing result.",
+          "Impact": "Any Ether sent to the contract (e.g., via the payable transfer or approve functions) will be permanently locked, as there is no function to retrieve it.",
+          "Issue": "Locked Ether",
+          "Location": "MetaSouls contract payable functions; Static Analysis: locked-ether finding",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The constructor parameters in ERC20Detailed shadow the function names name, symbol, and decimals. This issue is identified in both the static analysis results and the smart contract code. This issue appears in the auditing result.",
+          "Impact": "This can cause confusion and potential errors during development and maintenance, but does not directly affect contract execution or security.",
+          "Issue": "Shadowing Local Variables",
+          "Location": "ERC20Detailed constructor; Static Analysis: shadowing-local findings",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The transferownership function in MetaSouls does not check if the input address is the zero address. This issue is identified in both the static analysis results and the smart contract code. This issue appears in the auditing result.",
+          "Impact": "If the zero address is accidentally set as the tradeAddress, it could disrupt intended contract functionality, such as bypassing transfer restrictions in the ensure function.",
+          "Issue": "Missing Zero Address Check",
+          "Location": "MetaSouls.transferownership; Static Analysis: missing-zero-check finding",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The MetaSouls contract implements a custom ERC20-like token but deviates from the standard ERC20 interface and behavior, such as having payable transfer functions and custom transfer restrictions. This issue is identified in the smart contract code only. This issue appears in the auditing result.",
+          "Impact": "May cause compatibility issues with wallets, exchanges, and other smart contracts that expect standard ERC20 behavior, potentially leading to failed transactions or integration problems.",
+          "Issue": "Non-Standard ERC20 Implementation",
+          "Location": "MetaSouls contract functions transfer, transferFrom, approve",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The variables _maxSale, _minSale, and _saleNum are declared but never initialized in the MetaSouls contract. This issue is identified in both the static analysis results and the smart contract code. This issue appears in the auditing result.",
+          "Impact": "These variables are used in the condition function to impose transfer restrictions. Since they are uninitialized, their default value is 0, which may cause the condition function to incorrectly block all transfers or impose unintended restrictions, potentially breaking core token functionality.",
+          "Issue": "Uninitialized State Variables",
+          "Location": "MetaSouls contract, variables _maxSale, _minSale, _saleNum; Static Analysis: uninitialized-state findings",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Uninitialized State Variables\",\n    \"Severity\": \"High\",\n    \"Description\": \"The variables _maxSale, _minSale, and _saleNum are declared but never initialized in the MetaSouls contract. This issue is identified in both the static analysis results and the smart contract code.\",\n    \"Impact\": \"These variables are used in the condition function to impose transfer restrictions. Since they are uninitialized, their default value is 0, which may cause the condition function to incorrectly block all transfers or impose unintended restrictions, potentially breaking core token functionality.\",\n    \"Location\": \"MetaSouls contract, variables _maxSale, _minSale, _saleNum; Static Analysis: uninitialized-state findings\"\n  },\n  {\n    \"Issue\": \"Locked Ether\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The MetaSouls contract has payable functions but lacks a mechanism to withdraw any Ether sent to it. This issue is identified in both the static analysis results and the smart contract code.\",\n    \"Impact\": \"Any Ether sent to the contract (e.g., via the payable transfer or approve functions) will be permanently locked, as there is no function to retrieve it.\",\n    \"Location\": \"MetaSouls contract payable functions; Static Analysis: locked-ether finding\"\n  },\n  {\n    \"Issue\": \"Shadowing Local Variables\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The constructor parameters in ERC20Detailed shadow the function names name, symbol, and decimals. This issue is identified in both the static analysis results and the smart contract code.\",\n    \"Impact\": \"This can cause confusion and potential errors during development and maintenance, but does not directly affect contract execution or security.\",\n    \"Location\": \"ERC20Detailed constructor; Static Analysis: shadowing-local findings\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Check\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The transferownership function in MetaSouls does not check if the input address is the zero address. This issue is identified in both the static analysis results and the smart contract code.\",\n    \"Impact\": \"If the zero address is accidentally set as the tradeAddress, it could disrupt intended contract functionality, such as bypassing transfer restrictions in the ensure function.\",\n    \"Location\": \"MetaSouls.transferownership; Static Analysis: missing-zero-check finding\"\n  },\n  {\n    \"Issue\": \"Non-Standard ERC20 Implementation\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The MetaSouls contract implements a custom ERC20-like token but deviates from the standard ERC20 interface and behavior, such as having payable transfer functions and custom transfer restrictions. This issue is identified in the smart contract code only.\",\n    \"Impact\": \"May cause compatibility issues with wallets, exchanges, and other smart contracts that expect standard ERC20 behavior, potentially leading to failed transactions or integration problems.\",\n    \"Location\": \"MetaSouls contract functions transfer, transferFrom, approve\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "1b03ee93-aad0-4bad-a9eb-70b150cc2f87",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 3,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [
+        "SWC-105"
+      ],
+      "source": "llm",
+      "confidence": 0.8,
+      "reason": "Locked Ether finding indicates unprotected ether withdrawal vulnerability due to lack of withdrawal mechanism",
+      "raw": "{\n  \"labels\": [\"SWC-105\"],\n  \"confidence\": 0.8,\n  \"reason\": \"Locked Ether finding indicates unprotected ether withdrawal vulnerability due to lack of withdrawal mechanism\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [
+      "SWC-105"
+    ],
+    "pred_labels": [
+      "SWC-105"
+    ],
+    "pred_swc_list": "SWC-105",
+    "pred_source": "llm",
+    "is_other": 0,
+    "pred_reason": "SWC-105 is appropriate because uninitialized state variables (_maxSale, _minSale, _saleNum) default to zero values, which can cause unintended transfer restrictions. This matches the SWC-105 pattern of uninitialized storage pointers leading to unintended behavior. The impact directly affects core token functionality by potentially blocking all transfers. Evidence: Uninitialized variables _maxSale, _minSale, _saleNum used in condition function with default 0 values; Impact includes blocking all transfers or imposing unintended restrictions; Finding severity is High with location in MetaSouls contract state variables",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 0.8, \"labels\": [\"SWC-105\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-105\\\"],\\n  \\\"confidence\\\": 0.8,\\n  \\\"reason\\\": \\\"Locked Ether finding indicates unprotected ether withdrawal vulnerability due to lack of withdrawal mechanism\\\"\\n}\", \"reason\": \"Locked Ether finding indicates unprotected ether withdrawal vulnerability due to lack of withdrawal mechanism\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"Uninitialized variables _maxSale, _minSale, _saleNum used in condition function with default 0 values\", \"Impact includes blocking all transfers or imposing unintended restrictions\", \"Finding severity is High with location in MetaSouls contract state variables\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-105 is appropriate because uninitialized state variables (_maxSale, _minSale, _saleNum) default to zero values, which can cause unintended transfer restrictions. This matches the SWC-105 pattern of uninitialized storage pointers leading to unintended behavior. The impact directly affects core token functionality by potentially blocking all transfers.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Uninitialized variables _maxSale, _minSale, _saleNum used in condition function with default 0 values\\\",\\n    \\\"Impact includes blocking all transfers or imposing unintended restrictions\\\",\\n    \\\"Finding severity is High with location in MetaSouls contract state variables\\\"\\n  ]\\n}\", \"reason\": \"SWC-105 is appropriate because uninitialized state variables (_maxSale, _minSale, _saleNum) default to zero values, which can cause unintended transfer restrictions. This matches the SWC-105 pattern of uninitialized storage pointers leading to unintended behavior. The impact directly affects core token functionality by potentially blocking all transfers.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-105 is appropriate because uninitialized state variables (_maxSale, _minSale, _saleNum) default to zero values, which can cause unintended transfer restrictions. This matches the SWC-105 pattern of uninitialized storage pointers leading to unintended behavior. The impact directly affects core token functionality by potentially blocking all transfers.",
+      "evidence": [
+        "Uninitialized variables _maxSale, _minSale, _saleNum used in condition function with default 0 values",
+        "Impact includes blocking all transfers or imposing unintended restrictions",
+        "Finding severity is High with location in MetaSouls contract state variables"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-105 is appropriate because uninitialized state variables (_maxSale, _minSale, _saleNum) default to zero values, which can cause unintended transfer restrictions. This matches the SWC-105 pattern of uninitialized storage pointers leading to unintended behavior. The impact directly affects core token functionality by potentially blocking all transfers.\",\n  \"evidence\": [\n    \"Uninitialized variables _maxSale, _minSale, _saleNum used in condition function with default 0 values\",\n    \"Impact includes blocking all transfers or imposing unintended restrictions\",\n    \"Finding severity is High with location in MetaSouls contract state variables\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "1b03ee93-aad0-4bad-a9eb-70b150cc2f87",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 3024,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

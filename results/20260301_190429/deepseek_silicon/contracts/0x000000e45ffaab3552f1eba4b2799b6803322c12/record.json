@@ -1,0 +1,294 @@
+{
+  "address": "0x000000e45ffaab3552f1eba4b2799b6803322c12",
+  "session_id": "f12d5688-ad9b-402a-a49b-6f434d70cfea",
+  "audit_status": "completed",
+  "model": "deepseek_silicon",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable due to identified integer overflow risks in totalSupply calculations and multiple reentrancy vulnerabilities in the Release function. Evidence: Potential overflow in totalSupply() when multiplying large WETH balances by 1 billion (SWC-101); Release function makes external calls before state changes, violating Checks-Effects-Interactions pattern (SWC-107); Cross-function reentrancy possibilities between Release() and EncryptedSwap() functions (SWC-107)",
+  "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Potential overflow in totalSupply() when multiplying large WETH balances by 1 billion (SWC-101)\", \"Release function makes external calls before state changes, violating Checks-Effects-Interactions pattern (SWC-107)\", \"Cross-function reentrancy possibilities between Release() and EncryptedSwap() functions (SWC-107)\"], \"ok\": true, \"raw\": \"```json\\n{\\n  \\\"reason\\\": \\\"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable due to identified integer overflow risks in totalSupply calculations and multiple reentrancy vulnerabilities in the Release function.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Potential overflow in totalSupply() when multiplying large WETH balances by 1 billion (SWC-101)\\\",\\n    \\\"Release function makes external calls before state changes, violating Checks-Effects-Interactions pattern (SWC-107)\\\",\\n    \\\"Cross-function reentrancy possibilities between Release() and EncryptedSwap() functions (SWC-107)\\\"\\n  ]\\n}\\n```\", \"reason\": \"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable due to identified integer overflow risks in totalSupply calculations and multiple reentrancy vulnerabilities in the Release function.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4205,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260301_190429/deepseek_silicon/contracts/0x000000e45ffaab3552f1eba4b2799b6803322c12/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 10,
+  "execution_time": 508.6097331047058,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x000000e45ffaab3552f1eba4b2799b6803322c12",
+    "model": "deepseek_silicon",
+    "session_id": "f12d5688-ad9b-402a-a49b-6f434d70cfea",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy Vulnerability in Release Function",
+        "Severity": "High",
+        "Description": "The Release function makes an external call before completing state changes, creating a reentrancy vulnerability. This issue appears in the smart contract code.",
+        "Impact": "Potential complete drainage of all tokens controlled by this contract through recursive calls.",
+        "Location": "Release() function (lines 80-85)"
+      },
+      {
+        "Issue": "Violation of Checks-Effects-Interactions Pattern",
+        "Severity": "High",
+        "Description": "The Release function violates the Checks-Effects-Interactions pattern by making external calls before state changes. This issue appears in the smart contract code.",
+        "Impact": "Could lead to reentrancy vulnerabilities if state changes are added after external calls in future modifications.",
+        "Location": "Release() function (lines 80-85)"
+      },
+      {
+        "Issue": "Cross-Function Reentrancy Possibility",
+        "Severity": "High",
+        "Description": "Potential cross-function reentrancy issues exist due to unsafe external call patterns and inconsistent operation ordering. This issue appears in the smart contract code.",
+        "Impact": "Could lead to inconsistent balance states or unauthorized transfers if combined with other vulnerabilities.",
+        "Location": "Release() and EncryptedSwap() functions"
+      },
+      {
+        "Issue": "Potential Overflow in totalSupply Calculation",
+        "Severity": "High",
+        "Description": "The totalSupply function could overflow when multiplying large WETH balances by 1 billion. This issue appears in the smart contract code.",
+        "Impact": "Could break functionality relying on accurate total supply calculations and lead to incorrect accounting.",
+        "Location": "totalSupply() function"
+      },
+      {
+        "Issue": "Missing Access Controls on ERC20 Functions",
+        "Severity": "High",
+        "Description": "Core ERC20 functions (approve, transfer, transferFrom) lack the BotPower modifier applied to other sensitive functions. This issue appears in the smart contract code.",
+        "Impact": "Could allow unauthorized token transfers or approvals, violating intended contract logic.",
+        "Location": "approve(), transfer(), transferFrom() functions"
+      },
+      {
+        "Issue": "Privilege Escalation Between Bot and Keeper Roles",
+        "Severity": "Medium",
+        "Description": "Both bot and keeper roles can modify each other's addresses, creating circular privilege escalation. This issue appears in the smart contract code.",
+        "Impact": "Compromise of either role could lead to full contract takeover.",
+        "Location": "ResetBot() and ResetKeeper() functions"
+      },
+      {
+        "Issue": "Inconsistent SafeMath Usage",
+        "Severity": "Medium",
+        "Description": "SafeMath functions are not consistently used throughout the contract, particularly in EncryptedSwap. This issue appears in the smart contract code.",
+        "Impact": "Potential arithmetic overflows/underflows leading to incorrect calculations.",
+        "Location": "EncryptedSwap() function and arithmetic operations"
+      },
+      {
+        "Issue": "Front-Runnable Initialization",
+        "Severity": "Medium",
+        "Description": "Contract initialization via constructor is vulnerable to front-running attacks. This issue appears in the smart contract code.",
+        "Impact": "Attacker could hijack control of the contract during deployment.",
+        "Location": "Constructor"
+      },
+      {
+        "Issue": "MEV Vulnerabilities in Approval Patterns",
+        "Severity": "Medium",
+        "Description": "Unlimited approval patterns and privileged transfer functions create MEV opportunities. This issue appears in the smart contract code.",
+        "Impact": "Could lead to front-running attacks and financial losses for users.",
+        "Location": "approve() and transferFrom() functions"
+      },
+      {
+        "Issue": "Over-Permissioned EncryptedSwap Function",
+        "Severity": "Medium",
+        "Description": "The EncryptedSwap function requires admin privileges but performs transfers that shouldn't necessarily need them. This issue appears in the smart contract code.",
+        "Impact": "Could allow admins to arbitrarily transfer tokens without proper checks.",
+        "Location": "EncryptedSwap() function"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-01T19:22:48.423835",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "f12d5688-ad9b-402a-a49b-6f434d70cfea",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.18"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '<tmp> --version' running '<tmp> --version' running",
+          "status": "failed"
+        },
+        "total_execution_time": 508.6097331047058,
+        "total_tasks": 12
+      },
+      "execution_time": 508.6097331047058,
+      "finding_number": 10,
+      "findings": [
+        {
+          "Description": "The Release function makes an external call before completing state changes, creating a reentrancy vulnerability. This issue appears in the smart contract code.",
+          "Impact": "Potential complete drainage of all tokens controlled by this contract through recursive calls.",
+          "Issue": "Reentrancy Vulnerability in Release Function",
+          "Location": "Release() function (lines 80-85)",
+          "Severity": "High"
+        },
+        {
+          "Description": "The Release function violates the Checks-Effects-Interactions pattern by making external calls before state changes. This issue appears in the smart contract code.",
+          "Impact": "Could lead to reentrancy vulnerabilities if state changes are added after external calls in future modifications.",
+          "Issue": "Violation of Checks-Effects-Interactions Pattern",
+          "Location": "Release() function (lines 80-85)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Potential cross-function reentrancy issues exist due to unsafe external call patterns and inconsistent operation ordering. This issue appears in the smart contract code.",
+          "Impact": "Could lead to inconsistent balance states or unauthorized transfers if combined with other vulnerabilities.",
+          "Issue": "Cross-Function Reentrancy Possibility",
+          "Location": "Release() and EncryptedSwap() functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "The totalSupply function could overflow when multiplying large WETH balances by 1 billion. This issue appears in the smart contract code.",
+          "Impact": "Could break functionality relying on accurate total supply calculations and lead to incorrect accounting.",
+          "Issue": "Potential Overflow in totalSupply Calculation",
+          "Location": "totalSupply() function",
+          "Severity": "High"
+        },
+        {
+          "Description": "Core ERC20 functions (approve, transfer, transferFrom) lack the BotPower modifier applied to other sensitive functions. This issue appears in the smart contract code.",
+          "Impact": "Could allow unauthorized token transfers or approvals, violating intended contract logic.",
+          "Issue": "Missing Access Controls on ERC20 Functions",
+          "Location": "approve(), transfer(), transferFrom() functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "Both bot and keeper roles can modify each other's addresses, creating circular privilege escalation. This issue appears in the smart contract code.",
+          "Impact": "Compromise of either role could lead to full contract takeover.",
+          "Issue": "Privilege Escalation Between Bot and Keeper Roles",
+          "Location": "ResetBot() and ResetKeeper() functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "SafeMath functions are not consistently used throughout the contract, particularly in EncryptedSwap. This issue appears in the smart contract code.",
+          "Impact": "Potential arithmetic overflows/underflows leading to incorrect calculations.",
+          "Issue": "Inconsistent SafeMath Usage",
+          "Location": "EncryptedSwap() function and arithmetic operations",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Contract initialization via constructor is vulnerable to front-running attacks. This issue appears in the smart contract code.",
+          "Impact": "Attacker could hijack control of the contract during deployment.",
+          "Issue": "Front-Runnable Initialization",
+          "Location": "Constructor",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Unlimited approval patterns and privileged transfer functions create MEV opportunities. This issue appears in the smart contract code.",
+          "Impact": "Could lead to front-running attacks and financial losses for users.",
+          "Issue": "MEV Vulnerabilities in Approval Patterns",
+          "Location": "approve() and transferFrom() functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The EncryptedSwap function requires admin privileges but performs transfers that shouldn't necessarily need them. This issue appears in the smart contract code.",
+          "Impact": "Could allow admins to arbitrarily transfer tokens without proper checks.",
+          "Issue": "Over-Permissioned EncryptedSwap Function",
+          "Location": "EncryptedSwap() function",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The Release function makes an external call before completing state changes, creating a reentrancy vulnerability. This issue appears in the smart contract code.",
+          "Impact": "Potential complete drainage of all tokens controlled by this contract through recursive calls.",
+          "Issue": "Reentrancy Vulnerability in Release Function",
+          "Location": "Release() function (lines 80-85)",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Reentrancy Vulnerability in Release Function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The Release function makes an external call before completing state changes, creating a reentrancy vulnerability. This issue appears in the smart contract code.\",\n    \"Impact\": \"Potential complete drainage of all tokens controlled by this contract through recursive calls.\",\n    \"Location\": \"Release() function (lines 80-85)\"\n  },\n  {\n    \"Issue\": \"Violation of Checks-Effects-Interactions Pattern\",\n    \"Severity\": \"High\",\n    \"Description\": \"The Release function violates the Checks-Effects-Interactions pattern by making external calls before state changes. This issue appears in the smart contract code.\",\n    \"Impact\": \"Could lead to reentrancy vulnerabilities if state changes are added after external calls in future modifications.\",\n    \"Location\": \"Release() function (lines 80-85)\"\n  },\n  {\n    \"Issue\": \"Cross-Function Reentrancy Possibility\",\n    \"Severity\": \"High\",\n    \"Description\": \"Potential cross-function reentrancy issues exist due to unsafe external call patterns and inconsistent operation ordering. This issue appears in the smart contract code.\",\n    \"Impact\": \"Could lead to inconsistent balance states or unauthorized transfers if combined with other vulnerabilities.\",\n    \"Location\": \"Release() and EncryptedSwap() functions\"\n  },\n  {\n    \"Issue\": \"Potential Overflow in totalSupply Calculation\",\n    \"Severity\": \"High\",\n    \"Description\": \"The totalSupply function could overflow when multiplying large WETH balances by 1 billion. This issue appears in the smart contract code.\",\n    \"Impact\": \"Could break functionality relying on accurate total supply calculations and lead to incorrect accounting.\",\n    \"Location\": \"totalSupply() function\"\n  },\n  {\n    \"Issue\": \"Missing Access Controls on ERC20 Functions\",\n    \"Severity\": \"High\",\n    \"Description\": \"Core ERC20 functions (approve, transfer, transferFrom) lack the BotPower modifier applied to other sensitive functions. This issue appears in the smart contract code.\",\n    \"Impact\": \"Could allow unauthorized token transfers or approvals, violating intended contract logic.\",\n    \"Location\": \"approve(), transfer(), transferFrom() functions\"\n  },\n  {\n    \"Issue\": \"Privilege Escalation Between Bot and Keeper Roles\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Both bot and keeper roles can modify each other's addresses, creating circular privilege escalation. This issue appears in the smart contract code.\",\n    \"Impact\": \"Compromise of either role could lead to full contract takeover.\",\n    \"Location\": \"ResetBot() and ResetKeeper() functions\"\n  },\n  {\n    \"Issue\": \"Inconsistent SafeMath Usage\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"SafeMath functions are not consistently used throughout the contract, particularly in EncryptedSwap. This issue appears in the smart contract code.\",\n    \"Impact\": \"Potential arithmetic overflows/underflows leading to incorrect calculations.\",\n    \"Location\": \"EncryptedSwap() function and arithmetic operations\"\n  },\n  {\n    \"Issue\": \"Front-Runnable Initialization\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Contract initialization via constructor is vulnerable to front-running attacks. This issue appears in the smart contract code.\",\n    \"Impact\": \"Attacker could hijack control of the contract during deployment.\",\n    \"Location\": \"Constructor\"\n  },\n  {\n    \"Issue\": \"MEV Vulnerabilities in Approval Patterns\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Unlimited approval patterns and privileged transfer functions create MEV opportunities. This issue appears in the smart contract code.\",\n    \"Impact\": \"Could lead to front-running attacks and financial losses for users.\",\n    \"Location\": \"approve() and transferFrom() functions\"\n  },\n  {\n    \"Issue\": \"Over-Permissioned EncryptedSwap Function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The EncryptedSwap function requires admin privileges but performs transfers that shouldn't necessarily need them. This issue appears in the smart contract code.\",\n    \"Impact\": \"Could allow admins to arbitrarily transfer tokens without proper checks.\",\n    \"Location\": \"EncryptedSwap() function\"\n  }\n]",
+      "model_used": "deepseek_silicon",
+      "session_id": "f12d5688-ad9b-402a-a49b-6f434d70cfea",
+      "severity_breakdown": {
+        "High": 5,
+        "Low": 0,
+        "Medium": 5
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 5.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(5.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable due to identified integer overflow risks in totalSupply calculations and multiple reentrancy vulnerabilities in the Release function. Evidence: Potential overflow in totalSupply() when multiplying large WETH balances by 1 billion (SWC-101); Release function makes external calls before state changes, violating Checks-Effects-Interactions pattern (SWC-107); Cross-function reentrancy possibilities between Release() and EncryptedSwap() functions (SWC-107)",
+    "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Potential overflow in totalSupply() when multiplying large WETH balances by 1 billion (SWC-101)\", \"Release function makes external calls before state changes, violating Checks-Effects-Interactions pattern (SWC-107)\", \"Cross-function reentrancy possibilities between Release() and EncryptedSwap() functions (SWC-107)\"], \"ok\": true, \"raw\": \"```json\\n{\\n  \\\"reason\\\": \\\"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable due to identified integer overflow risks in totalSupply calculations and multiple reentrancy vulnerabilities in the Release function.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Potential overflow in totalSupply() when multiplying large WETH balances by 1 billion (SWC-101)\\\",\\n    \\\"Release function makes external calls before state changes, violating Checks-Effects-Interactions pattern (SWC-107)\\\",\\n    \\\"Cross-function reentrancy possibilities between Release() and EncryptedSwap() functions (SWC-107)\\\"\\n  ]\\n}\\n```\", \"reason\": \"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable due to identified integer overflow risks in totalSupply calculations and multiple reentrancy vulnerabilities in the Release function.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable due to identified integer overflow risks in totalSupply calculations and multiple reentrancy vulnerabilities in the Release function.",
+      "evidence": [
+        "Potential overflow in totalSupply() when multiplying large WETH balances by 1 billion (SWC-101)",
+        "Release function makes external calls before state changes, violating Checks-Effects-Interactions pattern (SWC-107)",
+        "Cross-function reentrancy possibilities between Release() and EncryptedSwap() functions (SWC-107)"
+      ],
+      "raw": "```json\n{\n  \"reason\": \"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable due to identified integer overflow risks in totalSupply calculations and multiple reentrancy vulnerabilities in the Release function.\",\n  \"evidence\": [\n    \"Potential overflow in totalSupply() when multiplying large WETH balances by 1 billion (SWC-101)\",\n    \"Release function makes external calls before state changes, violating Checks-Effects-Interactions pattern (SWC-107)\",\n    \"Cross-function reentrancy possibilities between Release() and EncryptedSwap() functions (SWC-107)\"\n  ]\n}\n```"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "f12d5688-ad9b-402a-a49b-6f434d70cfea",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 10,
+        "full_report_chars": 4205,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

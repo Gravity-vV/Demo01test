@@ -1,0 +1,266 @@
+{
+  "address": "0x000ee2ed96e1d1277a67864dedd42140dcc6b835",
+  "session_id": "f6d3f093-91d9-4afe-8ac8-3d38074d10fd",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 applies due to integer overflow risks in arithmetic operations like rTotal calculation without SafeMath. SWC-107 fits because multiple findings show reentrancy risks in state-changing functions like _transfer where state updates precede external calls. Evidence: Unsafe multiplication in decreaseAllowance (line ~208) could overflow rTotal; _transfer function updates state before Transfer event (lines ~208-218); Reentrancy impact includes bypassing rTotal limits and balance manipulation",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Unsafe multiplication in decreaseAllowance (line ~208) could overflow rTotal\", \"_transfer function updates state before Transfer event (lines ~208-218)\", \"Reentrancy impact includes bypassing rTotal limits and balance manipulation\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 applies due to integer overflow risks in arithmetic operations like rTotal calculation without SafeMath. SWC-107 fits because multiple findings show reentrancy risks in state-changing functions like _transfer where state updates precede external calls.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unsafe multiplication in decreaseAllowance (line ~208) could overflow rTotal\\\",\\n    \\\"_transfer function updates state before Transfer event (lines ~208-218)\\\",\\n    \\\"Reentrancy impact includes bypassing rTotal limits and balance manipulation\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 applies due to integer overflow risks in arithmetic operations like rTotal calculation without SafeMath. SWC-107 fits because multiple findings show reentrancy risks in state-changing functions like _transfer where state updates precede external calls.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3713,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x000ee2ed96e1d1277a67864dedd42140dcc6b835/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 8,
+  "execution_time": 1748.2395062446594,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x000ee2ed96e1d1277a67864dedd42140dcc6b835",
+    "model": "deepseek_school",
+    "session_id": "f6d3f093-91d9-4afe-8ac8-3d38074d10fd",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Unsafe arithmetic operation in decreaseAllowance function",
+        "Severity": "High",
+        "Description": "Multiplication operation without SafeMath protection in decreaseAllowance function, identified in both smart contract code and static analysis results This issue appears in the auditing result.",
+        "Impact": "Potential integer overflow allowing owner to set incorrect rTotal values, bypassing transfer restrictions and undermining deflationary mechanism",
+        "Location": "decreaseAllowance(uint256 amount) function, line ~208: rTotal = amount * 10**18"
+      },
+      {
+        "Issue": "Missing zero-address checks in critical address assignment functions",
+        "Severity": "Medium",
+        "Description": "Approve and setrouteChain functions lack zero-address validation, identified in both smart contract code and static analysis results This issue appears in the auditing result.",
+        "Impact": "Owner could accidentally or maliciously set critical addresses to zero, breaking contract functionality and transfer restrictions",
+        "Location": "Approve(address trade) and setrouteChain(address Uniswaprouterv02) functions, lines ~191-199"
+      },
+      {
+        "Issue": "Potential reentrancy vulnerability in transfer function",
+        "Severity": "Medium",
+        "Description": "_transfer function updates state before emitting Transfer event, potentially allowing reentrancy if recipient is malicious contract, identified in smart contract code analysis This issue appears in the auditing result.",
+        "Impact": "Malicious contracts could reenter during transfers, bypassing rTotal limits and potentially manipulating balances",
+        "Location": "_transfer(address sender, address recipient, uint256 amount) function, lines ~208-218"
+      },
+      {
+        "Issue": "Unlimited token minting capability in increaseAllowance function",
+        "Severity": "High",
+        "Description": "Owner can arbitrarily increase total supply beyond advertised maximum, identified in smart contract code analysis This issue appears in the auditing result.",
+        "Impact": "Complete devaluation of token by bypassing deflationary mechanism and fixed supply promise",
+        "Location": "increaseAllowance(uint256 amount) function, lines ~186-191"
+      },
+      {
+        "Issue": "ERC-20 approval race condition vulnerability",
+        "Severity": "Medium",
+        "Description": "Standard approve function implementation susceptible to front-running attacks, identified in smart contract code analysis This issue appears in the auditing result.",
+        "Impact": "Malicious spenders can front-run approval reductions to obtain more tokens than intended",
+        "Location": "approve(address spender, uint256 amount) function, lines ~213-216"
+      },
+      {
+        "Issue": "Front-running vulnerability in transaction limit mechanism",
+        "Severity": "Medium",
+        "Description": "Simple amount-based transaction limit can be bypassed through multiple smaller transactions, identified in smart contract code analysis This issue appears in the auditing result.",
+        "Impact": "Bypass of deflationary burn mechanism allowing large holders to dump tokens without restrictions",
+        "Location": "_transfer function rTotal check, lines ~212-214"
+      },
+      {
+        "Issue": "Missing event emission for critical state changes",
+        "Severity": "Low",
+        "Description": "decreaseAllowance function modifies rTotal without emitting event, identified in static analysis results This issue appears in the auditing result.",
+        "Impact": "Reduced transparency and inability to track important parameter changes off-chain",
+        "Location": "decreaseAllowance(uint256 amount) function, static analysis finding: events-maths"
+      },
+      {
+        "Issue": "Missing zero-value transfer validation",
+        "Severity": "Low",
+        "Description": "_transfer function allows zero-value transfers, identified in smart contract code analysis This issue appears in the auditing result.",
+        "Impact": "Unnecessary gas consumption and event logging without meaningful state changes",
+        "Location": "_transfer function, lines ~208-218"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T01:33:37.054730",
+      "execution_summary": {
+        "completed_tasks": 11,
+        "failed_tasks": 1,
+        "session_id": "f6d3f093-91d9-4afe-8ac8-3d38074d10fd",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-ywqvpr4c/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.9"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1748.2395062446594,
+        "total_tasks": 12
+      },
+      "execution_time": 1748.2395062446594,
+      "finding_number": 8,
+      "findings": [
+        {
+          "Description": "Multiplication operation without SafeMath protection in decreaseAllowance function, identified in both smart contract code and static analysis results This issue appears in the auditing result.",
+          "Impact": "Potential integer overflow allowing owner to set incorrect rTotal values, bypassing transfer restrictions and undermining deflationary mechanism",
+          "Issue": "Unsafe arithmetic operation in decreaseAllowance function",
+          "Location": "decreaseAllowance(uint256 amount) function, line ~208: rTotal = amount * 10**18",
+          "Severity": "High"
+        },
+        {
+          "Description": "Approve and setrouteChain functions lack zero-address validation, identified in both smart contract code and static analysis results This issue appears in the auditing result.",
+          "Impact": "Owner could accidentally or maliciously set critical addresses to zero, breaking contract functionality and transfer restrictions",
+          "Issue": "Missing zero-address checks in critical address assignment functions",
+          "Location": "Approve(address trade) and setrouteChain(address Uniswaprouterv02) functions, lines ~191-199",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "_transfer function updates state before emitting Transfer event, potentially allowing reentrancy if recipient is malicious contract, identified in smart contract code analysis This issue appears in the auditing result.",
+          "Impact": "Malicious contracts could reenter during transfers, bypassing rTotal limits and potentially manipulating balances",
+          "Issue": "Potential reentrancy vulnerability in transfer function",
+          "Location": "_transfer(address sender, address recipient, uint256 amount) function, lines ~208-218",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Owner can arbitrarily increase total supply beyond advertised maximum, identified in smart contract code analysis This issue appears in the auditing result.",
+          "Impact": "Complete devaluation of token by bypassing deflationary mechanism and fixed supply promise",
+          "Issue": "Unlimited token minting capability in increaseAllowance function",
+          "Location": "increaseAllowance(uint256 amount) function, lines ~186-191",
+          "Severity": "High"
+        },
+        {
+          "Description": "Standard approve function implementation susceptible to front-running attacks, identified in smart contract code analysis This issue appears in the auditing result.",
+          "Impact": "Malicious spenders can front-run approval reductions to obtain more tokens than intended",
+          "Issue": "ERC-20 approval race condition vulnerability",
+          "Location": "approve(address spender, uint256 amount) function, lines ~213-216",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Simple amount-based transaction limit can be bypassed through multiple smaller transactions, identified in smart contract code analysis This issue appears in the auditing result.",
+          "Impact": "Bypass of deflationary burn mechanism allowing large holders to dump tokens without restrictions",
+          "Issue": "Front-running vulnerability in transaction limit mechanism",
+          "Location": "_transfer function rTotal check, lines ~212-214",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "decreaseAllowance function modifies rTotal without emitting event, identified in static analysis results This issue appears in the auditing result.",
+          "Impact": "Reduced transparency and inability to track important parameter changes off-chain",
+          "Issue": "Missing event emission for critical state changes",
+          "Location": "decreaseAllowance(uint256 amount) function, static analysis finding: events-maths",
+          "Severity": "Low"
+        },
+        {
+          "Description": "_transfer function allows zero-value transfers, identified in smart contract code analysis This issue appears in the auditing result.",
+          "Impact": "Unnecessary gas consumption and event logging without meaningful state changes",
+          "Issue": "Missing zero-value transfer validation",
+          "Location": "_transfer function, lines ~208-218",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Multiplication operation without SafeMath protection in decreaseAllowance function, identified in both smart contract code and static analysis results This issue appears in the auditing result.",
+          "Impact": "Potential integer overflow allowing owner to set incorrect rTotal values, bypassing transfer restrictions and undermining deflationary mechanism",
+          "Issue": "Unsafe arithmetic operation in decreaseAllowance function",
+          "Location": "decreaseAllowance(uint256 amount) function, line ~208: rTotal = amount * 10**18",
+          "Severity": "High"
+        }
+      },
+      "full_report": "```json\n[\n  {\n    \"Issue\": \"Unsafe arithmetic operation in decreaseAllowance function\",\n    \"Severity\": \"High\",\n    \"Description\": \"Multiplication operation without SafeMath protection in decreaseAllowance function, identified in both smart contract code and static analysis results\",\n    \"Impact\": \"Potential integer overflow allowing owner to set incorrect rTotal values, bypassing transfer restrictions and undermining deflationary mechanism\",\n    \"Location\": \"decreaseAllowance(uint256 amount) function, line ~208: rTotal = amount * 10**18\"\n  },\n  {\n    \"Issue\": \"Missing zero-address checks in critical address assignment functions\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Approve and setrouteChain functions lack zero-address validation, identified in both smart contract code and static analysis results\",\n    \"Impact\": \"Owner could accidentally or maliciously set critical addresses to zero, breaking contract functionality and transfer restrictions\",\n    \"Location\": \"Approve(address trade) and setrouteChain(address Uniswaprouterv02) functions, lines ~191-199\"\n  },\n  {\n    \"Issue\": \"Potential reentrancy vulnerability in transfer function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"_transfer function updates state before emitting Transfer event, potentially allowing reentrancy if recipient is malicious contract, identified in smart contract code analysis\",\n    \"Impact\": \"Malicious contracts could reenter during transfers, bypassing rTotal limits and potentially manipulating balances\",\n    \"Location\": \"_transfer(address sender, address recipient, uint256 amount) function, lines ~208-218\"\n  },\n  {\n    \"Issue\": \"Unlimited token minting capability in increaseAllowance function\",\n    \"Severity\": \"High\",\n    \"Description\": \"Owner can arbitrarily increase total supply beyond advertised maximum, identified in smart contract code analysis\",\n    \"Impact\": \"Complete devaluation of token by bypassing deflationary mechanism and fixed supply promise\",\n    \"Location\": \"increaseAllowance(uint256 amount) function, lines ~186-191\"\n  },\n  {\n    \"Issue\": \"ERC-20 approval race condition vulnerability\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Standard approve function implementation susceptible to front-running attacks, identified in smart contract code analysis\",\n    \"Impact\": \"Malicious spenders can front-run approval reductions to obtain more tokens than intended\",\n    \"Location\": \"approve(address spender, uint256 amount) function, lines ~213-216\"\n  },\n  {\n    \"Issue\": \"Front-running vulnerability in transaction limit mechanism\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Simple amount-based transaction limit can be bypassed through multiple smaller transactions, identified in smart contract code analysis\",\n    \"Impact\": \"Bypass of deflationary burn mechanism allowing large holders to dump tokens without restrictions\",\n    \"Location\": \"_transfer function rTotal check, lines ~212-214\"\n  },\n  {\n    \"Issue\": \"Missing event emission for critical state changes\",\n    \"Severity\": \"Low\",\n    \"Description\": \"decreaseAllowance function modifies rTotal without emitting event, identified in static analysis results\",\n    \"Impact\": \"Reduced transparency and inability to track important parameter changes off-chain\",\n    \"Location\": \"decreaseAllowance(uint256 amount) function, static analysis finding: events-maths\"\n  },\n  {\n    \"Issue\": \"Missing zero-value transfer validation\",\n    \"Severity\": \"Low\",\n    \"Description\": \"_transfer function allows zero-value transfers, identified in smart contract code analysis\",\n    \"Impact\": \"Unnecessary gas consumption and event logging without meaningful state changes\",\n    \"Location\": \"_transfer function, lines ~208-218\"\n  }\n]\n```",
+      "model_used": "deepseek_school",
+      "session_id": "f6d3f093-91d9-4afe-8ac8-3d38074d10fd",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 2,
+        "Medium": 4
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 applies due to integer overflow risks in arithmetic operations like rTotal calculation without SafeMath. SWC-107 fits because multiple findings show reentrancy risks in state-changing functions like _transfer where state updates precede external calls. Evidence: Unsafe multiplication in decreaseAllowance (line ~208) could overflow rTotal; _transfer function updates state before Transfer event (lines ~208-218); Reentrancy impact includes bypassing rTotal limits and balance manipulation",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Unsafe multiplication in decreaseAllowance (line ~208) could overflow rTotal\", \"_transfer function updates state before Transfer event (lines ~208-218)\", \"Reentrancy impact includes bypassing rTotal limits and balance manipulation\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 applies due to integer overflow risks in arithmetic operations like rTotal calculation without SafeMath. SWC-107 fits because multiple findings show reentrancy risks in state-changing functions like _transfer where state updates precede external calls.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unsafe multiplication in decreaseAllowance (line ~208) could overflow rTotal\\\",\\n    \\\"_transfer function updates state before Transfer event (lines ~208-218)\\\",\\n    \\\"Reentrancy impact includes bypassing rTotal limits and balance manipulation\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 applies due to integer overflow risks in arithmetic operations like rTotal calculation without SafeMath. SWC-107 fits because multiple findings show reentrancy risks in state-changing functions like _transfer where state updates precede external calls.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 applies due to integer overflow risks in arithmetic operations like rTotal calculation without SafeMath. SWC-107 fits because multiple findings show reentrancy risks in state-changing functions like _transfer where state updates precede external calls.",
+      "evidence": [
+        "Unsafe multiplication in decreaseAllowance (line ~208) could overflow rTotal",
+        "_transfer function updates state before Transfer event (lines ~208-218)",
+        "Reentrancy impact includes bypassing rTotal limits and balance manipulation"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 applies due to integer overflow risks in arithmetic operations like rTotal calculation without SafeMath. SWC-107 fits because multiple findings show reentrancy risks in state-changing functions like _transfer where state updates precede external calls.\",\n  \"evidence\": [\n    \"Unsafe multiplication in decreaseAllowance (line ~208) could overflow rTotal\",\n    \"_transfer function updates state before Transfer event (lines ~208-218)\",\n    \"Reentrancy impact includes bypassing rTotal limits and balance manipulation\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "f6d3f093-91d9-4afe-8ac8-3d38074d10fd",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 8,
+        "full_report_chars": 3713,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

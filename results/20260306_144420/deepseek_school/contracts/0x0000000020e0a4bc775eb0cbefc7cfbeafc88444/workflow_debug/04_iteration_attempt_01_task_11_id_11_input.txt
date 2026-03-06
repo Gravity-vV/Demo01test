@@ -1,0 +1,201 @@
+
+                    As a smart contract security auditor, perform the following specific audit task on this Solidity smart contract:
+
+                    Audit Task: **Review Signature Verification Scheme:**
+                    Priority: medium
+
+                    Smart Contract Code:
+                    /**
+ *Submitted for verification at Etherscan.io on 2021-03-11
+*/
+
+pragma solidity >=0.7.0 <0.8.0;
+
+// In the first version, claimed block nonce / mixDigest IS NOT VERIFIED
+// This contract assumes that mev block template producer completely TRUSTS pool operator that received the signed work order.
+// This contract !DOES NOT VERIFY! that block nonce / mixDigest is valid or that it was broadcasted without delay
+// In the next version we're planning to introduce trustless approach to verify submited block nonce on-chain(see smartpool) and verify delay in seconds for share submission(using oracles)
+contract LogOfClaimedMEVBlocks {
+    uint256 internal constant FLAG_BLOCK_NONCE_LIMIT = 0x10000000000000000;
+    mapping (address => uint) public timestampOfPossibleExit;
+    mapping (address => uint) public depositedEther;
+    
+    mapping (address => address) public blockSubmissionsOperator;
+    mapping (bytes32 => uint) public claimedBlockNonce;
+    mapping (bytes32 => bytes32) public claimedBlockMixDigest;
+    
+    event Deposit(address user, uint amount);
+    event Withdraw(address user, uint amount);
+    event BlockClaimed(bytes32 blockHeader, bytes32 seedHash, bytes32 target, uint blockNumber, uint blockPayment, address miningPoolAddress, address mevProducerAddress, uint blockNonce, bytes32 mixDigest);
+    
+
+    function setBlockClaimsOperator(address newBlockSubmissionsOperator) public {
+        assert(msg.data.length == 36);
+        blockSubmissionsOperator[msg.sender] = newBlockSubmissionsOperator;
+    }
+
+    fallback () payable external {
+        this.depositAndLock(msg.value, 24 * 60 * 60);
+    }
+    function depositAndLock(uint depositAmount, uint depositDuration) payable external {
+        require(depositAmount == msg.value);
+        // Enforcing min and max lockup durations
+        require(depositDuration >= 24 * 60 * 60 && depositDuration < 365 * 24 * 60 * 60);
+        timestampOfPossibleExit[msg.sender] = block.timestamp + depositDuration;
+        if (msg.value > 0) {
+            depositedEther[msg.sender] += msg.value;
+        }
+        emit Deposit(msg.sender, msg.value);
+    }
+    
+    
+    function withdrawUpTo(uint etherAmount) external {
+        // User previously deposited into contract
+        require(depositedEther[msg.sender] > 0);
+        // Deposit lockup period is over
+        require(block.timestamp > timestampOfPossibleExit[msg.sender]);
+        if (depositedEther[msg.sender] < etherAmount)
+            etherAmount = depositedEther[msg.sender];
+        depositedEther[msg.sender] -= etherAmount;
+        msg.sender.transfer(etherAmount);
+        emit Withdraw(msg.sender, etherAmount);
+    }
+
+    function submitClaim(
+        bytes32 blockHeader,
+        bytes32 seedHash,
+        bytes32 target,
+        uint blockNumber,
+        uint blockPayment,
+        address payable miningPoolAddress,
+        address mevProducerAddress,
+        uint8 v,
+        bytes32 r,
+        bytes32 s,
+        uint blockNonce,
+        bytes32 mixDigest
+    ) public {
+        require(msg.sender == blockSubmissionsOperator[miningPoolAddress] || msg.sender == miningPoolAddress);
+        bytes32 hash = keccak256(abi.encodePacked(blockHeader, seedHash, target, blockNumber, blockPayment, miningPoolAddress));
+        if (claimedBlockNonce[hash] == 0 && blockNonce < FLAG_BLOCK_NONCE_LIMIT) {
+            if (ecrecover(keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash)),v,r,s) == mevProducerAddress) {
+                require(depositedEther[mevProducerAddress] >= blockPayment);
+                claimedBlockNonce[hash] = FLAG_BLOCK_NONCE_LIMIT + blockNonce;
+                claimedBlockMixDigest[hash] = mixDigest;
+                depositedEther[mevProducerAddress] -= blockPayment;
+                miningPoolAddress.transfer(blockPayment);
+                emit BlockClaimed(blockHeader, seedHash, target, blockNumber, blockPayment, miningPoolAddress, mevProducerAddress, blockNonce, mixDigest);
+            }
+        }
+    }
+    
+    function remainingDurationForWorkClaim(
+        bytes32 blockHeader,
+        bytes32 seedHash,
+        bytes32 target,
+        uint blockNumber,
+        uint blockPayment,
+        address miningPoolAddress,
+        address mevProducerAddress,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) public view returns (uint) {
+        bytes32 hash = keccak256(abi.encodePacked(blockHeader, seedHash, target, blockNumber, blockPayment, miningPoolAddress));
+        if (claimedBlockNonce[hash] != 0) return 0;
+        if (ecrecover(keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash)),v,r,s) != mevProducerAddress) return 0;
+        if (depositedEther[mevProducerAddress] < blockPayment) return 0;
+        if (block.timestamp >= timestampOfPossibleExit[mevProducerAddress]) return 0;
+        return timestampOfPossibleExit[mevProducerAddress] - block.timestamp;
+    }
+}
+
+contract GasOptimisedPayoutsToMiners {
+    function dispersePaymentForShares(uint256[] memory minerPayoutData) external payable {
+        for (uint256 i = 0; i < minerPayoutData.length; i++) {
+            uint256 singlePayout = minerPayoutData[i];
+            payable(singlePayout).transfer(singlePayout / (16 ** 40));
+        }
+        uint256 balance = address(this).balance;
+        if (balance > 0)
+            msg.sender.transfer(balance);
+    }
+}
+
+                    Static Analysis Results (if available):
+                    Auto Static Analysis (Slither 0.11.0)
+Scope: pre-audit structural extraction + detector findings
+Overview:
+- Compiled with solc
+- Total number of contracts in source files: 2
+- Source lines of code (SLOC) in source files: 94
+- Number of assembly lines: 0
+- Number of optimization issues: 0
+- Number of informational issues: 0
+- Number of low issues: 3
+- Number of medium issues: 0
+Structural Signals:
+- contract-summary:
+- + Contract LogOfClaimedMEVBlocks (Most derived contract)
+- - From LogOfClaimedMEVBlocks
+- - depositAndLock(uint256,uint256) (external)
+- - fallback() (external)
+- - remainingDurationForWorkClaim(bytes32,bytes32,bytes32,uint256,uint256,address,address,uint8,bytes32,bytes32) (public)
+- entry-points:
+- Contract [1m[93mGasOptimisedPayoutsToMiners[0m
+- +-------------------------------------+-----------+----------------+
+- | Function | Modifiers | Inherited From |
+- +-------------------------------------+-----------+----------------+
+- | [1m[91mdispersePaymentForShares[0m(uint256[]) | [92mpayable[0m | |
+- modifiers:
+- Contract LogOfClaimedMEVBlocks
+- +-------------------------------------+-----------+
+- | Function | Modifiers |
+- +-------------------------------------+-----------+
+- | setBlockClaimsOperator | [] |
+- vars-and-auth:
+- Contract LogOfClaimedMEVBlocks
+- +-------------------------------------+------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+- | Function | State variables written | Conditions on msg.sender |
+- +-------------------------------------+------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+- | setBlockClaimsOperator | ['blockSubmissionsOperator'] | [] |
+Detector Findings (High/Medium/Low):
+- [High] arbitrary-send-eth (confidence=Medium): GasOptimisedPayoutsToMiners.dispersePaymentForShares(uint256[]) sends eth to arbitrary user Dangerous calls: - address(singlePayout).transfer(singlePayout / (16 ** 40)) - msg.sender.transfer(balance)
+- [Low] calls-loop (confidence=Medium): GasOptimisedPayoutsToMiners.dispersePaymentForShares(uint256[]) has external calls inside a loop: address(singlePayout).transfer(singlePayout / (16 ** 40))
+- [Low] timestamp (confidence=Medium): LogOfClaimedMEVBlocks.remainingDurationForWorkClaim(bytes32,bytes32,bytes32,uint256,uint256,address,address,uint8,bytes32,bytes32) uses timestamp for comparisons Dangerous comparisons: - block.timestamp >= timestampOfPossibleExit[mevProducerAddress]
+- [Low] timestamp (confidence=Medium): LogOfClaimedMEVBlocks.withdrawUpTo(uint256) uses timestamp for comparisons Dangerous comparisons: - require(bool)(block.timestamp > timestampOfPossibleExit[msg.sender])
+
+                    Retrieved External Security Evidence (RAG):
+                    No external evidence retrieved.
+
+                    Provide detailed findings for this specific task including:
+
+                    1. Issue Analysis
+                       - Is there an issue related to this audit task?
+                       - If yes, provide detailed description
+                       - If no, explain why this area is secure
+
+                    2. Severity Assessment (if issue found)
+                       - Critical: Funds can be stolen or contract can be broken
+                       - High: Significant impact on contract functionality
+                       - Medium: Moderate impact or potential for exploitation
+                       - Low: Minor issues or best practice violations
+
+                    3. Technical Details
+                       - Specific code location (function names, line references)
+                       - Technical explanation of the issue
+                       - Attack vectors or exploitation methods
+
+                    4. Impact Assessment
+                       - What could happen if this issue is exploited?
+                       - Financial impact potential
+                       - Operational impact on the contract
+
+                    5. Recommendations
+                       - Specific code changes needed
+                       - Best practices to implement
+                       - Additional security measures
+
+                    If RAG evidence is available, explicitly ground your conclusions in those references and cite source tags in the form [SRC: ...].
+                    Be thorough and specific in your analysis. If no issues are found, clearly state this and explain the security measures that are correctly implemented.
+                    

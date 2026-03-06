@@ -1,0 +1,175 @@
+{
+  "address": "0x1d5436e2bf8901e3b3095d8cae9ccd06b5b7bcc8",
+  "session_id": "dbef13e6-c513-4d72-bcf7-9977981cfb6d",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "",
+  "pred_swc_count": 0,
+  "is_other": 1,
+  "pred_source": "llm",
+  "pred_reason": "The finding involves state variable shadowing which is not directly covered by a standard SWC ID but fits the SWC-OTHER category as a code quality issue. It does not present an immediate vulnerability but indicates a potential maintenance risk. The issue aligns with general smart contract best practices for clarity and avoiding unintended behavior. Evidence: Parameter '_owner' shadows inherited state variable '_owner' in BTKToken.allowance.; Static analysis tool flagged 'shadowing-local' with high confidence.; Impact includes developer confusion and future bug risks, though no direct exploit exists.",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 0.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 0.0,\\n  \\\"reason\\\": \\\"Finding does not match any specified SWC label criteria\\\"\\n}\", \"reason\": \"Finding does not match any specified SWC label criteria\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"Parameter '_owner' shadows inherited state variable '_owner' in BTKToken.allowance.\", \"Static analysis tool flagged 'shadowing-local' with high confidence.\", \"Impact includes developer confusion and future bug risks, though no direct exploit exists.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The finding involves state variable shadowing which is not directly covered by a standard SWC ID but fits the SWC-OTHER category as a code quality issue. It does not present an immediate vulnerability but indicates a potential maintenance risk. The issue aligns with general smart contract best practices for clarity and avoiding unintended behavior.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Parameter '_owner' shadows inherited state variable '_owner' in BTKToken.allowance.\\\",\\n    \\\"Static analysis tool flagged 'shadowing-local' with high confidence.\\\",\\n    \\\"Impact includes developer confusion and future bug risks, though no direct exploit exists.\\\"\\n  ]\\n}\", \"reason\": \"The finding involves state variable shadowing which is not directly covered by a standard SWC ID but fits the SWC-OTHER category as a code quality issue. It does not present an immediate vulnerability but indicates a potential maintenance risk. The issue aligns with general smart contract best practices for clarity and avoiding unintended behavior.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 749,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x1d5436e2bf8901e3b3095d8cae9ccd06b5b7bcc8/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 1,
+  "execution_time": 429.77649688720703,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x1d5436e2bf8901e3b3095d8cae9ccd06b5b7bcc8",
+    "model": "deepseek_school",
+    "session_id": "dbef13e6-c513-4d72-bcf7-9977981cfb6d",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "State Variable Shadowing",
+        "Severity": "Low",
+        "Description": "The parameter '_owner' in the BTKToken.allowance function shadows the state variable '_owner' inherited from Ownable. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "While the shadowing doesn't directly cause a vulnerability in this specific case, it can lead to confusion and potential bugs in future development, as references to '_owner' within the allowance function would refer to the parameter rather than the inherited state variable.",
+        "Location": "BTKToken.allowance(address _owner, address _spender) function (line not specified in provided code) and static analysis finding 'shadowing-local' with confidence=High"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T15:42:10.066342",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "dbef13e6-c513-4d72-bcf7-9977981cfb6d",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-_n9a3rgf/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.8"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 429.77649688720703,
+        "total_tasks": 0
+      },
+      "execution_time": 429.77649688720703,
+      "finding_number": 1,
+      "findings": [
+        {
+          "Description": "The parameter '_owner' in the BTKToken.allowance function shadows the state variable '_owner' inherited from Ownable. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "While the shadowing doesn't directly cause a vulnerability in this specific case, it can lead to confusion and potential bugs in future development, as references to '_owner' within the allowance function would refer to the parameter rather than the inherited state variable.",
+          "Issue": "State Variable Shadowing",
+          "Location": "BTKToken.allowance(address _owner, address _spender) function (line not specified in provided code) and static analysis finding 'shadowing-local' with confidence=High",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The parameter '_owner' in the BTKToken.allowance function shadows the state variable '_owner' inherited from Ownable. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "While the shadowing doesn't directly cause a vulnerability in this specific case, it can lead to confusion and potential bugs in future development, as references to '_owner' within the allowance function would refer to the parameter rather than the inherited state variable.",
+          "Issue": "State Variable Shadowing",
+          "Location": "BTKToken.allowance(address _owner, address _spender) function (line not specified in provided code) and static analysis finding 'shadowing-local' with confidence=High",
+          "Severity": "Low"
+        }
+      },
+      "full_report": "[{\"Issue\": \"State Variable Shadowing\", \"Severity\": \"Low\", \"Description\": \"The parameter '_owner' in the BTKToken.allowance function shadows the state variable '_owner' inherited from Ownable. This issue appears in both the smart contract code and the static analysis results.\", \"Impact\": \"While the shadowing doesn't directly cause a vulnerability in this specific case, it can lead to confusion and potential bugs in future development, as references to '_owner' within the allowance function would refer to the parameter rather than the inherited state variable.\", \"Location\": \"BTKToken.allowance(address _owner, address _spender) function (line not specified in provided code) and static analysis finding 'shadowing-local' with confidence=High\"}]",
+      "model_used": "deepseek_school",
+      "session_id": "dbef13e6-c513-4d72-bcf7-9977981cfb6d",
+      "severity_breakdown": {
+        "High": 0,
+        "Low": 1,
+        "Medium": 0
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [],
+      "source": "llm",
+      "confidence": 0.0,
+      "reason": "Finding does not match any specified SWC label criteria",
+      "raw": "{\n  \"labels\": [],\n  \"confidence\": 0.0,\n  \"reason\": \"Finding does not match any specified SWC label criteria\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [],
+    "pred_labels": [],
+    "pred_swc_list": "",
+    "pred_source": "llm",
+    "is_other": 1,
+    "pred_reason": "The finding involves state variable shadowing which is not directly covered by a standard SWC ID but fits the SWC-OTHER category as a code quality issue. It does not present an immediate vulnerability but indicates a potential maintenance risk. The issue aligns with general smart contract best practices for clarity and avoiding unintended behavior. Evidence: Parameter '_owner' shadows inherited state variable '_owner' in BTKToken.allowance.; Static analysis tool flagged 'shadowing-local' with high confidence.; Impact includes developer confusion and future bug risks, though no direct exploit exists.",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 0.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 0.0,\\n  \\\"reason\\\": \\\"Finding does not match any specified SWC label criteria\\\"\\n}\", \"reason\": \"Finding does not match any specified SWC label criteria\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"Parameter '_owner' shadows inherited state variable '_owner' in BTKToken.allowance.\", \"Static analysis tool flagged 'shadowing-local' with high confidence.\", \"Impact includes developer confusion and future bug risks, though no direct exploit exists.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The finding involves state variable shadowing which is not directly covered by a standard SWC ID but fits the SWC-OTHER category as a code quality issue. It does not present an immediate vulnerability but indicates a potential maintenance risk. The issue aligns with general smart contract best practices for clarity and avoiding unintended behavior.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Parameter '_owner' shadows inherited state variable '_owner' in BTKToken.allowance.\\\",\\n    \\\"Static analysis tool flagged 'shadowing-local' with high confidence.\\\",\\n    \\\"Impact includes developer confusion and future bug risks, though no direct exploit exists.\\\"\\n  ]\\n}\", \"reason\": \"The finding involves state variable shadowing which is not directly covered by a standard SWC ID but fits the SWC-OTHER category as a code quality issue. It does not present an immediate vulnerability but indicates a potential maintenance risk. The issue aligns with general smart contract best practices for clarity and avoiding unintended behavior.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The finding involves state variable shadowing which is not directly covered by a standard SWC ID but fits the SWC-OTHER category as a code quality issue. It does not present an immediate vulnerability but indicates a potential maintenance risk. The issue aligns with general smart contract best practices for clarity and avoiding unintended behavior.",
+      "evidence": [
+        "Parameter '_owner' shadows inherited state variable '_owner' in BTKToken.allowance.",
+        "Static analysis tool flagged 'shadowing-local' with high confidence.",
+        "Impact includes developer confusion and future bug risks, though no direct exploit exists."
+      ],
+      "raw": "{\n  \"reason\": \"The finding involves state variable shadowing which is not directly covered by a standard SWC ID but fits the SWC-OTHER category as a code quality issue. It does not present an immediate vulnerability but indicates a potential maintenance risk. The issue aligns with general smart contract best practices for clarity and avoiding unintended behavior.\",\n  \"evidence\": [\n    \"Parameter '_owner' shadows inherited state variable '_owner' in BTKToken.allowance.\",\n    \"Static analysis tool flagged 'shadowing-local' with high confidence.\",\n    \"Impact includes developer confusion and future bug risks, though no direct exploit exists.\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "dbef13e6-c513-4d72-bcf7-9977981cfb6d",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 1,
+        "full_report_chars": 749,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

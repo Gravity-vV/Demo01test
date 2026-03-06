@@ -1,0 +1,217 @@
+{
+  "address": "0x26a52531205daf2713597ac0b54cd6e2c65c46fe",
+  "session_id": "1f112f97-040e-48b2-a064-0240664f1688",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-101 label is appropriate as the contract contains multiple integer arithmetic issues. The incorrect initial supply calculation represents a critical miscalculation, and the vulnerable SafeMath implementation fails to properly prevent overflow conditions. Evidence: Constructor sets _totalSupply = 100000000000000000000000000 (1e26) instead of intended 1e17; safeMul function uses incorrect overflow check: require(a == 0 || c / a == b); Multiple arithmetic operations lack proper overflow protection throughout contract",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Constructor sets _totalSupply = 100000000000000000000000000 (1e26) instead of intended 1e17\", \"safeMul function uses incorrect overflow check: require(a == 0 || c / a == b)\", \"Multiple arithmetic operations lack proper overflow protection throughout contract\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is appropriate as the contract contains multiple integer arithmetic issues. The incorrect initial supply calculation represents a critical miscalculation, and the vulnerable SafeMath implementation fails to properly prevent overflow conditions.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Constructor sets _totalSupply = 100000000000000000000000000 (1e26) instead of intended 1e17\\\",\\n    \\\"safeMul function uses incorrect overflow check: require(a == 0 || c / a == b)\\\",\\n    \\\"Multiple arithmetic operations lack proper overflow protection throughout contract\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is appropriate as the contract contains multiple integer arithmetic issues. The incorrect initial supply calculation represents a critical miscalculation, and the vulnerable SafeMath implementation fails to properly prevent overflow conditions.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2775,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x26a52531205daf2713597ac0b54cd6e2c65c46fe/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 1415.0655331611633,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x26a52531205daf2713597ac0b54cd6e2c65c46fe",
+    "model": "deepseek_school",
+    "session_id": "1f112f97-040e-48b2-a064-0240664f1688",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Incorrect Initial Token Supply Calculation",
+        "Severity": "High",
+        "Description": "The contract's initial supply calculation is incorrect - it assigns 1e26 tokens instead of the intended 1e17 tokens for 100 million tokens with 9 decimals. This appears in the smart contract code only (constructor).",
+        "Impact": "Severe tokenomics distortion, 1 billion times inflation of intended supply, market cap miscalculation, and integration issues with external systems.",
+        "Location": "Constructor of wawawacoin contract, line ~47: _totalSupply = 100000000000000000000000000;"
+      },
+      {
+        "Issue": "Vulnerable SafeMath Multiplication Implementation",
+        "Severity": "Medium",
+        "Description": "The safeMul function in the SafeMath library contains an incorrect overflow check that could fail to detect certain overflow conditions. This appears in the smart contract code only.",
+        "Impact": "Potential arithmetic overflows in multiplication operations, leading to incorrect token calculations, balance inconsistencies, and potential financial losses.",
+        "Location": "SafeMath contract, safeMul function: require(a == 0 || c / a == b);"
+      },
+      {
+        "Issue": "Approve Function Front-Running Vulnerability",
+        "Severity": "Medium",
+        "Description": "The approve function is vulnerable to a known front-running attack where spenders can use old allowances before new ones take effect. This appears in the smart contract code only.",
+        "Impact": "Malicious spenders can extract more tokens than intended by monitoring mempool and front-running approval reduction transactions.",
+        "Location": "wawawacoin contract, approve function: allowed[msg.sender][spender] = tokens;"
+      },
+      {
+        "Issue": "Missing Emergency Pause and Ownership Controls",
+        "Severity": "Medium",
+        "Description": "The contract lacks emergency pause functionality and ownership controls, preventing response to discovered vulnerabilities. This appears in the smart contract code only.",
+        "Impact": "Inability to halt transactions during security incidents, potentially allowing continued exploitation of vulnerabilities until funds are drained.",
+        "Location": "Entire wawawacoin contract - no pause functionality or owner role implemented"
+      },
+      {
+        "Issue": "Missing SafeMath Usage in Approve Function",
+        "Severity": "Medium",
+        "Description": "The approve function does not use SafeMath for input validation, though it performs no arithmetic operations. This appears in the smart contract code only.",
+        "Impact": "Potential for incorrect allowance values if tokens parameter is manipulated or derived from unchecked calculations elsewhere.",
+        "Location": "wawawacoin contract, approve function: allowed[msg.sender][spender] = tokens;"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T07:12:54.800512",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "1f112f97-040e-48b2-a064-0240664f1688",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-ykbv6ui3/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1415.0655331611633,
+        "total_tasks": 12
+      },
+      "execution_time": 1415.0655331611633,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "The contract's initial supply calculation is incorrect - it assigns 1e26 tokens instead of the intended 1e17 tokens for 100 million tokens with 9 decimals. This appears in the smart contract code only (constructor).",
+          "Impact": "Severe tokenomics distortion, 1 billion times inflation of intended supply, market cap miscalculation, and integration issues with external systems.",
+          "Issue": "Incorrect Initial Token Supply Calculation",
+          "Location": "Constructor of wawawacoin contract, line ~47: _totalSupply = 100000000000000000000000000;",
+          "Severity": "High"
+        },
+        {
+          "Description": "The safeMul function in the SafeMath library contains an incorrect overflow check that could fail to detect certain overflow conditions. This appears in the smart contract code only.",
+          "Impact": "Potential arithmetic overflows in multiplication operations, leading to incorrect token calculations, balance inconsistencies, and potential financial losses.",
+          "Issue": "Vulnerable SafeMath Multiplication Implementation",
+          "Location": "SafeMath contract, safeMul function: require(a == 0 || c / a == b);",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The approve function is vulnerable to a known front-running attack where spenders can use old allowances before new ones take effect. This appears in the smart contract code only.",
+          "Impact": "Malicious spenders can extract more tokens than intended by monitoring mempool and front-running approval reduction transactions.",
+          "Issue": "Approve Function Front-Running Vulnerability",
+          "Location": "wawawacoin contract, approve function: allowed[msg.sender][spender] = tokens;",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract lacks emergency pause functionality and ownership controls, preventing response to discovered vulnerabilities. This appears in the smart contract code only.",
+          "Impact": "Inability to halt transactions during security incidents, potentially allowing continued exploitation of vulnerabilities until funds are drained.",
+          "Issue": "Missing Emergency Pause and Ownership Controls",
+          "Location": "Entire wawawacoin contract - no pause functionality or owner role implemented",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The approve function does not use SafeMath for input validation, though it performs no arithmetic operations. This appears in the smart contract code only.",
+          "Impact": "Potential for incorrect allowance values if tokens parameter is manipulated or derived from unchecked calculations elsewhere.",
+          "Issue": "Missing SafeMath Usage in Approve Function",
+          "Location": "wawawacoin contract, approve function: allowed[msg.sender][spender] = tokens;",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The contract's initial supply calculation is incorrect - it assigns 1e26 tokens instead of the intended 1e17 tokens for 100 million tokens with 9 decimals. This appears in the smart contract code only (constructor).",
+          "Impact": "Severe tokenomics distortion, 1 billion times inflation of intended supply, market cap miscalculation, and integration issues with external systems.",
+          "Issue": "Incorrect Initial Token Supply Calculation",
+          "Location": "Constructor of wawawacoin contract, line ~47: _totalSupply = 100000000000000000000000000;",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Incorrect Initial Token Supply Calculation\",\n    \"Severity\": \"High\",\n    \"Description\": \"The contract's initial supply calculation is incorrect - it assigns 1e26 tokens instead of the intended 1e17 tokens for 100 million tokens with 9 decimals. This appears in the smart contract code only (constructor).\",\n    \"Impact\": \"Severe tokenomics distortion, 1 billion times inflation of intended supply, market cap miscalculation, and integration issues with external systems.\",\n    \"Location\": \"Constructor of wawawacoin contract, line ~47: _totalSupply = 100000000000000000000000000;\"\n  },\n  {\n    \"Issue\": \"Vulnerable SafeMath Multiplication Implementation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The safeMul function in the SafeMath library contains an incorrect overflow check that could fail to detect certain overflow conditions. This appears in the smart contract code only.\",\n    \"Impact\": \"Potential arithmetic overflows in multiplication operations, leading to incorrect token calculations, balance inconsistencies, and potential financial losses.\",\n    \"Location\": \"SafeMath contract, safeMul function: require(a == 0 || c / a == b);\"\n  },\n  {\n    \"Issue\": \"Approve Function Front-Running Vulnerability\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The approve function is vulnerable to a known front-running attack where spenders can use old allowances before new ones take effect. This appears in the smart contract code only.\",\n    \"Impact\": \"Malicious spenders can extract more tokens than intended by monitoring mempool and front-running approval reduction transactions.\",\n    \"Location\": \"wawawacoin contract, approve function: allowed[msg.sender][spender] = tokens;\"\n  },\n  {\n    \"Issue\": \"Missing Emergency Pause and Ownership Controls\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract lacks emergency pause functionality and ownership controls, preventing response to discovered vulnerabilities. This appears in the smart contract code only.\",\n    \"Impact\": \"Inability to halt transactions during security incidents, potentially allowing continued exploitation of vulnerabilities until funds are drained.\",\n    \"Location\": \"Entire wawawacoin contract - no pause functionality or owner role implemented\"\n  },\n  {\n    \"Issue\": \"Missing SafeMath Usage in Approve Function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The approve function does not use SafeMath for input validation, though it performs no arithmetic operations. This appears in the smart contract code only.\",\n    \"Impact\": \"Potential for incorrect allowance values if tokens parameter is manipulated or derived from unchecked calculations elsewhere.\",\n    \"Location\": \"wawawacoin contract, approve function: allowed[msg.sender][spender] = tokens;\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "1f112f97-040e-48b2-a064-0240664f1688",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 0,
+        "Medium": 4
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-101 label is appropriate as the contract contains multiple integer arithmetic issues. The incorrect initial supply calculation represents a critical miscalculation, and the vulnerable SafeMath implementation fails to properly prevent overflow conditions. Evidence: Constructor sets _totalSupply = 100000000000000000000000000 (1e26) instead of intended 1e17; safeMul function uses incorrect overflow check: require(a == 0 || c / a == b); Multiple arithmetic operations lack proper overflow protection throughout contract",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Constructor sets _totalSupply = 100000000000000000000000000 (1e26) instead of intended 1e17\", \"safeMul function uses incorrect overflow check: require(a == 0 || c / a == b)\", \"Multiple arithmetic operations lack proper overflow protection throughout contract\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is appropriate as the contract contains multiple integer arithmetic issues. The incorrect initial supply calculation represents a critical miscalculation, and the vulnerable SafeMath implementation fails to properly prevent overflow conditions.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Constructor sets _totalSupply = 100000000000000000000000000 (1e26) instead of intended 1e17\\\",\\n    \\\"safeMul function uses incorrect overflow check: require(a == 0 || c / a == b)\\\",\\n    \\\"Multiple arithmetic operations lack proper overflow protection throughout contract\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is appropriate as the contract contains multiple integer arithmetic issues. The incorrect initial supply calculation represents a critical miscalculation, and the vulnerable SafeMath implementation fails to properly prevent overflow conditions.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-101 label is appropriate as the contract contains multiple integer arithmetic issues. The incorrect initial supply calculation represents a critical miscalculation, and the vulnerable SafeMath implementation fails to properly prevent overflow conditions.",
+      "evidence": [
+        "Constructor sets _totalSupply = 100000000000000000000000000 (1e26) instead of intended 1e17",
+        "safeMul function uses incorrect overflow check: require(a == 0 || c / a == b)",
+        "Multiple arithmetic operations lack proper overflow protection throughout contract"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-101 label is appropriate as the contract contains multiple integer arithmetic issues. The incorrect initial supply calculation represents a critical miscalculation, and the vulnerable SafeMath implementation fails to properly prevent overflow conditions.\",\n  \"evidence\": [\n    \"Constructor sets _totalSupply = 100000000000000000000000000 (1e26) instead of intended 1e17\",\n    \"safeMul function uses incorrect overflow check: require(a == 0 || c / a == b)\",\n    \"Multiple arithmetic operations lack proper overflow protection throughout contract\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "1f112f97-040e-48b2-a064-0240664f1688",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 2775,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

@@ -1,0 +1,254 @@
+{
+  "address": "0x011de1ed601467ddbe556357e18683205dee0bda",
+  "session_id": "d443decb-47b0-45b1-8f80-8656fd77bcf7",
+  "audit_status": "completed",
+  "model": "deepseek",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable because the contract has unprotected arithmetic operations vulnerable to overflows and a transferFrom function violating CEI pattern. Evidence: Transfer functions lack overflow protection (SWC-101); transferFrom updates recipient balance before sender (SWC-107); Uses Solidity 0.5.0 without built-in overflow checks",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Transfer functions lack overflow protection (SWC-101)\", \"transferFrom updates recipient balance before sender (SWC-107)\", \"Uses Solidity 0.5.0 without built-in overflow checks\"], \"ok\": true, \"raw\": \"```json\\n{\\n  \\\"reason\\\": \\\"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable because the contract has unprotected arithmetic operations vulnerable to overflows and a transferFrom function violating CEI pattern.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Transfer functions lack overflow protection (SWC-101)\\\",\\n    \\\"transferFrom updates recipient balance before sender (SWC-107)\\\",\\n    \\\"Uses Solidity 0.5.0 without built-in overflow checks\\\"\\n  ]\\n}\\n```\", \"reason\": \"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable because the contract has unprotected arithmetic operations vulnerable to overflows and a transferFrom function violating CEI pattern.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2731,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260301_123612/deepseek/contracts/0x011de1ed601467ddbe556357e18683205dee0bda/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 7,
+  "execution_time": 770.7661082744598,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x011de1ed601467ddbe556357e18683205dee0bda",
+    "model": "deepseek",
+    "session_id": "d443decb-47b0-45b1-8f80-8656fd77bcf7",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Integer Overflow/Underflow Vulnerability",
+        "Severity": "High",
+        "Description": "The contract lacks overflow/underflow protection in arithmetic operations (transfer and transferFrom functions), particularly dangerous as it uses Solidity 0.5.0 which doesn't have built-in protection. Found in both smart contract code and static analysis results. This issue appears in the auditing result.",
+        "Impact": "Potential token minting/destruction or fund theft through balance manipulation.",
+        "Location": "ERC20Base.transfer() and ERC20Base.transferFrom() functions"
+      },
+      {
+        "Issue": "Missing Access Control Mechanisms",
+        "Severity": "High",
+        "Description": "Critical functions lack proper access restrictions and administrative controls. Found in smart contract code only. This issue appears in the auditing result.",
+        "Impact": "No ability to pause contracts, freeze funds, or manage administrative functions.",
+        "Location": "Entire ERC20Base implementation"
+      },
+      {
+        "Issue": "Potential Reentrancy Vulnerability",
+        "Severity": "High",
+        "Description": "transferFrom function violates CEI pattern by updating recipient balance before sender balance and allowance. Found in smart contract code only. This issue appears in the auditing result.",
+        "Impact": "Could lead to reentrancy attacks if contract is extended with callback functionality.",
+        "Location": "ERC20Base.transferFrom() function"
+      },
+      {
+        "Issue": "Locked Ether Vulnerability",
+        "Severity": "Medium",
+        "Description": "Constructor is payable but provides no withdrawal mechanism, locking any ETH sent during deployment. Found in both smart contract code and static analysis results. This issue appears in the auditing result.",
+        "Impact": "ETH sent to contract during deployment becomes permanently inaccessible.",
+        "Location": "Token.constructor() function"
+      },
+      {
+        "Issue": "Missing Supply Validation",
+        "Severity": "Medium",
+        "Description": "Constructor accepts arbitrary initialSupply without validation. Found in smart contract code only. This issue appears in the auditing result.",
+        "Impact": "Potential deployment with zero or unrealistic supply values.",
+        "Location": "Token.constructor() function"
+      },
+      {
+        "Issue": "Suboptimal Function Visibility",
+        "Severity": "Low",
+        "Description": "Interface-implementing functions use public visibility instead of external. Found in smart contract code only. This issue appears in the auditing result.",
+        "Impact": "Slightly increased gas costs without security implications.",
+        "Location": "All ERC20Interface-implementing functions in ERC20Base"
+      },
+      {
+        "Issue": "Parameter Shadowing",
+        "Severity": "Low",
+        "Description": "Constructor parameters shadow contract methods. Found in static analysis results only. This issue appears in the auditing result.",
+        "Impact": "Potential confusion but no direct security impact.",
+        "Location": "Token.constructor() parameters name, symbol, decimals"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-01T13:10:21.409157",
+      "execution_summary": {
+        "completed_tasks": 11,
+        "failed_tasks": 1,
+        "session_id": "d443decb-47b0-45b1-8f80-8656fd77bcf7",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-3fup9rze/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 770.7661082744598,
+        "total_tasks": 12
+      },
+      "execution_time": 770.7661082744598,
+      "finding_number": 7,
+      "findings": [
+        {
+          "Description": "The contract lacks overflow/underflow protection in arithmetic operations (transfer and transferFrom functions), particularly dangerous as it uses Solidity 0.5.0 which doesn't have built-in protection. Found in both smart contract code and static analysis results. This issue appears in the auditing result.",
+          "Impact": "Potential token minting/destruction or fund theft through balance manipulation.",
+          "Issue": "Integer Overflow/Underflow Vulnerability",
+          "Location": "ERC20Base.transfer() and ERC20Base.transferFrom() functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "Critical functions lack proper access restrictions and administrative controls. Found in smart contract code only. This issue appears in the auditing result.",
+          "Impact": "No ability to pause contracts, freeze funds, or manage administrative functions.",
+          "Issue": "Missing Access Control Mechanisms",
+          "Location": "Entire ERC20Base implementation",
+          "Severity": "High"
+        },
+        {
+          "Description": "transferFrom function violates CEI pattern by updating recipient balance before sender balance and allowance. Found in smart contract code only. This issue appears in the auditing result.",
+          "Impact": "Could lead to reentrancy attacks if contract is extended with callback functionality.",
+          "Issue": "Potential Reentrancy Vulnerability",
+          "Location": "ERC20Base.transferFrom() function",
+          "Severity": "High"
+        },
+        {
+          "Description": "Constructor is payable but provides no withdrawal mechanism, locking any ETH sent during deployment. Found in both smart contract code and static analysis results. This issue appears in the auditing result.",
+          "Impact": "ETH sent to contract during deployment becomes permanently inaccessible.",
+          "Issue": "Locked Ether Vulnerability",
+          "Location": "Token.constructor() function",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Constructor accepts arbitrary initialSupply without validation. Found in smart contract code only. This issue appears in the auditing result.",
+          "Impact": "Potential deployment with zero or unrealistic supply values.",
+          "Issue": "Missing Supply Validation",
+          "Location": "Token.constructor() function",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Interface-implementing functions use public visibility instead of external. Found in smart contract code only. This issue appears in the auditing result.",
+          "Impact": "Slightly increased gas costs without security implications.",
+          "Issue": "Suboptimal Function Visibility",
+          "Location": "All ERC20Interface-implementing functions in ERC20Base",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Constructor parameters shadow contract methods. Found in static analysis results only. This issue appears in the auditing result.",
+          "Impact": "Potential confusion but no direct security impact.",
+          "Issue": "Parameter Shadowing",
+          "Location": "Token.constructor() parameters name, symbol, decimals",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The contract lacks overflow/underflow protection in arithmetic operations (transfer and transferFrom functions), particularly dangerous as it uses Solidity 0.5.0 which doesn't have built-in protection. Found in both smart contract code and static analysis results. This issue appears in the auditing result.",
+          "Impact": "Potential token minting/destruction or fund theft through balance manipulation.",
+          "Issue": "Integer Overflow/Underflow Vulnerability",
+          "Location": "ERC20Base.transfer() and ERC20Base.transferFrom() functions",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Integer Overflow/Underflow Vulnerability\",\n    \"Severity\": \"High\",\n    \"Description\": \"The contract lacks overflow/underflow protection in arithmetic operations (transfer and transferFrom functions), particularly dangerous as it uses Solidity 0.5.0 which doesn't have built-in protection. Found in both smart contract code and static analysis results.\",\n    \"Impact\": \"Potential token minting/destruction or fund theft through balance manipulation.\",\n    \"Location\": \"ERC20Base.transfer() and ERC20Base.transferFrom() functions\"\n  },\n  {\n    \"Issue\": \"Missing Access Control Mechanisms\",\n    \"Severity\": \"High\",\n    \"Description\": \"Critical functions lack proper access restrictions and administrative controls. Found in smart contract code only.\",\n    \"Impact\": \"No ability to pause contracts, freeze funds, or manage administrative functions.\",\n    \"Location\": \"Entire ERC20Base implementation\"\n  },\n  {\n    \"Issue\": \"Potential Reentrancy Vulnerability\",\n    \"Severity\": \"High\",\n    \"Description\": \"transferFrom function violates CEI pattern by updating recipient balance before sender balance and allowance. Found in smart contract code only.\",\n    \"Impact\": \"Could lead to reentrancy attacks if contract is extended with callback functionality.\",\n    \"Location\": \"ERC20Base.transferFrom() function\"\n  },\n  {\n    \"Issue\": \"Locked Ether Vulnerability\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Constructor is payable but provides no withdrawal mechanism, locking any ETH sent during deployment. Found in both smart contract code and static analysis results.\",\n    \"Impact\": \"ETH sent to contract during deployment becomes permanently inaccessible.\",\n    \"Location\": \"Token.constructor() function\"\n  },\n  {\n    \"Issue\": \"Missing Supply Validation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Constructor accepts arbitrary initialSupply without validation. Found in smart contract code only.\",\n    \"Impact\": \"Potential deployment with zero or unrealistic supply values.\",\n    \"Location\": \"Token.constructor() function\"\n  },\n  {\n    \"Issue\": \"Suboptimal Function Visibility\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Interface-implementing functions use public visibility instead of external. Found in smart contract code only.\",\n    \"Impact\": \"Slightly increased gas costs without security implications.\",\n    \"Location\": \"All ERC20Interface-implementing functions in ERC20Base\"\n  },\n  {\n    \"Issue\": \"Parameter Shadowing\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Constructor parameters shadow contract methods. Found in static analysis results only.\",\n    \"Impact\": \"Potential confusion but no direct security impact.\",\n    \"Location\": \"Token.constructor() parameters name, symbol, decimals\"\n  }\n]",
+      "model_used": "deepseek",
+      "session_id": "d443decb-47b0-45b1-8f80-8656fd77bcf7",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 2,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable because the contract has unprotected arithmetic operations vulnerable to overflows and a transferFrom function violating CEI pattern. Evidence: Transfer functions lack overflow protection (SWC-101); transferFrom updates recipient balance before sender (SWC-107); Uses Solidity 0.5.0 without built-in overflow checks",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Transfer functions lack overflow protection (SWC-101)\", \"transferFrom updates recipient balance before sender (SWC-107)\", \"Uses Solidity 0.5.0 without built-in overflow checks\"], \"ok\": true, \"raw\": \"```json\\n{\\n  \\\"reason\\\": \\\"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable because the contract has unprotected arithmetic operations vulnerable to overflows and a transferFrom function violating CEI pattern.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Transfer functions lack overflow protection (SWC-101)\\\",\\n    \\\"transferFrom updates recipient balance before sender (SWC-107)\\\",\\n    \\\"Uses Solidity 0.5.0 without built-in overflow checks\\\"\\n  ]\\n}\\n```\", \"reason\": \"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable because the contract has unprotected arithmetic operations vulnerable to overflows and a transferFrom function violating CEI pattern.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable because the contract has unprotected arithmetic operations vulnerable to overflows and a transferFrom function violating CEI pattern.",
+      "evidence": [
+        "Transfer functions lack overflow protection (SWC-101)",
+        "transferFrom updates recipient balance before sender (SWC-107)",
+        "Uses Solidity 0.5.0 without built-in overflow checks"
+      ],
+      "raw": "```json\n{\n  \"reason\": \"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are reasonable because the contract has unprotected arithmetic operations vulnerable to overflows and a transferFrom function violating CEI pattern.\",\n  \"evidence\": [\n    \"Transfer functions lack overflow protection (SWC-101)\",\n    \"transferFrom updates recipient balance before sender (SWC-107)\",\n    \"Uses Solidity 0.5.0 without built-in overflow checks\"\n  ]\n}\n```"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "d443decb-47b0-45b1-8f80-8656fd77bcf7",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 7,
+        "full_report_chars": 2731,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

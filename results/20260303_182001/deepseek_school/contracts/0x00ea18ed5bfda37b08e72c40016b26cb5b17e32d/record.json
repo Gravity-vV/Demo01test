@@ -1,0 +1,341 @@
+{
+  "address": "0x00ea18ed5bfda37b08e72c40016b26cb5b17e32d",
+  "session_id": "a7a4be17-d78b-45b3-856c-62c2c32aa202",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract contains integer overflow/underflow vulnerabilities in arithmetic operations and uses unsafe external calls without proper state change ordering. These correspond directly to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) vulnerabilities. Evidence: Integer overflow/underflow found in multiple locations including _tokenIds.increment() and NFTNum++ operations; State changes occur after external calls violating Checks-Effects-Interactions pattern; Unsafe arithmetic operations identified in Counters library without proper unchecked block usage",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Integer overflow/underflow found in multiple locations including _tokenIds.increment() and NFTNum++ operations\", \"State changes occur after external calls violating Checks-Effects-Interactions pattern\", \"Unsafe arithmetic operations identified in Counters library without proper unchecked block usage\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains integer overflow/underflow vulnerabilities in arithmetic operations and uses unsafe external calls without proper state change ordering. These correspond directly to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) vulnerabilities.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Integer overflow/underflow found in multiple locations including _tokenIds.increment() and NFTNum++ operations\\\",\\n    \\\"State changes occur after external calls violating Checks-Effects-Interactions pattern\\\",\\n    \\\"Unsafe arithmetic operations identified in Counters library without proper unchecked block usage\\\"\\n  ]\\n}\", \"reason\": \"The contract contains integer overflow/underflow vulnerabilities in arithmetic operations and uses unsafe external calls without proper state change ordering. These correspond directly to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) vulnerabilities.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1150.80966091156,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x00ea18ed5bfda37b08e72c40016b26cb5b17e32d",
+    "model": "deepseek_school",
+    "session_id": "a7a4be17-d78b-45b3-856c-62c2c32aa202",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Reentrancy Check**...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code for reentrancy vulnerabilities, here are my detailed findings: ## 1. Issue Analysis **No reentrancy vulnerabilities were found** in the main ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 1: **Reentrancy Check**"
+      },
+      {
+        "Issue": "High Priority Security Issue - Analyze all external calls (e.g., `_mint`, `_burn`...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code for potential reentrancy risks in external calls, here are my detailed findings: ## 1. Issue Analysis **No reentrancy vulnerabilities found i... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 2: Analyze all external calls (e.g., `_mint`, `_burn`) for potential reentrancy risks."
+      },
+      {
+        "Issue": "High Priority Security Issue - Ensure no state changes occur after external calls...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue related to the audit task \"Ensure no state changes occur after external calls.\" ## 1. Issue Analysis **Ye... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: Ensure no state changes occur after external calls."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Integer Overflow/Underflow**...",
+        "Severity": "High",
+        "Description": "## Audit Report: Integer Overflow/Underflow Analysis ### 1. Issue Analysis **Issue Identified: Yes** The contract contains **potential integer overflow/underflow vulnerabilities** in multiple locati... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: **Integer Overflow/Underflow**"
+      },
+      {
+        "Issue": "High Priority Security Issue - Review arithmetic operations (e.g., `_tokenIds.inc...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Arithmetic Operations Review ### 1. Issue Analysis **Yes**, there are arithmetic operation issues related to overflow/underflow risks in the provided smart contract. The contract u... This issue appears in the smart contract code, static analysis results, and retrieved external knowledge.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: Review arithmetic operations (e.g., `_tokenIds.increment()`, `NFTNum++`) for overflow/underflow risks."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Access Control Issues**...",
+        "Severity": "High",
+        "Description": "## Audit Report: Access Control Issues in greyNFT Contract ### 1. Issue Analysis **Yes, multiple critical access control issues exist** in the provided greyNFT contract. The contract implements admi... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: **Access Control Issues**"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Verify that `_safeMint` is not required over `_min...",
+        "Severity": "Medium",
+        "Description": "### 1. Issue Analysis **Yes, there is a security issue related to this audit task.** The `createNewTokens` function in the `greyNFT` contract uses `_mint` instead of `_safeMint` when creating new E... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 4: Verify that `_safeMint` is not required over `_mint` in `createNewTokens`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Confirm that `Counters` library uses `unchecked` b...",
+        "Severity": "High",
+        "Description": "Of course. I have completed the audit task regarding the safe use of `unchecked` blocks in the provided `Counters` library. ### **Audit Task Summary: Confirm `Counters` library uses `unchecked` block... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: Confirm that `Counters` library uses `unchecked` blocks safely."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Check loop boundaries in `_beforeTokenTransfer`....",
+        "Severity": "High",
+        "Description": "## Audit Findings: Loop Boundaries in `_beforeTokenTransfer` ### 1. Issue Analysis **Issue Found: Yes** - There is a critical issue related to loop boundaries in the `_beforeTokenTransfer` function. ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: Check loop boundaries in `_beforeTokenTransfer`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Validate `onlyOwner` and `onlyAdmin` modifiers for...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Validation of `onlyOwner` and `onlyAdmin` Modifiers ### 1. Issue Analysis **Yes, there are issues related to the `onlyOwner` and `onlyAdmin` modifiers.** The contract implements a... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: Validate `onlyOwner` and `onlyAdmin` modifiers for proper restriction."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Test privilege escalation via `setAddmin` (e.g., o...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue related to the `setAddmin` function and privilege escalation. ## 1. Issue Analysis **Yes, there is a sign... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: Test privilege escalation via `setAddmin` (e.g., owner assigning admin to malicious address)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Ensure `setBurn` and `createNewTokens` are admin-o...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, here are my findings regarding the audit task to ensure `setBurn` and `createNewTokens` are admin-only and cannot be abused: ## 1. Issue Anal... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: Ensure `setBurn` and `createNewTokens` are admin-only and cannot be abused."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T19:18:57.632683",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 1,
+        "rag_used": false,
+        "session_id": "a7a4be17-d78b-45b3-856c-62c2c32aa202",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-1vg_ddmw/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.8.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1150.80966091156,
+        "total_tasks": 12
+      },
+      "execution_time": 1150.80966091156,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "Based on my analysis of the provided smart contract code for reentrancy vulnerabilities, here are my detailed findings:\n\n## 1. Issue Analysis\n\n**No reentrancy vulnerabilities were found** in the main ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Check**...",
+          "Location": "Task 1: **Reentrancy Check**",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code for potential reentrancy risks in external calls, here are my detailed findings:\n\n## 1. Issue Analysis\n\n**No reentrancy vulnerabilities found i... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Analyze all external calls (e.g., `_mint`, `_burn`...",
+          "Location": "Task 2: Analyze all external calls (e.g., `_mint`, `_burn`) for potential reentrancy risks.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue related to the audit task \"Ensure no state changes occur after external calls.\"\n\n## 1. Issue Analysis\n\n**Ye... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Ensure no state changes occur after external calls...",
+          "Location": "Task 3: Ensure no state changes occur after external calls.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Integer Overflow/Underflow Analysis\n\n### 1. Issue Analysis\n**Issue Identified: Yes**\n\nThe contract contains **potential integer overflow/underflow vulnerabilities** in multiple locati... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Integer Overflow/Underflow**...",
+          "Location": "Task 5: **Integer Overflow/Underflow**",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Arithmetic Operations Review\n\n### 1. Issue Analysis\n**Yes**, there are arithmetic operation issues related to overflow/underflow risks in the provided smart contract. The contract u... This issue appears in the smart contract code, static analysis results, and retrieved external knowledge.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Review arithmetic operations (e.g., `_tokenIds.inc...",
+          "Location": "Task 6: Review arithmetic operations (e.g., `_tokenIds.increment()`, `NFTNum++`) for overflow/underflow risks.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Access Control Issues in greyNFT Contract\n\n### 1. Issue Analysis\n\n**Yes, multiple critical access control issues exist** in the provided greyNFT contract. The contract implements admi... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Access Control Issues**...",
+          "Location": "Task 9: **Access Control Issues**",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n\n**Yes, there is a security issue related to this audit task.** \n\nThe `createNewTokens` function in the `greyNFT` contract uses `_mint` instead of `_safeMint` when creating new E... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Verify that `_safeMint` is not required over `_min...",
+          "Location": "Task 4: Verify that `_safeMint` is not required over `_mint` in `createNewTokens`.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Of course. I have completed the audit task regarding the safe use of `unchecked` blocks in the provided `Counters` library.\n\n### **Audit Task Summary: Confirm `Counters` library uses `unchecked` block... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Confirm that `Counters` library uses `unchecked` b...",
+          "Location": "Task 7: Confirm that `Counters` library uses `unchecked` blocks safely.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Loop Boundaries in `_beforeTokenTransfer`\n\n### 1. Issue Analysis\n**Issue Found: Yes** - There is a critical issue related to loop boundaries in the `_beforeTokenTransfer` function.\n... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Check loop boundaries in `_beforeTokenTransfer`....",
+          "Location": "Task 8: Check loop boundaries in `_beforeTokenTransfer`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Validation of `onlyOwner` and `onlyAdmin` Modifiers\n\n### 1. Issue Analysis\n**Yes, there are issues related to the `onlyOwner` and `onlyAdmin` modifiers.**\n\nThe contract implements a... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Validate `onlyOwner` and `onlyAdmin` modifiers for...",
+          "Location": "Task 10: Validate `onlyOwner` and `onlyAdmin` modifiers for proper restriction.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue related to the `setAddmin` function and privilege escalation.\n\n## 1. Issue Analysis\n\n**Yes, there is a sign... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Test privilege escalation via `setAddmin` (e.g., o...",
+          "Location": "Task 11: Test privilege escalation via `setAddmin` (e.g., owner assigning admin to malicious address).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, here are my findings regarding the audit task to ensure `setBurn` and `createNewTokens` are admin-only and cannot be abused:\n\n## 1. Issue Anal... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Ensure `setBurn` and `createNewTokens` are admin-o...",
+          "Location": "Task 12: Ensure `setBurn` and `createNewTokens` are admin-only and cannot be abused.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Based on my analysis of the provided smart contract code for reentrancy vulnerabilities, here are my detailed findings:\n\n## 1. Issue Analysis\n\n**No reentrancy vulnerabilities were found** in the main ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Check**...",
+          "Location": "Task 1: **Reentrancy Check**",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "a7a4be17-d78b-45b3-856c-62c2c32aa202",
+      "severity_breakdown": {
+        "High": 9,
+        "Low": 0,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract contains integer overflow/underflow vulnerabilities in arithmetic operations and uses unsafe external calls without proper state change ordering. These correspond directly to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) vulnerabilities. Evidence: Integer overflow/underflow found in multiple locations including _tokenIds.increment() and NFTNum++ operations; State changes occur after external calls violating Checks-Effects-Interactions pattern; Unsafe arithmetic operations identified in Counters library without proper unchecked block usage",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Integer overflow/underflow found in multiple locations including _tokenIds.increment() and NFTNum++ operations\", \"State changes occur after external calls violating Checks-Effects-Interactions pattern\", \"Unsafe arithmetic operations identified in Counters library without proper unchecked block usage\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains integer overflow/underflow vulnerabilities in arithmetic operations and uses unsafe external calls without proper state change ordering. These correspond directly to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) vulnerabilities.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Integer overflow/underflow found in multiple locations including _tokenIds.increment() and NFTNum++ operations\\\",\\n    \\\"State changes occur after external calls violating Checks-Effects-Interactions pattern\\\",\\n    \\\"Unsafe arithmetic operations identified in Counters library without proper unchecked block usage\\\"\\n  ]\\n}\", \"reason\": \"The contract contains integer overflow/underflow vulnerabilities in arithmetic operations and uses unsafe external calls without proper state change ordering. These correspond directly to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) vulnerabilities.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract contains integer overflow/underflow vulnerabilities in arithmetic operations and uses unsafe external calls without proper state change ordering. These correspond directly to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) vulnerabilities.",
+      "evidence": [
+        "Integer overflow/underflow found in multiple locations including _tokenIds.increment() and NFTNum++ operations",
+        "State changes occur after external calls violating Checks-Effects-Interactions pattern",
+        "Unsafe arithmetic operations identified in Counters library without proper unchecked block usage"
+      ],
+      "raw": "{\n  \"reason\": \"The contract contains integer overflow/underflow vulnerabilities in arithmetic operations and uses unsafe external calls without proper state change ordering. These correspond directly to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) vulnerabilities.\",\n  \"evidence\": [\n    \"Integer overflow/underflow found in multiple locations including _tokenIds.increment() and NFTNum++ operations\",\n    \"State changes occur after external calls violating Checks-Effects-Interactions pattern\",\n    \"Unsafe arithmetic operations identified in Counters library without proper unchecked block usage\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "a7a4be17-d78b-45b3-856c-62c2c32aa202",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

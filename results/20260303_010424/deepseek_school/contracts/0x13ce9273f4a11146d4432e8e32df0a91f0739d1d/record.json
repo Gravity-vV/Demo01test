@@ -1,0 +1,220 @@
+{
+  "address": "0x13ce9273f4a11146d4432e8e32df0a91f0739d1d",
+  "session_id": "f1cb7ede-e60a-486c-b5ad-b2180ece50c4",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-107",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "llm",
+  "pred_reason": "The SWC-107 label is appropriate because multiple findings demonstrate reentrancy-related patterns including allowance manipulation and state update order violations. These issues directly enable race conditions and improper state transitions during external interactions. Evidence: Front-running vulnerability in approve function allows spender manipulation; transferFrom violates Checks-Effects-Interactions by updating balance before allowance; No reentrancy guards present in core transfer functions",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 0.8, \"labels\": [\"SWC-107\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-107\\\"],\\n  \\\"confidence\\\": 0.8,\\n  \\\"reason\\\": \\\"transferFrom violates Checks-Effects-Interactions pattern, enabling reentrancy-like allowance draining\\\"\\n}\", \"reason\": \"transferFrom violates Checks-Effects-Interactions pattern, enabling reentrancy-like allowance draining\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"Front-running vulnerability in approve function allows spender manipulation\", \"transferFrom violates Checks-Effects-Interactions by updating balance before allowance\", \"No reentrancy guards present in core transfer functions\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label is appropriate because multiple findings demonstrate reentrancy-related patterns including allowance manipulation and state update order violations. These issues directly enable race conditions and improper state transitions during external interactions.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Front-running vulnerability in approve function allows spender manipulation\\\",\\n    \\\"transferFrom violates Checks-Effects-Interactions by updating balance before allowance\\\",\\n    \\\"No reentrancy guards present in core transfer functions\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label is appropriate because multiple findings demonstrate reentrancy-related patterns including allowance manipulation and state update order violations. These issues directly enable race conditions and improper state transitions during external interactions.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2718,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x13ce9273f4a11146d4432e8e32df0a91f0739d1d/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 1451.7913060188293,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x13ce9273f4a11146d4432e8e32df0a91f0739d1d",
+    "model": "deepseek_school",
+    "session_id": "f1cb7ede-e60a-486c-b5ad-b2180ece50c4",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Front-running vulnerability in approve function",
+        "Severity": "Medium",
+        "Description": "The approve function is vulnerable to the known ERC-20 race condition where a spender can front-run allowance reduction transactions. This issue appears in the smart contract code only and was identified during the audit analysis.",
+        "Impact": "Token owners may unintentionally grant larger allowances than intended, potentially leading to loss of tokens if the spender acts maliciously.",
+        "Location": "approve function (lines 48-52 in contract Dolars)"
+      },
+      {
+        "Issue": "State update order vulnerability in transferFrom",
+        "Severity": "Medium",
+        "Description": "The transferFrom function updates the sender's balance before deducting the allowance, violating the Checks-Effects-Interactions pattern. This issue appears in the smart contract code only and was identified during the core function logic review.",
+        "Impact": "Allows malicious contracts to drain the entire approved allowance in a single transaction, enabling theft of user funds.",
+        "Location": "transferFrom function (lines 60-66 in contract Dolars)"
+      },
+      {
+        "Issue": "Zero-token transfer allowed",
+        "Severity": "Medium",
+        "Description": "The transfer and transferFrom functions allow transfers of zero tokens, which wastes gas and creates unnecessary event spam. This issue appears in the smart contract code only and was identified during edge case testing.",
+        "Impact": "Unnecessary gas consumption, event log pollution, and potential confusion for off-chain systems monitoring Transfer events.",
+        "Location": "transfer and transferFrom functions (lines 54-59 and 60-66 in contract Dolars)"
+      },
+      {
+        "Issue": "Non-standard totalSupply implementation",
+        "Severity": "Medium",
+        "Description": "The totalSupply function incorrectly subtracts the zero address balance from the total supply, creating inconsistent supply reporting. This issue appears in the smart contract code only and was identified during edge case testing.",
+        "Impact": "External integration issues, potential regulatory compliance problems, and confusion about actual token economics.",
+        "Location": "totalSupply function (line ~43 in contract Dolars)"
+      },
+      {
+        "Issue": "Lack of access control for future privileged functions",
+        "Severity": "Low",
+        "Description": "The contract lacks an owner role or access control mechanism, which could become critical if privileged functions (mint, burn, pause) are added in the future. This issue appears in the smart contract code only and was identified during the access control audit.",
+        "Impact": "If privileged functions are added without proper access controls, they could be exploited for unauthorized minting, burning, or contract pausing.",
+        "Location": "Contract-wide issue - no access control modifiers implemented"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T04:41:59.901795",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "f1cb7ede-e60a-486c-b5ad-b2180ece50c4",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-bsomgf4q/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1451.7913060188293,
+        "total_tasks": 12
+      },
+      "execution_time": 1451.7913060188293,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "The approve function is vulnerable to the known ERC-20 race condition where a spender can front-run allowance reduction transactions. This issue appears in the smart contract code only and was identified during the audit analysis.",
+          "Impact": "Token owners may unintentionally grant larger allowances than intended, potentially leading to loss of tokens if the spender acts maliciously.",
+          "Issue": "Front-running vulnerability in approve function",
+          "Location": "approve function (lines 48-52 in contract Dolars)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The transferFrom function updates the sender's balance before deducting the allowance, violating the Checks-Effects-Interactions pattern. This issue appears in the smart contract code only and was identified during the core function logic review.",
+          "Impact": "Allows malicious contracts to drain the entire approved allowance in a single transaction, enabling theft of user funds.",
+          "Issue": "State update order vulnerability in transferFrom",
+          "Location": "transferFrom function (lines 60-66 in contract Dolars)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The transfer and transferFrom functions allow transfers of zero tokens, which wastes gas and creates unnecessary event spam. This issue appears in the smart contract code only and was identified during edge case testing.",
+          "Impact": "Unnecessary gas consumption, event log pollution, and potential confusion for off-chain systems monitoring Transfer events.",
+          "Issue": "Zero-token transfer allowed",
+          "Location": "transfer and transferFrom functions (lines 54-59 and 60-66 in contract Dolars)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The totalSupply function incorrectly subtracts the zero address balance from the total supply, creating inconsistent supply reporting. This issue appears in the smart contract code only and was identified during edge case testing.",
+          "Impact": "External integration issues, potential regulatory compliance problems, and confusion about actual token economics.",
+          "Issue": "Non-standard totalSupply implementation",
+          "Location": "totalSupply function (line ~43 in contract Dolars)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract lacks an owner role or access control mechanism, which could become critical if privileged functions (mint, burn, pause) are added in the future. This issue appears in the smart contract code only and was identified during the access control audit.",
+          "Impact": "If privileged functions are added without proper access controls, they could be exploited for unauthorized minting, burning, or contract pausing.",
+          "Issue": "Lack of access control for future privileged functions",
+          "Location": "Contract-wide issue - no access control modifiers implemented",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The approve function is vulnerable to the known ERC-20 race condition where a spender can front-run allowance reduction transactions. This issue appears in the smart contract code only and was identified during the audit analysis.",
+          "Impact": "Token owners may unintentionally grant larger allowances than intended, potentially leading to loss of tokens if the spender acts maliciously.",
+          "Issue": "Front-running vulnerability in approve function",
+          "Location": "approve function (lines 48-52 in contract Dolars)",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "[{\"Issue\":\"Front-running vulnerability in approve function\",\"Severity\":\"Medium\",\"Description\":\"The approve function is vulnerable to the known ERC-20 race condition where a spender can front-run allowance reduction transactions. This issue appears in the smart contract code only and was identified during the audit analysis.\",\"Impact\":\"Token owners may unintentionally grant larger allowances than intended, potentially leading to loss of tokens if the spender acts maliciously.\",\"Location\":\"approve function (lines 48-52 in contract Dolars)\"},{\"Issue\":\"State update order vulnerability in transferFrom\",\"Severity\":\"Critical\",\"Description\":\"The transferFrom function updates the sender's balance before deducting the allowance, violating the Checks-Effects-Interactions pattern. This issue appears in the smart contract code only and was identified during the core function logic review.\",\"Impact\":\"Allows malicious contracts to drain the entire approved allowance in a single transaction, enabling theft of user funds.\",\"Location\":\"transferFrom function (lines 60-66 in contract Dolars)\"},{\"Issue\":\"Zero-token transfer allowed\",\"Severity\":\"Medium\",\"Description\":\"The transfer and transferFrom functions allow transfers of zero tokens, which wastes gas and creates unnecessary event spam. This issue appears in the smart contract code only and was identified during edge case testing.\",\"Impact\":\"Unnecessary gas consumption, event log pollution, and potential confusion for off-chain systems monitoring Transfer events.\",\"Location\":\"transfer and transferFrom functions (lines 54-59 and 60-66 in contract Dolars)\"},{\"Issue\":\"Non-standard totalSupply implementation\",\"Severity\":\"Medium\",\"Description\":\"The totalSupply function incorrectly subtracts the zero address balance from the total supply, creating inconsistent supply reporting. This issue appears in the smart contract code only and was identified during edge case testing.\",\"Impact\":\"External integration issues, potential regulatory compliance problems, and confusion about actual token economics.\",\"Location\":\"totalSupply function (line ~43 in contract Dolars)\"},{\"Issue\":\"Lack of access control for future privileged functions\",\"Severity\":\"Low\",\"Description\":\"The contract lacks an owner role or access control mechanism, which could become critical if privileged functions (mint, burn, pause) are added in the future. This issue appears in the smart contract code only and was identified during the access control audit.\",\"Impact\":\"If privileged functions are added without proper access controls, they could be exploited for unauthorized minting, burning, or contract pausing.\",\"Location\":\"Contract-wide issue - no access control modifiers implemented\"}]",
+      "model_used": "deepseek_school",
+      "session_id": "f1cb7ede-e60a-486c-b5ad-b2180ece50c4",
+      "severity_breakdown": {
+        "High": 0,
+        "Low": 1,
+        "Medium": 4
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [
+        "SWC-107"
+      ],
+      "source": "llm",
+      "confidence": 0.8,
+      "reason": "transferFrom violates Checks-Effects-Interactions pattern, enabling reentrancy-like allowance draining",
+      "raw": "{\n  \"labels\": [\"SWC-107\"],\n  \"confidence\": 0.8,\n  \"reason\": \"transferFrom violates Checks-Effects-Interactions pattern, enabling reentrancy-like allowance draining\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [
+      "SWC-107"
+    ],
+    "pred_labels": [
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-107",
+    "pred_source": "llm",
+    "is_other": 0,
+    "pred_reason": "The SWC-107 label is appropriate because multiple findings demonstrate reentrancy-related patterns including allowance manipulation and state update order violations. These issues directly enable race conditions and improper state transitions during external interactions. Evidence: Front-running vulnerability in approve function allows spender manipulation; transferFrom violates Checks-Effects-Interactions by updating balance before allowance; No reentrancy guards present in core transfer functions",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 0.8, \"labels\": [\"SWC-107\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-107\\\"],\\n  \\\"confidence\\\": 0.8,\\n  \\\"reason\\\": \\\"transferFrom violates Checks-Effects-Interactions pattern, enabling reentrancy-like allowance draining\\\"\\n}\", \"reason\": \"transferFrom violates Checks-Effects-Interactions pattern, enabling reentrancy-like allowance draining\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"Front-running vulnerability in approve function allows spender manipulation\", \"transferFrom violates Checks-Effects-Interactions by updating balance before allowance\", \"No reentrancy guards present in core transfer functions\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label is appropriate because multiple findings demonstrate reentrancy-related patterns including allowance manipulation and state update order violations. These issues directly enable race conditions and improper state transitions during external interactions.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Front-running vulnerability in approve function allows spender manipulation\\\",\\n    \\\"transferFrom violates Checks-Effects-Interactions by updating balance before allowance\\\",\\n    \\\"No reentrancy guards present in core transfer functions\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label is appropriate because multiple findings demonstrate reentrancy-related patterns including allowance manipulation and state update order violations. These issues directly enable race conditions and improper state transitions during external interactions.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-107 label is appropriate because multiple findings demonstrate reentrancy-related patterns including allowance manipulation and state update order violations. These issues directly enable race conditions and improper state transitions during external interactions.",
+      "evidence": [
+        "Front-running vulnerability in approve function allows spender manipulation",
+        "transferFrom violates Checks-Effects-Interactions by updating balance before allowance",
+        "No reentrancy guards present in core transfer functions"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-107 label is appropriate because multiple findings demonstrate reentrancy-related patterns including allowance manipulation and state update order violations. These issues directly enable race conditions and improper state transitions during external interactions.\",\n  \"evidence\": [\n    \"Front-running vulnerability in approve function allows spender manipulation\",\n    \"transferFrom violates Checks-Effects-Interactions by updating balance before allowance\",\n    \"No reentrancy guards present in core transfer functions\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "f1cb7ede-e60a-486c-b5ad-b2180ece50c4",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 2718,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

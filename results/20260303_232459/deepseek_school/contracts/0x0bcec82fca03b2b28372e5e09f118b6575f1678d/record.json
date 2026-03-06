@@ -1,0 +1,166 @@
+{
+  "address": "0x0bcec82fca03b2b28372e5e09f118b6575f1678d",
+  "session_id": "3ff85972-fe65-4138-9ace-a4f3f35c8152",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "",
+  "pred_swc_count": 0,
+  "is_other": 1,
+  "pred_source": "llm",
+  "pred_reason": "The label SWC-OTHER is appropriate because the audit process failed entirely due to external tooling errors, preventing any smart contract specific vulnerability assessment. This failure constitutes a non-standard security-related issue not covered by existing SWC identifiers. Evidence: All AI models failed during report generation, halting the audit process; Error originated in external tooling (FormatConverterNode) rather than contract code; No actual contract vulnerabilities could be assessed due to system failure",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 0.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 0.0,\\n  \\\"reason\\\": \\\"No security issues reported; only audit tool failure\\\"\\n}\", \"reason\": \"No security issues reported; only audit tool failure\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"All AI models failed during report generation, halting the audit process\", \"Error originated in external tooling (FormatConverterNode) rather than contract code\", \"No actual contract vulnerabilities could be assessed due to system failure\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The label SWC-OTHER is appropriate because the audit process failed entirely due to external tooling errors, preventing any smart contract specific vulnerability assessment. This failure constitutes a non-standard security-related issue not covered by existing SWC identifiers.\\\",\\n  \\\"evidence\\\": [\\\"All AI models failed during report generation, halting the audit process\\\", \\\"Error originated in external tooling (FormatConverterNode) rather than contract code\\\", \\\"No actual contract vulnerabilities could be assessed due to system failure\\\"]\\n}\", \"reason\": \"The label SWC-OTHER is appropriate because the audit process failed entirely due to external tooling errors, preventing any smart contract specific vulnerability assessment. This failure constitutes a non-standard security-related issue not covered by existing SWC identifiers.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 198,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_232459/deepseek_school/contracts/0x0bcec82fca03b2b28372e5e09f118b6575f1678d/report.md",
+  "rag_used": 0,
+  "rag_enabled": 0,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.0,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 1,
+  "execution_time": 1371.1043529510498,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0bcec82fca03b2b28372e5e09f118b6575f1678d",
+    "model": "deepseek_school",
+    "session_id": "3ff85972-fe65-4138-9ace-a4f3f35c8152",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Report Generation Error",
+        "Severity": "High",
+        "Description": "Failed to generate audit report: All AI models failed. Last error: Deepseek_School model call attempt failed: Deepseek_School API call failed after 0.20s: Deepseek_School streaming ended without any chunks. This error appears in the auditing result only.",
+        "Impact": "Unable to complete comprehensive audit analysis, potential security issues may be missed.",
+        "Location": "Report Generator - FormatConverterNode"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-04T08:58:34.542616",
+      "execution_summary": {
+        "session_id": "3ff85972-fe65-4138-9ace-a4f3f35c8152",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-n3drdcom/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.8.4",
+            "0.8.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1371.1043529510498
+      },
+      "execution_time": 1371.1043529510498,
+      "finding_number": 1,
+      "findings": [
+        {
+          "Description": "Failed to generate audit report: All AI models failed. Last error: Deepseek_School model call attempt failed: Deepseek_School API call failed after 0.20s: Deepseek_School streaming ended without any chunks. This error appears in the auditing result only.",
+          "Impact": "Unable to complete comprehensive audit analysis, potential security issues may be missed.",
+          "Issue": "Report Generation Error",
+          "Location": "Report Generator - FormatConverterNode",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Failed to generate audit report: All AI models failed. Last error: Deepseek_School model call attempt failed: Deepseek_School API call failed after 0.20s: Deepseek_School streaming ended without any chunks. This error appears in the auditing result only.",
+          "Impact": "Unable to complete comprehensive audit analysis, potential security issues may be missed.",
+          "Issue": "Report Generation Error",
+          "Location": "Report Generator - FormatConverterNode",
+          "Severity": "High"
+        }
+      },
+      "full_report": "Report generation failed: All AI models failed. Last error: Deepseek_School model call attempt failed: Deepseek_School API call failed after 0.20s: Deepseek_School streaming ended without any chunks",
+      "model_used": "deepseek_school",
+      "session_id": "3ff85972-fe65-4138-9ace-a4f3f35c8152",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 0,
+        "Medium": 0
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [],
+      "source": "llm",
+      "confidence": 0.0,
+      "reason": "No security issues reported; only audit tool failure",
+      "raw": "{\n  \"labels\": [],\n  \"confidence\": 0.0,\n  \"reason\": \"No security issues reported; only audit tool failure\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [],
+    "pred_labels": [],
+    "pred_swc_list": "",
+    "pred_source": "llm",
+    "is_other": 1,
+    "pred_reason": "The label SWC-OTHER is appropriate because the audit process failed entirely due to external tooling errors, preventing any smart contract specific vulnerability assessment. This failure constitutes a non-standard security-related issue not covered by existing SWC identifiers. Evidence: All AI models failed during report generation, halting the audit process; Error originated in external tooling (FormatConverterNode) rather than contract code; No actual contract vulnerabilities could be assessed due to system failure",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 0.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 0.0,\\n  \\\"reason\\\": \\\"No security issues reported; only audit tool failure\\\"\\n}\", \"reason\": \"No security issues reported; only audit tool failure\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"All AI models failed during report generation, halting the audit process\", \"Error originated in external tooling (FormatConverterNode) rather than contract code\", \"No actual contract vulnerabilities could be assessed due to system failure\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The label SWC-OTHER is appropriate because the audit process failed entirely due to external tooling errors, preventing any smart contract specific vulnerability assessment. This failure constitutes a non-standard security-related issue not covered by existing SWC identifiers.\\\",\\n  \\\"evidence\\\": [\\\"All AI models failed during report generation, halting the audit process\\\", \\\"Error originated in external tooling (FormatConverterNode) rather than contract code\\\", \\\"No actual contract vulnerabilities could be assessed due to system failure\\\"]\\n}\", \"reason\": \"The label SWC-OTHER is appropriate because the audit process failed entirely due to external tooling errors, preventing any smart contract specific vulnerability assessment. This failure constitutes a non-standard security-related issue not covered by existing SWC identifiers.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": false,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.0,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The label SWC-OTHER is appropriate because the audit process failed entirely due to external tooling errors, preventing any smart contract specific vulnerability assessment. This failure constitutes a non-standard security-related issue not covered by existing SWC identifiers.",
+      "evidence": [
+        "All AI models failed during report generation, halting the audit process",
+        "Error originated in external tooling (FormatConverterNode) rather than contract code",
+        "No actual contract vulnerabilities could be assessed due to system failure"
+      ],
+      "raw": "{\n  \"reason\": \"The label SWC-OTHER is appropriate because the audit process failed entirely due to external tooling errors, preventing any smart contract specific vulnerability assessment. This failure constitutes a non-standard security-related issue not covered by existing SWC identifiers.\",\n  \"evidence\": [\"All AI models failed during report generation, halting the audit process\", \"Error originated in external tooling (FormatConverterNode) rather than contract code\", \"No actual contract vulnerabilities could be assessed due to system failure\"]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "3ff85972-fe65-4138-9ace-a4f3f35c8152",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 1,
+        "full_report_chars": 198,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

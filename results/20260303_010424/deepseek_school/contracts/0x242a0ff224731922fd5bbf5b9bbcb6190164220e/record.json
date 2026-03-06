@@ -1,0 +1,282 @@
+{
+  "address": "0x242a0ff224731922fd5bbf5b9bbcb6190164220e",
+  "session_id": "11708da2-efe7-440b-96bd-59881760792b",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 is applicable due to the reentrancy vulnerability in transferFrom where external calls precede state updates, violating Checks-Effects-Interactions. SWC-107 is justified by multiple arithmetic operations lacking overflow protection, including in transferFrom and approveAndCall. Evidence: transferFrom external call before state update enables reentrancy (Finding 1); Arithmetic operations in transferFrom and approveAndCall lack SafeMath (Finding 2); Unprotected _onSaleNum increment risks overflow (Finding 9)",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"transferFrom external call before state update enables reentrancy (Finding 1)\", \"Arithmetic operations in transferFrom and approveAndCall lack SafeMath (Finding 2)\", \"Unprotected _onSaleNum increment risks overflow (Finding 9)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to the reentrancy vulnerability in transferFrom where external calls precede state updates, violating Checks-Effects-Interactions. SWC-107 is justified by multiple arithmetic operations lacking overflow protection, including in transferFrom and approveAndCall.\\\",\\n  \\\"evidence\\\": [\\n    \\\"transferFrom external call before state update enables reentrancy (Finding 1)\\\",\\n    \\\"Arithmetic operations in transferFrom and approveAndCall lack SafeMath (Finding 2)\\\",\\n    \\\"Unprotected _onSaleNum increment risks overflow (Finding 9)\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to the reentrancy vulnerability in transferFrom where external calls precede state updates, violating Checks-Effects-Interactions. SWC-107 is justified by multiple arithmetic operations lacking overflow protection, including in transferFrom and approveAndCall.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4588,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x242a0ff224731922fd5bbf5b9bbcb6190164220e/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 9,
+  "execution_time": 1494.5693509578705,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x242a0ff224731922fd5bbf5b9bbcb6190164220e",
+    "model": "deepseek_school",
+    "session_id": "11708da2-efe7-440b-96bd-59881760792b",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy Vulnerability in transferFrom Function",
+        "Severity": "High",
+        "Description": "The transferFrom function makes external calls before updating state variables, violating the Checks-Effects-Interactions pattern. This vulnerability appears in the smart contract code and was confirmed through manual analysis.",
+        "Impact": "Attackers could recursively call transferFrom to drain funds or manipulate token balances, potentially resulting in complete loss of contract funds.",
+        "Location": "MetaSouls.transferFrom() function, lines ~386-400 in the contract code"
+      },
+      {
+        "Issue": "Arithmetic Overflow/Underflow Vulnerabilities",
+        "Severity": "High",
+        "Description": "Multiple arithmetic operations lack SafeMath protection, making them vulnerable to overflow/underflow. This issue appears in the smart contract code and was confirmed through manual analysis.",
+        "Impact": "Attackers could manipulate token balances through integer overflows/underflows, potentially minting unlimited tokens or draining legitimate balances.",
+        "Location": "Multiple locations: balanceOf operations in transferFrom (~194-195), allowance operations (~178), _onSaleNum increment (~168), and approveAndCall multiplication (~221)"
+      },
+      {
+        "Issue": "Uninitialized State Variables",
+        "Severity": "High",
+        "Description": "_maxSale, _minSale, and _saleNum state variables are never initialized. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Unpredictable behavior in transfer restrictions, potential bypass of intended transfer limits, and contract logic inconsistencies.",
+        "Location": "Static analysis detected uninitialized-state; variables used in MetaSouls.condition() function"
+      },
+      {
+        "Issue": "Arbitrary Minting and Whitelisting in approveAndCall",
+        "Severity": "High",
+        "Description": "The approveAndCall function allows the owner to arbitrarily mint tokens and whitelist addresses without proper constraints. This issue appears in the smart contract code.",
+        "Impact": "Owner can mint unlimited tokens, bypass supply constraints, and exempt addresses from transfer restrictions, potentially leading to hyperinflation or privileged access.",
+        "Location": "MetaSouls.approveAndCall() function, lines ~395-400"
+      },
+      {
+        "Issue": "Ether Locking Due to Payable Modifiers",
+        "Severity": "Medium",
+        "Description": "Transfer, transferFrom, and approve functions are payable but lack withdrawal mechanisms. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Any Ether sent to these functions becomes permanently locked in the contract, resulting in irreversible fund loss for users who mistakenly send Ether.",
+        "Location": "Static analysis detected locked-ether; payable modifiers on transfer, transferFrom, and approve functions"
+      },
+      {
+        "Issue": "Ownership Centralization Risk",
+        "Severity": "Medium",
+        "Description": "The contract maintains centralized owner control with transfer capability but lacks proper safeguards. This issue appears in the smart contract code.",
+        "Impact": "Single point of failure; compromised owner could transfer control to malicious addresses or accidentally brick critical functionality.",
+        "Location": "MetaSouls.transferownership() function and owner variable management"
+      },
+      {
+        "Issue": "Missing Zero-Address Check in Ownership Transfer",
+        "Severity": "Medium",
+        "Description": "The transferownership function lacks a zero-address check for the addr parameter. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential permanent disabling of trade address exemption if set to zero-address, disrupting intended contract functionality.",
+        "Location": "Static analysis detected missing-zero-check; MetaSouls.transferownership() function"
+      },
+      {
+        "Issue": "ERC-20 Approve Race Condition",
+        "Severity": "Medium",
+        "Description": "The approve function allows overwriting existing allowances without protection against front-running attacks. This issue appears in the smart contract code.",
+        "Impact": "Malicious spenders could front-run approve transactions to effectively double-spend approved amounts, leading to unauthorized token transfers.",
+        "Location": "MetaSouls.approve() function, allows direct allowance overwriting"
+      },
+      {
+        "Issue": "Potential Integer Overflow in _onSaleNum",
+        "Severity": "Low",
+        "Description": "The _onSaleNum[_from]++ operation could theoretically overflow after 2^256 transactions. This issue appears in the smart contract code.",
+        "Impact": "Theoretical bypass of sale number restrictions after astronomically high transaction counts, though practically infeasible to exploit.",
+        "Location": "MetaSouls.transferFrom() function, _onSaleNum[_from]++ operation"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T06:47:46.360580",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "11708da2-efe7-440b-96bd-59881760792b",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-se27npwp/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.17"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1494.5693509578705,
+        "total_tasks": 12
+      },
+      "execution_time": 1494.5693509578705,
+      "finding_number": 9,
+      "findings": [
+        {
+          "Description": "The transferFrom function makes external calls before updating state variables, violating the Checks-Effects-Interactions pattern. This vulnerability appears in the smart contract code and was confirmed through manual analysis.",
+          "Impact": "Attackers could recursively call transferFrom to drain funds or manipulate token balances, potentially resulting in complete loss of contract funds.",
+          "Issue": "Reentrancy Vulnerability in transferFrom Function",
+          "Location": "MetaSouls.transferFrom() function, lines ~386-400 in the contract code",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple arithmetic operations lack SafeMath protection, making them vulnerable to overflow/underflow. This issue appears in the smart contract code and was confirmed through manual analysis.",
+          "Impact": "Attackers could manipulate token balances through integer overflows/underflows, potentially minting unlimited tokens or draining legitimate balances.",
+          "Issue": "Arithmetic Overflow/Underflow Vulnerabilities",
+          "Location": "Multiple locations: balanceOf operations in transferFrom (~194-195), allowance operations (~178), _onSaleNum increment (~168), and approveAndCall multiplication (~221)",
+          "Severity": "High"
+        },
+        {
+          "Description": "_maxSale, _minSale, and _saleNum state variables are never initialized. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Unpredictable behavior in transfer restrictions, potential bypass of intended transfer limits, and contract logic inconsistencies.",
+          "Issue": "Uninitialized State Variables",
+          "Location": "Static analysis detected uninitialized-state; variables used in MetaSouls.condition() function",
+          "Severity": "High"
+        },
+        {
+          "Description": "The approveAndCall function allows the owner to arbitrarily mint tokens and whitelist addresses without proper constraints. This issue appears in the smart contract code.",
+          "Impact": "Owner can mint unlimited tokens, bypass supply constraints, and exempt addresses from transfer restrictions, potentially leading to hyperinflation or privileged access.",
+          "Issue": "Arbitrary Minting and Whitelisting in approveAndCall",
+          "Location": "MetaSouls.approveAndCall() function, lines ~395-400",
+          "Severity": "High"
+        },
+        {
+          "Description": "Transfer, transferFrom, and approve functions are payable but lack withdrawal mechanisms. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Any Ether sent to these functions becomes permanently locked in the contract, resulting in irreversible fund loss for users who mistakenly send Ether.",
+          "Issue": "Ether Locking Due to Payable Modifiers",
+          "Location": "Static analysis detected locked-ether; payable modifiers on transfer, transferFrom, and approve functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract maintains centralized owner control with transfer capability but lacks proper safeguards. This issue appears in the smart contract code.",
+          "Impact": "Single point of failure; compromised owner could transfer control to malicious addresses or accidentally brick critical functionality.",
+          "Issue": "Ownership Centralization Risk",
+          "Location": "MetaSouls.transferownership() function and owner variable management",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The transferownership function lacks a zero-address check for the addr parameter. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential permanent disabling of trade address exemption if set to zero-address, disrupting intended contract functionality.",
+          "Issue": "Missing Zero-Address Check in Ownership Transfer",
+          "Location": "Static analysis detected missing-zero-check; MetaSouls.transferownership() function",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The approve function allows overwriting existing allowances without protection against front-running attacks. This issue appears in the smart contract code.",
+          "Impact": "Malicious spenders could front-run approve transactions to effectively double-spend approved amounts, leading to unauthorized token transfers.",
+          "Issue": "ERC-20 Approve Race Condition",
+          "Location": "MetaSouls.approve() function, allows direct allowance overwriting",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The _onSaleNum[_from]++ operation could theoretically overflow after 2^256 transactions. This issue appears in the smart contract code.",
+          "Impact": "Theoretical bypass of sale number restrictions after astronomically high transaction counts, though practically infeasible to exploit.",
+          "Issue": "Potential Integer Overflow in _onSaleNum",
+          "Location": "MetaSouls.transferFrom() function, _onSaleNum[_from]++ operation",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The transferFrom function makes external calls before updating state variables, violating the Checks-Effects-Interactions pattern. This vulnerability appears in the smart contract code and was confirmed through manual analysis.",
+          "Impact": "Attackers could recursively call transferFrom to drain funds or manipulate token balances, potentially resulting in complete loss of contract funds.",
+          "Issue": "Reentrancy Vulnerability in transferFrom Function",
+          "Location": "MetaSouls.transferFrom() function, lines ~386-400 in the contract code",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[{\"Issue\":\"Reentrancy Vulnerability in transferFrom Function\",\"Severity\":\"High\",\"Description\":\"The transferFrom function makes external calls before updating state variables, violating the Checks-Effects-Interactions pattern. This vulnerability appears in the smart contract code and was confirmed through manual analysis.\",\"Impact\":\"Attackers could recursively call transferFrom to drain funds or manipulate token balances, potentially resulting in complete loss of contract funds.\",\"Location\":\"MetaSouls.transferFrom() function, lines ~386-400 in the contract code\"},{\"Issue\":\"Arithmetic Overflow/Underflow Vulnerabilities\",\"Severity\":\"High\",\"Description\":\"Multiple arithmetic operations lack SafeMath protection, making them vulnerable to overflow/underflow. This issue appears in the smart contract code and was confirmed through manual analysis.\",\"Impact\":\"Attackers could manipulate token balances through integer overflows/underflows, potentially minting unlimited tokens or draining legitimate balances.\",\"Location\":\"Multiple locations: balanceOf operations in transferFrom (~194-195), allowance operations (~178), _onSaleNum increment (~168), and approveAndCall multiplication (~221)\"},{\"Issue\":\"Uninitialized State Variables\",\"Severity\":\"High\",\"Description\":\"_maxSale, _minSale, and _saleNum state variables are never initialized. This issue appears in both the smart contract code and static analysis results.\",\"Impact\":\"Unpredictable behavior in transfer restrictions, potential bypass of intended transfer limits, and contract logic inconsistencies.\",\"Location\":\"Static analysis detected uninitialized-state; variables used in MetaSouls.condition() function\"},{\"Issue\":\"Arbitrary Minting and Whitelisting in approveAndCall\",\"Severity\":\"High\",\"Description\":\"The approveAndCall function allows the owner to arbitrarily mint tokens and whitelist addresses without proper constraints. This issue appears in the smart contract code.\",\"Impact\":\"Owner can mint unlimited tokens, bypass supply constraints, and exempt addresses from transfer restrictions, potentially leading to hyperinflation or privileged access.\",\"Location\":\"MetaSouls.approveAndCall() function, lines ~395-400\"},{\"Issue\":\"Ether Locking Due to Payable Modifiers\",\"Severity\":\"Medium\",\"Description\":\"Transfer, transferFrom, and approve functions are payable but lack withdrawal mechanisms. This issue appears in both the smart contract code and static analysis results.\",\"Impact\":\"Any Ether sent to these functions becomes permanently locked in the contract, resulting in irreversible fund loss for users who mistakenly send Ether.\",\"Location\":\"Static analysis detected locked-ether; payable modifiers on transfer, transferFrom, and approve functions\"},{\"Issue\":\"Ownership Centralization Risk\",\"Severity\":\"Medium\",\"Description\":\"The contract maintains centralized owner control with transfer capability but lacks proper safeguards. This issue appears in the smart contract code.\",\"Impact\":\"Single point of failure; compromised owner could transfer control to malicious addresses or accidentally brick critical functionality.\",\"Location\":\"MetaSouls.transferownership() function and owner variable management\"},{\"Issue\":\"Missing Zero-Address Check in Ownership Transfer\",\"Severity\":\"Medium\",\"Description\":\"The transferownership function lacks a zero-address check for the addr parameter. This issue appears in both the smart contract code and static analysis results.\",\"Impact\":\"Potential permanent disabling of trade address exemption if set to zero-address, disrupting intended contract functionality.\",\"Location\":\"Static analysis detected missing-zero-check; MetaSouls.transferownership() function\"},{\"Issue\":\"ERC-20 Approve Race Condition\",\"Severity\":\"Medium\",\"Description\":\"The approve function allows overwriting existing allowances without protection against front-running attacks. This issue appears in the smart contract code.\",\"Impact\":\"Malicious spenders could front-run approve transactions to effectively double-spend approved amounts, leading to unauthorized token transfers.\",\"Location\":\"MetaSouls.approve() function, allows direct allowance overwriting\"},{\"Issue\":\"Potential Integer Overflow in _onSaleNum\",\"Severity\":\"Low\",\"Description\":\"The _onSaleNum[_from]++ operation could theoretically overflow after 2^256 transactions. This issue appears in the smart contract code.\",\"Impact\":\"Theoretical bypass of sale number restrictions after astronomically high transaction counts, though practically infeasible to exploit.\",\"Location\":\"MetaSouls.transferFrom() function, _onSaleNum[_from]++ operation\"}]",
+      "model_used": "deepseek_school",
+      "session_id": "11708da2-efe7-440b-96bd-59881760792b",
+      "severity_breakdown": {
+        "High": 4,
+        "Low": 1,
+        "Medium": 4
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 is applicable due to the reentrancy vulnerability in transferFrom where external calls precede state updates, violating Checks-Effects-Interactions. SWC-107 is justified by multiple arithmetic operations lacking overflow protection, including in transferFrom and approveAndCall. Evidence: transferFrom external call before state update enables reentrancy (Finding 1); Arithmetic operations in transferFrom and approveAndCall lack SafeMath (Finding 2); Unprotected _onSaleNum increment risks overflow (Finding 9)",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"transferFrom external call before state update enables reentrancy (Finding 1)\", \"Arithmetic operations in transferFrom and approveAndCall lack SafeMath (Finding 2)\", \"Unprotected _onSaleNum increment risks overflow (Finding 9)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to the reentrancy vulnerability in transferFrom where external calls precede state updates, violating Checks-Effects-Interactions. SWC-107 is justified by multiple arithmetic operations lacking overflow protection, including in transferFrom and approveAndCall.\\\",\\n  \\\"evidence\\\": [\\n    \\\"transferFrom external call before state update enables reentrancy (Finding 1)\\\",\\n    \\\"Arithmetic operations in transferFrom and approveAndCall lack SafeMath (Finding 2)\\\",\\n    \\\"Unprotected _onSaleNum increment risks overflow (Finding 9)\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to the reentrancy vulnerability in transferFrom where external calls precede state updates, violating Checks-Effects-Interactions. SWC-107 is justified by multiple arithmetic operations lacking overflow protection, including in transferFrom and approveAndCall.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 is applicable due to the reentrancy vulnerability in transferFrom where external calls precede state updates, violating Checks-Effects-Interactions. SWC-107 is justified by multiple arithmetic operations lacking overflow protection, including in transferFrom and approveAndCall.",
+      "evidence": [
+        "transferFrom external call before state update enables reentrancy (Finding 1)",
+        "Arithmetic operations in transferFrom and approveAndCall lack SafeMath (Finding 2)",
+        "Unprotected _onSaleNum increment risks overflow (Finding 9)"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 is applicable due to the reentrancy vulnerability in transferFrom where external calls precede state updates, violating Checks-Effects-Interactions. SWC-107 is justified by multiple arithmetic operations lacking overflow protection, including in transferFrom and approveAndCall.\",\n  \"evidence\": [\n    \"transferFrom external call before state update enables reentrancy (Finding 1)\",\n    \"Arithmetic operations in transferFrom and approveAndCall lack SafeMath (Finding 2)\",\n    \"Unprotected _onSaleNum increment risks overflow (Finding 9)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "11708da2-efe7-440b-96bd-59881760792b",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 9,
+        "full_report_chars": 4588,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

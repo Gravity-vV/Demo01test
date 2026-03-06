@@ -1,0 +1,325 @@
+{
+  "address": "0x086c40819110fc0b3953eaec21577133bd0834ba",
+  "session_id": "14f4acf9-5be2-4fdf-afdf-d434c06757ba",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 applies due to identified arithmetic overflow in inline assembly operations (Finding 4). SWC-107 is relevant because multiple findings highlight reentrancy risks from external calls to tokens and treasury (Findings 3 and 5). Evidence: Arithmetic overflow found in swap subroutine assembly handling reserves (Task 6); Reentrancy vector possible via malicious ERC-20 token or treasury calls (Task 4); State changes not consistently verified after external calls (Task 2)",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Arithmetic overflow found in swap subroutine assembly handling reserves (Task 6)\", \"Reentrancy vector possible via malicious ERC-20 token or treasury calls (Task 4)\", \"State changes not consistently verified after external calls (Task 2)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 applies due to identified arithmetic overflow in inline assembly operations (Finding 4). SWC-107 is relevant because multiple findings highlight reentrancy risks from external calls to tokens and treasury (Findings 3 and 5).\\\",\\n  \\\"evidence\\\": [\\\"Arithmetic overflow found in swap subroutine assembly handling reserves (Task 6)\\\", \\\"Reentrancy vector possible via malicious ERC-20 token or treasury calls (Task 4)\\\", \\\"State changes not consistently verified after external calls (Task 2)\\\"]\\n}\", \"reason\": \"SWC-101 applies due to identified arithmetic overflow in inline assembly operations (Finding 4). SWC-107 is relevant because multiple findings highlight reentrancy risks from external calls to tokens and treasury (Findings 3 and 5).\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1341.1622581481934,
+  "gt_swc_set": "SWC-101|SWC-115",
+  "error": "",
+  "raw": {
+    "address": "0x086c40819110fc0b3953eaec21577133bd0834ba",
+    "model": "deepseek_school",
+    "session_id": "14f4acf9-5be2-4fdf-afdf-d434c06757ba",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Task:** Map all external calls made by the contr...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have mapped all external calls made by the DepoRouter contract. Here are my detailed findings: ## 1. Issue Analysis **No critical security... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **Task:** Map all external calls made by the contract (to tokens, WETH, Uniswap pairs, treasury)."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Task:** Analyze the `unoswap` function's assembl...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I will focus specifically on the `unoswap` function's assembly block to verify that all state changes occur after external calls are completed... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: **Task:** Analyze the `unoswap` function's assembly block. Verify that all state changes (e.g., fee calculation, event emission) occur *after* all external calls are completed. The current logic appears to do this correctly, but this must be confirmed."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Task:** Review the `safeTransferETH` function ca...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified a critical security issue related to the `safeTransferETH` function call to the treasury. Here is my detailed assessment: #... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: **Task:** Review the `safeTransferETH` function call to the treasury. Ensure it is the final action in the function and does not create a reentrancy vector into the swap logic."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Task:** Manually audit the inline assembly in th...",
+        "Severity": "High",
+        "Description": "Based on my manual audit of the inline assembly in the `swap` subroutine, I have identified a critical arithmetic overflow vulnerability. Here is my detailed analysis: ## 1. Issue Analysis **Yes, th... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: **Task:** Manually audit the inline assembly in the `swap` subroutine for any raw arithmetic operations (e.g., `mul`, `div`, `add`) that could overflow or underflow, especially when handling `reserve0`, `reserve1`, `swapAmount`, and `numerator`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Specifically test if a malicious ERC-20 ...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, I will conduct a specific audit focused on reentrancy vulnerabilities in the `unoswap` and `unoswapWithPermmit` functions related to malicious... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 4: **Task:** Specifically test if a malicious ERC-20 token or a malicious `treasury` address can re-enter the `unoswap` or `unoswapWithPermit` functions."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Verify that all arithmetic operations in...",
+        "Severity": "High",
+        "Description": "## Audit Findings: SafeMath Protection for Arithmetic Operations ### 1. Issue Analysis **Issue Identified:** Yes There is **one unprotected arithmetic operation** found in the `unoswap` function whe... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: **Task:** Verify that all arithmetic operations in the Solidity code (e.g., `msg.value - amount`) are protected by SafeMath. The `unoswap` function uses `.sub` for the fee calculation, which is safe."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Confirm that the `setTreasury` function ...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the provided smart contract code, I can confirm that the `setTreasury` function is **not** the only function with the `onlyOwner` modifier. Here is my detailed assessment:... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: **Task:** Confirm that the `setTreasury` function is indeed the only function with the `onlyOwner` modifier."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Verify that the `receive()` function's l...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, here are my detailed findings for the specific audit task: ## 1. Issue Analysis **Yes, there is a significant issue related to the `receive(... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: **Task:** Verify that the `receive()` function's logic (rejecting EOAs) is intentional and does not disrupt intended contract functionality, such as receiving ETH from WETH withdrawals or other integrators."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Assess if the `minReturn` parameter is s...",
+        "Severity": "High",
+        "Description": "## Audit Report: Assessment of `minReturn` Parameter Protection Against MEV and Slippage ### 1. Issue Analysis **Issue Identified: Yes** - The `minReturn` parameter implementation is insufficient to ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: **Task:** Assess if the `minReturn` parameter is sufficient to protect users from MEV and price slippage, which is standard for AMM routers. No additional mitigation is typically expected here."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Confirm the contract does not use `block...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the provided smart contract code, I have completed the specific audit task to confirm whether the contract uses `block.timestamp` for critical logic, making it immune to t... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: **Task:** Confirm the contract does not use `block.timestamp` for critical logic, making it immune to timestamp manipulation."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Analyze the loop in the assembly code th...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task regarding the loop in the assembly code that iterates over the `pools` array. ## 1. Issue Analysis **... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 11: **Task:** Analyze the loop in the assembly code that iterates over `pools`. Determine if a large `pools` array could cause the transaction to run out of gas, effectively DOSing the user. This is a known trade-off in this design."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Review all low-level `call` operations i...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **Yes, there is a critical issue related to the audit task.** The `reRevert()` function in the assembly block of the `unoswap` function correctly bubbles up revert reasons for f... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: **Task:** Review all low-level `call` operations in the assembly (`call(gas(), pair, 0, ...)`) and the `_permit` function. Confirm that the `reRevert()` function correctly bubbles up revert reasons for failed calls."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T02:51:30.720335",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "14f4acf9-5be2-4fdf-afdf-d434c06757ba",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0",
+            "0.8.0",
+            "0.6.12"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.7.6/solc-0.7.6 --version' running '/Users/hh/.solc-select/artifacts/solc-0.7.6/solc-0.7.6 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation war",
+          "status": "failed"
+        },
+        "total_execution_time": 1341.1622581481934,
+        "total_tasks": 12
+      },
+      "execution_time": 1341.1622581481934,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have mapped all external calls made by the DepoRouter contract. Here are my detailed findings:\n\n## 1. Issue Analysis\n\n**No critical security... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Map all external calls made by the contr...",
+          "Location": "Task 1: **Task:** Map all external calls made by the contract (to tokens, WETH, Uniswap pairs, treasury).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I will focus specifically on the `unoswap` function's assembly block to verify that all state changes occur after external calls are completed... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Analyze the `unoswap` function's assembl...",
+          "Location": "Task 2: **Task:** Analyze the `unoswap` function's assembly block. Verify that all state changes (e.g., fee calculation, event emission) occur *after* all external calls are completed. The current logic appears to do this correctly, but this must be confirmed.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified a critical security issue related to the `safeTransferETH` function call to the treasury. Here is my detailed assessment:\n\n#... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Review the `safeTransferETH` function ca...",
+          "Location": "Task 3: **Task:** Review the `safeTransferETH` function call to the treasury. Ensure it is the final action in the function and does not create a reentrancy vector into the swap logic.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my manual audit of the inline assembly in the `swap` subroutine, I have identified a critical arithmetic overflow vulnerability. Here is my detailed analysis:\n\n## 1. Issue Analysis\n\n**Yes, th... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Manually audit the inline assembly in th...",
+          "Location": "Task 6: **Task:** Manually audit the inline assembly in the `swap` subroutine for any raw arithmetic operations (e.g., `mul`, `div`, `add`) that could overflow or underflow, especially when handling `reserve0`, `reserve1`, `swapAmount`, and `numerator`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I will conduct a specific audit focused on reentrancy vulnerabilities in the `unoswap` and `unoswapWithPermmit` functions related to malicious... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Specifically test if a malicious ERC-20 ...",
+          "Location": "Task 4: **Task:** Specifically test if a malicious ERC-20 token or a malicious `treasury` address can re-enter the `unoswap` or `unoswapWithPermit` functions.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings: SafeMath Protection for Arithmetic Operations\n\n### 1. Issue Analysis\n**Issue Identified:** Yes\n\nThere is **one unprotected arithmetic operation** found in the `unoswap` function whe... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Verify that all arithmetic operations in...",
+          "Location": "Task 5: **Task:** Verify that all arithmetic operations in the Solidity code (e.g., `msg.value - amount`) are protected by SafeMath. The `unoswap` function uses `.sub` for the fee calculation, which is safe.",
+          "Severity": "High"
+        },
+        {
+          "Description": "After a thorough analysis of the provided smart contract code, I can confirm that the `setTreasury` function is **not** the only function with the `onlyOwner` modifier. Here is my detailed assessment:... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Confirm that the `setTreasury` function ...",
+          "Location": "Task 7: **Task:** Confirm that the `setTreasury` function is indeed the only function with the `onlyOwner` modifier.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, here are my detailed findings for the specific audit task:\n\n## 1. Issue Analysis\n\n**Yes, there is a significant issue related to the `receive(... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Verify that the `receive()` function's l...",
+          "Location": "Task 8: **Task:** Verify that the `receive()` function's logic (rejecting EOAs) is intentional and does not disrupt intended contract functionality, such as receiving ETH from WETH withdrawals or other integrators.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Assessment of `minReturn` Parameter Protection Against MEV and Slippage\n\n### 1. Issue Analysis\n**Issue Identified: Yes** - The `minReturn` parameter implementation is insufficient to ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Assess if the `minReturn` parameter is s...",
+          "Location": "Task 9: **Task:** Assess if the `minReturn` parameter is sufficient to protect users from MEV and price slippage, which is standard for AMM routers. No additional mitigation is typically expected here.",
+          "Severity": "High"
+        },
+        {
+          "Description": "After a thorough analysis of the provided smart contract code, I have completed the specific audit task to confirm whether the contract uses `block.timestamp` for critical logic, making it immune to t... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Confirm the contract does not use `block...",
+          "Location": "Task 10: **Task:** Confirm the contract does not use `block.timestamp` for critical logic, making it immune to timestamp manipulation.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I will address the specific audit task regarding the loop in the assembly code that iterates over the `pools` array.\n\n## 1. Issue Analysis\n\n**... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Analyze the loop in the assembly code th...",
+          "Location": "Task 11: **Task:** Analyze the loop in the assembly code that iterates over `pools`. Determine if a large `pools` array could cause the transaction to run out of gas, effectively DOSing the user. This is a known trade-off in this design.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n\n**Yes, there is a critical issue related to the audit task.** The `reRevert()` function in the assembly block of the `unoswap` function correctly bubbles up revert reasons for f... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Review all low-level `call` operations i...",
+          "Location": "Task 12: **Task:** Review all low-level `call` operations in the assembly (`call(gas(), pair, 0, ...)`) and the `_permit` function. Confirm that the `reRevert()` function correctly bubbles up revert reasons for failed calls.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Based on my analysis of the provided smart contract code, I have mapped all external calls made by the DepoRouter contract. Here are my detailed findings:\n\n## 1. Issue Analysis\n\n**No critical security... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Map all external calls made by the contr...",
+          "Location": "Task 1: **Task:** Map all external calls made by the contract (to tokens, WETH, Uniswap pairs, treasury).",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "14f4acf9-5be2-4fdf-afdf-d434c06757ba",
+      "severity_breakdown": {
+        "High": 10,
+        "Low": 0,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 applies due to identified arithmetic overflow in inline assembly operations (Finding 4). SWC-107 is relevant because multiple findings highlight reentrancy risks from external calls to tokens and treasury (Findings 3 and 5). Evidence: Arithmetic overflow found in swap subroutine assembly handling reserves (Task 6); Reentrancy vector possible via malicious ERC-20 token or treasury calls (Task 4); State changes not consistently verified after external calls (Task 2)",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Arithmetic overflow found in swap subroutine assembly handling reserves (Task 6)\", \"Reentrancy vector possible via malicious ERC-20 token or treasury calls (Task 4)\", \"State changes not consistently verified after external calls (Task 2)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 applies due to identified arithmetic overflow in inline assembly operations (Finding 4). SWC-107 is relevant because multiple findings highlight reentrancy risks from external calls to tokens and treasury (Findings 3 and 5).\\\",\\n  \\\"evidence\\\": [\\\"Arithmetic overflow found in swap subroutine assembly handling reserves (Task 6)\\\", \\\"Reentrancy vector possible via malicious ERC-20 token or treasury calls (Task 4)\\\", \\\"State changes not consistently verified after external calls (Task 2)\\\"]\\n}\", \"reason\": \"SWC-101 applies due to identified arithmetic overflow in inline assembly operations (Finding 4). SWC-107 is relevant because multiple findings highlight reentrancy risks from external calls to tokens and treasury (Findings 3 and 5).\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 applies due to identified arithmetic overflow in inline assembly operations (Finding 4). SWC-107 is relevant because multiple findings highlight reentrancy risks from external calls to tokens and treasury (Findings 3 and 5).",
+      "evidence": [
+        "Arithmetic overflow found in swap subroutine assembly handling reserves (Task 6)",
+        "Reentrancy vector possible via malicious ERC-20 token or treasury calls (Task 4)",
+        "State changes not consistently verified after external calls (Task 2)"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 applies due to identified arithmetic overflow in inline assembly operations (Finding 4). SWC-107 is relevant because multiple findings highlight reentrancy risks from external calls to tokens and treasury (Findings 3 and 5).\",\n  \"evidence\": [\"Arithmetic overflow found in swap subroutine assembly handling reserves (Task 6)\", \"Reentrancy vector possible via malicious ERC-20 token or treasury calls (Task 4)\", \"State changes not consistently verified after external calls (Task 2)\"]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "14f4acf9-5be2-4fdf-afdf-d434c06757ba",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

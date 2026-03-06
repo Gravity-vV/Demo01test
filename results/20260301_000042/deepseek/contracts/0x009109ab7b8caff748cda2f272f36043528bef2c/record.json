@@ -1,0 +1,216 @@
+{
+  "address": "0x009109ab7b8caff748cda2f272f36043528bef2c",
+  "session_id": "ff206651-4e32-4a03-8c2f-27e660a7bd28",
+  "audit_status": "completed",
+  "model": "deepseek",
+  "pred_swc_list": "SWC-105",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-105 is justified as the contract uses transferFrom with an arbitrary 'from' address without authorization, allowing unauthorized token transfers. This directly matches the unprotected call to an external contract pattern described in SWC-105. Evidence: TokenUtils.pullTokensIfNeeded calls IERC20(_token).safeTransferFrom(_from, address(this), _amount) without access control.; Static analysis detected arbitrary-send-erc20 vulnerability confirming unauthorized transfer risk.; Impact confirms potential loss of user funds if exploited by an attacker.",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 2.5, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"TokenUtils.pullTokensIfNeeded calls IERC20(_token).safeTransferFrom(_from, address(this), _amount) without access control.\", \"Static analysis detected arbitrary-send-erc20 vulnerability confirming unauthorized transfer risk.\", \"Impact confirms potential loss of user funds if exploited by an attacker.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-105 is justified as the contract uses transferFrom with an arbitrary 'from' address without authorization, allowing unauthorized token transfers. This directly matches the unprotected call to an external contract pattern described in SWC-105.\\\",\\n  \\\"evidence\\\": [\\n    \\\"TokenUtils.pullTokensIfNeeded calls IERC20(_token).safeTransferFrom(_from, address(this), _amount) without access control.\\\",\\n    \\\"Static analysis detected arbitrary-send-erc20 vulnerability confirming unauthorized transfer risk.\\\",\\n    \\\"Impact confirms potential loss of user funds if exploited by an attacker.\\\"\\n  ]\\n}\", \"reason\": \"SWC-105 is justified as the contract uses transferFrom with an arbitrary 'from' address without authorization, allowing unauthorized token transfers. This directly matches the unprotected call to an external contract pattern described in SWC-105.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2914,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260301_000042/deepseek/contracts/0x009109ab7b8caff748cda2f272f36043528bef2c/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 406.10742831230164,
+  "gt_swc_set": "SWC-101|SWC-105|SWC-106",
+  "error": "",
+  "raw": {
+    "address": "0x009109ab7b8caff748cda2f272f36043528bef2c",
+    "model": "deepseek",
+    "session_id": "ff206651-4e32-4a03-8c2f-27e660a7bd28",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Potential Arbitrary ERC20 TransferFrom",
+        "Severity": "High",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. TokenUtils.pullTokensIfNeeded uses an arbitrary 'from' address in transferFrom without proper authorization checks, potentially allowing unauthorized token transfers.",
+        "Impact": "An attacker could exploit this to transfer tokens from any address to the contract, leading to loss of user funds.",
+        "Location": "TokenUtils.pullTokensIfNeeded, line with IERC20(_token).safeTransferFrom(_from, address(this), _amount); Static analysis: arbitrary-send-erc20 detector"
+      },
+      {
+        "Issue": "Incorrect ERC20 Interface Implementation",
+        "Severity": "Medium",
+        "Description": "This issue is identified in the static analysis results. The IWETH interface has an incorrect ERC20 function signature for approve, which could cause integration issues or failures in token interactions. This issue appears in the auditing result.",
+        "Impact": "Contracts relying on the standard ERC20 interface may fail to interact correctly with WETH, potentially breaking functionality.",
+        "Location": "IWETH interface, approve function; Static analysis: erc20-interface detector"
+      },
+      {
+        "Issue": "Missing Zero Address Check in Ownership Transfer",
+        "Severity": "Low",
+        "Description": "This issue is present in both the code and static analysis. AdminVault.changeOwner and changeAdmin functions lack zero address checks, which could accidentally set critical admin/owner roles to an invalid address. This issue appears in the auditing result.",
+        "Impact": "If set to zero, the admin or owner functions become irrecoverable, potentially locking the contract.",
+        "Location": "AdminVault.changeOwner and changeAdmin functions; Static analysis: missing-zero-check detector"
+      },
+      {
+        "Issue": "Missing Zero Address Check in Fund Withdrawal",
+        "Severity": "Low",
+        "Description": "This issue is found in both the code and static analysis. AdminAuth.withdrawStuckFunds does not validate the receiver address, risking funds being sent to address(0) if called erroneously. This issue appears in the auditing result.",
+        "Impact": "Potential loss of funds if withdrawStuckFunds is called with a zero address receiver.",
+        "Location": "AdminAuth.withdrawStuckFunds function; Static analysis: missing-zero-check detector"
+      },
+      {
+        "Issue": "Timestamp Dependency in Contract Change Approval",
+        "Severity": "Low",
+        "Description": "This issue is identified in the static analysis results. DFSRegistry uses block.timestamp for wait period checks in approveContractChange and approveWaitPeriodChange, which can be manipulated by miners. This issue appears in the auditing result.",
+        "Impact": "Miners could potentially influence timing to approve changes earlier than intended, though the impact is limited due to the need for owner privileges.",
+        "Location": "DFSRegistry.approveContractChange and approveWaitPeriodChange functions; Static analysis: timestamp detector"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-01T00:20:55.649781",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "session_id": "ff206651-4e32-4a03-8c2f-27e660a7bd28",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-50kw92f7/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.7.6"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 406.10742831230164,
+        "total_tasks": 0
+      },
+      "execution_time": 406.10742831230164,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. TokenUtils.pullTokensIfNeeded uses an arbitrary 'from' address in transferFrom without proper authorization checks, potentially allowing unauthorized token transfers.",
+          "Impact": "An attacker could exploit this to transfer tokens from any address to the contract, leading to loss of user funds.",
+          "Issue": "Potential Arbitrary ERC20 TransferFrom",
+          "Location": "TokenUtils.pullTokensIfNeeded, line with IERC20(_token).safeTransferFrom(_from, address(this), _amount); Static analysis: arbitrary-send-erc20 detector",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue is identified in the static analysis results. The IWETH interface has an incorrect ERC20 function signature for approve, which could cause integration issues or failures in token interactions. This issue appears in the auditing result.",
+          "Impact": "Contracts relying on the standard ERC20 interface may fail to interact correctly with WETH, potentially breaking functionality.",
+          "Issue": "Incorrect ERC20 Interface Implementation",
+          "Location": "IWETH interface, approve function; Static analysis: erc20-interface detector",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue is present in both the code and static analysis. AdminVault.changeOwner and changeAdmin functions lack zero address checks, which could accidentally set critical admin/owner roles to an invalid address. This issue appears in the auditing result.",
+          "Impact": "If set to zero, the admin or owner functions become irrecoverable, potentially locking the contract.",
+          "Issue": "Missing Zero Address Check in Ownership Transfer",
+          "Location": "AdminVault.changeOwner and changeAdmin functions; Static analysis: missing-zero-check detector",
+          "Severity": "Low"
+        },
+        {
+          "Description": "This issue is found in both the code and static analysis. AdminAuth.withdrawStuckFunds does not validate the receiver address, risking funds being sent to address(0) if called erroneously. This issue appears in the auditing result.",
+          "Impact": "Potential loss of funds if withdrawStuckFunds is called with a zero address receiver.",
+          "Issue": "Missing Zero Address Check in Fund Withdrawal",
+          "Location": "AdminAuth.withdrawStuckFunds function; Static analysis: missing-zero-check detector",
+          "Severity": "Low"
+        },
+        {
+          "Description": "This issue is identified in the static analysis results. DFSRegistry uses block.timestamp for wait period checks in approveContractChange and approveWaitPeriodChange, which can be manipulated by miners. This issue appears in the auditing result.",
+          "Impact": "Miners could potentially influence timing to approve changes earlier than intended, though the impact is limited due to the need for owner privileges.",
+          "Issue": "Timestamp Dependency in Contract Change Approval",
+          "Location": "DFSRegistry.approveContractChange and approveWaitPeriodChange functions; Static analysis: timestamp detector",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. TokenUtils.pullTokensIfNeeded uses an arbitrary 'from' address in transferFrom without proper authorization checks, potentially allowing unauthorized token transfers.",
+          "Impact": "An attacker could exploit this to transfer tokens from any address to the contract, leading to loss of user funds.",
+          "Issue": "Potential Arbitrary ERC20 TransferFrom",
+          "Location": "TokenUtils.pullTokensIfNeeded, line with IERC20(_token).safeTransferFrom(_from, address(this), _amount); Static analysis: arbitrary-send-erc20 detector",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Potential Arbitrary ERC20 TransferFrom\",\n    \"Severity\": \"High\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. TokenUtils.pullTokensIfNeeded uses an arbitrary 'from' address in transferFrom without proper authorization checks, potentially allowing unauthorized token transfers.\",\n    \"Impact\": \"An attacker could exploit this to transfer tokens from any address to the contract, leading to loss of user funds.\",\n    \"Location\": \"TokenUtils.pullTokensIfNeeded, line with IERC20(_token).safeTransferFrom(_from, address(this), _amount); Static analysis: arbitrary-send-erc20 detector\"\n  },\n  {\n    \"Issue\": \"Incorrect ERC20 Interface Implementation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"This issue is identified in the static analysis results. The IWETH interface has an incorrect ERC20 function signature for approve, which could cause integration issues or failures in token interactions.\",\n    \"Impact\": \"Contracts relying on the standard ERC20 interface may fail to interact correctly with WETH, potentially breaking functionality.\",\n    \"Location\": \"IWETH interface, approve function; Static analysis: erc20-interface detector\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Check in Ownership Transfer\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue is present in both the code and static analysis. AdminVault.changeOwner and changeAdmin functions lack zero address checks, which could accidentally set critical admin/owner roles to an invalid address.\",\n    \"Impact\": \"If set to zero, the admin or owner functions become irrecoverable, potentially locking the contract.\",\n    \"Location\": \"AdminVault.changeOwner and changeAdmin functions; Static analysis: missing-zero-check detector\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Check in Fund Withdrawal\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue is found in both the code and static analysis. AdminAuth.withdrawStuckFunds does not validate the receiver address, risking funds being sent to address(0) if called erroneously.\",\n    \"Impact\": \"Potential loss of funds if withdrawStuckFunds is called with a zero address receiver.\",\n    \"Location\": \"AdminAuth.withdrawStuckFunds function; Static analysis: missing-zero-check detector\"\n  },\n  {\n    \"Issue\": \"Timestamp Dependency in Contract Change Approval\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue is identified in the static analysis results. DFSRegistry uses block.timestamp for wait period checks in approveContractChange and approveWaitPeriodChange, which can be manipulated by miners.\",\n    \"Impact\": \"Miners could potentially influence timing to approve changes earlier than intended, though the impact is limited due to the need for owner privileges.\",\n    \"Location\": \"DFSRegistry.approveContractChange and approveWaitPeriodChange functions; Static analysis: timestamp detector\"\n  }\n]",
+      "model_used": "deepseek",
+      "session_id": "ff206651-4e32-4a03-8c2f-27e660a7bd28",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 3,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-105"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 2.5,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [
+          "re:arbitrary-send"
+        ],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-105(2.5)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-105"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-105"
+    ],
+    "pred_swc_list": "SWC-105",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-105 is justified as the contract uses transferFrom with an arbitrary 'from' address without authorization, allowing unauthorized token transfers. This directly matches the unprotected call to an external contract pattern described in SWC-105. Evidence: TokenUtils.pullTokensIfNeeded calls IERC20(_token).safeTransferFrom(_from, address(this), _amount) without access control.; Static analysis detected arbitrary-send-erc20 vulnerability confirming unauthorized transfer risk.; Impact confirms potential loss of user funds if exploited by an attacker.",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 2.5, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"TokenUtils.pullTokensIfNeeded calls IERC20(_token).safeTransferFrom(_from, address(this), _amount) without access control.\", \"Static analysis detected arbitrary-send-erc20 vulnerability confirming unauthorized transfer risk.\", \"Impact confirms potential loss of user funds if exploited by an attacker.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-105 is justified as the contract uses transferFrom with an arbitrary 'from' address without authorization, allowing unauthorized token transfers. This directly matches the unprotected call to an external contract pattern described in SWC-105.\\\",\\n  \\\"evidence\\\": [\\n    \\\"TokenUtils.pullTokensIfNeeded calls IERC20(_token).safeTransferFrom(_from, address(this), _amount) without access control.\\\",\\n    \\\"Static analysis detected arbitrary-send-erc20 vulnerability confirming unauthorized transfer risk.\\\",\\n    \\\"Impact confirms potential loss of user funds if exploited by an attacker.\\\"\\n  ]\\n}\", \"reason\": \"SWC-105 is justified as the contract uses transferFrom with an arbitrary 'from' address without authorization, allowing unauthorized token transfers. This directly matches the unprotected call to an external contract pattern described in SWC-105.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-105 is justified as the contract uses transferFrom with an arbitrary 'from' address without authorization, allowing unauthorized token transfers. This directly matches the unprotected call to an external contract pattern described in SWC-105.",
+      "evidence": [
+        "TokenUtils.pullTokensIfNeeded calls IERC20(_token).safeTransferFrom(_from, address(this), _amount) without access control.",
+        "Static analysis detected arbitrary-send-erc20 vulnerability confirming unauthorized transfer risk.",
+        "Impact confirms potential loss of user funds if exploited by an attacker."
+      ],
+      "raw": "{\n  \"reason\": \"SWC-105 is justified as the contract uses transferFrom with an arbitrary 'from' address without authorization, allowing unauthorized token transfers. This directly matches the unprotected call to an external contract pattern described in SWC-105.\",\n  \"evidence\": [\n    \"TokenUtils.pullTokensIfNeeded calls IERC20(_token).safeTransferFrom(_from, address(this), _amount) without access control.\",\n    \"Static analysis detected arbitrary-send-erc20 vulnerability confirming unauthorized transfer risk.\",\n    \"Impact confirms potential loss of user funds if exploited by an attacker.\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "ff206651-4e32-4a03-8c2f-27e660a7bd28",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 2914,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

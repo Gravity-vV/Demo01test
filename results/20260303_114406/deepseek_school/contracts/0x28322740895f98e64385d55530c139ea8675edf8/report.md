@@ -1,0 +1,1 @@
+Report generation failed: All AI models failed. Last error: Deepseek_School model call attempt failed: Deepseek_School API call failed after 240.97s: Deepseek_School streaming exceeded max_total_timeout=240s

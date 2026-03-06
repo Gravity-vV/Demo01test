@@ -1,0 +1,325 @@
+{
+  "address": "0x29284a5e61e0ef797e1db54596e3c57e4d940c9b",
+  "session_id": "ee0d857d-29e2-42bc-a3ba-c40d6f00bca9",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract exhibits multiple reentrancy vulnerabilities in unStake and safeWithdraw functions, directly aligning with SWC-107. Additionally, arithmetic operations in reward calculations contain underflow/overflow risks despite SafeMath usage, corresponding to SWC-101. Evidence: unStake violates Checks-Effects-Interactions pattern with external calls before state updates; safeWithdraw and claimRewards paths perform token transfers without reentrancy guards; getOneDayReward and _rewardCalculation contain unmitigated arithmetic overflow/underflow risks",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"unStake violates Checks-Effects-Interactions pattern with external calls before state updates\", \"safeWithdraw and claimRewards paths perform token transfers without reentrancy guards\", \"getOneDayReward and _rewardCalculation contain unmitigated arithmetic overflow/underflow risks\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract exhibits multiple reentrancy vulnerabilities in unStake and safeWithdraw functions, directly aligning with SWC-107. Additionally, arithmetic operations in reward calculations contain underflow/overflow risks despite SafeMath usage, corresponding to SWC-101.\\\",\\n  \\\"evidence\\\": [\\n    \\\"unStake violates Checks-Effects-Interactions pattern with external calls before state updates\\\",\\n    \\\"safeWithdraw and claimRewards paths perform token transfers without reentrancy guards\\\",\\n    \\\"getOneDayReward and _rewardCalculation contain unmitigated arithmetic overflow/underflow risks\\\"\\n  ]\\n}\", \"reason\": \"The contract exhibits multiple reentrancy vulnerabilities in unStake and safeWithdraw functions, directly aligning with SWC-107. Additionally, arithmetic operations in reward calculations contain underflow/overflow risks despite SafeMath usage, corresponding to SWC-101.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1477.014459848404,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x29284a5e61e0ef797e1db54596e3c57e4d940c9b",
+    "model": "deepseek_school",
+    "session_id": "ee0d857d-29e2-42bc-a3ba-c40d6f00bca9",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - Map all external calls (e.g., `IERC20.transfer`, `...",
+        "Severity": "Medium",
+        "Description": "### 1. Issue Analysis Yes, there are multiple issues related to external calls in this contract. The contract makes external calls to ERC20 tokens without proper security measures, which could lead t... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 1: Map all external calls (e.g., `IERC20.transfer`, `IERC20.transferFrom`)."
+      },
+      {
+        "Issue": "High Priority Security Issue - Analyze the `unStake` function to confirm if state...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes, there is a critical violation of the Checks-Effects-Interactions pattern** in the `unStake` function. The function performs external calls (interactions) before completing... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: Analyze the `unStake` function to confirm if state updates (`unstakeStatus`, `totalUnstaking`) occur before or after external calls. Flag any violation of Checks-Effects-Interactions pattern."
+      },
+      {
+        "Issue": "High Priority Security Issue - Analyze the `claimRewards` -> `_rewardCalculation`...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **Yes, there is a critical reentrancy vulnerability** in the `claimRewards` → `_rewardCalculation` → `sendToken` path. The code performs multiple token transfers in a loop witho... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: Analyze the `claimRewards` -> `_rewardCalculation` -> `sendToken` path for reentrancy risks, as it makes multiple transfers in a loop."
+      },
+      {
+        "Issue": "High Priority Security Issue - Assess the `safeWithdraw` function for reentrancy,...",
+        "Severity": "High",
+        "Description": "## Audit Report: Assessment of `safeWithdraw` Function for Reentrancy ### 1. Issue Analysis **Issue Identified: Yes** The `safeWithdraw` function in the provided contract is vulnerable to reentranc... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: Assess the `safeWithdraw` function for reentrancy, though it is `onlyOwner`."
+      },
+      {
+        "Issue": "High Priority Security Issue - Recommend and evaluate the need for reentrancy gua...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Reentrancy Guard Assessment for `unStake` and `safeWithdraw` ### 1. Issue Analysis **Yes, there is a critical reentrancy vulnerability in the `unStake` function.** The function per... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: Recommend and evaluate the need for reentrancy guards (e.g., OpenZeppelin's `ReentrancyGuard`) on `unStake` and `safeWithdraw`."
+      },
+      {
+        "Issue": "High Priority Security Issue - Review all arithmetic operations (especially in `g...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **Yes**, there are critical arithmetic overflow/underflow vulnerabilities in the `getOneDayReward` and `_rewardCalculation` functions, notwithstanding the use of SafeMath. Whil... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: Review all arithmetic operations (especially in `getOneDayReward`, `_rewardCalculation`) for potential overflows/underflows, notwithstanding the use of SafeMath."
+      },
+      {
+        "Issue": "High Priority Security Issue - Verify that `intervalLength` and `UniV1.intervalDa...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified a **critical vulnerability** related to the specific audit task of preventing underflow in the `balDays` calculation. ## 1.... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: Verify that `intervalLength` and `UniV1.intervalDays(i)` cannot be manipulated to cause an underflow in calculations like `balDays = noOfDays.sub((UniV1.intervalDays(i).sub(1)));`."
+      },
+      {
+        "Issue": "High Priority Security Issue - Confirm that `totalStaking1` calculation (`UniV1.t...",
+        "Severity": "High",
+        "Description": "## Detailed Security Audit Findings ### 1. Issue Analysis **Issue Found: Yes** The `totalStaking1` calculation in the `unStake` function contains a potential underflow vulnerability. The calculatio... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: Confirm that `totalStaking1` calculation (`UniV1.totalStaking(...).sub(totalUnstaking[...])`) cannot underflow."
+      },
+      {
+        "Issue": "High Priority Security Issue - Identify any missing access controls. For example,...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **Yes, there is a critical issue related to missing access controls in the `updateIntervalLength` function.** The `updateIntervalLength` function currently only has the `onlyOw... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: Identify any missing access controls. For example, should `updateIntervalLength` have a timelock or stricter constraints?"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Confirm that all critical functions (`init`, `upda...",
+        "Severity": "High",
+        "Description": "**Audit Findings: Access Control Verification for Critical Functions** **1. Issue Analysis** Yes, there is a critical access control issue identified in this audit. The `transferOwnership` function i... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: Confirm that all critical functions (`init`, `updateIntervalLength`, `safeWithdraw`, `transferOwnership`) are correctly protected by `onlyOwner`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Assess the risk of the `safeWithdraw` function, wh...",
+        "Severity": "High",
+        "Description": "## Audit Findings: `safeWithdraw` Function Risk Assessment ### 1. Issue Analysis **Yes, there is a significant issue related to this audit task.** The `safeWithdraw` function allows the contract owne... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: Assess the risk of the `safeWithdraw` function, which allows the owner to withdraw *any* ERC20 token. Evaluate the need for a token whitelist."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Analyze if any user-facing function (`unStake`) is...",
+        "Severity": "Medium",
+        "Description": "## Detailed Security Audit Findings: Front-running Analysis for `unStake` Function ### 1. Issue Analysis **Yes, the `unStake` function is susceptible to front-running attacks**, specifically reward ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 12: Analyze if any user-facing function (`unStake`) is susceptible to front-running attacks (e.g., reward manipulation), though risk is deemed lower in this migration contract."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T07:48:54.064871",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "ee0d857d-29e2-42bc-a3ba-c40d6f00bca9",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0",
+            "0.8.0",
+            "0.7.4"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.7.6/solc-0.7.6 --version' running '/Users/hh/.solc-select/artifacts/solc-0.7.6/solc-0.7.6 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation war",
+          "status": "failed"
+        },
+        "total_execution_time": 1477.014459848404,
+        "total_tasks": 12
+      },
+      "execution_time": 1477.014459848404,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "### 1. Issue Analysis\n\nYes, there are multiple issues related to external calls in this contract. The contract makes external calls to ERC20 tokens without proper security measures, which could lead t... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Map all external calls (e.g., `IERC20.transfer`, `...",
+          "Location": "Task 1: Map all external calls (e.g., `IERC20.transfer`, `IERC20.transferFrom`).",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there is a critical violation of the Checks-Effects-Interactions pattern** in the `unStake` function. The function performs external calls (interactions) before completing... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Analyze the `unStake` function to confirm if state...",
+          "Location": "Task 2: Analyze the `unStake` function to confirm if state updates (`unstakeStatus`, `totalUnstaking`) occur before or after external calls. Flag any violation of Checks-Effects-Interactions pattern.",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n\n**Yes, there is a critical reentrancy vulnerability** in the `claimRewards` → `_rewardCalculation` → `sendToken` path. The code performs multiple token transfers in a loop witho... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Analyze the `claimRewards` -> `_rewardCalculation`...",
+          "Location": "Task 3: Analyze the `claimRewards` -> `_rewardCalculation` -> `sendToken` path for reentrancy risks, as it makes multiple transfers in a loop.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Assessment of `safeWithdraw` Function for Reentrancy\n\n### 1. Issue Analysis\n**Issue Identified: Yes**  \nThe `safeWithdraw` function in the provided contract is vulnerable to reentranc... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Assess the `safeWithdraw` function for reentrancy,...",
+          "Location": "Task 4: Assess the `safeWithdraw` function for reentrancy, though it is `onlyOwner`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Reentrancy Guard Assessment for `unStake` and `safeWithdraw`\n\n### 1. Issue Analysis\n**Yes, there is a critical reentrancy vulnerability in the `unStake` function.** The function per... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Recommend and evaluate the need for reentrancy gua...",
+          "Location": "Task 5: Recommend and evaluate the need for reentrancy guards (e.g., OpenZeppelin's `ReentrancyGuard`) on `unStake` and `safeWithdraw`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis  \n**Yes**, there are critical arithmetic overflow/underflow vulnerabilities in the `getOneDayReward` and `_rewardCalculation` functions, notwithstanding the use of SafeMath. Whil... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Review all arithmetic operations (especially in `g...",
+          "Location": "Task 6: Review all arithmetic operations (especially in `getOneDayReward`, `_rewardCalculation`) for potential overflows/underflows, notwithstanding the use of SafeMath.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified a **critical vulnerability** related to the specific audit task of preventing underflow in the `balDays` calculation.\n\n## 1.... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Verify that `intervalLength` and `UniV1.intervalDa...",
+          "Location": "Task 7: Verify that `intervalLength` and `UniV1.intervalDays(i)` cannot be manipulated to cause an underflow in calculations like `balDays = noOfDays.sub((UniV1.intervalDays(i).sub(1)));`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Detailed Security Audit Findings\n\n### 1. Issue Analysis\n\n**Issue Found: Yes**\n\nThe `totalStaking1` calculation in the `unStake` function contains a potential underflow vulnerability. The calculatio... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Confirm that `totalStaking1` calculation (`UniV1.t...",
+          "Location": "Task 8: Confirm that `totalStaking1` calculation (`UniV1.totalStaking(...).sub(totalUnstaking[...])`) cannot underflow.",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n\n**Yes, there is a critical issue related to missing access controls in the `updateIntervalLength` function.**\n\nThe `updateIntervalLength` function currently only has the `onlyOw... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Identify any missing access controls. For example,...",
+          "Location": "Task 10: Identify any missing access controls. For example, should `updateIntervalLength` have a timelock or stricter constraints?",
+          "Severity": "High"
+        },
+        {
+          "Description": "**Audit Findings: Access Control Verification for Critical Functions**\n\n**1. Issue Analysis**\nYes, there is a critical access control issue identified in this audit. The `transferOwnership` function i... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Confirm that all critical functions (`init`, `upda...",
+          "Location": "Task 9: Confirm that all critical functions (`init`, `updateIntervalLength`, `safeWithdraw`, `transferOwnership`) are correctly protected by `onlyOwner`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: `safeWithdraw` Function Risk Assessment\n\n### 1. Issue Analysis\n**Yes, there is a significant issue related to this audit task.** The `safeWithdraw` function allows the contract owne... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Assess the risk of the `safeWithdraw` function, wh...",
+          "Location": "Task 11: Assess the risk of the `safeWithdraw` function, which allows the owner to withdraw *any* ERC20 token. Evaluate the need for a token whitelist.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Detailed Security Audit Findings: Front-running Analysis for `unStake` Function\n\n### 1. Issue Analysis\n\n**Yes, the `unStake` function is susceptible to front-running attacks**, specifically reward ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Analyze if any user-facing function (`unStake`) is...",
+          "Location": "Task 12: Analyze if any user-facing function (`unStake`) is susceptible to front-running attacks (e.g., reward manipulation), though risk is deemed lower in this migration contract.",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "### 1. Issue Analysis\n\nYes, there are multiple issues related to external calls in this contract. The contract makes external calls to ERC20 tokens without proper security measures, which could lead t... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Map all external calls (e.g., `IERC20.transfer`, `...",
+          "Location": "Task 1: Map all external calls (e.g., `IERC20.transfer`, `IERC20.transferFrom`).",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "ee0d857d-29e2-42bc-a3ba-c40d6f00bca9",
+      "severity_breakdown": {
+        "High": 10,
+        "Low": 0,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract exhibits multiple reentrancy vulnerabilities in unStake and safeWithdraw functions, directly aligning with SWC-107. Additionally, arithmetic operations in reward calculations contain underflow/overflow risks despite SafeMath usage, corresponding to SWC-101. Evidence: unStake violates Checks-Effects-Interactions pattern with external calls before state updates; safeWithdraw and claimRewards paths perform token transfers without reentrancy guards; getOneDayReward and _rewardCalculation contain unmitigated arithmetic overflow/underflow risks",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"unStake violates Checks-Effects-Interactions pattern with external calls before state updates\", \"safeWithdraw and claimRewards paths perform token transfers without reentrancy guards\", \"getOneDayReward and _rewardCalculation contain unmitigated arithmetic overflow/underflow risks\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract exhibits multiple reentrancy vulnerabilities in unStake and safeWithdraw functions, directly aligning with SWC-107. Additionally, arithmetic operations in reward calculations contain underflow/overflow risks despite SafeMath usage, corresponding to SWC-101.\\\",\\n  \\\"evidence\\\": [\\n    \\\"unStake violates Checks-Effects-Interactions pattern with external calls before state updates\\\",\\n    \\\"safeWithdraw and claimRewards paths perform token transfers without reentrancy guards\\\",\\n    \\\"getOneDayReward and _rewardCalculation contain unmitigated arithmetic overflow/underflow risks\\\"\\n  ]\\n}\", \"reason\": \"The contract exhibits multiple reentrancy vulnerabilities in unStake and safeWithdraw functions, directly aligning with SWC-107. Additionally, arithmetic operations in reward calculations contain underflow/overflow risks despite SafeMath usage, corresponding to SWC-101.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract exhibits multiple reentrancy vulnerabilities in unStake and safeWithdraw functions, directly aligning with SWC-107. Additionally, arithmetic operations in reward calculations contain underflow/overflow risks despite SafeMath usage, corresponding to SWC-101.",
+      "evidence": [
+        "unStake violates Checks-Effects-Interactions pattern with external calls before state updates",
+        "safeWithdraw and claimRewards paths perform token transfers without reentrancy guards",
+        "getOneDayReward and _rewardCalculation contain unmitigated arithmetic overflow/underflow risks"
+      ],
+      "raw": "{\n  \"reason\": \"The contract exhibits multiple reentrancy vulnerabilities in unStake and safeWithdraw functions, directly aligning with SWC-107. Additionally, arithmetic operations in reward calculations contain underflow/overflow risks despite SafeMath usage, corresponding to SWC-101.\",\n  \"evidence\": [\n    \"unStake violates Checks-Effects-Interactions pattern with external calls before state updates\",\n    \"safeWithdraw and claimRewards paths perform token transfers without reentrancy guards\",\n    \"getOneDayReward and _rewardCalculation contain unmitigated arithmetic overflow/underflow risks\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "ee0d857d-29e2-42bc-a3ba-c40d6f00bca9",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

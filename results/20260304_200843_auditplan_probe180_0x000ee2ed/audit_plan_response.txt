@@ -1,0 +1,121 @@
+Of course. Based on the provided initial analysis and smart contract code, here is a comprehensive and systematic audit plan.
+
+---
+
+### **HamtaroReloaded Smart Contract Audit Plan**
+
+**Objective:** To systematically identify and document security vulnerabilities, validate business logic, optimize gas usage, ensure standards compliance, and define critical test scenarios for the HamtaroReloaded smart contract.
+
+---
+
+### **1. Security Vulnerability Assessment**
+
+**1.1. Reentrancy Analysis**
+    1.1.1. Trace all external calls (`.call{value}()`) made by the contract. Confirm the `Address.functionCallWithValue` is only used in the library and not invoked by the main contract.
+    1.1.2. Verify that the `_transfer` and `_approve` functions follow the Checks-Effects-Interactions pattern. Since they perform no external calls, mark this as low risk.
+    1.1.3. Ensure no state changes occur after any potential external call in inherited or library functions.
+
+**1.2. Integer Overflow/Underflow Analysis**
+    1.2.1. Confirm that all arithmetic operations (`.add`, `.sub`, `.mul`, `.div`) are protected by SafeMath library calls.
+    1.2.2. Pay specific attention to `transferFrom`; verify `_allowances[sender][_call()].sub(amount)` cannot underflow if `amount > allowance`.
+    1.2.3. Assess the `increaseAllowance` function for potential overflow when minting new tokens, though it is owner-controlled.
+
+**1.3. Access Control Issues**
+    1.3.1. **CRITICAL:** Validate that the `onlyOwner` modifier is correctly applied to all privileged functions: `increaseAllowance`, `decreaseAllowance`, `Approve`, `setrouteChain`.
+    1.3.2. **CRITICAL:** Analyze the `caller` and `router` privilege system. Test if a user can be both the `caller` and the `router` to bypass the `rTotal` transfer restriction.
+    1.3.3. Verify that the `renounceOwnership` function successfully sets the owner to the zero address and cannot be called again.
+    1.3.4. Check for any functions that should be restricted but are not (e.g., a public function that should be `onlyOwner`).
+
+**1.4. Front-running Vulnerabilities**
+    1.4.1. Evaluate the `approve` function for the standard ERC-20 race condition. Recommend implementing `increaseAllowance`/`decreaseAllowance` patterns for users (distinct from the owner's minting function).
+    1.4.2. Assess if the `rTotal` threshold change via `decreaseAllowance` could be front-run by a large, pending transfer.
+
+**1.5. Timestamp Dependence**
+    1.5.1. Confirm the contract logic does not use `block.timestamp` for critical logic or randomness, as it does not.
+
+**1.6. Gas Limit and Loops**
+    1.6.1. Identify any loops that iterate over dynamically-sized data structures. This contract has no loops, so this risk is null.
+
+**1.7. Unchecked External Calls**
+    1.7.1. Review the `Address` library's `functionCallWithValue` for proper error handling via the `require(success...)` statement. Confirm it is robust.
+    1.7.2. Note that the main contract currently makes no external calls, but the presence of a `router` address suggests future intent. Flag this for future review if the contract is upgraded.
+
+---
+
+### **2. Business Logic Validation**
+
+**2.1. Function Logic Correctness**
+    2.1.1. **CRITICAL:** Test `increaseAllowance`: Verify it mints new tokens to the owner's balance and increases `_totalTokens` correctly.
+    2.1.2. **CRITICAL:** Test `_transfer` restriction logic: For a transfer where `recipient == router` and `sender != caller`, assert it fails if `amount >= rTotal`.
+    2.1.3. Test `transferFrom`: Ensure it correctly deducts the allowance from the message sender (`_call()`) and not the `recipient`.
+    2.1.4. Test `decreaseAllowance`: Verify it updates the `rTotal` threshold as expected (in wei).
+
+**2.2. State Transition Validation**
+    2.2.1. Map all state variables (`_router`, `_allowances`, `router`, `caller`, `_totalTokens`, `rTotal`) and every function that changes them. Create a matrix to ensure no invalid state transitions are possible.
+    2.2.2. Verify that the total supply (`_totalTokens`) is always >= the sum of all balances.
+
+**2.3. Edge Case Handling**
+    2.3.1. Test transfers of zero value. Ensure they are handled without error and emit a `Transfer` event.
+    2.3.2. Test transferring to the zero address. The `require(recipient != address(0))` should prevent this.
+    2.3.3. Test transferring from the zero address. The `require(sender != address(0))` should prevent this.
+    2.3.4. Test approving the zero address. The `require(spender != address(0))` should prevent this.
+    2.3.5. Test the scenario where the owner renounces ownership and then attempts to call a privileged function. It must fail.
+
+**2.4. Input Validation Completeness**
+    2.4.1. Confirm all address parameters in public/external functions are checked against `address(0)`.
+    2.4.2. Verify that the `setrouteChain` and `Approve` functions validate their input addresses are not zero.
+
+---
+
+### **3. Gas Optimization Analysis**
+
+**3.1. Expensive Operations Identification**
+    3.1.1. Identify repeated reads of the same storage slot (e.g., `_router[_call()]` in `increaseAllowance`). Recommend using a local variable in memory to cache the value.
+    3.1.2. Replace the `decimals()` function call (a storage read) with a public constant variable (e.g., `uint8 public constant decimals = 18;`) to save gas.
+
+**3.2. Storage vs Memory Usage**
+    3.2.1. In the `transferFrom` function, the allowance is read from storage twice. Optimize by reading it into a memory variable once, subtracting the amount, and then storing the new value.
+
+**3.3. Loop Optimization Opportunities**
+    3.3.1. Not applicable. No loops present.
+
+**3.4. Function Visibility Optimization**
+    3.4.1. Change the visibility of the `_transfer` and `_approve` functions from `internal` to `private`, as they are not designed to be called by inherited contracts.
+
+---
+
+### **4. Standards Compliance**
+
+**4.1. ERC-20 Implementation Correctness**
+    4.1.1. Verify the contract correctly implements all required IERC20 functions: `totalSupply`, `balanceOf`, `transfer`, `allowance`, `approve`, `transferFrom`.
+    4.1.2. Ensure the `Transfer` and `Approval` events are emitted in all the required places and with the correct parameters.
+    4.1.3. **CRITICAL:** The `transfer` and `transferFrom` functions must return a boolean `true` on success, which they do.
+
+**4.2. Interface Compliance**
+    4.2.1. Compile the contract and ensure it does not violate the IERC20 interface by missing functions or having incorrect signatures.
+
+**4.3. Event Emission Standards**
+    4.3.1. Verify that the `Transfer` event is emitted with `address(0)` as the `from` parameter during the initial mint in the constructor.
+    4.3.2. Verify that the `Approval` event is emitted every time an allowance is set via `approve`.
+
+---
+
+### **5. Specific Test Scenarios**
+
+**5.1. Critical Function Testing**
+    5.1.1. **Minting Attack:** Simulate the owner calling `increaseAllowance` to arbitrarily inflate the supply and drain value from holders.
+    5.1.2. **Restriction Bypass:** Simulate the owner setting the `caller` address to the `router` address, then test if a transfer to the `router` bypasses the `rTotal` check.
+    5.1.3. **Ownership Renouncement:** Test all privileged functions after `renounceOwnership` is called to confirm they are permanently locked.
+
+**5.2. Attack Vector Simulations**
+    5.2.1. **Malicious Router:** Simulate the owner being tricked into setting a malicious `router` address. Analyze what an attacker could do (e.g., the contract itself could become unable to sell tokens if `router` is wrong).
+    5.2.2. **Allowance Race:** Simulate a user approving a spender, then having the owner change the `rTotal` threshold before the spender can execute `transferFrom`, potentially causing it to fail.
+
+**5.3. Boundary Condition Tests**
+    5.3.1. Test transferring the entire balance of an account (`amount = balanceOf(sender)`).
+    5.3.2. Test transferring the maximum amount allowed by `rTotal - 1` and the forbidden amount `rTotal` to the `router`.
+    5.3.3. Test setting an allowance to `uint256.max` and using `transferFrom`.
+
+**5.4. Integration Testing Points**
+    5.4.1. **DEX Integration:** If `router` is set to a Uniswap V2 router address, write tests that simulate a user swapping tokens on a DEX. Ensure the 2% burn on sales (transfer to router) logic works and does not revert, causing failed transactions.
+    5.4.2. **Wallet Integration:** Test compatibility with major wallets (MetaMask, Trust Wallet) by ensuring approval and transfer functions work as expected and return booleans.

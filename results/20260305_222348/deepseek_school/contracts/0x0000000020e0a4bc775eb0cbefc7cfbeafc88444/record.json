@@ -1,0 +1,112 @@
+{
+  "address": "0x0000000020e0a4bc775eb0cbefc7cfbeafc88444",
+  "session_id": "529ea242-2a14-4322-95bb-a60c16fcf561",
+  "audit_status": "timeout",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "llm",
+  "pred_reason": "The contract explicitly states in its source code comments that it does not verify block nonce/mixDigest validity, relying instead on trust in the pool operator. This creates an Unprotected Ether Withdrawal vulnerability as funds can be claimed without proper validation of the work proof. Evidence: Source comment: 'This contract !DOES NOT VERIFY! that block nonce / mixDigest is valid'; submitClaim function processes payments without validating blockNonce/mixDigest against actual PoW requirements; Ether transfers occur based solely on signature verification without proof-of-work validation",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 0.8, \"labels\": [\"SWC-105\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-105\\\"],\\n  \\\"confidence\\\": 0.8,\\n  \\\"reason\\\": \\\"Withdraw function transfers ether without access control beyond lock period, potentially allowing unauthorized withdrawals if lock bypassed\\\"\\n}\", \"reason\": \"Withdraw function transfers ether without access control beyond lock period, potentially allowing unauthorized withdrawals if lock bypassed\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"Source comment: 'This contract !DOES NOT VERIFY! that block nonce / mixDigest is valid'\", \"submitClaim function processes payments without validating blockNonce/mixDigest against actual PoW requirements\", \"Ether transfers occur based solely on signature verification without proof-of-work validation\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract explicitly states in its source code comments that it does not verify block nonce/mixDigest validity, relying instead on trust in the pool operator. This creates an Unprotected Ether Withdrawal vulnerability as funds can be claimed without proper validation of the work proof.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Source comment: 'This contract !DOES NOT VERIFY! that block nonce / mixDigest is valid'\\\",\\n    \\\"submitClaim function processes payments without validating blockNonce/mixDigest against actual PoW requirements\\\",\\n    \\\"Ether transfers occur based solely on signature verification without proof-of-work validation\\\"\\n  ]\\n}\", \"reason\": \"The contract explicitly states in its source code comments that it does not verify block nonce/mixDigest validity, relying instead on trust in the pool operator. This creates an Unprotected Ether Withdrawal vulnerability as funds can be claimed without proper validation of the work proof.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "rag_used": 0,
+  "rag_enabled": 0,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.0,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 0,
+  "execution_time": "",
+  "gt_swc_set": "SWC-101|SWC-105",
+  "error": "Session status polling timeout after 800s (session_id=529ea242-2a14-4322-95bb-a60c16fcf561)",
+  "raw": {
+    "address": "0x0000000020e0a4bc775eb0cbefc7cfbeafc88444",
+    "model": "deepseek_school",
+    "session_id": "529ea242-2a14-4322-95bb-a60c16fcf561",
+    "audit_status": "timeout",
+    "error": "Session status polling timeout after 800s (session_id=529ea242-2a14-4322-95bb-a60c16fcf561)",
+    "findings": [],
+    "result_payload": {},
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [
+        "SWC-105"
+      ],
+      "source": "llm",
+      "confidence": 0.8,
+      "reason": "Withdraw function transfers ether without access control beyond lock period, potentially allowing unauthorized withdrawals if lock bypassed",
+      "raw": "{\n  \"labels\": [\"SWC-105\"],\n  \"confidence\": 0.8,\n  \"reason\": \"Withdraw function transfers ether without access control beyond lock period, potentially allowing unauthorized withdrawals if lock bypassed\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [
+      "SWC-105"
+    ],
+    "pred_labels": [
+      "SWC-105"
+    ],
+    "pred_swc_list": "SWC-105",
+    "pred_source": "llm",
+    "is_other": 0,
+    "pred_reason": "The contract explicitly states in its source code comments that it does not verify block nonce/mixDigest validity, relying instead on trust in the pool operator. This creates an Unprotected Ether Withdrawal vulnerability as funds can be claimed without proper validation of the work proof. Evidence: Source comment: 'This contract !DOES NOT VERIFY! that block nonce / mixDigest is valid'; submitClaim function processes payments without validating blockNonce/mixDigest against actual PoW requirements; Ether transfers occur based solely on signature verification without proof-of-work validation",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 0.8, \"labels\": [\"SWC-105\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-105\\\"],\\n  \\\"confidence\\\": 0.8,\\n  \\\"reason\\\": \\\"Withdraw function transfers ether without access control beyond lock period, potentially allowing unauthorized withdrawals if lock bypassed\\\"\\n}\", \"reason\": \"Withdraw function transfers ether without access control beyond lock period, potentially allowing unauthorized withdrawals if lock bypassed\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"Source comment: 'This contract !DOES NOT VERIFY! that block nonce / mixDigest is valid'\", \"submitClaim function processes payments without validating blockNonce/mixDigest against actual PoW requirements\", \"Ether transfers occur based solely on signature verification without proof-of-work validation\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract explicitly states in its source code comments that it does not verify block nonce/mixDigest validity, relying instead on trust in the pool operator. This creates an Unprotected Ether Withdrawal vulnerability as funds can be claimed without proper validation of the work proof.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Source comment: 'This contract !DOES NOT VERIFY! that block nonce / mixDigest is valid'\\\",\\n    \\\"submitClaim function processes payments without validating blockNonce/mixDigest against actual PoW requirements\\\",\\n    \\\"Ether transfers occur based solely on signature verification without proof-of-work validation\\\"\\n  ]\\n}\", \"reason\": \"The contract explicitly states in its source code comments that it does not verify block nonce/mixDigest validity, relying instead on trust in the pool operator. This creates an Unprotected Ether Withdrawal vulnerability as funds can be claimed without proper validation of the work proof.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": false,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.0,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract explicitly states in its source code comments that it does not verify block nonce/mixDigest validity, relying instead on trust in the pool operator. This creates an Unprotected Ether Withdrawal vulnerability as funds can be claimed without proper validation of the work proof.",
+      "evidence": [
+        "Source comment: 'This contract !DOES NOT VERIFY! that block nonce / mixDigest is valid'",
+        "submitClaim function processes payments without validating blockNonce/mixDigest against actual PoW requirements",
+        "Ether transfers occur based solely on signature verification without proof-of-work validation"
+      ],
+      "raw": "{\n  \"reason\": \"The contract explicitly states in its source code comments that it does not verify block nonce/mixDigest validity, relying instead on trust in the pool operator. This creates an Unprotected Ether Withdrawal vulnerability as funds can be claimed without proper validation of the work proof.\",\n  \"evidence\": [\n    \"Source comment: 'This contract !DOES NOT VERIFY! that block nonce / mixDigest is valid'\",\n    \"submitClaim function processes payments without validating blockNonce/mixDigest against actual PoW requirements\",\n    \"Ether transfers occur based solely on signature verification without proof-of-work validation\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "529ea242-2a14-4322-95bb-a60c16fcf561",
+        "audit_status": "timeout",
+        "error": "Session status polling timeout after 800s (session_id=529ea242-2a14-4322-95bb-a60c16fcf561)",
+        "finding_number": 0,
+        "full_report_chars": 0,
+        "empty_report": true
+      }
+    ],
+    "selected_is_empty_report": true,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

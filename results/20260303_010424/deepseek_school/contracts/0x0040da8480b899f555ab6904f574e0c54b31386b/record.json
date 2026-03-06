@@ -1,0 +1,245 @@
+{
+  "address": "0x0040da8480b899f555ab6904f574e0c54b31386b",
+  "session_id": "78415017-e7db-4870-b25b-8bc0f0cd4525",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-101 label is appropriate because the contract's approve() function uses block.timestamp for critical logic with an equality check that blocks approvals almost all the time, violating ERC-20 compliance. This timestamp dependence makes the function unpredictable and miner-influenced, directly matching the integer overflow and underflow category when considering modulo arithmetic implications. Evidence: approve() contains require(now % 10000000 == 0) blocking approvals 99.99999% of time; Static analysis detected weak-prng and incorrect-equality findings in approval logic; Timestamp dependence in critical function violates standard ERC-20 behavior expectations",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"approve() contains require(now % 10000000 == 0) blocking approvals 99.99999% of time\", \"Static analysis detected weak-prng and incorrect-equality findings in approval logic\", \"Timestamp dependence in critical function violates standard ERC-20 behavior expectations\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is appropriate because the contract's approve() function uses block.timestamp for critical logic with an equality check that blocks approvals almost all the time, violating ERC-20 compliance. This timestamp dependence makes the function unpredictable and miner-influenced, directly matching the integer overflow and underflow category when considering modulo arithmetic implications.\\\",\\n  \\\"evidence\\\": [\\n    \\\"approve() contains require(now % 10000000 == 0) blocking approvals 99.99999% of time\\\",\\n    \\\"Static analysis detected weak-prng and incorrect-equality findings in approval logic\\\",\\n    \\\"Timestamp dependence in critical function violates standard ERC-20 behavior expectations\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is appropriate because the contract's approve() function uses block.timestamp for critical logic with an equality check that blocks approvals almost all the time, violating ERC-20 compliance. This timestamp dependence makes the function unpredictable and miner-influenced, directly matching the integer overflow and underflow category when considering modulo arithmetic implications.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3724,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x0040da8480b899f555ab6904f574e0c54b31386b/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 7,
+  "execution_time": 1745.805191040039,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0040da8480b899f555ab6904f574e0c54b31386b",
+    "model": "deepseek_school",
+    "session_id": "78415017-e7db-4870-b25b-8bc0f0cd4525",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Critical approve() function blockage via timestamp condition",
+        "Severity": "High",
+        "Description": "The approve() function contains require(now % 10000000 == 0) which blocks approvals 99.99999% of the time, rendering the token non-ERC20 compliant. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Complete breakdown of ERC-20 functionality, prevents token usage in DeFi protocols, exchanges, and wallets, making token effectively worthless",
+        "Location": "AkitaRyu.approve() function, line ~233; Static analysis: weak-prng and incorrect-equality findings"
+      },
+      {
+        "Issue": "Unsafe arithmetic in decreaseAllowance() without SafeMath",
+        "Severity": "High",
+        "Description": "The decreaseAllowance() function uses direct multiplication (amount * 10**18) without SafeMath protection, potentially causing overflow. This appears in the smart contract code only.",
+        "Impact": "Potential overflow could corrupt rTotal value, breaking transfer restrictions and allowing unintended transfers to router address",
+        "Location": "AkitaRyu.decreaseAllowance() function, line ~246"
+      },
+      {
+        "Issue": "Missing zero-address checks in privileged functions",
+        "Severity": "Medium",
+        "Description": "setrouteChain() and Approve() functions lack zero-address validation for critical address parameters. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Accidental zero-address assignment could brick trading restriction logic, disable caller exemptions, and require contract redeployment if ownership renounced",
+        "Location": "setrouteChain() and Approve() functions; Static analysis: missing-zero-check findings"
+      },
+      {
+        "Issue": "Unlimited minting capability via increaseAllowance()",
+        "Severity": "High",
+        "Description": "Owner can mint unlimited tokens without constraints, allowing complete supply inflation. This appears in the smart contract code only.",
+        "Impact": "Complete devaluation of token through unlimited inflation, undermining token economics and investor confidence",
+        "Location": "AkitaRyu.increaseAllowance() function, line ~230"
+      },
+      {
+        "Issue": "Dangerous caller address privilege bypassing restrictions",
+        "Severity": "High",
+        "Description": "Owner can set caller address to bypass all transfer restrictions to router, enabling unlimited dumping. This appears in the smart contract code only.",
+        "Impact": "Complete circumvention of sale restrictions, potential for unlimited token dumping, undermining token economic security",
+        "Location": "AkitaRyu.Approve() function and _transfer() condition check, lines ~235 and ~285"
+      },
+      {
+        "Issue": "Timestamp dependence in critical approve function",
+        "Severity": "Medium",
+        "Description": "approve() function uses block timestamp for critical logic, making it unpredictable and miner-influenced. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Unreliable approval functionality, potential for miner manipulation, violates standard ERC-20 behavior expectations",
+        "Location": "AkitaRyu.approve() function; Static analysis: timestamp finding"
+      },
+      {
+        "Issue": "Missing event emission for critical state changes",
+        "Severity": "Low",
+        "Description": "decreaseAllowance() function modifies rTotal without emitting events, reducing transparency. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Reduced transparency for token holders, difficulty tracking critical parameter changes",
+        "Location": "AkitaRyu.decreaseAllowance() function; Static analysis: events-maths finding"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T01:33:39.044097",
+      "execution_summary": {
+        "completed_tasks": 11,
+        "failed_tasks": 1,
+        "session_id": "78415017-e7db-4870-b25b-8bc0f0cd4525",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-0nx8xspw/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.9"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1745.805191040039,
+        "total_tasks": 12
+      },
+      "execution_time": 1745.805191040039,
+      "finding_number": 7,
+      "findings": [
+        {
+          "Description": "The approve() function contains require(now % 10000000 == 0) which blocks approvals 99.99999% of the time, rendering the token non-ERC20 compliant. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Complete breakdown of ERC-20 functionality, prevents token usage in DeFi protocols, exchanges, and wallets, making token effectively worthless",
+          "Issue": "Critical approve() function blockage via timestamp condition",
+          "Location": "AkitaRyu.approve() function, line ~233; Static analysis: weak-prng and incorrect-equality findings",
+          "Severity": "High"
+        },
+        {
+          "Description": "The decreaseAllowance() function uses direct multiplication (amount * 10**18) without SafeMath protection, potentially causing overflow. This appears in the smart contract code only.",
+          "Impact": "Potential overflow could corrupt rTotal value, breaking transfer restrictions and allowing unintended transfers to router address",
+          "Issue": "Unsafe arithmetic in decreaseAllowance() without SafeMath",
+          "Location": "AkitaRyu.decreaseAllowance() function, line ~246",
+          "Severity": "High"
+        },
+        {
+          "Description": "setrouteChain() and Approve() functions lack zero-address validation for critical address parameters. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Accidental zero-address assignment could brick trading restriction logic, disable caller exemptions, and require contract redeployment if ownership renounced",
+          "Issue": "Missing zero-address checks in privileged functions",
+          "Location": "setrouteChain() and Approve() functions; Static analysis: missing-zero-check findings",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Owner can mint unlimited tokens without constraints, allowing complete supply inflation. This appears in the smart contract code only.",
+          "Impact": "Complete devaluation of token through unlimited inflation, undermining token economics and investor confidence",
+          "Issue": "Unlimited minting capability via increaseAllowance()",
+          "Location": "AkitaRyu.increaseAllowance() function, line ~230",
+          "Severity": "High"
+        },
+        {
+          "Description": "Owner can set caller address to bypass all transfer restrictions to router, enabling unlimited dumping. This appears in the smart contract code only.",
+          "Impact": "Complete circumvention of sale restrictions, potential for unlimited token dumping, undermining token economic security",
+          "Issue": "Dangerous caller address privilege bypassing restrictions",
+          "Location": "AkitaRyu.Approve() function and _transfer() condition check, lines ~235 and ~285",
+          "Severity": "High"
+        },
+        {
+          "Description": "approve() function uses block timestamp for critical logic, making it unpredictable and miner-influenced. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Unreliable approval functionality, potential for miner manipulation, violates standard ERC-20 behavior expectations",
+          "Issue": "Timestamp dependence in critical approve function",
+          "Location": "AkitaRyu.approve() function; Static analysis: timestamp finding",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "decreaseAllowance() function modifies rTotal without emitting events, reducing transparency. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Reduced transparency for token holders, difficulty tracking critical parameter changes",
+          "Issue": "Missing event emission for critical state changes",
+          "Location": "AkitaRyu.decreaseAllowance() function; Static analysis: events-maths finding",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The approve() function contains require(now % 10000000 == 0) which blocks approvals 99.99999% of the time, rendering the token non-ERC20 compliant. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Complete breakdown of ERC-20 functionality, prevents token usage in DeFi protocols, exchanges, and wallets, making token effectively worthless",
+          "Issue": "Critical approve() function blockage via timestamp condition",
+          "Location": "AkitaRyu.approve() function, line ~233; Static analysis: weak-prng and incorrect-equality findings",
+          "Severity": "High"
+        }
+      },
+      "full_report": "```json\n[\n  {\n    \"Issue\": \"Critical approve() function blockage via timestamp condition\",\n    \"Severity\": \"High\",\n    \"Description\": \"The approve() function contains require(now % 10000000 == 0) which blocks approvals 99.99999% of the time, rendering the token non-ERC20 compliant. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Complete breakdown of ERC-20 functionality, prevents token usage in DeFi protocols, exchanges, and wallets, making token effectively worthless\",\n    \"Location\": \"AkitaRyu.approve() function, line ~233; Static analysis: weak-prng and incorrect-equality findings\"\n  },\n  {\n    \"Issue\": \"Unsafe arithmetic in decreaseAllowance() without SafeMath\",\n    \"Severity\": \"High\",\n    \"Description\": \"The decreaseAllowance() function uses direct multiplication (amount * 10**18) without SafeMath protection, potentially causing overflow. This appears in the smart contract code only.\",\n    \"Impact\": \"Potential overflow could corrupt rTotal value, breaking transfer restrictions and allowing unintended transfers to router address\",\n    \"Location\": \"AkitaRyu.decreaseAllowance() function, line ~246\"\n  },\n  {\n    \"Issue\": \"Missing zero-address checks in privileged functions\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"setrouteChain() and Approve() functions lack zero-address validation for critical address parameters. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Accidental zero-address assignment could brick trading restriction logic, disable caller exemptions, and require contract redeployment if ownership renounced\",\n    \"Location\": \"setrouteChain() and Approve() functions; Static analysis: missing-zero-check findings\"\n  },\n  {\n    \"Issue\": \"Unlimited minting capability via increaseAllowance()\",\n    \"Severity\": \"High\",\n    \"Description\": \"Owner can mint unlimited tokens without constraints, allowing complete supply inflation. This appears in the smart contract code only.\",\n    \"Impact\": \"Complete devaluation of token through unlimited inflation, undermining token economics and investor confidence\",\n    \"Location\": \"AkitaRyu.increaseAllowance() function, line ~230\"\n  },\n  {\n    \"Issue\": \"Dangerous caller address privilege bypassing restrictions\",\n    \"Severity\": \"High\",\n    \"Description\": \"Owner can set caller address to bypass all transfer restrictions to router, enabling unlimited dumping. This appears in the smart contract code only.\",\n    \"Impact\": \"Complete circumvention of sale restrictions, potential for unlimited token dumping, undermining token economic security\",\n    \"Location\": \"AkitaRyu.Approve() function and _transfer() condition check, lines ~235 and ~285\"\n  },\n  {\n    \"Issue\": \"Timestamp dependence in critical approve function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"approve() function uses block timestamp for critical logic, making it unpredictable and miner-influenced. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Unreliable approval functionality, potential for miner manipulation, violates standard ERC-20 behavior expectations\",\n    \"Location\": \"AkitaRyu.approve() function; Static analysis: timestamp finding\"\n  },\n  {\n    \"Issue\": \"Missing event emission for critical state changes\",\n    \"Severity\": \"Low\",\n    \"Description\": \"decreaseAllowance() function modifies rTotal without emitting events, reducing transparency. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Reduced transparency for token holders, difficulty tracking critical parameter changes\",\n    \"Location\": \"AkitaRyu.decreaseAllowance() function; Static analysis: events-maths finding\"\n  }\n]\n```",
+      "model_used": "deepseek_school",
+      "session_id": "78415017-e7db-4870-b25b-8bc0f0cd4525",
+      "severity_breakdown": {
+        "High": 4,
+        "Low": 1,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-101 label is appropriate because the contract's approve() function uses block.timestamp for critical logic with an equality check that blocks approvals almost all the time, violating ERC-20 compliance. This timestamp dependence makes the function unpredictable and miner-influenced, directly matching the integer overflow and underflow category when considering modulo arithmetic implications. Evidence: approve() contains require(now % 10000000 == 0) blocking approvals 99.99999% of time; Static analysis detected weak-prng and incorrect-equality findings in approval logic; Timestamp dependence in critical function violates standard ERC-20 behavior expectations",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"approve() contains require(now % 10000000 == 0) blocking approvals 99.99999% of time\", \"Static analysis detected weak-prng and incorrect-equality findings in approval logic\", \"Timestamp dependence in critical function violates standard ERC-20 behavior expectations\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is appropriate because the contract's approve() function uses block.timestamp for critical logic with an equality check that blocks approvals almost all the time, violating ERC-20 compliance. This timestamp dependence makes the function unpredictable and miner-influenced, directly matching the integer overflow and underflow category when considering modulo arithmetic implications.\\\",\\n  \\\"evidence\\\": [\\n    \\\"approve() contains require(now % 10000000 == 0) blocking approvals 99.99999% of time\\\",\\n    \\\"Static analysis detected weak-prng and incorrect-equality findings in approval logic\\\",\\n    \\\"Timestamp dependence in critical function violates standard ERC-20 behavior expectations\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is appropriate because the contract's approve() function uses block.timestamp for critical logic with an equality check that blocks approvals almost all the time, violating ERC-20 compliance. This timestamp dependence makes the function unpredictable and miner-influenced, directly matching the integer overflow and underflow category when considering modulo arithmetic implications.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-101 label is appropriate because the contract's approve() function uses block.timestamp for critical logic with an equality check that blocks approvals almost all the time, violating ERC-20 compliance. This timestamp dependence makes the function unpredictable and miner-influenced, directly matching the integer overflow and underflow category when considering modulo arithmetic implications.",
+      "evidence": [
+        "approve() contains require(now % 10000000 == 0) blocking approvals 99.99999% of time",
+        "Static analysis detected weak-prng and incorrect-equality findings in approval logic",
+        "Timestamp dependence in critical function violates standard ERC-20 behavior expectations"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-101 label is appropriate because the contract's approve() function uses block.timestamp for critical logic with an equality check that blocks approvals almost all the time, violating ERC-20 compliance. This timestamp dependence makes the function unpredictable and miner-influenced, directly matching the integer overflow and underflow category when considering modulo arithmetic implications.\",\n  \"evidence\": [\n    \"approve() contains require(now % 10000000 == 0) blocking approvals 99.99999% of time\",\n    \"Static analysis detected weak-prng and incorrect-equality findings in approval logic\",\n    \"Timestamp dependence in critical function violates standard ERC-20 behavior expectations\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "78415017-e7db-4870-b25b-8bc0f0cd4525",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 7,
+        "full_report_chars": 3724,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

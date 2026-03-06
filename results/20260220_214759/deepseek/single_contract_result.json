@@ -1,0 +1,197 @@
+{
+  "address": "0x01d2a52708d0d8fc4d639f09a13ae87a2aec4390",
+  "model": "deepseek",
+  "session_id": "842bb891-76c6-4486-a089-d05ec5bc0c9f",
+  "audit_status": "completed",
+  "error": "",
+  "findings": [
+    {
+      "Issue": "Reentrancy vulnerability in fallback function",
+      "Severity": "High",
+      "Description": "The fallback function violates checks-effects-interactions pattern by sending ETH before state updates. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Allows attackers to re-enter the contract and potentially drain ETH or mint unlimited tokens",
+      "Location": "Fallback function (line 104-112)"
+    },
+    {
+      "Issue": "Reentrancy vulnerability in approveAndCall",
+      "Severity": "High",
+      "Description": "The approveAndCall function performs external call after state change. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Could allow manipulation of approvals and state through malicious callback contracts",
+      "Location": "approveAndCall function"
+    },
+    {
+      "Issue": "Unsafe arithmetic operations in token calculations",
+      "Severity": "High",
+      "Description": "Multiplication operations don't use SafeMath and could overflow. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Could lead to incorrect token amounts or arithmetic overflows",
+      "Location": "transfer() function (line 54), burn() function, fallback function"
+    },
+    {
+      "Issue": "Inconsistent decimal handling",
+      "Severity": "Medium",
+      "Description": "Contract inconsistently handles decimal places in different functions. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Could lead to incorrect token accounting and transfer amounts",
+      "Location": "transfer(), burn(), burnFrom() functions"
+    },
+    {
+      "Issue": "Missing return value in _transfer",
+      "Severity": "Medium",
+      "Description": "_transfer function doesn't return boolean as required by ERC-20 standard. This appears in the smart contract code.",
+      "Impact": "Could cause compatibility issues with wallets and other contracts",
+      "Location": "_transfer() function"
+    },
+    {
+      "Issue": "Airdrop function lacks input validation",
+      "Severity": "Medium",
+      "Description": "Airdrop function doesn't verify array lengths match. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Could lead to failed transactions or incorrect airdrops",
+      "Location": "Airdrop() function"
+    },
+    {
+      "Issue": "Incorrect token calculation in fallback",
+      "Severity": "Medium",
+      "Description": "Fallback function doesn't properly account for token decimals. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Will mint incorrect token amounts",
+      "Location": "Fallback function"
+    },
+    {
+      "Issue": "Unprotected destroycontract function",
+      "Severity": "High",
+      "Description": "destroycontract function has no access controls. This appears in the smart contract code.",
+      "Impact": "Anyone could destroy the contract",
+      "Location": "destroycontract() function"
+    }
+  ],
+  "result_payload": {
+    "created_at": "2026-02-20T21:53:31.396609",
+    "execution_summary": {
+      "completed_tasks": 12,
+      "failed_tasks": 0,
+      "session_id": "842bb891-76c6-4486-a089-d05ec5bc0c9f",
+      "total_execution_time": 331.5923159122467,
+      "total_tasks": 12
+    },
+    "execution_time": 331.5923159122467,
+    "finding_number": 8,
+    "findings": [
+      {
+        "Description": "The fallback function violates checks-effects-interactions pattern by sending ETH before state updates. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Allows attackers to re-enter the contract and potentially drain ETH or mint unlimited tokens",
+        "Issue": "Reentrancy vulnerability in fallback function",
+        "Location": "Fallback function (line 104-112)",
+        "Severity": "High"
+      },
+      {
+        "Description": "The approveAndCall function performs external call after state change. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Could allow manipulation of approvals and state through malicious callback contracts",
+        "Issue": "Reentrancy vulnerability in approveAndCall",
+        "Location": "approveAndCall function",
+        "Severity": "High"
+      },
+      {
+        "Description": "Multiplication operations don't use SafeMath and could overflow. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Could lead to incorrect token amounts or arithmetic overflows",
+        "Issue": "Unsafe arithmetic operations in token calculations",
+        "Location": "transfer() function (line 54), burn() function, fallback function",
+        "Severity": "High"
+      },
+      {
+        "Description": "Contract inconsistently handles decimal places in different functions. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Could lead to incorrect token accounting and transfer amounts",
+        "Issue": "Inconsistent decimal handling",
+        "Location": "transfer(), burn(), burnFrom() functions",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "_transfer function doesn't return boolean as required by ERC-20 standard. This appears in the smart contract code.",
+        "Impact": "Could cause compatibility issues with wallets and other contracts",
+        "Issue": "Missing return value in _transfer",
+        "Location": "_transfer() function",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Airdrop function doesn't verify array lengths match. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Could lead to failed transactions or incorrect airdrops",
+        "Issue": "Airdrop function lacks input validation",
+        "Location": "Airdrop() function",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Fallback function doesn't properly account for token decimals. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Will mint incorrect token amounts",
+        "Issue": "Incorrect token calculation in fallback",
+        "Location": "Fallback function",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "destroycontract function has no access controls. This appears in the smart contract code.",
+        "Impact": "Anyone could destroy the contract",
+        "Issue": "Unprotected destroycontract function",
+        "Location": "destroycontract() function",
+        "Severity": "High"
+      }
+    ],
+    "format_validation": {
+      "findings_validated": true,
+      "required_fields": [
+        "Issue",
+        "Severity",
+        "Description",
+        "Impact",
+        "Location"
+      ],
+      "sample_finding": {
+        "Description": "The fallback function violates checks-effects-interactions pattern by sending ETH before state updates. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Allows attackers to re-enter the contract and potentially drain ETH or mint unlimited tokens",
+        "Issue": "Reentrancy vulnerability in fallback function",
+        "Location": "Fallback function (line 104-112)",
+        "Severity": "High"
+      }
+    },
+    "full_report": "```json\n[\n  {\n    \"Issue\": \"Reentrancy vulnerability in fallback function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The fallback function violates checks-effects-interactions pattern by sending ETH before state updates. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Allows attackers to re-enter the contract and potentially drain ETH or mint unlimited tokens\",\n    \"Location\": \"Fallback function (line 104-112)\"\n  },\n  {\n    \"Issue\": \"Reentrancy vulnerability in approveAndCall\",\n    \"Severity\": \"High\",\n    \"Description\": \"The approveAndCall function performs external call after state change. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Could allow manipulation of approvals and state through malicious callback contracts\",\n    \"Location\": \"approveAndCall function\"\n  },\n  {\n    \"Issue\": \"Unsafe arithmetic operations in token calculations\",\n    \"Severity\": \"High\",\n    \"Description\": \"Multiplication operations don't use SafeMath and could overflow. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Could lead to incorrect token amounts or arithmetic overflows\",\n    \"Location\": \"transfer() function (line 54), burn() function, fallback function\"\n  },\n  {\n    \"Issue\": \"Inconsistent decimal handling\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Contract inconsistently handles decimal places in different functions. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Could lead to incorrect token accounting and transfer amounts\",\n    \"Location\": \"transfer(), burn(), burnFrom() functions\"\n  },\n  {\n    \"Issue\": \"Missing return value in _transfer\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"_transfer function doesn't return boolean as required by ERC-20 standard. This appears in the smart contract code.\",\n    \"Impact\": \"Could cause compatibility issues with wallets and other contracts\",\n    \"Location\": \"_transfer() function\"\n  },\n  {\n    \"Issue\": \"Airdrop function lacks input validation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Airdrop function doesn't verify array lengths match. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Could lead to failed transactions or incorrect airdrops\",\n    \"Location\": \"Airdrop() function\"\n  },\n  {\n    \"Issue\": \"Incorrect token calculation in fallback\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Fallback function doesn't properly account for token decimals. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Will mint incorrect token amounts\",\n    \"Location\": \"Fallback function\"\n  },\n  {\n    \"Issue\": \"Unprotected destroycontract function\",\n    \"Severity\": \"High\",\n    \"Description\": \"destroycontract function has no access controls. This appears in the smart contract code.\",\n    \"Impact\": \"Anyone could destroy the contract\",\n    \"Location\": \"destroycontract() function\"\n  }\n]\n```",
+    "model_used": "deepseek",
+    "session_id": "842bb891-76c6-4486-a089-d05ec5bc0c9f",
+    "severity_breakdown": {
+      "High": 4,
+      "Low": 0,
+      "Medium": 4
+    }
+  },
+  "rule_result": {
+    "label": "SWC-107",
+    "source": "rule",
+    "scores": {
+      "SWC-101": 4.0,
+      "SWC-105": 0.0,
+      "SWC-106": 0.0,
+      "SWC-107": 8.0,
+      "SWC-115": 0.0
+    },
+    "matched": {
+      "SWC-101": [
+        "kw:overflow",
+        "re:\\boverflow\\b"
+      ],
+      "SWC-105": [],
+      "SWC-106": [],
+      "SWC-107": [
+        "kw:reentrancy",
+        "re:\\bre-?entran",
+        "re:reentrancy"
+      ],
+      "SWC-115": []
+    },
+    "reason": "Rule hit: SWC-107 with score 8.00"
+  },
+  "llm_result": {},
+  "pred_primary_swc": "SWC-107",
+  "pred_source": "rule",
+  "is_other": 0,
+  "pred_reason": "Rule hit: SWC-107 with score 8.00",
+  "static_tool_used": false,
+  "llm_explanation": {
+    "ok": false,
+    "reason": "Failed to initialize LLM fallback: No module named 'dotenv'",
+    "raw": ""
+  }
+}

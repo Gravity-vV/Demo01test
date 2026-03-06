@@ -1,0 +1,164 @@
+{
+  "address": "0x06bca1e513603a5544e0a70256607087aba73659",
+  "session_id": "e1689ecd-9b30-4c1a-aa90-ef1f2042b51c",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "",
+  "pred_swc_count": 0,
+  "is_other": 1,
+  "pred_source": "llm",
+  "pred_reason": "The SWC-OTHER label is appropriate because the audit process encountered a critical failure in report generation, preventing comprehensive security analysis. This technical error does not fit standard SWC categories but indicates an incomplete assessment that could mask vulnerabilities. Evidence: All AI models failed during report generation, halting the audit process; Deepseek_School API call failed after 0.23s with no output chunks; Impact confirms potential security issues may be missed due to incomplete analysis",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 1.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 1.0,\\n  \\\"reason\\\": \\\"Report generation error, no smart contract security findings to classify\\\"\\n}\", \"reason\": \"Report generation error, no smart contract security findings to classify\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"All AI models failed during report generation, halting the audit process\", \"Deepseek_School API call failed after 0.23s with no output chunks\", \"Impact confirms potential security issues may be missed due to incomplete analysis\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-OTHER label is appropriate because the audit process encountered a critical failure in report generation, preventing comprehensive security analysis. This technical error does not fit standard SWC categories but indicates an incomplete assessment that could mask vulnerabilities.\\\",\\n  \\\"evidence\\\": [\\n    \\\"All AI models failed during report generation, halting the audit process\\\",\\n    \\\"Deepseek_School API call failed after 0.23s with no output chunks\\\",\\n    \\\"Impact confirms potential security issues may be missed due to incomplete analysis\\\"\\n  ]\\n}\", \"reason\": \"The SWC-OTHER label is appropriate because the audit process encountered a critical failure in report generation, preventing comprehensive security analysis. This technical error does not fit standard SWC categories but indicates an incomplete assessment that could mask vulnerabilities.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 198,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_232459/deepseek_school/contracts/0x06bca1e513603a5544e0a70256607087aba73659/report.md",
+  "rag_used": 0,
+  "rag_enabled": 0,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.0,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 1,
+  "execution_time": 1024.4531972408295,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x06bca1e513603a5544e0a70256607087aba73659",
+    "model": "deepseek_school",
+    "session_id": "e1689ecd-9b30-4c1a-aa90-ef1f2042b51c",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Report Generation Error",
+        "Severity": "High",
+        "Description": "Failed to generate audit report: All AI models failed. Last error: Deepseek_School model call attempt failed: Deepseek_School API call failed after 0.23s: Deepseek_School streaming ended without any chunks. This error appears in the auditing result only.",
+        "Impact": "Unable to complete comprehensive audit analysis, potential security issues may be missed.",
+        "Location": "Report Generator - FormatConverterNode"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-04T05:01:36.291448",
+      "execution_summary": {
+        "session_id": "e1689ecd-9b30-4c1a-aa90-ef1f2042b51c",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.6.0/solc-0.6.0 --version' running '/Users/hh/.solc-select/artifacts/solc-0.6.0/solc-0.6.0 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation war",
+          "status": "failed"
+        },
+        "total_execution_time": 1024.4531972408295
+      },
+      "execution_time": 1024.4531972408295,
+      "finding_number": 1,
+      "findings": [
+        {
+          "Description": "Failed to generate audit report: All AI models failed. Last error: Deepseek_School model call attempt failed: Deepseek_School API call failed after 0.23s: Deepseek_School streaming ended without any chunks. This error appears in the auditing result only.",
+          "Impact": "Unable to complete comprehensive audit analysis, potential security issues may be missed.",
+          "Issue": "Report Generation Error",
+          "Location": "Report Generator - FormatConverterNode",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Failed to generate audit report: All AI models failed. Last error: Deepseek_School model call attempt failed: Deepseek_School API call failed after 0.23s: Deepseek_School streaming ended without any chunks. This error appears in the auditing result only.",
+          "Impact": "Unable to complete comprehensive audit analysis, potential security issues may be missed.",
+          "Issue": "Report Generation Error",
+          "Location": "Report Generator - FormatConverterNode",
+          "Severity": "High"
+        }
+      },
+      "full_report": "Report generation failed: All AI models failed. Last error: Deepseek_School model call attempt failed: Deepseek_School API call failed after 0.23s: Deepseek_School streaming ended without any chunks",
+      "model_used": "deepseek_school",
+      "session_id": "e1689ecd-9b30-4c1a-aa90-ef1f2042b51c",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 0,
+        "Medium": 0
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [],
+      "source": "llm",
+      "confidence": 1.0,
+      "reason": "Report generation error, no smart contract security findings to classify",
+      "raw": "{\n  \"labels\": [],\n  \"confidence\": 1.0,\n  \"reason\": \"Report generation error, no smart contract security findings to classify\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [],
+    "pred_labels": [],
+    "pred_swc_list": "",
+    "pred_source": "llm",
+    "is_other": 1,
+    "pred_reason": "The SWC-OTHER label is appropriate because the audit process encountered a critical failure in report generation, preventing comprehensive security analysis. This technical error does not fit standard SWC categories but indicates an incomplete assessment that could mask vulnerabilities. Evidence: All AI models failed during report generation, halting the audit process; Deepseek_School API call failed after 0.23s with no output chunks; Impact confirms potential security issues may be missed due to incomplete analysis",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 1.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 1.0,\\n  \\\"reason\\\": \\\"Report generation error, no smart contract security findings to classify\\\"\\n}\", \"reason\": \"Report generation error, no smart contract security findings to classify\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"All AI models failed during report generation, halting the audit process\", \"Deepseek_School API call failed after 0.23s with no output chunks\", \"Impact confirms potential security issues may be missed due to incomplete analysis\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-OTHER label is appropriate because the audit process encountered a critical failure in report generation, preventing comprehensive security analysis. This technical error does not fit standard SWC categories but indicates an incomplete assessment that could mask vulnerabilities.\\\",\\n  \\\"evidence\\\": [\\n    \\\"All AI models failed during report generation, halting the audit process\\\",\\n    \\\"Deepseek_School API call failed after 0.23s with no output chunks\\\",\\n    \\\"Impact confirms potential security issues may be missed due to incomplete analysis\\\"\\n  ]\\n}\", \"reason\": \"The SWC-OTHER label is appropriate because the audit process encountered a critical failure in report generation, preventing comprehensive security analysis. This technical error does not fit standard SWC categories but indicates an incomplete assessment that could mask vulnerabilities.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": false,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.0,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-OTHER label is appropriate because the audit process encountered a critical failure in report generation, preventing comprehensive security analysis. This technical error does not fit standard SWC categories but indicates an incomplete assessment that could mask vulnerabilities.",
+      "evidence": [
+        "All AI models failed during report generation, halting the audit process",
+        "Deepseek_School API call failed after 0.23s with no output chunks",
+        "Impact confirms potential security issues may be missed due to incomplete analysis"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-OTHER label is appropriate because the audit process encountered a critical failure in report generation, preventing comprehensive security analysis. This technical error does not fit standard SWC categories but indicates an incomplete assessment that could mask vulnerabilities.\",\n  \"evidence\": [\n    \"All AI models failed during report generation, halting the audit process\",\n    \"Deepseek_School API call failed after 0.23s with no output chunks\",\n    \"Impact confirms potential security issues may be missed due to incomplete analysis\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "e1689ecd-9b30-4c1a-aa90-ef1f2042b51c",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 1,
+        "full_report_chars": 198,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

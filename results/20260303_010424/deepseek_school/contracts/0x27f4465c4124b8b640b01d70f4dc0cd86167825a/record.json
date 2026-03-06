@@ -1,0 +1,200 @@
+{
+  "address": "0x27f4465c4124b8b640b01d70f4dc0cd86167825a",
+  "session_id": "d848407e-4f9b-4885-9a12-20a44499d2d2",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "",
+  "pred_swc_count": 0,
+  "is_other": 1,
+  "pred_source": "llm",
+  "pred_reason": "The contract contains multiple severe non-standard vulnerabilities including a malicious ERC20 backdoor and permanently immutable ownership, which do not cleanly map to existing SWC identifiers but represent critical deviations from expected behavior. These issues fundamentally break core contract functionality and user trust beyond typical categorized vulnerabilities. Evidence: Malicious _approve function sets all non-owner allowances to zero while emitting fake Approval events; Ownership permanently hardcoded to deployer with uncallable private transfer function; Combined impact prevents integration and creates irreversible control issues",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 1.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 1.0,\\n  \\\"reason\\\": \\\"Findings describe malicious intent and standard violations, but no SWC vulnerabilities match the described issues\\\"\\n}\", \"reason\": \"Findings describe malicious intent and standard violations, but no SWC vulnerabilities match the described issues\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"Malicious _approve function sets all non-owner allowances to zero while emitting fake Approval events\", \"Ownership permanently hardcoded to deployer with uncallable private transfer function\", \"Combined impact prevents integration and creates irreversible control issues\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple severe non-standard vulnerabilities including a malicious ERC20 backdoor and permanently immutable ownership, which do not cleanly map to existing SWC identifiers but represent critical deviations from expected behavior. These issues fundamentally break core contract functionality and user trust beyond typical categorized vulnerabilities.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Malicious _approve function sets all non-owner allowances to zero while emitting fake Approval events\\\",\\n    \\\"Ownership permanently hardcoded to deployer with uncallable private transfer function\\\",\\n    \\\"Combined impact prevents integration and creates irreversible control issues\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple severe non-standard vulnerabilities including a malicious ERC20 backdoor and permanently immutable ownership, which do not cleanly map to existing SWC identifiers but represent critical deviations from expected behavior. These issues fundamentally break core contract functionality and user trust beyond typical categorized vulnerabilities.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2415,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x27f4465c4124b8b640b01d70f4dc0cd86167825a/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 4,
+  "execution_time": 1429.2029659748077,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x27f4465c4124b8b640b01d70f4dc0cd86167825a",
+    "model": "deepseek_school",
+    "session_id": "d848407e-4f9b-4885-9a12-20a44499d2d2",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Malicious ERC20 Approval Backdoor",
+        "Severity": "High",
+        "Description": "The _approve function contains malicious logic that sets allowances to 0 and emits fake Approval events for non-owner addresses, completely breaking ERC20 standard compliance. This issue appears in the smart contract code only.",
+        "Impact": "Prevents all token integrations with DeFi protocols, exchanges, and wallets; makes token unusable for non-owner users; enables owner to arbitrarily block user approvals.",
+        "Location": "HangryBirds contract, _approve function (lines 148-154)"
+      },
+      {
+        "Issue": "Broken Ownership Transfer Mechanism",
+        "Severity": "High",
+        "Description": "The onlyOwner modifier checks against a hardcoded newComer address set at deployment, making ownership permanently immutable. The transferOwnership function is private and cannot be called. This issue appears in the smart contract code only.",
+        "Impact": "Contract deployer becomes permanent, immutable owner; prevents legitimate ownership transfers; creates single point of failure with no recovery mechanism.",
+        "Location": "Ownable contract, onlyOwner modifier and transferOwnership function (lines 180-200)"
+      },
+      {
+        "Issue": "Shadowing Local Variable",
+        "Severity": "Low",
+        "Description": "The allowance function parameter 'owner' shadows the Ownable.owner() function. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Potential confusion in code readability and maintenance; low security risk but violates best practices.",
+        "Location": "HangryBirds.allowance(address,address) function and Slither static analysis detection"
+      },
+      {
+        "Issue": "Unused Address Library Functions",
+        "Severity": "Low",
+        "Description": "The Address library is imported but none of its external call functions are used, increasing contract size without providing functionality. This issue appears in the smart contract code only.",
+        "Impact": "Increased contract deployment costs; unnecessary code complexity; no immediate security risk but creates maintenance overhead.",
+        "Location": "Address library import and functions (lines 80-134)"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T07:25:00.818840",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "d848407e-4f9b-4885-9a12-20a44499d2d2",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-8mafi4me/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.12"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1429.2029659748077,
+        "total_tasks": 12
+      },
+      "execution_time": 1429.2029659748077,
+      "finding_number": 4,
+      "findings": [
+        {
+          "Description": "The _approve function contains malicious logic that sets allowances to 0 and emits fake Approval events for non-owner addresses, completely breaking ERC20 standard compliance. This issue appears in the smart contract code only.",
+          "Impact": "Prevents all token integrations with DeFi protocols, exchanges, and wallets; makes token unusable for non-owner users; enables owner to arbitrarily block user approvals.",
+          "Issue": "Malicious ERC20 Approval Backdoor",
+          "Location": "HangryBirds contract, _approve function (lines 148-154)",
+          "Severity": "High"
+        },
+        {
+          "Description": "The onlyOwner modifier checks against a hardcoded newComer address set at deployment, making ownership permanently immutable. The transferOwnership function is private and cannot be called. This issue appears in the smart contract code only.",
+          "Impact": "Contract deployer becomes permanent, immutable owner; prevents legitimate ownership transfers; creates single point of failure with no recovery mechanism.",
+          "Issue": "Broken Ownership Transfer Mechanism",
+          "Location": "Ownable contract, onlyOwner modifier and transferOwnership function (lines 180-200)",
+          "Severity": "High"
+        },
+        {
+          "Description": "The allowance function parameter 'owner' shadows the Ownable.owner() function. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Potential confusion in code readability and maintenance; low security risk but violates best practices.",
+          "Issue": "Shadowing Local Variable",
+          "Location": "HangryBirds.allowance(address,address) function and Slither static analysis detection",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The Address library is imported but none of its external call functions are used, increasing contract size without providing functionality. This issue appears in the smart contract code only.",
+          "Impact": "Increased contract deployment costs; unnecessary code complexity; no immediate security risk but creates maintenance overhead.",
+          "Issue": "Unused Address Library Functions",
+          "Location": "Address library import and functions (lines 80-134)",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The _approve function contains malicious logic that sets allowances to 0 and emits fake Approval events for non-owner addresses, completely breaking ERC20 standard compliance. This issue appears in the smart contract code only.",
+          "Impact": "Prevents all token integrations with DeFi protocols, exchanges, and wallets; makes token unusable for non-owner users; enables owner to arbitrarily block user approvals.",
+          "Issue": "Malicious ERC20 Approval Backdoor",
+          "Location": "HangryBirds contract, _approve function (lines 148-154)",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Malicious ERC20 Approval Backdoor\",\n    \"Severity\": \"High\",\n    \"Description\": \"The _approve function contains malicious logic that sets allowances to 0 and emits fake Approval events for non-owner addresses, completely breaking ERC20 standard compliance. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Prevents all token integrations with DeFi protocols, exchanges, and wallets; makes token unusable for non-owner users; enables owner to arbitrarily block user approvals.\",\n    \"Location\": \"HangryBirds contract, _approve function (lines 148-154)\"\n  },\n  {\n    \"Issue\": \"Broken Ownership Transfer Mechanism\",\n    \"Severity\": \"High\",\n    \"Description\": \"The onlyOwner modifier checks against a hardcoded newComer address set at deployment, making ownership permanently immutable. The transferOwnership function is private and cannot be called. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Contract deployer becomes permanent, immutable owner; prevents legitimate ownership transfers; creates single point of failure with no recovery mechanism.\",\n    \"Location\": \"Ownable contract, onlyOwner modifier and transferOwnership function (lines 180-200)\"\n  },\n  {\n    \"Issue\": \"Shadowing Local Variable\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The allowance function parameter 'owner' shadows the Ownable.owner() function. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Potential confusion in code readability and maintenance; low security risk but violates best practices.\",\n    \"Location\": \"HangryBirds.allowance(address,address) function and Slither static analysis detection\"\n  },\n  {\n    \"Issue\": \"Unused Address Library Functions\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The Address library is imported but none of its external call functions (sendValue, functionCall, etc.) are used in the contract. This issue appears in the smart contract code only.\",\n    \"Description\": \"The Address library is imported but none of its external call functions are used, increasing contract size without providing functionality. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Increased contract deployment costs; unnecessary code complexity; no immediate security risk but creates maintenance overhead.\",\n    \"Location\": \"Address library import and functions (lines 80-134)\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "d848407e-4f9b-4885-9a12-20a44499d2d2",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 2,
+        "Medium": 0
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [],
+      "source": "llm",
+      "confidence": 1.0,
+      "reason": "Findings describe malicious intent and standard violations, but no SWC vulnerabilities match the described issues",
+      "raw": "{\n  \"labels\": [],\n  \"confidence\": 1.0,\n  \"reason\": \"Findings describe malicious intent and standard violations, but no SWC vulnerabilities match the described issues\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [],
+    "pred_labels": [],
+    "pred_swc_list": "",
+    "pred_source": "llm",
+    "is_other": 1,
+    "pred_reason": "The contract contains multiple severe non-standard vulnerabilities including a malicious ERC20 backdoor and permanently immutable ownership, which do not cleanly map to existing SWC identifiers but represent critical deviations from expected behavior. These issues fundamentally break core contract functionality and user trust beyond typical categorized vulnerabilities. Evidence: Malicious _approve function sets all non-owner allowances to zero while emitting fake Approval events; Ownership permanently hardcoded to deployer with uncallable private transfer function; Combined impact prevents integration and creates irreversible control issues",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 1.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 1.0,\\n  \\\"reason\\\": \\\"Findings describe malicious intent and standard violations, but no SWC vulnerabilities match the described issues\\\"\\n}\", \"reason\": \"Findings describe malicious intent and standard violations, but no SWC vulnerabilities match the described issues\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"Malicious _approve function sets all non-owner allowances to zero while emitting fake Approval events\", \"Ownership permanently hardcoded to deployer with uncallable private transfer function\", \"Combined impact prevents integration and creates irreversible control issues\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple severe non-standard vulnerabilities including a malicious ERC20 backdoor and permanently immutable ownership, which do not cleanly map to existing SWC identifiers but represent critical deviations from expected behavior. These issues fundamentally break core contract functionality and user trust beyond typical categorized vulnerabilities.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Malicious _approve function sets all non-owner allowances to zero while emitting fake Approval events\\\",\\n    \\\"Ownership permanently hardcoded to deployer with uncallable private transfer function\\\",\\n    \\\"Combined impact prevents integration and creates irreversible control issues\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple severe non-standard vulnerabilities including a malicious ERC20 backdoor and permanently immutable ownership, which do not cleanly map to existing SWC identifiers but represent critical deviations from expected behavior. These issues fundamentally break core contract functionality and user trust beyond typical categorized vulnerabilities.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract contains multiple severe non-standard vulnerabilities including a malicious ERC20 backdoor and permanently immutable ownership, which do not cleanly map to existing SWC identifiers but represent critical deviations from expected behavior. These issues fundamentally break core contract functionality and user trust beyond typical categorized vulnerabilities.",
+      "evidence": [
+        "Malicious _approve function sets all non-owner allowances to zero while emitting fake Approval events",
+        "Ownership permanently hardcoded to deployer with uncallable private transfer function",
+        "Combined impact prevents integration and creates irreversible control issues"
+      ],
+      "raw": "{\n  \"reason\": \"The contract contains multiple severe non-standard vulnerabilities including a malicious ERC20 backdoor and permanently immutable ownership, which do not cleanly map to existing SWC identifiers but represent critical deviations from expected behavior. These issues fundamentally break core contract functionality and user trust beyond typical categorized vulnerabilities.\",\n  \"evidence\": [\n    \"Malicious _approve function sets all non-owner allowances to zero while emitting fake Approval events\",\n    \"Ownership permanently hardcoded to deployer with uncallable private transfer function\",\n    \"Combined impact prevents integration and creates irreversible control issues\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "d848407e-4f9b-4885-9a12-20a44499d2d2",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 4,
+        "full_report_chars": 2415,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

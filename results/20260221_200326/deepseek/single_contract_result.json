@@ -1,0 +1,239 @@
+{
+  "address": "0x01d2a52708d0d8fc4d639f09a13ae87a2aec4390",
+  "model": "deepseek",
+  "session_id": "3264d0b5-3f11-4c00-889d-6f3a03a6ef5c",
+  "audit_status": "completed",
+  "error": "",
+  "findings": [
+    {
+      "Issue": "Reentrancy vulnerability in fallback function",
+      "Severity": "High",
+      "Description": "The fallback function makes an external transfer before state updates, allowing reentrancy attacks. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Potential theft of ETH and token balance manipulation via recursive calls.",
+      "Location": "Fallback function (line 97-103)"
+    },
+    {
+      "Issue": "Unprotected selfdestruct function",
+      "Severity": "High",
+      "Description": "The destroycontract function allows any user to destroy the contract and send remaining ETH, with no access controls. This appears in both the code and analysis results.",
+      "Impact": "Complete contract termination and potential ETH theft by any user.",
+      "Location": "destroycontract() function (line 89)"
+    },
+    {
+      "Issue": "Inconsistent decimal handling in arithmetic operations",
+      "Severity": "Medium",
+      "Description": "Different functions handle decimal adjustments inconsistently (some multiply by 10^8, others don't). This appears in both the code and analysis results.",
+      "Impact": "Incorrect token transfers and potential accounting errors.",
+      "Location": "transfer(), burn(), and fallback functions"
+    },
+    {
+      "Issue": "Unprotected airdrop function",
+      "Severity": "Medium",
+      "Description": "The Airdrop function has no access controls or input validation. This appears in both the code and analysis results.",
+      "Impact": "Potential token supply manipulation and gas exhaustion attacks.",
+      "Location": "Airdrop() function (line 64)"
+    },
+    {
+      "Issue": "Reentrancy risk in approveAndCall",
+      "Severity": "High",
+      "Description": "The approveAndCall function makes an external call after state changes, creating reentrancy risk. This appears in both the code and analysis results.",
+      "Impact": "Potential approval state manipulation during external calls.",
+      "Location": "approveAndCall() function"
+    },
+    {
+      "Issue": "Unrestricted token minting",
+      "Severity": "Medium",
+      "Description": "The fallback function allows any user to mint tokens by sending ETH, which is immediately refunded. This appears in both the code and analysis results.",
+      "Impact": "Uncontrolled token inflation with no economic cost.",
+      "Location": "Fallback function"
+    },
+    {
+      "Issue": "Inconsistent SafeMath usage",
+      "Severity": "Medium",
+      "Description": "Some arithmetic operations don't use the SafeMath functions, risking overflows/underflows. This appears in both the code and analysis results.",
+      "Impact": "Potential calculation errors and token accounting issues.",
+      "Location": "Multiple functions including _transfer and burn"
+    },
+    {
+      "Issue": "Missing ownership pattern",
+      "Severity": "High",
+      "Description": "No owner/administrator privileges implemented for critical functions. This appears in both the code and analysis results.",
+      "Impact": "Complete lack of access control for privileged operations.",
+      "Location": "Multiple administrative functions"
+    },
+    {
+      "Issue": "Potential division rounding to zero",
+      "Severity": "Medium",
+      "Description": "Division operations may round to zero with no safeguards. This appears in the static analysis results based on code patterns.",
+      "Impact": "Incorrect calculations when dealing with small values.",
+      "Location": "safeDiv function and implicit division operations"
+    }
+  ],
+  "result_payload": {
+    "created_at": "2026-02-21T20:07:48.721275",
+    "execution_summary": {
+      "completed_tasks": 12,
+      "failed_tasks": 0,
+      "session_id": "3264d0b5-3f11-4c00-889d-6f3a03a6ef5c",
+      "total_execution_time": 262.38040494918823,
+      "total_tasks": 12
+    },
+    "execution_time": 262.38040494918823,
+    "finding_number": 9,
+    "findings": [
+      {
+        "Description": "The fallback function makes an external transfer before state updates, allowing reentrancy attacks. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential theft of ETH and token balance manipulation via recursive calls.",
+        "Issue": "Reentrancy vulnerability in fallback function",
+        "Location": "Fallback function (line 97-103)",
+        "Severity": "High"
+      },
+      {
+        "Description": "The destroycontract function allows any user to destroy the contract and send remaining ETH, with no access controls. This appears in both the code and analysis results.",
+        "Impact": "Complete contract termination and potential ETH theft by any user.",
+        "Issue": "Unprotected selfdestruct function",
+        "Location": "destroycontract() function (line 89)",
+        "Severity": "High"
+      },
+      {
+        "Description": "Different functions handle decimal adjustments inconsistently (some multiply by 10^8, others don't). This appears in both the code and analysis results.",
+        "Impact": "Incorrect token transfers and potential accounting errors.",
+        "Issue": "Inconsistent decimal handling in arithmetic operations",
+        "Location": "transfer(), burn(), and fallback functions",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "The Airdrop function has no access controls or input validation. This appears in both the code and analysis results.",
+        "Impact": "Potential token supply manipulation and gas exhaustion attacks.",
+        "Issue": "Unprotected airdrop function",
+        "Location": "Airdrop() function (line 64)",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "The approveAndCall function makes an external call after state changes, creating reentrancy risk. This appears in both the code and analysis results.",
+        "Impact": "Potential approval state manipulation during external calls.",
+        "Issue": "Reentrancy risk in approveAndCall",
+        "Location": "approveAndCall() function",
+        "Severity": "High"
+      },
+      {
+        "Description": "The fallback function allows any user to mint tokens by sending ETH, which is immediately refunded. This appears in both the code and analysis results.",
+        "Impact": "Uncontrolled token inflation with no economic cost.",
+        "Issue": "Unrestricted token minting",
+        "Location": "Fallback function",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Some arithmetic operations don't use the SafeMath functions, risking overflows/underflows. This appears in both the code and analysis results.",
+        "Impact": "Potential calculation errors and token accounting issues.",
+        "Issue": "Inconsistent SafeMath usage",
+        "Location": "Multiple functions including _transfer and burn",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "No owner/administrator privileges implemented for critical functions. This appears in both the code and analysis results.",
+        "Impact": "Complete lack of access control for privileged operations.",
+        "Issue": "Missing ownership pattern",
+        "Location": "Multiple administrative functions",
+        "Severity": "High"
+      },
+      {
+        "Description": "Division operations may round to zero with no safeguards. This appears in the static analysis results based on code patterns.",
+        "Impact": "Incorrect calculations when dealing with small values.",
+        "Issue": "Potential division rounding to zero",
+        "Location": "safeDiv function and implicit division operations",
+        "Severity": "Medium"
+      }
+    ],
+    "format_validation": {
+      "findings_validated": true,
+      "required_fields": [
+        "Issue",
+        "Severity",
+        "Description",
+        "Impact",
+        "Location"
+      ],
+      "sample_finding": {
+        "Description": "The fallback function makes an external transfer before state updates, allowing reentrancy attacks. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential theft of ETH and token balance manipulation via recursive calls.",
+        "Issue": "Reentrancy vulnerability in fallback function",
+        "Location": "Fallback function (line 97-103)",
+        "Severity": "High"
+      }
+    },
+    "full_report": "[\n  {\n    \"Issue\": \"Reentrancy vulnerability in fallback function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The fallback function makes an external transfer before state updates, allowing reentrancy attacks. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential theft of ETH and token balance manipulation via recursive calls.\",\n    \"Location\": \"Fallback function (line 97-103)\"\n  },\n  {\n    \"Issue\": \"Unprotected selfdestruct function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The destroycontract function allows any user to destroy the contract and send remaining ETH, with no access controls. This appears in both the code and analysis results.\",\n    \"Impact\": \"Complete contract termination and potential ETH theft by any user.\",\n    \"Location\": \"destroycontract() function (line 89)\"\n  },\n  {\n    \"Issue\": \"Inconsistent decimal handling in arithmetic operations\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Different functions handle decimal adjustments inconsistently (some multiply by 10^8, others don't). This appears in both the code and analysis results.\",\n    \"Impact\": \"Incorrect token transfers and potential accounting errors.\",\n    \"Location\": \"transfer(), burn(), and fallback functions\"\n  },\n  {\n    \"Issue\": \"Unprotected airdrop function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The Airdrop function has no access controls or input validation. This appears in both the code and analysis results.\",\n    \"Impact\": \"Potential token supply manipulation and gas exhaustion attacks.\",\n    \"Location\": \"Airdrop() function (line 64)\"\n  },\n  {\n    \"Issue\": \"Reentrancy risk in approveAndCall\",\n    \"Severity\": \"High\",\n    \"Description\": \"The approveAndCall function makes an external call after state changes, creating reentrancy risk. This appears in both the code and analysis results.\",\n    \"Impact\": \"Potential approval state manipulation during external calls.\",\n    \"Location\": \"approveAndCall() function\"\n  },\n  {\n    \"Issue\": \"Unrestricted token minting\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The fallback function allows any user to mint tokens by sending ETH, which is immediately refunded. This appears in both the code and analysis results.\",\n    \"Impact\": \"Uncontrolled token inflation with no economic cost.\",\n    \"Location\": \"Fallback function\"\n  },\n  {\n    \"Issue\": \"Inconsistent SafeMath usage\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Some arithmetic operations don't use the SafeMath functions, risking overflows/underflows. This appears in both the code and analysis results.\",\n    \"Impact\": \"Potential calculation errors and token accounting issues.\",\n    \"Location\": \"Multiple functions including _transfer and burn\"\n  },\n  {\n    \"Issue\": \"Missing ownership pattern\",\n    \"Severity\": \"High\",\n    \"Description\": \"No owner/administrator privileges implemented for critical functions. This appears in both the code and analysis results.\",\n    \"Impact\": \"Complete lack of access control for privileged operations.\",\n    \"Location\": \"Multiple administrative functions\"\n  },\n  {\n    \"Issue\": \"Potential division rounding to zero\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Division operations may round to zero with no safeguards. This appears in the static analysis results based on code patterns.\",\n    \"Impact\": \"Incorrect calculations when dealing with small values.\",\n    \"Location\": \"safeDiv function and implicit division operations\"\n  }\n]",
+    "model_used": "deepseek",
+    "session_id": "3264d0b5-3f11-4c00-889d-6f3a03a6ef5c",
+    "severity_breakdown": {
+      "High": 4,
+      "Low": 0,
+      "Medium": 5
+    }
+  },
+  "rule_result": {
+    "labels": [
+      "SWC-106",
+      "SWC-107",
+      "SWC-101"
+    ],
+    "source": "rule_multi",
+    "scores": {
+      "SWC-101": 2.0,
+      "SWC-105": 0.0,
+      "SWC-106": 8.0,
+      "SWC-107": 8.0,
+      "SWC-115": 0.0
+    },
+    "matched": {
+      "SWC-101": [
+        "kw:overflow",
+        "kw:underflow"
+      ],
+      "SWC-105": [],
+      "SWC-106": [
+        "kw:selfdestruct",
+        "kw:unprotected selfdestruct",
+        "re:\\bselfdestruct\\b"
+      ],
+      "SWC-107": [
+        "kw:reentrancy",
+        "re:\\bre-?entran",
+        "re:reentrancy"
+      ],
+      "SWC-115": []
+    },
+    "reason": "Rule hits: SWC-106(8.0), SWC-107(8.0), SWC-101(2.0)"
+  },
+  "llm_result": {},
+  "rule_labels": [
+    "SWC-101",
+    "SWC-106",
+    "SWC-107"
+  ],
+  "llm_labels": [],
+  "pred_labels": [
+    "SWC-101",
+    "SWC-106",
+    "SWC-107"
+  ],
+  "pred_swc_list": "SWC-101|SWC-106|SWC-107",
+  "pred_source": "rule_multi",
+  "is_other": 0,
+  "pred_reason": "The label set is reasonable because there are clear instances of integer overflow/underflow (SWC-101) from inconsistent SafeMath usage, multiple unprotected selfdestruct functions that could lead to suicidal contracts (SWC-106), and reentrancy vulnerabilities in critical functions (SWC-107). Evidence: Reentrancy vulnerability in fallback function and approveAndCall (SWC-107); Unprotected selfdestruct function allows any user to destroy contract (SWC-106); Inconsistent SafeMath usage risks overflows/underflows (SWC-101)",
+  "rule_scores_json": "{\"SWC-101\": 2.0, \"SWC-105\": 0.0, \"SWC-106\": 8.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\"], \"SWC-105\": [], \"SWC-106\": [\"kw:selfdestruct\", \"kw:unprotected selfdestruct\", \"re:\\\\bselfdestruct\\\\b\"], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Reentrancy vulnerability in fallback function and approveAndCall (SWC-107)\", \"Unprotected selfdestruct function allows any user to destroy contract (SWC-106)\", \"Inconsistent SafeMath usage risks overflows/underflows (SWC-101)\"], \"ok\": true, \"raw\": \"```json\\n{\\n  \\\"reason\\\": \\\"The label set is reasonable because there are clear instances of integer overflow/underflow (SWC-101) from inconsistent SafeMath usage, multiple unprotected selfdestruct functions that could lead to suicidal contracts (SWC-106), and reentrancy vulnerabilities in critical functions (SWC-107).\\\",\\n  \\\"evidence\\\": [\\n    \\\"Reentrancy vulnerability in fallback function and approveAndCall (SWC-107)\\\",\\n    \\\"Unprotected selfdestruct function allows any user to destroy contract (SWC-106)\\\",\\n    \\\"Inconsistent SafeMath usage risks overflows/underflows (SWC-101)\\\"\\n  ]\\n}\\n```\", \"reason\": \"The label set is reasonable because there are clear instances of integer overflow/underflow (SWC-101) from inconsistent SafeMath usage, multiple unprotected selfdestruct functions that could lead to suicidal contracts (SWC-106), and reentrancy vulnerabilities in critical functions (SWC-107).\"}",
+  "static_tool_used": false,
+  "llm_explanation": {
+    "ok": true,
+    "reason": "The label set is reasonable because there are clear instances of integer overflow/underflow (SWC-101) from inconsistent SafeMath usage, multiple unprotected selfdestruct functions that could lead to suicidal contracts (SWC-106), and reentrancy vulnerabilities in critical functions (SWC-107).",
+    "evidence": [
+      "Reentrancy vulnerability in fallback function and approveAndCall (SWC-107)",
+      "Unprotected selfdestruct function allows any user to destroy contract (SWC-106)",
+      "Inconsistent SafeMath usage risks overflows/underflows (SWC-101)"
+    ],
+    "raw": "```json\n{\n  \"reason\": \"The label set is reasonable because there are clear instances of integer overflow/underflow (SWC-101) from inconsistent SafeMath usage, multiple unprotected selfdestruct functions that could lead to suicidal contracts (SWC-106), and reentrancy vulnerabilities in critical functions (SWC-107).\",\n  \"evidence\": [\n    \"Reentrancy vulnerability in fallback function and approveAndCall (SWC-107)\",\n    \"Unprotected selfdestruct function allows any user to destroy contract (SWC-106)\",\n    \"Inconsistent SafeMath usage risks overflows/underflows (SWC-101)\"\n  ]\n}\n```"
+  }
+}

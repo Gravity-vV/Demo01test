@@ -1,0 +1,316 @@
+{
+  "address": "0x060c9457eb5b9c479817c25c67f9c893455b872f",
+  "session_id": "27c6d0ee-8624-4cc2-a5a7-daf85dd3f4da",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-107",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract contains multiple state variable inconsistencies and access control flaws that allow unexpected behaviors. These issues enable the owner to bypass intended supply limits and create ownership visibility mismatches. Evidence: setFeeTotal() allows unlimited token minting beyond fixed supply cap; owner() returns address(0) while onlyOwner modifier uses different _owner state; renounceOwnership() incorrectly sets owner to address(0) without proper irreversibility",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"setFeeTotal() allows unlimited token minting beyond fixed supply cap\", \"owner() returns address(0) while onlyOwner modifier uses different _owner state\", \"renounceOwnership() incorrectly sets owner to address(0) without proper irreversibility\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple state variable inconsistencies and access control flaws that allow unexpected behaviors. These issues enable the owner to bypass intended supply limits and create ownership visibility mismatches.\\\",\\n  \\\"evidence\\\": [\\n    \\\"setFeeTotal() allows unlimited token minting beyond fixed supply cap\\\",\\n    \\\"owner() returns address(0) while onlyOwner modifier uses different _owner state\\\",\\n    \\\"renounceOwnership() incorrectly sets owner to address(0) without proper irreversibility\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple state variable inconsistencies and access control flaws that allow unexpected behaviors. These issues enable the owner to bypass intended supply limits and create ownership visibility mismatches.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1489.667242050171,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x060c9457eb5b9c479817c25c67f9c893455b872f",
+    "model": "deepseek_school",
+    "session_id": "27c6d0ee-8624-4cc2-a5a7-daf85dd3f4da",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Task:** Analyze all state-changing functions (`t...",
+        "Severity": "Medium",
+        "Description": "## Audit Findings: Checks-Effects-Interactions Pattern Analysis ### 1. Issue Analysis **No issues found related to Checks-Effects-Interactions violations or reentrancy vectors.** The contract correc... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 1: **Task:** Analyze all state-changing functions (`transfer`, `transferFrom`, `setFeeTotal`, `approve`) for patterns that violate Checks-Effects-Interactions. Since there are no external calls to untrusted contracts in the current logic, confirm the absence of reentrancy vectors and note it as a non-issue for the current implementation."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Verify that all arithmetic operations (i...",
+        "Severity": "High",
+        "Description": "## Audit Report: Verification of SafeMath Usage in Arithmetic Operations ### 1. Issue Analysis **Yes, there is an issue related to this audit task.** Upon manual review of all arithmetic operations... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: **Task:** Verify that all arithmetic operations (in `SafeMath.sub`, `SafeMath.add`, `_transfer`, `setFeeTotal`) are protected by SafeMath library usage. Manually review each operation to ensure no function circumvents these safeguards."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 3.3.1:** Investigate the critical discrepan...",
+        "Severity": "High",
+        "Description": "## Audit Task 3.3.1: Investigation of Critical Discrepancy in Ownable Contract ### 1. Issue Analysis **Yes, there is a critical issue in the `Ownable` contract implementation.** The issue is locate... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: **Task 3.3.1:** Investigate the critical discrepancy in the `Ownable` contract: the `owner()` function returns `address(0)` while the `onlyOwner` modifier checks against the internal `_owner` state variable. Test the impact: can the actual owner (`_owner`) still call `onlyOwner` functions? Can users/interfaces correctly identify the owner?"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 3.3.2:** Assess the risk of the `setFeeTota...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **Yes, there is a critical issue related to the `setFeeTotal()` function.** This function allows the owner to mint an unlimited number of tokens beyond the stated fixed supply of... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: **Task 3.3.2:** Assess the risk of the `setFeeTotal()` function, which allows the owner to mint an unlimited supply of tokens, directly contradicting the stated fixed supply of 100 billion."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 3.3.3:** Verify that the `renounceOwnership...",
+        "Severity": "High",
+        "Description": "## Audit Task 3.3.3: Verify renounceOwnership Function Correctness and Irreversibility ### 1. Issue Analysis **Issue Identified: Yes** The `renounceOwnership` function in the `Ownable` contract is *... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: **Task 3.3.3:** Verify that the `renounceOwnership` function correctly sets `_owner` to `address(0)` and is irreversible."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Evaluate the `approve` function for the ...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **Yes, the classic front-running vulnerability (also known as the approval race condition) is present in the `approve` function due to its standard implementation.** The `appro... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: **Task:** Evaluate the `approve` function for the classic front-running vulnerability (MITM). Confirm it is present due to the standard implementation and recommend mitigation strategies (e.g., setting to zero first)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Review the code for any reliance on `blo...",
+        "Severity": "Medium",
+        "Description": "Based on the audit task provided and a thorough review of the code, here is the detailed analysis: ### 1. Issue Analysis **No issue found related to reliance on `block.timestamp` or `block.number`.**... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 7: **Task:** Review the code for any reliance on `block.timestamp` or `block.number`. (None found in initial scan; confirm absence)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Identify any loops that could iterates o...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Loop Over Dynamically-Sized Arrays Analysis ### 1. Issue Analysis **No issue found.** After a thorough review of the provided smart contract code, I confirm that there are **no loo... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: **Task:** Identify any loops that could iterates over dynamically-sized arrays, leading to potential gas exhaustion. (None found in current implementation; confirm absence)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Review the `Address` library usage. Conf...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Address Library Usage Review ### 1. Issue Analysis **No issues found.** The `Address` library's `functionCall` and related functions are implemented securely and do properly check ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: **Task:** Review the `Address` library usage. Confirm that `functionCall` and related functions *do* check the success return value and revert on failure, making them safe."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Validate the correctness of `transfer`, ...",
+        "Severity": "High",
+        "Description": "## Audit Findings for ERC-20 Standard Compliance in $PFLOKI ### 1. Issue Analysis **Issue Identified: Yes** The contract contains critical deviations from the ERC-20 standard in the `transferFrom` ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: **Task:** Validate the correctness of `transfer`, `transferFrom`, `balanceOf`, `allowance`, and `approve` against the ERC-20 standard specification. Ensure balances update correctly and allowances are properly decreased."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 2.2.1:** Test the anti-bot/blacklist logic ...",
+        "Severity": "Medium",
+        "Description": "## Audit Report: Task 2.2.1 - Anti-Bot/Blacklist Logic in `_transfer` ### 1. Issue Analysis **Issue Found:** Yes. The anti-bot/blacklist logic in the `_transfer` function is flawed and does not corre... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 11: **Task 2.2.1:** Test the anti-bot/blacklist logic in `_transfer`. Verify that transfers *from* the `_tBlackAddress` are unrestricted, while transfers *to* the `_tBotAddress` are correctly restricted if they are above `_maxBlack`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 2.2.2:** Analyze the `Approve(uint256)` fun...",
+        "Severity": "High",
+        "Description": "## Audit Findings for Task 2.2.2: Analyze the `Approve(uint256)` Function ### 1. Issue Analysis **Issue Identified:** Yes The `Approve(uint256)` function (lines 416-418) updates the critical state ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: **Task 2.2.2:** Analyze the `Approve(uint256)` function. Confirm it updates the `_maxBlack` state variable as intended and assess the risk of not emitting an event for this critical parameter change."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T02:27:14.104847",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "27c6d0ee-8624-4cc2-a5a7-daf85dd3f4da",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-z0e4_we7/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.12"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1489.667242050171,
+        "total_tasks": 12
+      },
+      "execution_time": 1489.667242050171,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "## Audit Findings: Checks-Effects-Interactions Pattern Analysis\n\n### 1. Issue Analysis\n**No issues found related to Checks-Effects-Interactions violations or reentrancy vectors.**\n\nThe contract correc... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Analyze all state-changing functions (`t...",
+          "Location": "Task 1: **Task:** Analyze all state-changing functions (`transfer`, `transferFrom`, `setFeeTotal`, `approve`) for patterns that violate Checks-Effects-Interactions. Since there are no external calls to untrusted contracts in the current logic, confirm the absence of reentrancy vectors and note it as a non-issue for the current implementation.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Report: Verification of SafeMath Usage in Arithmetic Operations\n\n### 1. Issue Analysis\n**Yes, there is an issue related to this audit task.** \n\nUpon manual review of all arithmetic operations... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Verify that all arithmetic operations (i...",
+          "Location": "Task 2: **Task:** Verify that all arithmetic operations (in `SafeMath.sub`, `SafeMath.add`, `_transfer`, `setFeeTotal`) are protected by SafeMath library usage. Manually review each operation to ensure no function circumvents these safeguards.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Task 3.3.1: Investigation of Critical Discrepancy in Ownable Contract\n\n### 1. Issue Analysis\n**Yes, there is a critical issue in the `Ownable` contract implementation.** \n\nThe issue is locate... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 3.3.1:** Investigate the critical discrepan...",
+          "Location": "Task 3: **Task 3.3.1:** Investigate the critical discrepancy in the `Ownable` contract: the `owner()` function returns `address(0)` while the `onlyOwner` modifier checks against the internal `_owner` state variable. Test the impact: can the actual owner (`_owner`) still call `onlyOwner` functions? Can users/interfaces correctly identify the owner?",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n**Yes, there is a critical issue related to the `setFeeTotal()` function.** This function allows the owner to mint an unlimited number of tokens beyond the stated fixed supply of... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 3.3.2:** Assess the risk of the `setFeeTota...",
+          "Location": "Task 4: **Task 3.3.2:** Assess the risk of the `setFeeTotal()` function, which allows the owner to mint an unlimited supply of tokens, directly contradicting the stated fixed supply of 100 billion.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Task 3.3.3: Verify renounceOwnership Function Correctness and Irreversibility\n\n### 1. Issue Analysis\n**Issue Identified: Yes**\n\nThe `renounceOwnership` function in the `Ownable` contract is *... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 3.3.3:** Verify that the `renounceOwnership...",
+          "Location": "Task 5: **Task 3.3.3:** Verify that the `renounceOwnership` function correctly sets `_owner` to `address(0)` and is irreversible.",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n\n**Yes, the classic front-running vulnerability (also known as the approval race condition) is present in the `approve` function due to its standard implementation.**\n\nThe `appro... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Evaluate the `approve` function for the ...",
+          "Location": "Task 6: **Task:** Evaluate the `approve` function for the classic front-running vulnerability (MITM). Confirm it is present due to the standard implementation and recommend mitigation strategies (e.g., setting to zero first).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on the audit task provided and a thorough review of the code, here is the detailed analysis:\n\n### 1. Issue Analysis\n**No issue found related to reliance on `block.timestamp` or `block.number`.**... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Review the code for any reliance on `blo...",
+          "Location": "Task 7: **Task:** Review the code for any reliance on `block.timestamp` or `block.number`. (None found in initial scan; confirm absence).",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings: Loop Over Dynamically-Sized Arrays Analysis\n\n### 1. Issue Analysis\n**No issue found.** After a thorough review of the provided smart contract code, I confirm that there are **no loo... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Identify any loops that could iterates o...",
+          "Location": "Task 8: **Task:** Identify any loops that could iterates over dynamically-sized arrays, leading to potential gas exhaustion. (None found in current implementation; confirm absence).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Address Library Usage Review\n\n### 1. Issue Analysis\n**No issues found.** The `Address` library's `functionCall` and related functions are implemented securely and do properly check ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Review the `Address` library usage. Conf...",
+          "Location": "Task 9: **Task:** Review the `Address` library usage. Confirm that `functionCall` and related functions *do* check the success return value and revert on failure, making them safe.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings for ERC-20 Standard Compliance in $PFLOKI\n\n### 1. Issue Analysis\n**Issue Identified: Yes**  \nThe contract contains critical deviations from the ERC-20 standard in the `transferFrom` ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Validate the correctness of `transfer`, ...",
+          "Location": "Task 10: **Task:** Validate the correctness of `transfer`, `transferFrom`, `balanceOf`, `allowance`, and `approve` against the ERC-20 standard specification. Ensure balances update correctly and allowances are properly decreased.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Task 2.2.1 - Anti-Bot/Blacklist Logic in `_transfer`\n\n### 1. Issue Analysis\n**Issue Found:** Yes. The anti-bot/blacklist logic in the `_transfer` function is flawed and does not corre... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 2.2.1:** Test the anti-bot/blacklist logic ...",
+          "Location": "Task 11: **Task 2.2.1:** Test the anti-bot/blacklist logic in `_transfer`. Verify that transfers *from* the `_tBlackAddress` are unrestricted, while transfers *to* the `_tBotAddress` are correctly restricted if they are above `_maxBlack`.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings for Task 2.2.2: Analyze the `Approve(uint256)` Function\n\n### 1. Issue Analysis\n**Issue Identified:** Yes  \nThe `Approve(uint256)` function (lines 416-418) updates the critical state ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 2.2.2:** Analyze the `Approve(uint256)` fun...",
+          "Location": "Task 12: **Task 2.2.2:** Analyze the `Approve(uint256)` function. Confirm it updates the `_maxBlack` state variable as intended and assess the risk of not emitting an event for this critical parameter change.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "## Audit Findings: Checks-Effects-Interactions Pattern Analysis\n\n### 1. Issue Analysis\n**No issues found related to Checks-Effects-Interactions violations or reentrancy vectors.**\n\nThe contract correc... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Analyze all state-changing functions (`t...",
+          "Location": "Task 1: **Task:** Analyze all state-changing functions (`transfer`, `transferFrom`, `setFeeTotal`, `approve`) for patterns that violate Checks-Effects-Interactions. Since there are no external calls to untrusted contracts in the current logic, confirm the absence of reentrancy vectors and note it as a non-issue for the current implementation.",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "27c6d0ee-8624-4cc2-a5a7-daf85dd3f4da",
+      "severity_breakdown": {
+        "High": 9,
+        "Low": 0,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract contains multiple state variable inconsistencies and access control flaws that allow unexpected behaviors. These issues enable the owner to bypass intended supply limits and create ownership visibility mismatches. Evidence: setFeeTotal() allows unlimited token minting beyond fixed supply cap; owner() returns address(0) while onlyOwner modifier uses different _owner state; renounceOwnership() incorrectly sets owner to address(0) without proper irreversibility",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"setFeeTotal() allows unlimited token minting beyond fixed supply cap\", \"owner() returns address(0) while onlyOwner modifier uses different _owner state\", \"renounceOwnership() incorrectly sets owner to address(0) without proper irreversibility\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple state variable inconsistencies and access control flaws that allow unexpected behaviors. These issues enable the owner to bypass intended supply limits and create ownership visibility mismatches.\\\",\\n  \\\"evidence\\\": [\\n    \\\"setFeeTotal() allows unlimited token minting beyond fixed supply cap\\\",\\n    \\\"owner() returns address(0) while onlyOwner modifier uses different _owner state\\\",\\n    \\\"renounceOwnership() incorrectly sets owner to address(0) without proper irreversibility\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple state variable inconsistencies and access control flaws that allow unexpected behaviors. These issues enable the owner to bypass intended supply limits and create ownership visibility mismatches.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract contains multiple state variable inconsistencies and access control flaws that allow unexpected behaviors. These issues enable the owner to bypass intended supply limits and create ownership visibility mismatches.",
+      "evidence": [
+        "setFeeTotal() allows unlimited token minting beyond fixed supply cap",
+        "owner() returns address(0) while onlyOwner modifier uses different _owner state",
+        "renounceOwnership() incorrectly sets owner to address(0) without proper irreversibility"
+      ],
+      "raw": "{\n  \"reason\": \"The contract contains multiple state variable inconsistencies and access control flaws that allow unexpected behaviors. These issues enable the owner to bypass intended supply limits and create ownership visibility mismatches.\",\n  \"evidence\": [\n    \"setFeeTotal() allows unlimited token minting beyond fixed supply cap\",\n    \"owner() returns address(0) while onlyOwner modifier uses different _owner state\",\n    \"renounceOwnership() incorrectly sets owner to address(0) without proper irreversibility\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "27c6d0ee-8624-4cc2-a5a7-daf85dd3f4da",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

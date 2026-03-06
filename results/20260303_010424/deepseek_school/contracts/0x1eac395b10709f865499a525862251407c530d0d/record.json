@@ -1,0 +1,324 @@
+{
+  "address": "0x1eac395b10709f865499a525862251407c530d0d",
+  "session_id": "97261146-fecc-4f5a-afb1-c79740802031",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract contains multiple instances of unprotected arithmetic operations that could lead to integer overflows/underflows, aligning with SWC-101. Additionally, external calls without proper error handling indicate potential reentrancy risks consistent with SWC-107. Evidence: Unprotected arithmetic operations exist outside SafeMath usage (Finding 2).; External calls transfer value without safeguards against reentrancy (Finding 1).; Low-level calls lack proper error handling mechanisms (Finding 4).",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Unprotected arithmetic operations exist outside SafeMath usage (Finding 2).\", \"External calls transfer value without safeguards against reentrancy (Finding 1).\", \"Low-level calls lack proper error handling mechanisms (Finding 4).\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple instances of unprotected arithmetic operations that could lead to integer overflows/underflows, aligning with SWC-101. Additionally, external calls without proper error handling indicate potential reentrancy risks consistent with SWC-107.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unprotected arithmetic operations exist outside SafeMath usage (Finding 2).\\\",\\n    \\\"External calls transfer value without safeguards against reentrancy (Finding 1).\\\",\\n    \\\"Low-level calls lack proper error handling mechanisms (Finding 4).\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple instances of unprotected arithmetic operations that could lead to integer overflows/underflows, aligning with SWC-101. Additionally, external calls without proper error handling indicate potential reentrancy risks consistent with SWC-107.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1504.0333120822906,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x1eac395b10709f865499a525862251407c530d0d",
+    "model": "deepseek_school",
+    "session_id": "97261146-fecc-4f5a-afb1-c79740802031",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Reentrancy Check**: Review all external calls (e...",
+        "Severity": "High",
+        "Description": "## **Reentrancy Check Audit Findings** ### **1. Issue Analysis** **Yes, multiple reentrancy vulnerabilities exist** in the provided contract. The contract contains external calls that transfer value ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **Reentrancy Check**: Review all external calls (e.g., `Address.functionCallWithValue`) for potential reentrancy risks, especially in functions that modify state after calls."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Integer Overflow/Underflow**: Validate all arith...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Integer Overflow/Underflow Analysis ### 1. Issue Analysis **Issue Identified**: Yes - Multiple instances of unprotected arithmetic operations outside SafeMath usage. The contract ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: **Integer Overflow/Underflow**: Validate all arithmetic operations using SafeMath; ensure no unprotected math exists outside SafeMath usage."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Access Control Audit**:...",
+        "Severity": "High",
+        "Description": "Certainly. I will perform a high-priority Access Control Audit on the provided WOLFPACK smart contract. ## 1. Issue Analysis **Yes, multiple critical access control issues exist in this contract.** ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: **Access Control Audit**:"
+      },
+      {
+        "Issue": "High Priority Security Issue - **External Calls**: Ensure all low-level calls (vi...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code for the **WOLFPACK** token, here is the detailed security assessment for the specific audit task: ## **Audit Task: External Calls** **Priority... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 9: **External Calls**: Ensure all low-level calls (via `Address` library) have proper error handling and no state changes post-call."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Map all functions with `_verify`, `msg.sender == _...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Access Control Mapping in WOLFPACK Contract ### 1. Issue Analysis **Yes**, there are significant issues related to access control mechanisms in this contract. The contract implemen... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: Map all functions with `_verify`, `msg.sender == _ownr`, or similar checks."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Verify no functions allow unauthorized privilege e...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Unauthorized Privilege Escalation in WOLFPACK Contract ### 1. Issue Analysis **Yes, there is a critical issue related to unauthorized privilege escalation.** The function `_mApprov... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: Verify no functions allow unauthorized privilege escalation (e.g., `_mApproval` without zero-check)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Front-running Analysis**: Identify functions sus...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, here is my detailed audit report for the front-running analysis task: ## 1. Issue Analysis **Yes, there are significant front-running and ra... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: **Front-running Analysis**: Identify functions susceptible to race conditions (e.g., `approve`/`transferFrom`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Timestamp Dependence**: Check for block.timestam...",
+        "Severity": "High",
+        "Description": "### **Audit Task: Timestamp Dependence Analysis** #### **1. Issue Analysis** - **No issue found**: After a thorough manual review of the provided smart contract code, **no usage of `block.timestamp` ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: **Timestamp Dependence**: Check for block.timestamp usage (none found in initial scan; confirm absence)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Gas Limit & Loops**: Audit loops in `multicall`,...",
+        "Severity": "Medium",
+        "Description": "## Audit Report: Gas Limit & Loops Analysis for WOLFPACK Contract ### 1. Issue Analysis **Yes**, there are significant issues related to unbounded gas consumption in loops within the WOLFPACK contrac... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 8: **Gas Limit & Loops**: Audit loops in `multicall`, `send`, etc., for unbounded gas consumption."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Transfer Logic Review**:...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Transfer Logic Review ### 1. Issue Analysis **Yes, multiple critical issues were identified** related to transfer logic in this contract. The contract contains malicious backdoor f... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: **Transfer Logic Review**:"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Deconstruct `mainboard` modifier and `_tf`/`_pair`...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified several logical errors and security concerns related to the `mainboard` modifier and `_tf`/`_pair` functions. ## 1. Issue A... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 11: Deconstruct `mainboard` modifier and `_tf`/`_pair` functions for logical errors."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Test blacklist/whitelist scenarios (e.g., transfer...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue related to the blacklist/whitelist functionality. Here is my detailed assessment: ## 1. Issue Analysis **... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: Test blacklist/whitelist scenarios (e.g., transfers to `_path_` only when discarded)."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T06:17:56.982433",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "97261146-fecc-4f5a-afb1-c79740802031",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-8qyhg8g3/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1504.0333120822906,
+        "total_tasks": 12
+      },
+      "execution_time": 1504.0333120822906,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "## **Reentrancy Check Audit Findings**\n\n### **1. Issue Analysis**\n**Yes, multiple reentrancy vulnerabilities exist** in the provided contract. The contract contains external calls that transfer value ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Check**: Review all external calls (e...",
+          "Location": "Task 1: **Reentrancy Check**: Review all external calls (e.g., `Address.functionCallWithValue`) for potential reentrancy risks, especially in functions that modify state after calls.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Integer Overflow/Underflow Analysis\n\n### 1. Issue Analysis\n**Issue Identified**: Yes - Multiple instances of unprotected arithmetic operations outside SafeMath usage.\n\nThe contract ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Integer Overflow/Underflow**: Validate all arith...",
+          "Location": "Task 2: **Integer Overflow/Underflow**: Validate all arithmetic operations using SafeMath; ensure no unprotected math exists outside SafeMath usage.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Certainly. I will perform a high-priority Access Control Audit on the provided WOLFPACK smart contract.\n\n## 1. Issue Analysis\n\n**Yes, multiple critical access control issues exist in this contract.** ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Access Control Audit**:...",
+          "Location": "Task 3: **Access Control Audit**:",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code for the **WOLFPACK** token, here is the detailed security assessment for the specific audit task:\n\n## **Audit Task: External Calls**\n**Priority... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **External Calls**: Ensure all low-level calls (vi...",
+          "Location": "Task 9: **External Calls**: Ensure all low-level calls (via `Address` library) have proper error handling and no state changes post-call.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings: Access Control Mapping in WOLFPACK Contract\n\n### 1. Issue Analysis\n**Yes**, there are significant issues related to access control mechanisms in this contract. The contract implemen... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Map all functions with `_verify`, `msg.sender == _...",
+          "Location": "Task 4: Map all functions with `_verify`, `msg.sender == _ownr`, or similar checks.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Unauthorized Privilege Escalation in WOLFPACK Contract\n\n### 1. Issue Analysis\n**Yes, there is a critical issue related to unauthorized privilege escalation.** The function `_mApprov... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Verify no functions allow unauthorized privilege e...",
+          "Location": "Task 5: Verify no functions allow unauthorized privilege escalation (e.g., `_mApproval` without zero-check).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, here is my detailed audit report for the front-running analysis task:\n\n## 1. Issue Analysis\n\n**Yes, there are significant front-running and ra... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Front-running Analysis**: Identify functions sus...",
+          "Location": "Task 6: **Front-running Analysis**: Identify functions susceptible to race conditions (e.g., `approve`/`transferFrom`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "### **Audit Task: Timestamp Dependence Analysis**\n\n#### **1. Issue Analysis**\n- **No issue found**: After a thorough manual review of the provided smart contract code, **no usage of `block.timestamp` ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Timestamp Dependence**: Check for block.timestam...",
+          "Location": "Task 7: **Timestamp Dependence**: Check for block.timestamp usage (none found in initial scan; confirm absence).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Gas Limit & Loops Analysis for WOLFPACK Contract\n\n### 1. Issue Analysis\n**Yes**, there are significant issues related to unbounded gas consumption in loops within the WOLFPACK contrac... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Gas Limit & Loops**: Audit loops in `multicall`,...",
+          "Location": "Task 8: **Gas Limit & Loops**: Audit loops in `multicall`, `send`, etc., for unbounded gas consumption.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings: Transfer Logic Review\n\n### 1. Issue Analysis\n**Yes, multiple critical issues were identified** related to transfer logic in this contract. The contract contains malicious backdoor f... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Transfer Logic Review**:...",
+          "Location": "Task 10: **Transfer Logic Review**:",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified several logical errors and security concerns related to the `mainboard` modifier and `_tf`/`_pair` functions.\n\n## 1. Issue A... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Deconstruct `mainboard` modifier and `_tf`/`_pair`...",
+          "Location": "Task 11: Deconstruct `mainboard` modifier and `_tf`/`_pair` functions for logical errors.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue related to the blacklist/whitelist functionality. Here is my detailed assessment:\n\n## 1. Issue Analysis\n\n**... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Test blacklist/whitelist scenarios (e.g., transfer...",
+          "Location": "Task 12: Test blacklist/whitelist scenarios (e.g., transfers to `_path_` only when discarded).",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "## **Reentrancy Check Audit Findings**\n\n### **1. Issue Analysis**\n**Yes, multiple reentrancy vulnerabilities exist** in the provided contract. The contract contains external calls that transfer value ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Check**: Review all external calls (e...",
+          "Location": "Task 1: **Reentrancy Check**: Review all external calls (e.g., `Address.functionCallWithValue`) for potential reentrancy risks, especially in functions that modify state after calls.",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "97261146-fecc-4f5a-afb1-c79740802031",
+      "severity_breakdown": {
+        "High": 9,
+        "Low": 0,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract contains multiple instances of unprotected arithmetic operations that could lead to integer overflows/underflows, aligning with SWC-101. Additionally, external calls without proper error handling indicate potential reentrancy risks consistent with SWC-107. Evidence: Unprotected arithmetic operations exist outside SafeMath usage (Finding 2).; External calls transfer value without safeguards against reentrancy (Finding 1).; Low-level calls lack proper error handling mechanisms (Finding 4).",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Unprotected arithmetic operations exist outside SafeMath usage (Finding 2).\", \"External calls transfer value without safeguards against reentrancy (Finding 1).\", \"Low-level calls lack proper error handling mechanisms (Finding 4).\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple instances of unprotected arithmetic operations that could lead to integer overflows/underflows, aligning with SWC-101. Additionally, external calls without proper error handling indicate potential reentrancy risks consistent with SWC-107.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unprotected arithmetic operations exist outside SafeMath usage (Finding 2).\\\",\\n    \\\"External calls transfer value without safeguards against reentrancy (Finding 1).\\\",\\n    \\\"Low-level calls lack proper error handling mechanisms (Finding 4).\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple instances of unprotected arithmetic operations that could lead to integer overflows/underflows, aligning with SWC-101. Additionally, external calls without proper error handling indicate potential reentrancy risks consistent with SWC-107.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract contains multiple instances of unprotected arithmetic operations that could lead to integer overflows/underflows, aligning with SWC-101. Additionally, external calls without proper error handling indicate potential reentrancy risks consistent with SWC-107.",
+      "evidence": [
+        "Unprotected arithmetic operations exist outside SafeMath usage (Finding 2).",
+        "External calls transfer value without safeguards against reentrancy (Finding 1).",
+        "Low-level calls lack proper error handling mechanisms (Finding 4)."
+      ],
+      "raw": "{\n  \"reason\": \"The contract contains multiple instances of unprotected arithmetic operations that could lead to integer overflows/underflows, aligning with SWC-101. Additionally, external calls without proper error handling indicate potential reentrancy risks consistent with SWC-107.\",\n  \"evidence\": [\n    \"Unprotected arithmetic operations exist outside SafeMath usage (Finding 2).\",\n    \"External calls transfer value without safeguards against reentrancy (Finding 1).\",\n    \"Low-level calls lack proper error handling mechanisms (Finding 4).\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "97261146-fecc-4f5a-afb1-c79740802031",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

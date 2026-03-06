@@ -1,0 +1,1 @@
+Workflow execution failed: Workflow failed at step 5 (llm): All AI models failed. Last error: deepseek_school model call attempt 1/2 failed: deepseek_school API call failed after 0.23s: 'NoneType' object is not subscriptable

@@ -1,0 +1,1 @@
+Report generation failed: All AI models failed. Last error: Deepseek_School model call attempt failed: Deepseek_School API call failed after 0.26s: Deepseek_School streaming ended without any chunks

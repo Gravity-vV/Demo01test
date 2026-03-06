@@ -1,0 +1,202 @@
+{
+  "address": "0x2a8837cdccc521844311dd508cb27f6a064fe02b",
+  "session_id": "012b2a49-e38d-48cb-8f8c-249b5688ce69",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The integer overflow vulnerability in getDivisor() matches SWC-101's description of arithmetic issues. Unsafe exponentiation without overflow checks for high-decimal tokens directly corresponds to this weakness. The impact aligns with SWC-101's typical consequences of incorrect calculations and denial-of-service. Evidence: Exponentiation '10 ** uint256(...)' lacks overflow protection in getDivisor(); Vulnerable to overflow with tokens having 78+ decimals; Impact includes incorrect financial calculations and DoS for token operations",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Exponentiation '10 ** uint256(...)' lacks overflow protection in getDivisor()\", \"Vulnerable to overflow with tokens having 78+ decimals\", \"Impact includes incorrect financial calculations and DoS for token operations\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The integer overflow vulnerability in getDivisor() matches SWC-101's description of arithmetic issues. Unsafe exponentiation without overflow checks for high-decimal tokens directly corresponds to this weakness. The impact aligns with SWC-101's typical consequences of incorrect calculations and denial-of-service.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Exponentiation '10 ** uint256(...)' lacks overflow protection in getDivisor()\\\",\\n    \\\"Vulnerable to overflow with tokens having 78+ decimals\\\",\\n    \\\"Impact includes incorrect financial calculations and DoS for token operations\\\"\\n  ]\\n}\", \"reason\": \"The integer overflow vulnerability in getDivisor() matches SWC-101's description of arithmetic issues. Unsafe exponentiation without overflow checks for high-decimal tokens directly corresponds to this weakness. The impact aligns with SWC-101's typical consequences of incorrect calculations and denial-of-service.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2322,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x2a8837cdccc521844311dd508cb27f6a064fe02b/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 4,
+  "execution_time": 1076.339644908905,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x2a8837cdccc521844311dd508cb27f6a064fe02b",
+    "model": "deepseek_school",
+    "session_id": "012b2a49-e38d-48cb-8f8c-249b5688ce69",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Potential integer overflow in getDivisor function for tokens with high decimals",
+        "Severity": "High",
+        "Description": "This issue appears in the smart contract code only. The getDivisor function uses exponentiation without overflow protection, which could cause overflow for tokens with 78 or more decimals.",
+        "Impact": "Function would revert or return incorrect values, potentially disrupting financial calculations and causing denial-of-service for specific token operations",
+        "Location": "Utils.getDivisor() function, line with '10 ** uint256(...getTokenDecimals(_token))'"
+      },
+      {
+        "Issue": "External contract calls lack validation and error handling",
+        "Severity": "High",
+        "Description": "This issue appears in the smart contract code only. Multiple external interface calls are made without validating contract existence, return data, or handling potential failures.",
+        "Impact": "Potential for incorrect data if external contracts are compromised, leading to financial miscalculations and protocol instability",
+        "Location": "Multiple locations in Utils._isETH() and Utils.getDivisor() functions making external calls to IGlobalConfig, IConstant, and ITokenRegistry interfaces"
+      },
+      {
+        "Issue": "Poor user experience when globalConfig is not a contract",
+        "Severity": "Medium",
+        "Description": "This issue appears in the smart contract code only. Functions revert without informative error messages when globalConfig parameter is not a valid contract address.",
+        "Impact": "Confusing user experience, difficult debugging, and potential denial-of-service if globalConfig is incorrectly set",
+        "Location": "Utils._isETH() and Utils.getDivisor() functions where globalConfig parameter is used without validation"
+      },
+      {
+        "Issue": "Compiler version mismatch in static analysis setup",
+        "Severity": "Low",
+        "Description": "This issue appears in the static analysis results only. The audit environment has compiler version 0.5.17 while the contract uses pragma 0.5.14, preventing proper automated analysis.",
+        "Impact": "Incomplete static analysis coverage and potential missed vulnerabilities due to compiler version differences",
+        "Location": "Static analysis diagnostics showing missing local solc binaries for version 0.5.14"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T07:52:09.077306",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "012b2a49-e38d-48cb-8f8c-249b5688ce69",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.14"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.5.17/solc-0.5.17 --version' running '/Users/hh/.solc-select/artifacts/solc-0.5.17/solc-0.5.17 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation",
+          "status": "failed"
+        },
+        "total_execution_time": 1076.339644908905,
+        "total_tasks": 12
+      },
+      "execution_time": 1076.339644908905,
+      "finding_number": 4,
+      "findings": [
+        {
+          "Description": "This issue appears in the smart contract code only. The getDivisor function uses exponentiation without overflow protection, which could cause overflow for tokens with 78 or more decimals.",
+          "Impact": "Function would revert or return incorrect values, potentially disrupting financial calculations and causing denial-of-service for specific token operations",
+          "Issue": "Potential integer overflow in getDivisor function for tokens with high decimals",
+          "Location": "Utils.getDivisor() function, line with '10 ** uint256(...getTokenDecimals(_token))'",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. Multiple external interface calls are made without validating contract existence, return data, or handling potential failures.",
+          "Impact": "Potential for incorrect data if external contracts are compromised, leading to financial miscalculations and protocol instability",
+          "Issue": "External contract calls lack validation and error handling",
+          "Location": "Multiple locations in Utils._isETH() and Utils.getDivisor() functions making external calls to IGlobalConfig, IConstant, and ITokenRegistry interfaces",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. Functions revert without informative error messages when globalConfig parameter is not a valid contract address.",
+          "Impact": "Confusing user experience, difficult debugging, and potential denial-of-service if globalConfig is incorrectly set",
+          "Issue": "Poor user experience when globalConfig is not a contract",
+          "Location": "Utils._isETH() and Utils.getDivisor() functions where globalConfig parameter is used without validation",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in the static analysis results only. The audit environment has compiler version 0.5.17 while the contract uses pragma 0.5.14, preventing proper automated analysis.",
+          "Impact": "Incomplete static analysis coverage and potential missed vulnerabilities due to compiler version differences",
+          "Issue": "Compiler version mismatch in static analysis setup",
+          "Location": "Static analysis diagnostics showing missing local solc binaries for version 0.5.14",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "This issue appears in the smart contract code only. The getDivisor function uses exponentiation without overflow protection, which could cause overflow for tokens with 78 or more decimals.",
+          "Impact": "Function would revert or return incorrect values, potentially disrupting financial calculations and causing denial-of-service for specific token operations",
+          "Issue": "Potential integer overflow in getDivisor function for tokens with high decimals",
+          "Location": "Utils.getDivisor() function, line with '10 ** uint256(...getTokenDecimals(_token))'",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Potential integer overflow in getDivisor function for tokens with high decimals\",\n    \"Severity\": \"High\",\n    \"Description\": \"This issue appears in the smart contract code only. The getDivisor function uses exponentiation without overflow protection, which could cause overflow for tokens with 78 or more decimals.\",\n    \"Impact\": \"Function would revert or return incorrect values, potentially disrupting financial calculations and causing denial-of-service for specific token operations\",\n    \"Location\": \"Utils.getDivisor() function, line with '10 ** uint256(...getTokenDecimals(_token))'\"\n  },\n  {\n    \"Issue\": \"External contract calls lack validation and error handling\",\n    \"Severity\": \"High\",\n    \"Description\": \"This issue appears in the smart contract code only. Multiple external interface calls are made without validating contract existence, return data, or handling potential failures.\",\n    \"Impact\": \"Potential for incorrect data if external contracts are compromised, leading to financial miscalculations and protocol instability\",\n    \"Location\": \"Multiple locations in Utils._isETH() and Utils.getDivisor() functions making external calls to IGlobalConfig, IConstant, and ITokenRegistry interfaces\"\n  },\n  {\n    \"Issue\": \"Poor user experience when globalConfig is not a contract\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"This issue appears in the smart contract code only. Functions revert without informative error messages when globalConfig parameter is not a valid contract address.\",\n    \"Impact\": \"Confusing user experience, difficult debugging, and potential denial-of-service if globalConfig is incorrectly set\",\n    \"Location\": \"Utils._isETH() and Utils.getDivisor() functions where globalConfig parameter is used without validation\"\n  },\n  {\n    \"Issue\": \"Compiler version mismatch in static analysis setup\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue appears in the static analysis results only. The audit environment has compiler version 0.5.17 while the contract uses pragma 0.5.14, preventing proper automated analysis.\",\n    \"Impact\": \"Incomplete static analysis coverage and potential missed vulnerabilities due to compiler version differences\",\n    \"Location\": \"Static analysis diagnostics showing missing local solc binaries for version 0.5.14\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "012b2a49-e38d-48cb-8f8c-249b5688ce69",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 1,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The integer overflow vulnerability in getDivisor() matches SWC-101's description of arithmetic issues. Unsafe exponentiation without overflow checks for high-decimal tokens directly corresponds to this weakness. The impact aligns with SWC-101's typical consequences of incorrect calculations and denial-of-service. Evidence: Exponentiation '10 ** uint256(...)' lacks overflow protection in getDivisor(); Vulnerable to overflow with tokens having 78+ decimals; Impact includes incorrect financial calculations and DoS for token operations",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Exponentiation '10 ** uint256(...)' lacks overflow protection in getDivisor()\", \"Vulnerable to overflow with tokens having 78+ decimals\", \"Impact includes incorrect financial calculations and DoS for token operations\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The integer overflow vulnerability in getDivisor() matches SWC-101's description of arithmetic issues. Unsafe exponentiation without overflow checks for high-decimal tokens directly corresponds to this weakness. The impact aligns with SWC-101's typical consequences of incorrect calculations and denial-of-service.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Exponentiation '10 ** uint256(...)' lacks overflow protection in getDivisor()\\\",\\n    \\\"Vulnerable to overflow with tokens having 78+ decimals\\\",\\n    \\\"Impact includes incorrect financial calculations and DoS for token operations\\\"\\n  ]\\n}\", \"reason\": \"The integer overflow vulnerability in getDivisor() matches SWC-101's description of arithmetic issues. Unsafe exponentiation without overflow checks for high-decimal tokens directly corresponds to this weakness. The impact aligns with SWC-101's typical consequences of incorrect calculations and denial-of-service.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The integer overflow vulnerability in getDivisor() matches SWC-101's description of arithmetic issues. Unsafe exponentiation without overflow checks for high-decimal tokens directly corresponds to this weakness. The impact aligns with SWC-101's typical consequences of incorrect calculations and denial-of-service.",
+      "evidence": [
+        "Exponentiation '10 ** uint256(...)' lacks overflow protection in getDivisor()",
+        "Vulnerable to overflow with tokens having 78+ decimals",
+        "Impact includes incorrect financial calculations and DoS for token operations"
+      ],
+      "raw": "{\n  \"reason\": \"The integer overflow vulnerability in getDivisor() matches SWC-101's description of arithmetic issues. Unsafe exponentiation without overflow checks for high-decimal tokens directly corresponds to this weakness. The impact aligns with SWC-101's typical consequences of incorrect calculations and denial-of-service.\",\n  \"evidence\": [\n    \"Exponentiation '10 ** uint256(...)' lacks overflow protection in getDivisor()\",\n    \"Vulnerable to overflow with tokens having 78+ decimals\",\n    \"Impact includes incorrect financial calculations and DoS for token operations\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "012b2a49-e38d-48cb-8f8c-249b5688ce69",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 4,
+        "full_report_chars": 2322,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

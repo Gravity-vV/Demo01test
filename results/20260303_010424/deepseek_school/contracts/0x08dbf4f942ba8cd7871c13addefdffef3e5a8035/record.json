@@ -1,0 +1,321 @@
+{
+  "address": "0x08dbf4f942ba8cd7871c13addefdffef3e5a8035",
+  "session_id": "a438107f-a281-495c-b9ec-c137ce083978",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract uses Solidity 0.4.24 which lacks built-in integer overflow checks, corresponding to SWC-101. Multiple unsafe arithmetic operations were identified across functions, including in CappedVault.withdraw() and PresalePackThree.calculatePrice(), indicating SWC-107 violations. Evidence: Compiler version 0.4.24 lacks built-in overflow protection (Task 9); Multiple unsafe arithmetic operations identified (Task 1.1.1); Integer underflow vulnerability in calculatePrice() function (Task 4)",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Compiler version 0.4.24 lacks built-in overflow protection (Task 9)\", \"Multiple unsafe arithmetic operations identified (Task 1.1.1)\", \"Integer underflow vulnerability in calculatePrice() function (Task 4)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract uses Solidity 0.4.24 which lacks built-in integer overflow checks, corresponding to SWC-101. Multiple unsafe arithmetic operations were identified across functions, including in CappedVault.withdraw() and PresalePackThree.calculatePrice(), indicating SWC-107 violations.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Compiler version 0.4.24 lacks built-in overflow protection (Task 9)\\\",\\n    \\\"Multiple unsafe arithmetic operations identified (Task 1.1.1)\\\",\\n    \\\"Integer underflow vulnerability in calculatePrice() function (Task 4)\\\"\\n  ]\\n}\", \"reason\": \"The contract uses Solidity 0.4.24 which lacks built-in integer overflow checks, corresponding to SWC-101. Multiple unsafe arithmetic operations were identified across functions, including in CappedVault.withdraw() and PresalePackThree.calculatePrice(), indicating SWC-107 violations.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1607.912427663803,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x08dbf4f942ba8cd7871c13addefdffef3e5a8035",
+    "model": "deepseek_school",
+    "session_id": "a438107f-a281-495c-b9ec-c137ce083978",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - B: (Strongly Recommended) Upgrade the compiler to ...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Compiler Upgrade and Overflow Protection ### 1. Issue Analysis **Yes, there is a critical issue related to this audit task.** The contract is using Solidity 0.4.24, which lacks bu... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: B: (Strongly Recommended) Upgrade the compiler to 0.8.x+ and refactor the code to use its built-in overflow checks."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 1.1.1:** Manually review every arithmetic o...",
+        "Severity": "High",
+        "Description": "Based on my manual review of all arithmetic operations in the provided smart contracts, I have identified several security issues related to arithmetic operations. ## 1. Issue Analysis **Yes, there ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **Task 1.1.1:** Manually review every arithmetic operation (`+`, `-`, `*`, `++`, `--`) across all contracts. Priority locations include:"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - `CappedVault.withdraw()`: `withdrawn += amount;`...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis Yes, there is a significant issue related to the `CappedVault.withdraw()` function and the `withdrawn += amount;` operation. The issue is a **reentrancy vulnerability** in the ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: `CappedVault.withdraw()`: `withdrawn += amount;`"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - `CardProto._addProto()`: `protoCount++;` and `next...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue related to the `CardProto._addProto()` function and `nextSeason()` function as specified in your audit task... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: `CardProto._addProto()`: `protoCount++;` and `nextSeason()`"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - `PresalePackThree.calculatePrice()`: All price cal...",
+        "Severity": "High",
+        "Description": "## Audit Report: `PresalePackThree.calculatePrice()` Function ### 1. Issue Analysis **Issue Found:** Yes The `calculatePrice()` function contains a critical vulnerability related to integer underflo... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: `PresalePackThree.calculatePrice()`: All price calculations."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Any loop counters and array index calculations....",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes, there are issues related to loop counters and array index calculations in the provided code.** The audit identified several potential vulnerabilities related to loop coun... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: Any loop counters and array index calculations."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 1.1.2:** Verify the necessity and safety of...",
+        "Severity": "High",
+        "Description": "Based on the provided smart contract code and the specific audit task to verify the necessity and safety of explicit casts, particularly `uint16(lengthAfter - length)` in the `claimMultiple` function,... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: **Task 1.1.2:** Verify the necessity and safety of all explicit casts (e.g., `uint16(lengthAfter - length)` in `claimMultiple`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 1.1.3:** **Critical Action:** Develop and i...",
+        "Severity": "High",
+        "Description": "## Audit Findings for Task 1.1.3: Develop and Implement a Mitigation Plan ### 1. Issue Analysis **Issue Identified:** Yes, a critical reentrancy vulnerability exists in the `withdraw` function of bot... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: **Task 1.1.3:** **Critical Action:** Develop and implement a mitigation plan. This is non-negotiable. Options are:"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - A: Integrate and refactor the entire codebase to u...",
+        "Severity": "High",
+        "Description": "## Audit Task A: Integrate and Refactor to Use OpenZeppelin's SafeMath for Solidity 0.4.x ### 1. Issue Analysis **Issue Identified**: The contract codebase does not utilize OpenZeppelin's SafeMath li... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: A: Integrate and refactor the entire codebase to use OpenZeppelin's SafeMath for Solidity 0.4.x."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 1.2.1:** Verify that all state-changing fun...",
+        "Severity": "High",
+        "Description": "## Detailed Audit Findings for Task 1.2.1 ### 1. Issue Analysis **Issue Identified:** Yes. Several state-changing functions lack appropriate access control modifiers (`onlyOwner`, `onlyGovernor`, or ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: **Task 1.2.1:** Verify that all state-changing functions are protected by the correct modifier (`onlyOwner`, `onlyGovernor`, `whenNotPaused`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 1.2.2:** Identify any missing zero-address ...",
+        "Severity": "High",
+        "Description": "## Audit Task 1.2.2: Missing Zero-Address Checks in Critical Functions ### 1. Issue Analysis **Issue Identified:** Yes, there are missing zero-address checks in critical functions. **Detailed Descri... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: **Task 1.2.2:** Identify any missing zero-address checks in critical functions (e.g., `setOwner`, `setGovernor`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task 1.2.3:** Assess the risk of the two-step ow...",
+        "Severity": "High",
+        "Description": "## Audit Report: Two-Step Ownership Transfer Vulnerability Assessment ### 1. Issue Analysis **Issue Found:** Yes, there is a critical vulnerability related to one-step ownership/governance transfers... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: **Task 1.2.3:** Assess the risk of the two-step ownership transfer vulnerability. Recommend and design a two-step transfer process for `owner` and `governor` roles."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T03:10:50.622316",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "a438107f-a281-495c-b9ec-c137ce083978",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.24"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '<tmp> --version' running '<tmp> --version' running",
+          "status": "failed"
+        },
+        "total_execution_time": 1607.912427663803,
+        "total_tasks": 12
+      },
+      "execution_time": 1607.912427663803,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "## Audit Findings: Compiler Upgrade and Overflow Protection\n\n### 1. Issue Analysis\n\n**Yes, there is a critical issue related to this audit task.** The contract is using Solidity 0.4.24, which lacks bu... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - B: (Strongly Recommended) Upgrade the compiler to ...",
+          "Location": "Task 9: B: (Strongly Recommended) Upgrade the compiler to 0.8.x+ and refactor the code to use its built-in overflow checks.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my manual review of all arithmetic operations in the provided smart contracts, I have identified several security issues related to arithmetic operations.\n\n## 1. Issue Analysis\n\n**Yes, there ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 1.1.1:** Manually review every arithmetic o...",
+          "Location": "Task 1: **Task 1.1.1:** Manually review every arithmetic operation (`+`, `-`, `*`, `++`, `--`) across all contracts. Priority locations include:",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\nYes, there is a significant issue related to the `CappedVault.withdraw()` function and the `withdrawn += amount;` operation. \n\nThe issue is a **reentrancy vulnerability** in the ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - `CappedVault.withdraw()`: `withdrawn += amount;`...",
+          "Location": "Task 2: `CappedVault.withdraw()`: `withdrawn += amount;`",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified a critical issue related to the `CardProto._addProto()` function and `nextSeason()` function as specified in your audit task... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - `CardProto._addProto()`: `protoCount++;` and `next...",
+          "Location": "Task 3: `CardProto._addProto()`: `protoCount++;` and `nextSeason()`",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: `PresalePackThree.calculatePrice()` Function\n\n### 1. Issue Analysis\n**Issue Found:** Yes\n\nThe `calculatePrice()` function contains a critical vulnerability related to integer underflo... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - `PresalePackThree.calculatePrice()`: All price cal...",
+          "Location": "Task 4: `PresalePackThree.calculatePrice()`: All price calculations.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there are issues related to loop counters and array index calculations in the provided code.**\n\nThe audit identified several potential vulnerabilities related to loop coun... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Any loop counters and array index calculations....",
+          "Location": "Task 5: Any loop counters and array index calculations.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on the provided smart contract code and the specific audit task to verify the necessity and safety of explicit casts, particularly `uint16(lengthAfter - length)` in the `claimMultiple` function,... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 1.1.2:** Verify the necessity and safety of...",
+          "Location": "Task 6: **Task 1.1.2:** Verify the necessity and safety of all explicit casts (e.g., `uint16(lengthAfter - length)` in `claimMultiple`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings for Task 1.1.3: Develop and Implement a Mitigation Plan\n\n### 1. Issue Analysis\n**Issue Identified:** Yes, a critical reentrancy vulnerability exists in the `withdraw` function of bot... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 1.1.3:** **Critical Action:** Develop and i...",
+          "Location": "Task 7: **Task 1.1.3:** **Critical Action:** Develop and implement a mitigation plan. This is non-negotiable. Options are:",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Task A: Integrate and Refactor to Use OpenZeppelin's SafeMath for Solidity 0.4.x\n\n### 1. Issue Analysis\n**Issue Identified**: The contract codebase does not utilize OpenZeppelin's SafeMath li... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - A: Integrate and refactor the entire codebase to u...",
+          "Location": "Task 8: A: Integrate and refactor the entire codebase to use OpenZeppelin's SafeMath for Solidity 0.4.x.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Detailed Audit Findings for Task 1.2.1\n\n### 1. Issue Analysis\n**Issue Identified:** Yes. Several state-changing functions lack appropriate access control modifiers (`onlyOwner`, `onlyGovernor`, or ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 1.2.1:** Verify that all state-changing fun...",
+          "Location": "Task 10: **Task 1.2.1:** Verify that all state-changing functions are protected by the correct modifier (`onlyOwner`, `onlyGovernor`, `whenNotPaused`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Task 1.2.2: Missing Zero-Address Checks in Critical Functions\n\n### 1. Issue Analysis\n**Issue Identified:** Yes, there are missing zero-address checks in critical functions.\n\n**Detailed Descri... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 1.2.2:** Identify any missing zero-address ...",
+          "Location": "Task 11: **Task 1.2.2:** Identify any missing zero-address checks in critical functions (e.g., `setOwner`, `setGovernor`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Two-Step Ownership Transfer Vulnerability Assessment\n\n### 1. Issue Analysis\n\n**Issue Found:** Yes, there is a critical vulnerability related to one-step ownership/governance transfers... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task 1.2.3:** Assess the risk of the two-step ow...",
+          "Location": "Task 12: **Task 1.2.3:** Assess the risk of the two-step ownership transfer vulnerability. Recommend and design a two-step transfer process for `owner` and `governor` roles.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "## Audit Findings: Compiler Upgrade and Overflow Protection\n\n### 1. Issue Analysis\n\n**Yes, there is a critical issue related to this audit task.** The contract is using Solidity 0.4.24, which lacks bu... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - B: (Strongly Recommended) Upgrade the compiler to ...",
+          "Location": "Task 9: B: (Strongly Recommended) Upgrade the compiler to 0.8.x+ and refactor the code to use its built-in overflow checks.",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "a438107f-a281-495c-b9ec-c137ce083978",
+      "severity_breakdown": {
+        "High": 12,
+        "Low": 0,
+        "Medium": 0
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract uses Solidity 0.4.24 which lacks built-in integer overflow checks, corresponding to SWC-101. Multiple unsafe arithmetic operations were identified across functions, including in CappedVault.withdraw() and PresalePackThree.calculatePrice(), indicating SWC-107 violations. Evidence: Compiler version 0.4.24 lacks built-in overflow protection (Task 9); Multiple unsafe arithmetic operations identified (Task 1.1.1); Integer underflow vulnerability in calculatePrice() function (Task 4)",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Compiler version 0.4.24 lacks built-in overflow protection (Task 9)\", \"Multiple unsafe arithmetic operations identified (Task 1.1.1)\", \"Integer underflow vulnerability in calculatePrice() function (Task 4)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract uses Solidity 0.4.24 which lacks built-in integer overflow checks, corresponding to SWC-101. Multiple unsafe arithmetic operations were identified across functions, including in CappedVault.withdraw() and PresalePackThree.calculatePrice(), indicating SWC-107 violations.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Compiler version 0.4.24 lacks built-in overflow protection (Task 9)\\\",\\n    \\\"Multiple unsafe arithmetic operations identified (Task 1.1.1)\\\",\\n    \\\"Integer underflow vulnerability in calculatePrice() function (Task 4)\\\"\\n  ]\\n}\", \"reason\": \"The contract uses Solidity 0.4.24 which lacks built-in integer overflow checks, corresponding to SWC-101. Multiple unsafe arithmetic operations were identified across functions, including in CappedVault.withdraw() and PresalePackThree.calculatePrice(), indicating SWC-107 violations.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract uses Solidity 0.4.24 which lacks built-in integer overflow checks, corresponding to SWC-101. Multiple unsafe arithmetic operations were identified across functions, including in CappedVault.withdraw() and PresalePackThree.calculatePrice(), indicating SWC-107 violations.",
+      "evidence": [
+        "Compiler version 0.4.24 lacks built-in overflow protection (Task 9)",
+        "Multiple unsafe arithmetic operations identified (Task 1.1.1)",
+        "Integer underflow vulnerability in calculatePrice() function (Task 4)"
+      ],
+      "raw": "{\n  \"reason\": \"The contract uses Solidity 0.4.24 which lacks built-in integer overflow checks, corresponding to SWC-101. Multiple unsafe arithmetic operations were identified across functions, including in CappedVault.withdraw() and PresalePackThree.calculatePrice(), indicating SWC-107 violations.\",\n  \"evidence\": [\n    \"Compiler version 0.4.24 lacks built-in overflow protection (Task 9)\",\n    \"Multiple unsafe arithmetic operations identified (Task 1.1.1)\",\n    \"Integer underflow vulnerability in calculatePrice() function (Task 4)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "a438107f-a281-495c-b9ec-c137ce083978",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

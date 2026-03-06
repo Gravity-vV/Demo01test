@@ -1,0 +1,252 @@
+{
+  "address": "0x009109ab7b8caff748cda2f272f36043528bef2c",
+  "session_id": "a8aedd2d-76bd-45f2-b0ea-2d3425424cac",
+  "audit_status": "completed",
+  "model": "deepseek",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are justified due to clear evidence of arithmetic vulnerabilities and unsafe external calls. The findings demonstrate unprotected math operations and reentrant functions that could be exploited. Evidence: Unsafe external calls in TokenUtils without reentrancy protection (Finding 1); Lack of SafeMath protection in critical calculations (Finding 5); Centralized admin controls create single-point failure risks (Finding 2)",
+  "rule_scores_json": "{\"SWC-101\": 2.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Unsafe external calls in TokenUtils without reentrancy protection (Finding 1)\", \"Lack of SafeMath protection in critical calculations (Finding 5)\", \"Centralized admin controls create single-point failure risks (Finding 2)\"], \"ok\": true, \"raw\": \"```json\\n{\\n  \\\"reason\\\": \\\"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are justified due to clear evidence of arithmetic vulnerabilities and unsafe external calls. The findings demonstrate unprotected math operations and reentrant functions that could be exploited.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unsafe external calls in TokenUtils without reentrancy protection (Finding 1)\\\",\\n    \\\"Lack of SafeMath protection in critical calculations (Finding 5)\\\",\\n    \\\"Centralized admin controls create single-point failure risks (Finding 2)\\\"\\n  ]\\n}\\n```\", \"reason\": \"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are justified due to clear evidence of arithmetic vulnerabilities and unsafe external calls. The findings demonstrate unprotected math operations and reentrant functions that could be exploited.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3185,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260301_123612/deepseek/contracts/0x009109ab7b8caff748cda2f272f36043528bef2c/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 7,
+  "execution_time": 709.4480860233307,
+  "gt_swc_set": "SWC-101|SWC-105|SWC-106",
+  "error": "",
+  "raw": {
+    "address": "0x009109ab7b8caff748cda2f272f36043528bef2c",
+    "model": "deepseek",
+    "session_id": "a8aedd2d-76bd-45f2-b0ea-2d3425424cac",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy vulnerability in TokenUtils external calls",
+        "Severity": "High",
+        "Description": "TokenUtils.pullTokensIfNeeded() and withdrawTokens() perform unsafe external calls without reentrancy protection. This appears in both the smart contract code and static analysis results.",
+        "Impact": "An attacker could reenter during token transfers to manipulate contract state and potentially drain funds.",
+        "Location": "TokenUtils.sol functions pullTokensIfNeeded() and withdrawTokens()"
+      },
+      {
+        "Issue": "Centralized admin control with single-point failure",
+        "Severity": "High",
+        "Description": "AdminVault and DFSRegistry have highly centralized admin controls without time-locks or multi-sig requirements. This appears in the smart contract code.",
+        "Impact": "Compromised admin keys could lead to complete contract takeover, fund loss, or contract freezing.",
+        "Location": "AdminVault.sol changeOwner/changeAdmin functions and DFSRegistry.sol admin functions"
+      },
+      {
+        "Issue": "Missing zero address checks in privileged functions",
+        "Severity": "Medium",
+        "Description": "AdminVault.changeOwner() and changeAdmin() lack zero address validation. This appears in both smart contract code and static analysis results.",
+        "Impact": "Admin could accidentally set privileged roles to zero address, permanently locking contract administration.",
+        "Location": "AdminVault.sol lines 62-73"
+      },
+      {
+        "Issue": "Unprotected timestamp dependency in wait period checks",
+        "Severity": "Medium",
+        "Description": "DFSRegistry uses block.timestamp for wait period approvals without minimum time constraints. This appears in both smart contract code and static analysis results.",
+        "Impact": "Miners could potentially influence timing of critical contract changes if wait periods are very short.",
+        "Location": "DFSRegistry.sol approveContractChange() and approveWaitPeriodChange()"
+      },
+      {
+        "Issue": "Incomplete SafeMath protection in arithmetic operations",
+        "Severity": "Medium",
+        "Description": "Some arithmetic operations in DFSRegistry and AdminVault don't use SafeMath protections. This appears in the smart contract code.",
+        "Impact": "Potential for arithmetic overflows/underflows in critical calculations.",
+        "Location": "DFSRegistry.sol wait period calculations and AdminVault.sol storage updates"
+      },
+      {
+        "Issue": "Unbounded wait periods in registry management",
+        "Severity": "Low",
+        "Description": "DFSRegistry allows setting wait periods without minimum/maximum boundaries. This appears in the smart contract code.",
+        "Impact": "Could lead to impractically short security delays or effectively permanent locks on changes.",
+        "Location": "DFSRegistry.sol addNewContract() and startWaitPeriodChange()"
+      },
+      {
+        "Issue": "Missing event emission for critical admin changes",
+        "Severity": "Low",
+        "Description": "AdminVault doesn't emit events for owner/admin changes. This appears in the smart contract code.",
+        "Impact": "Lack of transparency and forensic trail for privileged operations.",
+        "Location": "AdminVault.sol changeOwner() and changeAdmin()"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-01T13:06:26.018503",
+      "execution_summary": {
+        "completed_tasks": 11,
+        "failed_tasks": 1,
+        "session_id": "a8aedd2d-76bd-45f2-b0ea-2d3425424cac",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-e5q8pofo/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.7.6"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 709.4480860233307,
+        "total_tasks": 12
+      },
+      "execution_time": 709.4480860233307,
+      "finding_number": 7,
+      "findings": [
+        {
+          "Description": "TokenUtils.pullTokensIfNeeded() and withdrawTokens() perform unsafe external calls without reentrancy protection. This appears in both the smart contract code and static analysis results.",
+          "Impact": "An attacker could reenter during token transfers to manipulate contract state and potentially drain funds.",
+          "Issue": "Reentrancy vulnerability in TokenUtils external calls",
+          "Location": "TokenUtils.sol functions pullTokensIfNeeded() and withdrawTokens()",
+          "Severity": "High"
+        },
+        {
+          "Description": "AdminVault and DFSRegistry have highly centralized admin controls without time-locks or multi-sig requirements. This appears in the smart contract code.",
+          "Impact": "Compromised admin keys could lead to complete contract takeover, fund loss, or contract freezing.",
+          "Issue": "Centralized admin control with single-point failure",
+          "Location": "AdminVault.sol changeOwner/changeAdmin functions and DFSRegistry.sol admin functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "AdminVault.changeOwner() and changeAdmin() lack zero address validation. This appears in both smart contract code and static analysis results.",
+          "Impact": "Admin could accidentally set privileged roles to zero address, permanently locking contract administration.",
+          "Issue": "Missing zero address checks in privileged functions",
+          "Location": "AdminVault.sol lines 62-73",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "DFSRegistry uses block.timestamp for wait period approvals without minimum time constraints. This appears in both smart contract code and static analysis results.",
+          "Impact": "Miners could potentially influence timing of critical contract changes if wait periods are very short.",
+          "Issue": "Unprotected timestamp dependency in wait period checks",
+          "Location": "DFSRegistry.sol approveContractChange() and approveWaitPeriodChange()",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Some arithmetic operations in DFSRegistry and AdminVault don't use SafeMath protections. This appears in the smart contract code.",
+          "Impact": "Potential for arithmetic overflows/underflows in critical calculations.",
+          "Issue": "Incomplete SafeMath protection in arithmetic operations",
+          "Location": "DFSRegistry.sol wait period calculations and AdminVault.sol storage updates",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "DFSRegistry allows setting wait periods without minimum/maximum boundaries. This appears in the smart contract code.",
+          "Impact": "Could lead to impractically short security delays or effectively permanent locks on changes.",
+          "Issue": "Unbounded wait periods in registry management",
+          "Location": "DFSRegistry.sol addNewContract() and startWaitPeriodChange()",
+          "Severity": "Low"
+        },
+        {
+          "Description": "AdminVault doesn't emit events for owner/admin changes. This appears in the smart contract code.",
+          "Impact": "Lack of transparency and forensic trail for privileged operations.",
+          "Issue": "Missing event emission for critical admin changes",
+          "Location": "AdminVault.sol changeOwner() and changeAdmin()",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "TokenUtils.pullTokensIfNeeded() and withdrawTokens() perform unsafe external calls without reentrancy protection. This appears in both the smart contract code and static analysis results.",
+          "Impact": "An attacker could reenter during token transfers to manipulate contract state and potentially drain funds.",
+          "Issue": "Reentrancy vulnerability in TokenUtils external calls",
+          "Location": "TokenUtils.sol functions pullTokensIfNeeded() and withdrawTokens()",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Reentrancy vulnerability in TokenUtils external calls\",\n    \"Severity\": \"High\",\n    \"Description\": \"TokenUtils.pullTokensIfNeeded() and withdrawTokens() perform unsafe external calls without reentrancy protection. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"An attacker could reenter during token transfers to manipulate contract state and potentially drain funds.\",\n    \"Location\": \"TokenUtils.sol functions pullTokensIfNeeded() and withdrawTokens()\"\n  },\n  {\n    \"Issue\": \"Centralized admin control with single-point failure\",\n    \"Severity\": \"High\",\n    \"Description\": \"AdminVault and DFSRegistry have highly centralized admin controls without time-locks or multi-sig requirements. This appears in the smart contract code.\",\n    \"Impact\": \"Compromised admin keys could lead to complete contract takeover, fund loss, or contract freezing.\",\n    \"Location\": \"AdminVault.sol changeOwner/changeAdmin functions and DFSRegistry.sol admin functions\"\n  },\n  {\n    \"Issue\": \"Missing zero address checks in privileged functions\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"AdminVault.changeOwner() and changeAdmin() lack zero address validation. This appears in both smart contract code and static analysis results.\",\n    \"Impact\": \"Admin could accidentally set privileged roles to zero address, permanently locking contract administration.\",\n    \"Location\": \"AdminVault.sol lines 62-73\"\n  },\n  {\n    \"Issue\": \"Unprotected timestamp dependency in wait period checks\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"DFSRegistry uses block.timestamp for wait period approvals without minimum time constraints. This appears in both smart contract code and static analysis results.\",\n    \"Impact\": \"Miners could potentially influence timing of critical contract changes if wait periods are very short.\",\n    \"Location\": \"DFSRegistry.sol approveContractChange() and approveWaitPeriodChange()\"\n  },\n  {\n    \"Issue\": \"Incomplete SafeMath protection in arithmetic operations\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Some arithmetic operations in DFSRegistry and AdminVault don't use SafeMath protections. This appears in the smart contract code.\",\n    \"Impact\": \"Potential for arithmetic overflows/underflows in critical calculations.\",\n    \"Location\": \"DFSRegistry.sol wait period calculations and AdminVault.sol storage updates\"\n  },\n  {\n    \"Issue\": \"Unbounded wait periods in registry management\",\n    \"Severity\": \"Low\",\n    \"Description\": \"DFSRegistry allows setting wait periods without minimum/maximum boundaries. This appears in the smart contract code.\",\n    \"Impact\": \"Could lead to impractically short security delays or effectively permanent locks on changes.\",\n    \"Location\": \"DFSRegistry.sol addNewContract() and startWaitPeriodChange()\"\n  },\n  {\n    \"Issue\": \"Missing event emission for critical admin changes\",\n    \"Severity\": \"Low\",\n    \"Description\": \"AdminVault doesn't emit events for owner/admin changes. This appears in the smart contract code.\",\n    \"Impact\": \"Lack of transparency and forensic trail for privileged operations.\",\n    \"Location\": \"AdminVault.sol changeOwner() and changeAdmin()\"\n  }\n]",
+      "model_used": "deepseek",
+      "session_id": "a8aedd2d-76bd-45f2-b0ea-2d3425424cac",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 2,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 2.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(2.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are justified due to clear evidence of arithmetic vulnerabilities and unsafe external calls. The findings demonstrate unprotected math operations and reentrant functions that could be exploited. Evidence: Unsafe external calls in TokenUtils without reentrancy protection (Finding 1); Lack of SafeMath protection in critical calculations (Finding 5); Centralized admin controls create single-point failure risks (Finding 2)",
+    "rule_scores_json": "{\"SWC-101\": 2.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Unsafe external calls in TokenUtils without reentrancy protection (Finding 1)\", \"Lack of SafeMath protection in critical calculations (Finding 5)\", \"Centralized admin controls create single-point failure risks (Finding 2)\"], \"ok\": true, \"raw\": \"```json\\n{\\n  \\\"reason\\\": \\\"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are justified due to clear evidence of arithmetic vulnerabilities and unsafe external calls. The findings demonstrate unprotected math operations and reentrant functions that could be exploited.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unsafe external calls in TokenUtils without reentrancy protection (Finding 1)\\\",\\n    \\\"Lack of SafeMath protection in critical calculations (Finding 5)\\\",\\n    \\\"Centralized admin controls create single-point failure risks (Finding 2)\\\"\\n  ]\\n}\\n```\", \"reason\": \"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are justified due to clear evidence of arithmetic vulnerabilities and unsafe external calls. The findings demonstrate unprotected math operations and reentrant functions that could be exploited.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are justified due to clear evidence of arithmetic vulnerabilities and unsafe external calls. The findings demonstrate unprotected math operations and reentrant functions that could be exploited.",
+      "evidence": [
+        "Unsafe external calls in TokenUtils without reentrancy protection (Finding 1)",
+        "Lack of SafeMath protection in critical calculations (Finding 5)",
+        "Centralized admin controls create single-point failure risks (Finding 2)"
+      ],
+      "raw": "```json\n{\n  \"reason\": \"The labels SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) are justified due to clear evidence of arithmetic vulnerabilities and unsafe external calls. The findings demonstrate unprotected math operations and reentrant functions that could be exploited.\",\n  \"evidence\": [\n    \"Unsafe external calls in TokenUtils without reentrancy protection (Finding 1)\",\n    \"Lack of SafeMath protection in critical calculations (Finding 5)\",\n    \"Centralized admin controls create single-point failure risks (Finding 2)\"\n  ]\n}\n```"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "a8aedd2d-76bd-45f2-b0ea-2d3425424cac",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 7,
+        "full_report_chars": 3185,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

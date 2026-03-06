@@ -1,0 +1,254 @@
+{
+  "address": "0x009109ab7b8caff748cda2f272f36043528bef2c",
+  "session_id": "de870d4f-38c4-4087-9d69-394c442f9979",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-105 applies due to unchecked call return values in transferFrom and WETH withdrawal enabling reentrancy and unauthorized transfers. SWC-107 covers timestamp dependency in approval functions which could be manipulated by miners. Evidence: TokenUtils.pullTokensIfNeeded uses transferFrom without origin validation (SWC-105); TokenUtils.withdrawWeth enables reentrancy via ETH callback (SWC-105); DFSRegistry uses block.timestamp for timing without safeguards (SWC-107)",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 2.5, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"TokenUtils.pullTokensIfNeeded uses transferFrom without origin validation (SWC-105)\", \"TokenUtils.withdrawWeth enables reentrancy via ETH callback (SWC-105)\", \"DFSRegistry uses block.timestamp for timing without safeguards (SWC-107)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-105 applies due to unchecked call return values in transferFrom and WETH withdrawal enabling reentrancy and unauthorized transfers. SWC-107 covers timestamp dependency in approval functions which could be manipulated by miners.\\\",\\n  \\\"evidence\\\": [\\n    \\\"TokenUtils.pullTokensIfNeeded uses transferFrom without origin validation (SWC-105)\\\",\\n    \\\"TokenUtils.withdrawWeth enables reentrancy via ETH callback (SWC-105)\\\",\\n    \\\"DFSRegistry uses block.timestamp for timing without safeguards (SWC-107)\\\"\\n  ]\\n}\", \"reason\": \"SWC-105 applies due to unchecked call return values in transferFrom and WETH withdrawal enabling reentrancy and unauthorized transfers. SWC-107 covers timestamp dependency in approval functions which could be manipulated by miners.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3221,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_210653/deepseek_school/contracts/0x009109ab7b8caff748cda2f272f36043528bef2c/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 1376.6241688728333,
+  "gt_swc_set": "SWC-101|SWC-105|SWC-106",
+  "error": "",
+  "raw": {
+    "address": "0x009109ab7b8caff748cda2f272f36043528bef2c",
+    "model": "deepseek_school",
+    "session_id": "de870d4f-38c4-4087-9d69-394c442f9979",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Missing Zero-Address Checks in AdminVault Role Changes",
+        "Severity": "Medium",
+        "Description": "The AdminVault contract's changeOwner and changeAdmin functions lack zero-address validation, allowing privileged roles to be set to address(0). This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Permanent loss of administrative control if roles are accidentally or maliciously set to address(0), potentially bricking the contract system.",
+        "Location": "AdminVault.sol: changeOwner() and changeAdmin() functions; Static Analysis: missing-zero-check findings"
+      },
+      {
+        "Issue": "Timestamp Dependency in Contract Change Approvals",
+        "Severity": "Medium",
+        "Description": "DFSRegistry's approveContractChange and approveWaitPeriodChange functions use block.timestamp for timing checks without SafeMath protection. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Potential for premature approval of contract changes if block timestamps are manipulated, allowing unauthorized contract upgrades.",
+        "Location": "DFSRegistry.sol: approveContractChange() and approveWaitPeriodChange(); Static Analysis: timestamp findings"
+      },
+      {
+        "Issue": "Arbitrary ERC20 TransferFrom in TokenUtils",
+        "Severity": "Medium",
+        "Description": "TokenUtils.pullTokensIfNeeded uses transferFrom with arbitrary _from address without proper origin validation. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Potential unauthorized token transfers if calling contracts don't properly validate the _from parameter, could lead to token theft.",
+        "Location": "TokenUtils.sol: pullTokensIfNeeded(); Static Analysis: arbitrary-send-erc20 finding"
+      },
+      {
+        "Issue": "Checks-Effects-Interactions Pattern Violation",
+        "Severity": "Medium",
+        "Description": "Multiple functions (withdrawStuckFunds, pullTokensIfNeeded) violate the checks-effects-interactions pattern by performing external calls before state updates. This issue appears in the smart contract code only.",
+        "Impact": "Increased reentrancy risk if state modifications are added later, potential for fund loss or state inconsistency.",
+        "Location": "AdminAuth.sol: withdrawStuckFunds(); TokenUtils.sol: pullTokensIfNeeded()"
+      },
+      {
+        "Issue": "Reentrancy Vulnerability in WETH Withdrawal",
+        "Severity": "Medium",
+        "Description": "TokenUtils.withdrawWeth function can be re-entered via fallback function when ETH is received. This issue appears in the smart contract code only.",
+        "Impact": "Enables reentrancy attacks into calling contracts, potential manipulation of contract state and fund theft.",
+        "Location": "TokenUtils.sol: withdrawWeth() function"
+      },
+      {
+        "Issue": "Incorrect ERC20 Interface Implementation",
+        "Severity": "Medium",
+        "Description": "IWETH interface has incorrect ERC20 function signatures. This issue appears in the static analysis results only.",
+        "Impact": "Potential compatibility issues with standard ERC20 tokens, may cause function call failures.",
+        "Location": "Static Analysis: erc20-interface finding"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T22:10:04.413816",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "de870d4f-38c4-4087-9d69-394c442f9979",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-_chdt0b_/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.7.6"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1376.6241688728333,
+        "total_tasks": 12
+      },
+      "execution_time": 1376.6241688728333,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The AdminVault contract's changeOwner and changeAdmin functions lack zero-address validation, allowing privileged roles to be set to address(0). This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Permanent loss of administrative control if roles are accidentally or maliciously set to address(0), potentially bricking the contract system.",
+          "Issue": "Missing Zero-Address Checks in AdminVault Role Changes",
+          "Location": "AdminVault.sol: changeOwner() and changeAdmin() functions; Static Analysis: missing-zero-check findings",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "DFSRegistry's approveContractChange and approveWaitPeriodChange functions use block.timestamp for timing checks without SafeMath protection. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Potential for premature approval of contract changes if block timestamps are manipulated, allowing unauthorized contract upgrades.",
+          "Issue": "Timestamp Dependency in Contract Change Approvals",
+          "Location": "DFSRegistry.sol: approveContractChange() and approveWaitPeriodChange(); Static Analysis: timestamp findings",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "TokenUtils.pullTokensIfNeeded uses transferFrom with arbitrary _from address without proper origin validation. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Potential unauthorized token transfers if calling contracts don't properly validate the _from parameter, could lead to token theft.",
+          "Issue": "Arbitrary ERC20 TransferFrom in TokenUtils",
+          "Location": "TokenUtils.sol: pullTokensIfNeeded(); Static Analysis: arbitrary-send-erc20 finding",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Multiple functions (withdrawStuckFunds, pullTokensIfNeeded) violate the checks-effects-interactions pattern by performing external calls before state updates. This issue appears in the smart contract code only.",
+          "Impact": "Increased reentrancy risk if state modifications are added later, potential for fund loss or state inconsistency.",
+          "Issue": "Checks-Effects-Interactions Pattern Violation",
+          "Location": "AdminAuth.sol: withdrawStuckFunds(); TokenUtils.sol: pullTokensIfNeeded()",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "TokenUtils.withdrawWeth function can be re-entered via fallback function when ETH is received. This issue appears in the smart contract code only.",
+          "Impact": "Enables reentrancy attacks into calling contracts, potential manipulation of contract state and fund theft.",
+          "Issue": "Reentrancy Vulnerability in WETH Withdrawal",
+          "Location": "TokenUtils.sol: withdrawWeth() function",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "IWETH interface has incorrect ERC20 function signatures. This issue appears in the static analysis results only.",
+          "Impact": "Potential compatibility issues with standard ERC20 tokens, may cause function call failures.",
+          "Issue": "Incorrect ERC20 Interface Implementation",
+          "Location": "Static Analysis: erc20-interface finding",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The AdminVault contract's changeOwner and changeAdmin functions lack zero-address validation, allowing privileged roles to be set to address(0). This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Permanent loss of administrative control if roles are accidentally or maliciously set to address(0), potentially bricking the contract system.",
+          "Issue": "Missing Zero-Address Checks in AdminVault Role Changes",
+          "Location": "AdminVault.sol: changeOwner() and changeAdmin() functions; Static Analysis: missing-zero-check findings",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Missing Zero-Address Checks in AdminVault Role Changes\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The AdminVault contract's changeOwner and changeAdmin functions lack zero-address validation, allowing privileged roles to be set to address(0). This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Permanent loss of administrative control if roles are accidentally or maliciously set to address(0), potentially bricking the contract system.\",\n    \"Location\": \"AdminVault.sol: changeOwner() and changeAdmin() functions; Static Analysis: missing-zero-check findings\"\n  },\n  {\n    \"Issue\": \"Timestamp Dependency in Contract Change Approvals\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"DFSRegistry's approveContractChange and approveWaitPeriodChange functions use block.timestamp for timing checks without SafeMath protection. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Potential for premature approval of contract changes if block timestamps are manipulated, allowing unauthorized contract upgrades.\",\n    \"Location\": \"DFSRegistry.sol: approveContractChange() and approveWaitPeriodChange(); Static Analysis: timestamp findings\"\n  },\n  {\n    \"Issue\": \"Arbitrary ERC20 TransferFrom in TokenUtils\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"TokenUtils.pullTokensIfNeeded uses transferFrom with arbitrary _from address without proper origin validation. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Potential unauthorized token transfers if calling contracts don't properly validate the _from parameter, could lead to token theft.\",\n    \"Location\": \"TokenUtils.sol: pullTokensIfNeeded(); Static Analysis: arbitrary-send-erc20 finding\"\n  },\n  {\n    \"Issue\": \"Checks-Effects-Interactions Pattern Violation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Multiple functions (withdrawStuckFunds, pullTokensIfNeeded) violate the checks-effects-interactions pattern by performing external calls before state updates. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Increased reentrancy risk if state modifications are added later, potential for fund loss or state inconsistency.\",\n    \"Location\": \"AdminAuth.sol: withdrawStuckFunds(); TokenUtils.sol: pullTokensIfNeeded()\"\n  },\n  {\n    \"Issue\": \"Reentrancy Vulnerability in WETH Withdrawal\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"TokenUtils.withdrawWeth function can be re-entered via fallback function when ETH is received. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Enables reentrancy attacks into calling contracts, potential manipulation of contract state and fund theft.\",\n    \"Location\": \"TokenUtils.sol: withdrawWeth() function\"\n  },\n  {\n    \"Issue\": \"Incorrect ERC20 Interface Implementation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"IWETH interface has incorrect ERC20 function signatures. This issue appears in the static analysis results only.\",\n    \"Impact\": \"Potential compatibility issues with standard ERC20 tokens, may cause function call failures.\",\n    \"Location\": \"Static Analysis: erc20-interface finding\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "de870d4f-38c4-4087-9d69-394c442f9979",
+      "severity_breakdown": {
+        "High": 0,
+        "Low": 0,
+        "Medium": 6
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-105"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 2.5,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [
+          "re:arbitrary-send"
+        ],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-105(2.5)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-105",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-105",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-105|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-105 applies due to unchecked call return values in transferFrom and WETH withdrawal enabling reentrancy and unauthorized transfers. SWC-107 covers timestamp dependency in approval functions which could be manipulated by miners. Evidence: TokenUtils.pullTokensIfNeeded uses transferFrom without origin validation (SWC-105); TokenUtils.withdrawWeth enables reentrancy via ETH callback (SWC-105); DFSRegistry uses block.timestamp for timing without safeguards (SWC-107)",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 2.5, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"TokenUtils.pullTokensIfNeeded uses transferFrom without origin validation (SWC-105)\", \"TokenUtils.withdrawWeth enables reentrancy via ETH callback (SWC-105)\", \"DFSRegistry uses block.timestamp for timing without safeguards (SWC-107)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-105 applies due to unchecked call return values in transferFrom and WETH withdrawal enabling reentrancy and unauthorized transfers. SWC-107 covers timestamp dependency in approval functions which could be manipulated by miners.\\\",\\n  \\\"evidence\\\": [\\n    \\\"TokenUtils.pullTokensIfNeeded uses transferFrom without origin validation (SWC-105)\\\",\\n    \\\"TokenUtils.withdrawWeth enables reentrancy via ETH callback (SWC-105)\\\",\\n    \\\"DFSRegistry uses block.timestamp for timing without safeguards (SWC-107)\\\"\\n  ]\\n}\", \"reason\": \"SWC-105 applies due to unchecked call return values in transferFrom and WETH withdrawal enabling reentrancy and unauthorized transfers. SWC-107 covers timestamp dependency in approval functions which could be manipulated by miners.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-105 applies due to unchecked call return values in transferFrom and WETH withdrawal enabling reentrancy and unauthorized transfers. SWC-107 covers timestamp dependency in approval functions which could be manipulated by miners.",
+      "evidence": [
+        "TokenUtils.pullTokensIfNeeded uses transferFrom without origin validation (SWC-105)",
+        "TokenUtils.withdrawWeth enables reentrancy via ETH callback (SWC-105)",
+        "DFSRegistry uses block.timestamp for timing without safeguards (SWC-107)"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-105 applies due to unchecked call return values in transferFrom and WETH withdrawal enabling reentrancy and unauthorized transfers. SWC-107 covers timestamp dependency in approval functions which could be manipulated by miners.\",\n  \"evidence\": [\n    \"TokenUtils.pullTokensIfNeeded uses transferFrom without origin validation (SWC-105)\",\n    \"TokenUtils.withdrawWeth enables reentrancy via ETH callback (SWC-105)\",\n    \"DFSRegistry uses block.timestamp for timing without safeguards (SWC-107)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "de870d4f-38c4-4087-9d69-394c442f9979",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 3221,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

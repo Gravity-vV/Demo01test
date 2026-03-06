@@ -1,0 +1,341 @@
+{
+  "address": "0x009109ab7b8caff748cda2f272f36043528bef2c",
+  "session_id": "f25514e4-04a6-452e-81a9-4ceaad3ed670",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract contains multiple external calls to untrusted contracts in flows like withdrawStuckFunds and executeAction (SWC-107), and shows violations of checks-effects-interactions pattern with state changes occurring before external calls (SWC-107). Additionally, access control issues with critical functions lacking proper owner/admin modifiers were identified (SWC-101). Evidence: Multiple external calls to untrusted contracts identified in withdrawStuckFunds, pullTokensIfNeeded, and executeAction flows; State changes occur before external calls, violating checks-effects-interactions pattern; Critical functions lack proper onlyOwner/onlyAdmin access control modifiers",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Multiple external calls to untrusted contracts identified in withdrawStuckFunds, pullTokensIfNeeded, and executeAction flows\", \"State changes occur before external calls, violating checks-effects-interactions pattern\", \"Critical functions lack proper onlyOwner/onlyAdmin access control modifiers\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple external calls to untrusted contracts in flows like withdrawStuckFunds and executeAction (SWC-107), and shows violations of checks-effects-interactions pattern with state changes occurring before external calls (SWC-107). Additionally, access control issues with critical functions lacking proper owner/admin modifiers were identified (SWC-101).\\\",\\n  \\\"evidence\\\": [\\n    \\\"Multiple external calls to untrusted contracts identified in withdrawStuckFunds, pullTokensIfNeeded, and executeAction flows\\\",\\n    \\\"State changes occur before external calls, violating checks-effects-interactions pattern\\\",\\n    \\\"Critical functions lack proper onlyOwner/onlyAdmin access control modifiers\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple external calls to untrusted contracts in flows like withdrawStuckFunds and executeAction (SWC-107), and shows violations of checks-effects-interactions pattern with state changes occurring before external calls (SWC-107). Additionally, access control issues with critical functions lacking proper owner/admin modifiers were identified (SWC-101).\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1115.9875559806824,
+  "gt_swc_set": "SWC-101|SWC-105|SWC-106",
+  "error": "",
+  "raw": {
+    "address": "0x009109ab7b8caff748cda2f272f36043528bef2c",
+    "model": "deepseek_school",
+    "session_id": "f25514e4-04a6-452e-81a9-4ceaad3ed670",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+        "Severity": "High",
+        "Description": "Of course. Here is the detailed reentrancy analysis for the provided smart contract. *** ## **Reentrancy Analysis Report** ### **1. Issue Analysis** **No reentrancy vulnerabilities were identified... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **Reentrancy Analysis**"
+      },
+      {
+        "Issue": "High Priority Security Issue - Identify all external calls (especially to untrust...",
+        "Severity": "High",
+        "Description": "## Audit Findings: External Calls Analysis ### 1. Issue Analysis **Issue Identified:** Yes, multiple external calls to potentially untrusted contracts were found in the specified flows. **Detailed ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: Identify all external calls (especially to untrusted contracts) in `withdrawStuckFunds`, `pullTokensIfNeeded`, and `executeAction` flows."
+      },
+      {
+        "Issue": "High Priority Security Issue - Check if state changes occur before external calls...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, I have completed the specific audit task of checking for state changes occurring before external calls (violating the checks-effects-interacti... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 3: Check if state changes occur before external calls (violating checks-effects-interactions)."
+      },
+      {
+        "Issue": "High Priority Security Issue - Test cross-function reentrancy in `AdminAuth` (e.g...",
+        "Severity": "High",
+        "Description": "## Audit Report: Cross-Function Reentrancy in AdminAuth ### 1. Issue Analysis **Issue Identified:** Yes, a potential cross-function reentrancy vulnerability exists between `AdminAuth.withdrawStuckFun... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: Test cross-function reentrancy in `AdminAuth` (e.g., `withdrawStuckFunds` during `kill`)."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Integer Overflow/Underflow**...",
+        "Severity": "Low",
+        "Description": "Based on my detailed analysis of the provided smart contract code for the specific audit task of **Integer Overflow/Underflow**, here are my findings: ## 1. Issue Analysis **No integer overflow/unde... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential low impact on contract security and functionality.",
+        "Location": "Task 5: **Integer Overflow/Underflow**"
+      },
+      {
+        "Issue": "High Priority Security Issue - **Access Control Issues**...",
+        "Severity": "High",
+        "Description": "After conducting a thorough audit focused on **Access Control Issues** in the provided Solidity smart contract code, I have identified several critical vulnerabilities and security concerns. Below is ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: **Access Control Issues**"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Review all arithmetic operations in `SafeMath`-wra...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have conducted a focused audit of all arithmetic operations in `SafeMath`-wrapped functions, specifically looking for potential vulnerabilit... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: Review all arithmetic operations in `SafeMath`-wrapped functions (e.g., `pendingWaitTimes` changes, token amounts)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Verify calculations in `TokenUtils` (e.g., `getBal...",
+        "Severity": "High",
+        "Description": "Based on the provided code and the specific audit task to verify calculations in `TokenUtils` (specifically `getBalance` and `pullTokensIfNeeded` with `type(uint256).max`), here is the detailed analys... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: Verify calculations in `TokenUtils` (e.g., `getBalance`, `pullTokensIfNeeded` with `type(uint256).max`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Check unchecked increments in loops (none present ...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code for the specific audit task of checking unchecked increments in loops, I present the following findings: ## 1. Issue Analysis **No issues fou... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 8: Check unchecked increments in loops (none present but confirm)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Validate `onlyOwner`/`onlyAdmin` modifiers cover a...",
+        "Severity": "High",
+        "Description": "After conducting a thorough analysis of the provided smart contract code for the specific audit task of validating that `onlyOwner`/`onlyAdmin` modifiers cover all critical functions (particularly tho... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: Validate `onlyOwner`/`onlyAdmin` modifiers cover all critical functions (e.g., `DFSRegistry` state changes)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Test privilege escalation via `AdminVault.changeAd...",
+        "Severity": "High",
+        "Description": "## Detailed Audit Findings: Privilege Escalation via Missing Zero-Address Checks in `AdminVault.changeAdmin` ### 1. Issue Analysis **Issue Identified: Yes** The `AdminVault.changeAdmin` function la... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: Test privilege escalation via `AdminVault.changeAdmin` (missing zero-address checks)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Ensure `startContractChange` and `approveContractC...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code for the specific audit task of ensuring `startContractChange` and `approveContractChange` are strictly owner-controlled, here are my detailed f... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: Ensure `startContractChange` and `approveContractChange` are strictly owner-controlled."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T19:18:21.589706",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "f25514e4-04a6-452e-81a9-4ceaad3ed670",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-dvffivst/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.7.6"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1115.9875559806824,
+        "total_tasks": 12
+      },
+      "execution_time": 1115.9875559806824,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "Of course. Here is the detailed reentrancy analysis for the provided smart contract.\n\n***\n\n## **Reentrancy Analysis Report**\n\n### **1. Issue Analysis**\n\n**No reentrancy vulnerabilities were identified... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+          "Location": "Task 1: **Reentrancy Analysis**",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: External Calls Analysis\n\n### 1. Issue Analysis\n\n**Issue Identified:** Yes, multiple external calls to potentially untrusted contracts were found in the specified flows.\n\n**Detailed ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Identify all external calls (especially to untrust...",
+          "Location": "Task 2: Identify all external calls (especially to untrusted contracts) in `withdrawStuckFunds`, `pullTokensIfNeeded`, and `executeAction` flows.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have completed the specific audit task of checking for state changes occurring before external calls (violating the checks-effects-interacti... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Check if state changes occur before external calls...",
+          "Location": "Task 3: Check if state changes occur before external calls (violating checks-effects-interactions).",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Report: Cross-Function Reentrancy in AdminAuth\n\n### 1. Issue Analysis\n**Issue Identified:** Yes, a potential cross-function reentrancy vulnerability exists between `AdminAuth.withdrawStuckFun... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Test cross-function reentrancy in `AdminAuth` (e.g...",
+          "Location": "Task 4: Test cross-function reentrancy in `AdminAuth` (e.g., `withdrawStuckFunds` during `kill`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my detailed analysis of the provided smart contract code for the specific audit task of **Integer Overflow/Underflow**, here are my findings:\n\n## 1. Issue Analysis\n\n**No integer overflow/unde... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential low impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Integer Overflow/Underflow**...",
+          "Location": "Task 5: **Integer Overflow/Underflow**",
+          "Severity": "Low"
+        },
+        {
+          "Description": "After conducting a thorough audit focused on **Access Control Issues** in the provided Solidity smart contract code, I have identified several critical vulnerabilities and security concerns. Below is ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Access Control Issues**...",
+          "Location": "Task 9: **Access Control Issues**",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have conducted a focused audit of all arithmetic operations in `SafeMath`-wrapped functions, specifically looking for potential vulnerabilit... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Review all arithmetic operations in `SafeMath`-wra...",
+          "Location": "Task 6: Review all arithmetic operations in `SafeMath`-wrapped functions (e.g., `pendingWaitTimes` changes, token amounts).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on the provided code and the specific audit task to verify calculations in `TokenUtils` (specifically `getBalance` and `pullTokensIfNeeded` with `type(uint256).max`), here is the detailed analys... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Verify calculations in `TokenUtils` (e.g., `getBal...",
+          "Location": "Task 7: Verify calculations in `TokenUtils` (e.g., `getBalance`, `pullTokensIfNeeded` with `type(uint256).max`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code for the specific audit task of checking unchecked increments in loops, I present the following findings:\n\n## 1. Issue Analysis\n\n**No issues fou... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Check unchecked increments in loops (none present ...",
+          "Location": "Task 8: Check unchecked increments in loops (none present but confirm).",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "After conducting a thorough analysis of the provided smart contract code for the specific audit task of validating that `onlyOwner`/`onlyAdmin` modifiers cover all critical functions (particularly tho... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Validate `onlyOwner`/`onlyAdmin` modifiers cover a...",
+          "Location": "Task 10: Validate `onlyOwner`/`onlyAdmin` modifiers cover all critical functions (e.g., `DFSRegistry` state changes).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Detailed Audit Findings: Privilege Escalation via Missing Zero-Address Checks in `AdminVault.changeAdmin`\n\n### 1. Issue Analysis\n**Issue Identified: Yes**  \nThe `AdminVault.changeAdmin` function la... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Test privilege escalation via `AdminVault.changeAd...",
+          "Location": "Task 11: Test privilege escalation via `AdminVault.changeAdmin` (missing zero-address checks).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code for the specific audit task of ensuring `startContractChange` and `approveContractChange` are strictly owner-controlled, here are my detailed f... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Ensure `startContractChange` and `approveContractC...",
+          "Location": "Task 12: Ensure `startContractChange` and `approveContractChange` are strictly owner-controlled.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Of course. Here is the detailed reentrancy analysis for the provided smart contract.\n\n***\n\n## **Reentrancy Analysis Report**\n\n### **1. Issue Analysis**\n\n**No reentrancy vulnerabilities were identified... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+          "Location": "Task 1: **Reentrancy Analysis**",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "f25514e4-04a6-452e-81a9-4ceaad3ed670",
+      "severity_breakdown": {
+        "High": 9,
+        "Low": 1,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract contains multiple external calls to untrusted contracts in flows like withdrawStuckFunds and executeAction (SWC-107), and shows violations of checks-effects-interactions pattern with state changes occurring before external calls (SWC-107). Additionally, access control issues with critical functions lacking proper owner/admin modifiers were identified (SWC-101). Evidence: Multiple external calls to untrusted contracts identified in withdrawStuckFunds, pullTokensIfNeeded, and executeAction flows; State changes occur before external calls, violating checks-effects-interactions pattern; Critical functions lack proper onlyOwner/onlyAdmin access control modifiers",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Multiple external calls to untrusted contracts identified in withdrawStuckFunds, pullTokensIfNeeded, and executeAction flows\", \"State changes occur before external calls, violating checks-effects-interactions pattern\", \"Critical functions lack proper onlyOwner/onlyAdmin access control modifiers\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple external calls to untrusted contracts in flows like withdrawStuckFunds and executeAction (SWC-107), and shows violations of checks-effects-interactions pattern with state changes occurring before external calls (SWC-107). Additionally, access control issues with critical functions lacking proper owner/admin modifiers were identified (SWC-101).\\\",\\n  \\\"evidence\\\": [\\n    \\\"Multiple external calls to untrusted contracts identified in withdrawStuckFunds, pullTokensIfNeeded, and executeAction flows\\\",\\n    \\\"State changes occur before external calls, violating checks-effects-interactions pattern\\\",\\n    \\\"Critical functions lack proper onlyOwner/onlyAdmin access control modifiers\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple external calls to untrusted contracts in flows like withdrawStuckFunds and executeAction (SWC-107), and shows violations of checks-effects-interactions pattern with state changes occurring before external calls (SWC-107). Additionally, access control issues with critical functions lacking proper owner/admin modifiers were identified (SWC-101).\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract contains multiple external calls to untrusted contracts in flows like withdrawStuckFunds and executeAction (SWC-107), and shows violations of checks-effects-interactions pattern with state changes occurring before external calls (SWC-107). Additionally, access control issues with critical functions lacking proper owner/admin modifiers were identified (SWC-101).",
+      "evidence": [
+        "Multiple external calls to untrusted contracts identified in withdrawStuckFunds, pullTokensIfNeeded, and executeAction flows",
+        "State changes occur before external calls, violating checks-effects-interactions pattern",
+        "Critical functions lack proper onlyOwner/onlyAdmin access control modifiers"
+      ],
+      "raw": "{\n  \"reason\": \"The contract contains multiple external calls to untrusted contracts in flows like withdrawStuckFunds and executeAction (SWC-107), and shows violations of checks-effects-interactions pattern with state changes occurring before external calls (SWC-107). Additionally, access control issues with critical functions lacking proper owner/admin modifiers were identified (SWC-101).\",\n  \"evidence\": [\n    \"Multiple external calls to untrusted contracts identified in withdrawStuckFunds, pullTokensIfNeeded, and executeAction flows\",\n    \"State changes occur before external calls, violating checks-effects-interactions pattern\",\n    \"Critical functions lack proper onlyOwner/onlyAdmin access control modifiers\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "f25514e4-04a6-452e-81a9-4ceaad3ed670",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

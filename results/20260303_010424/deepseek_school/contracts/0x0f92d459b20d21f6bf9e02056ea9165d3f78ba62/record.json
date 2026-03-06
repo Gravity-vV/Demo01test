@@ -1,0 +1,325 @@
+{
+  "address": "0x0f92d459b20d21f6bf9e02056ea9165d3f78ba62",
+  "session_id": "17debc24-b9ce-45cb-925e-6b5e9a0b3098",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-101 label is justified due to multiple critical reentrancy vulnerabilities found in exitTokens where external calls precede state changes. The SWC-107 label applies as arithmetic operations lack explicit overflow protection despite SafeERC20 usage, leaving subtraction in exitTokens unprotected. Evidence: exitTokens uses safeTransfer before state changes (Finding 1,2,4); Cross-function reentrancy risk identified via mint calls (Finding 2); Unprotected subtraction in amount - tokenBalance operation (Finding 7)",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"exitTokens uses safeTransfer before state changes (Finding 1,2,4)\", \"Cross-function reentrancy risk identified via mint calls (Finding 2)\", \"Unprotected subtraction in amount - tokenBalance operation (Finding 7)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is justified due to multiple critical reentrancy vulnerabilities found in exitTokens where external calls precede state changes. The SWC-107 label applies as arithmetic operations lack explicit overflow protection despite SafeERC20 usage, leaving subtraction in exitTokens unprotected.\\\",\\n  \\\"evidence\\\": [\\n    \\\"exitTokens uses safeTransfer before state changes (Finding 1,2,4)\\\",\\n    \\\"Cross-function reentrancy risk identified via mint calls (Finding 2)\\\",\\n    \\\"Unprotected subtraction in amount - tokenBalance operation (Finding 7)\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is justified due to multiple critical reentrancy vulnerabilities found in exitTokens where external calls precede state changes. The SWC-107 label applies as arithmetic operations lack explicit overflow protection despite SafeERC20 usage, leaving subtraction in exitTokens unprotected.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1372.1179802417755,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0f92d459b20d21f6bf9e02056ea9165d3f78ba62",
+    "model": "deepseek_school",
+    "session_id": "17debc24-b9ce-45cb-925e-6b5e9a0b3098",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **Yes**, a critical reentrancy vulnerability exists in the `exitTokens` function of the `MintableERC20Predicate` contract. The function uses `safeTransfer` (via `SafeERC20.safe... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **Reentrancy Analysis**"
+      },
+      {
+        "Issue": "High Priority Security Issue - Test `exitTokens` for cross-function reentrancy ri...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the `exitTokens` function in the provided MintableERC20Predicate contract, I have identified a critical cross-function reentrancy vulnerability. ## 1. Issue Analysis **Yes, t... This issue appears in the smart contract code, static analysis results, and retrieved external knowledge.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: Test `exitTokens` for cross-function reentrancy risks when calling `safeTransfer` and `mint` (if token is malicious)."
+      },
+      {
+        "Issue": "High Priority Security Issue - Verify no state changes occur after external calls...",
+        "Severity": "Medium",
+        "Description": "## Audit Findings: State Changes After External Calls in MintableERC20Predicate ### 1. Issue Analysis **Issue Found: No state changes occur after external calls in `lockTokens` and `exitTokens`** Th... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 3: Verify no state changes occur after external calls in `lockTokens` and `exitTokens`."
+      },
+      {
+        "Issue": "High Priority Security Issue - Consider adding a reentrancy guard (e.g., OpenZepp...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Reentrancy Guard for `exitTokens` ### 1. Issue Analysis **Yes, there is a critical issue related to this audit task.** The `exitTokens` function in the `MintableERC20Predicate` con... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: Consider adding a reentrancy guard (e.g., OpenZeppelin’s `ReentrancyGuard`) to `exitTokens`."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Integer Overflow/Underflow Checks**...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code, here are my findings for the **Integer Overflow/Underflow Checks** audit task: ## 1. Issue Analysis **No integer overflow/underflow vulnerab... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 5: **Integer Overflow/Underflow Checks**"
+      },
+      {
+        "Issue": "High Priority Security Issue - **Access Control Review**...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code for the **Access Control Review** task, here are my detailed findings: ## 1. Issue Analysis **Yes, there is a critical access control issue**... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: **Access Control Review**"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Validate arithmetic in `lockTokens` (decoding `uin...",
+        "Severity": "Medium",
+        "Description": "## Security Audit Report: MintableERC20Predicate Arithmetic Validation ### 1. Issue Analysis **Issue Found: Yes** The `MintableERC20Predicate` contract contains two arithmetic operations that are n... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 6: Validate arithmetic in `lockTokens` (decoding `uint256`) and `exitTokens` (subtraction in `amount - tokenBalance`) using SafeMath."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Confirm SafeMath is used for all arithmetic operat...",
+        "Severity": "High",
+        "Description": "## Audit Findings: SafeMath Usage Verification in MintableERC20Predicate **1. Issue Analysis** **Issue Identified**: Yes The audit task was to confirm that SafeMath is used for all arithmetic op... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: Confirm SafeMath is used for all arithmetic operations (currently implicit via SafeERC20)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Ensure `MANAGER_ROLE` is strictly enforced in `loc...",
+        "Severity": "High",
+        "Description": "## Audit Report: MANAGER_ROLE Enforcement in `lockTokens` and `exitTokens` ### 1. Issue Analysis **Issue Identified:** No security vulnerability found. The `MANAGER_ROLE` is correctly and strictly en... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: Ensure `MANAGER_ROLE` is strictly enforced in `lockTokens` and `exitTokens` via `only(MANAGER_ROLE)`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Verify `initialize` is callable only once and rest...",
+        "Severity": "High",
+        "Description": "## Security Audit Report: MintableERC20Predicate `initialize` Function ### 1. Issue Analysis **Issue Found:** Yes The `initialize` function in the `MintableERC20Predicate` contract has a significant... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: Verify `initialize` is callable only once and restricted to deployer (currently uses `initializer` modifier)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Check role assignment logic: `DEFAULT_ADMIN_ROLE` ...",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **Yes, there is a significant issue related to the role assignment logic for `DEFAULT_ADMIN_ROLE`.** The contract `MintableERC20Predicate` inherits from `AccessControlMixin` (wh... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: Check role assignment logic: `DEFAULT_ADMIN_ROLE` should be held by a secure multisig/admin."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Front-Running Vulnerabilities**...",
+        "Severity": "High",
+        "Description": "## Front-Running Vulnerability Audit: MintableERC20Predicate **1. Issue Analysis** - **No front-running vulnerability found** in the MintableERC20Predicate contract. - The contract's design effective... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: **Front-Running Vulnerabilities**"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T04:06:52.763914",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "17debc24-b9ce-45cb-925e-6b5e9a0b3098",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0",
+            "0.6.2",
+            "0.6.6"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '<tmp> --version' running '<tmp> --version' running '<tmp> --version' running '<tmp> --version' running '<tmp> --version' running '<tmp> --version' running '<tmp> --version' running '<tmp> --version' running '<tmp> --version' running '<tmp> --version' running '<tmp> --version' run",
+          "status": "failed"
+        },
+        "total_execution_time": 1372.1179802417755,
+        "total_tasks": 12
+      },
+      "execution_time": 1372.1179802417755,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "### 1. Issue Analysis  \n**Yes**, a critical reentrancy vulnerability exists in the `exitTokens` function of the `MintableERC20Predicate` contract. The function uses `safeTransfer` (via `SafeERC20.safe... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+          "Location": "Task 1: **Reentrancy Analysis**",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the `exitTokens` function in the provided MintableERC20Predicate contract, I have identified a critical cross-function reentrancy vulnerability.\n\n## 1. Issue Analysis\n\n**Yes, t... This issue appears in the smart contract code, static analysis results, and retrieved external knowledge.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Test `exitTokens` for cross-function reentrancy ri...",
+          "Location": "Task 2: Test `exitTokens` for cross-function reentrancy risks when calling `safeTransfer` and `mint` (if token is malicious).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: State Changes After External Calls in MintableERC20Predicate\n\n### 1. Issue Analysis\n**Issue Found: No state changes occur after external calls in `lockTokens` and `exitTokens`**\n\nTh... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Verify no state changes occur after external calls...",
+          "Location": "Task 3: Verify no state changes occur after external calls in `lockTokens` and `exitTokens`.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings: Reentrancy Guard for `exitTokens`\n\n### 1. Issue Analysis\n**Yes, there is a critical issue related to this audit task.** The `exitTokens` function in the `MintableERC20Predicate` con... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Consider adding a reentrancy guard (e.g., OpenZepp...",
+          "Location": "Task 4: Consider adding a reentrancy guard (e.g., OpenZeppelin’s `ReentrancyGuard`) to `exitTokens`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, here are my findings for the **Integer Overflow/Underflow Checks** audit task:\n\n## 1. Issue Analysis\n\n**No integer overflow/underflow vulnerab... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Integer Overflow/Underflow Checks**...",
+          "Location": "Task 5: **Integer Overflow/Underflow Checks**",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code for the **Access Control Review** task, here are my detailed findings:\n\n## 1. Issue Analysis\n\n**Yes, there is a critical access control issue**... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Access Control Review**...",
+          "Location": "Task 8: **Access Control Review**",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Security Audit Report: MintableERC20Predicate Arithmetic Validation\n\n### 1. Issue Analysis\n\n**Issue Found: Yes**\n\nThe `MintableERC20Predicate` contract contains two arithmetic operations that are n... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Validate arithmetic in `lockTokens` (decoding `uin...",
+          "Location": "Task 6: Validate arithmetic in `lockTokens` (decoding `uint256`) and `exitTokens` (subtraction in `amount - tokenBalance`) using SafeMath.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Findings: SafeMath Usage Verification in MintableERC20Predicate\n\n**1. Issue Analysis**  \n**Issue Identified**: Yes  \n\nThe audit task was to confirm that SafeMath is used for all arithmetic op... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Confirm SafeMath is used for all arithmetic operat...",
+          "Location": "Task 7: Confirm SafeMath is used for all arithmetic operations (currently implicit via SafeERC20).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: MANAGER_ROLE Enforcement in `lockTokens` and `exitTokens`\n\n### 1. Issue Analysis\n**Issue Identified:** No security vulnerability found. The `MANAGER_ROLE` is correctly and strictly en... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Ensure `MANAGER_ROLE` is strictly enforced in `loc...",
+          "Location": "Task 9: Ensure `MANAGER_ROLE` is strictly enforced in `lockTokens` and `exitTokens` via `only(MANAGER_ROLE)`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Security Audit Report: MintableERC20Predicate `initialize` Function\n\n### 1. Issue Analysis\n**Issue Found:** Yes\n\nThe `initialize` function in the `MintableERC20Predicate` contract has a significant... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Verify `initialize` is callable only once and rest...",
+          "Location": "Task 10: Verify `initialize` is callable only once and restricted to deployer (currently uses `initializer` modifier).",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n**Yes, there is a significant issue related to the role assignment logic for `DEFAULT_ADMIN_ROLE`.**\n\nThe contract `MintableERC20Predicate` inherits from `AccessControlMixin` (wh... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Check role assignment logic: `DEFAULT_ADMIN_ROLE` ...",
+          "Location": "Task 11: Check role assignment logic: `DEFAULT_ADMIN_ROLE` should be held by a secure multisig/admin.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Front-Running Vulnerability Audit: MintableERC20Predicate\n\n**1. Issue Analysis**\n- **No front-running vulnerability found** in the MintableERC20Predicate contract.\n- The contract's design effective... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Front-Running Vulnerabilities**...",
+          "Location": "Task 12: **Front-Running Vulnerabilities**",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "### 1. Issue Analysis  \n**Yes**, a critical reentrancy vulnerability exists in the `exitTokens` function of the `MintableERC20Predicate` contract. The function uses `safeTransfer` (via `SafeERC20.safe... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+          "Location": "Task 1: **Reentrancy Analysis**",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "17debc24-b9ce-45cb-925e-6b5e9a0b3098",
+      "severity_breakdown": {
+        "High": 9,
+        "Low": 0,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-101 label is justified due to multiple critical reentrancy vulnerabilities found in exitTokens where external calls precede state changes. The SWC-107 label applies as arithmetic operations lack explicit overflow protection despite SafeERC20 usage, leaving subtraction in exitTokens unprotected. Evidence: exitTokens uses safeTransfer before state changes (Finding 1,2,4); Cross-function reentrancy risk identified via mint calls (Finding 2); Unprotected subtraction in amount - tokenBalance operation (Finding 7)",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"exitTokens uses safeTransfer before state changes (Finding 1,2,4)\", \"Cross-function reentrancy risk identified via mint calls (Finding 2)\", \"Unprotected subtraction in amount - tokenBalance operation (Finding 7)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is justified due to multiple critical reentrancy vulnerabilities found in exitTokens where external calls precede state changes. The SWC-107 label applies as arithmetic operations lack explicit overflow protection despite SafeERC20 usage, leaving subtraction in exitTokens unprotected.\\\",\\n  \\\"evidence\\\": [\\n    \\\"exitTokens uses safeTransfer before state changes (Finding 1,2,4)\\\",\\n    \\\"Cross-function reentrancy risk identified via mint calls (Finding 2)\\\",\\n    \\\"Unprotected subtraction in amount - tokenBalance operation (Finding 7)\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is justified due to multiple critical reentrancy vulnerabilities found in exitTokens where external calls precede state changes. The SWC-107 label applies as arithmetic operations lack explicit overflow protection despite SafeERC20 usage, leaving subtraction in exitTokens unprotected.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-101 label is justified due to multiple critical reentrancy vulnerabilities found in exitTokens where external calls precede state changes. The SWC-107 label applies as arithmetic operations lack explicit overflow protection despite SafeERC20 usage, leaving subtraction in exitTokens unprotected.",
+      "evidence": [
+        "exitTokens uses safeTransfer before state changes (Finding 1,2,4)",
+        "Cross-function reentrancy risk identified via mint calls (Finding 2)",
+        "Unprotected subtraction in amount - tokenBalance operation (Finding 7)"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-101 label is justified due to multiple critical reentrancy vulnerabilities found in exitTokens where external calls precede state changes. The SWC-107 label applies as arithmetic operations lack explicit overflow protection despite SafeERC20 usage, leaving subtraction in exitTokens unprotected.\",\n  \"evidence\": [\n    \"exitTokens uses safeTransfer before state changes (Finding 1,2,4)\",\n    \"Cross-function reentrancy risk identified via mint calls (Finding 2)\",\n    \"Unprotected subtraction in amount - tokenBalance operation (Finding 7)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "17debc24-b9ce-45cb-925e-6b5e9a0b3098",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

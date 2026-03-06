@@ -1,0 +1,235 @@
+{
+  "address": "0x005d36beef6cf9844d5cf844dde9507736022ca5",
+  "session_id": "a4cc9078-1d72-470c-b0a9-51deec33f623",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 (Integer Overflow and Underflow) is reasonable because the findings include multiple instances of arithmetic vulnerabilities. The SafeMath ceil function contains potential integer overflow and division by zero issues, while the incorrect percentage calculation and balance deductions also create arithmetic risks. Evidence: SafeMath.ceil function contains potential integer overflow vulnerability; Incorrect percentage calculation in findOnePercent causes 10x token loss; Transfer functions incorrectly deduct full amount creating accounting errors",
+  "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"SafeMath.ceil function contains potential integer overflow vulnerability\", \"Incorrect percentage calculation in findOnePercent causes 10x token loss\", \"Transfer functions incorrectly deduct full amount creating accounting errors\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 (Integer Overflow and Underflow) is reasonable because the findings include multiple instances of arithmetic vulnerabilities. The SafeMath ceil function contains potential integer overflow and division by zero issues, while the incorrect percentage calculation and balance deductions also create arithmetic risks.\\\",\\n  \\\"evidence\\\": [\\n    \\\"SafeMath.ceil function contains potential integer overflow vulnerability\\\",\\n    \\\"Incorrect percentage calculation in findOnePercent causes 10x token loss\\\",\\n    \\\"Transfer functions incorrectly deduct full amount creating accounting errors\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 (Integer Overflow and Underflow) is reasonable because the findings include multiple instances of arithmetic vulnerabilities. The SafeMath ceil function contains potential integer overflow and division by zero issues, while the incorrect percentage calculation and balance deductions also create arithmetic risks.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2508,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_110824/deepseek_school/contracts/0x005d36beef6cf9844d5cf844dde9507736022ca5/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 1778.7845361232758,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x005d36beef6cf9844d5cf844dde9507736022ca5",
+    "model": "deepseek_school",
+    "session_id": "a4cc9078-1d72-470c-b0a9-51deec33f623",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Incorrect Percentage Calculation in findOnePercent Function",
+        "Severity": "High",
+        "Description": "The findOnePercent function incorrectly calculates 10% instead of the intended 1% due to mathematical error in the formula. This issue appears in the smart contract code only.",
+        "Impact": "Users lose 10x more tokens than intended during transfers, causing significant financial harm and disrupting token economics.",
+        "Location": "findOnePercent function (lines 78-81), called by transfer and transferFrom functions"
+      },
+      {
+        "Issue": "Unsafe SafeMath Ceil Function Implementation",
+        "Severity": "High",
+        "Description": "The custom ceil function in SafeMath library contains potential integer overflow and division by zero vulnerabilities. This issue appears in the smart contract code only.",
+        "Impact": "Could cause arithmetic overflows/underflows leading to incorrect token calculations, failed transactions, or contract malfunction.",
+        "Location": "SafeMath.ceil function (lines 32-36)"
+      },
+      {
+        "Issue": "Incorrect Balance Deduction in Transfer Functions",
+        "Severity": "Medium",
+        "Description": "The transfer and transferFrom functions subtract the full amount from sender's balance instead of only the transferred amount, creating accounting discrepancies. This issue appears in the smart contract code only.",
+        "Impact": "Users are charged more tokens than intended (full amount instead of amount minus burn), leading to unexpected balance reductions.",
+        "Location": "transfer function (line 85) and transferFrom function (line 106)"
+      },
+      {
+        "Issue": "Standard ERC-20 Front-Running Vulnerability in Approve Function",
+        "Severity": "Medium",
+        "Description": "The approve function follows the standard ERC-20 pattern susceptible to front-running attacks when reducing allowances. This issue appears in the smart contract code only and is a known ERC-20 limitation.",
+        "Impact": "Spenders can front-run allowance reduction transactions to use old, higher allowances, extracting more tokens than intended.",
+        "Location": "approve function (lines 93-97)"
+      },
+      {
+        "Issue": "Non-Standard Burn Mechanism Implementation",
+        "Severity": "Medium",
+        "Description": "The contract implements a non-standard burn mechanism that deviates from pure ERC-20 behavior, though it contains no owner privileges. This issue appears in the smart contract code only.",
+        "Impact": "May cause integration issues with exchanges and wallets expecting standard ERC-20 behavior, and users may be unaware of burn mechanics.",
+        "Location": "findOnePercent function called by transfer and transferFrom functions"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T11:38:14.717009",
+      "execution_summary": {
+        "completed_tasks": 11,
+        "failed_tasks": 1,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "a4cc9078-1d72-470c-b0a9-51deec33f623",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-bkygkcgl/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1778.7845361232758,
+        "total_tasks": 12
+      },
+      "execution_time": 1778.7845361232758,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "The findOnePercent function incorrectly calculates 10% instead of the intended 1% due to mathematical error in the formula. This issue appears in the smart contract code only.",
+          "Impact": "Users lose 10x more tokens than intended during transfers, causing significant financial harm and disrupting token economics.",
+          "Issue": "Incorrect Percentage Calculation in findOnePercent Function",
+          "Location": "findOnePercent function (lines 78-81), called by transfer and transferFrom functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "The custom ceil function in SafeMath library contains potential integer overflow and division by zero vulnerabilities. This issue appears in the smart contract code only.",
+          "Impact": "Could cause arithmetic overflows/underflows leading to incorrect token calculations, failed transactions, or contract malfunction.",
+          "Issue": "Unsafe SafeMath Ceil Function Implementation",
+          "Location": "SafeMath.ceil function (lines 32-36)",
+          "Severity": "High"
+        },
+        {
+          "Description": "The transfer and transferFrom functions subtract the full amount from sender's balance instead of only the transferred amount, creating accounting discrepancies. This issue appears in the smart contract code only.",
+          "Impact": "Users are charged more tokens than intended (full amount instead of amount minus burn), leading to unexpected balance reductions.",
+          "Issue": "Incorrect Balance Deduction in Transfer Functions",
+          "Location": "transfer function (line 85) and transferFrom function (line 106)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The approve function follows the standard ERC-20 pattern susceptible to front-running attacks when reducing allowances. This issue appears in the smart contract code only and is a known ERC-20 limitation.",
+          "Impact": "Spenders can front-run allowance reduction transactions to use old, higher allowances, extracting more tokens than intended.",
+          "Issue": "Standard ERC-20 Front-Running Vulnerability in Approve Function",
+          "Location": "approve function (lines 93-97)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract implements a non-standard burn mechanism that deviates from pure ERC-20 behavior, though it contains no owner privileges. This issue appears in the smart contract code only.",
+          "Impact": "May cause integration issues with exchanges and wallets expecting standard ERC-20 behavior, and users may be unaware of burn mechanics.",
+          "Issue": "Non-Standard Burn Mechanism Implementation",
+          "Location": "findOnePercent function called by transfer and transferFrom functions",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The findOnePercent function incorrectly calculates 10% instead of the intended 1% due to mathematical error in the formula. This issue appears in the smart contract code only.",
+          "Impact": "Users lose 10x more tokens than intended during transfers, causing significant financial harm and disrupting token economics.",
+          "Issue": "Incorrect Percentage Calculation in findOnePercent Function",
+          "Location": "findOnePercent function (lines 78-81), called by transfer and transferFrom functions",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[{\"Issue\":\"Incorrect Percentage Calculation in findOnePercent Function\",\"Severity\":\"High\",\"Description\":\"The findOnePercent function incorrectly calculates 10% instead of the intended 1% due to mathematical error in the formula. This issue appears in the smart contract code only.\",\"Impact\":\"Users lose 10x more tokens than intended during transfers, causing significant financial harm and disrupting token economics.\",\"Location\":\"findOnePercent function (lines 78-81), called by transfer and transferFrom functions\"},{\"Issue\":\"Unsafe SafeMath Ceil Function Implementation\",\"Severity\":\"High\",\"Description\":\"The custom ceil function in SafeMath library contains potential integer overflow and division by zero vulnerabilities. This issue appears in the smart contract code only.\",\"Impact\":\"Could cause arithmetic overflows/underflows leading to incorrect token calculations, failed transactions, or contract malfunction.\",\"Location\":\"SafeMath.ceil function (lines 32-36)\"},{\"Issue\":\"Incorrect Balance Deduction in Transfer Functions\",\"Severity\":\"Medium\",\"Description\":\"The transfer and transferFrom functions subtract the full amount from sender's balance instead of only the transferred amount, creating accounting discrepancies. This issue appears in the smart contract code only.\",\"Impact\":\"Users are charged more tokens than intended (full amount instead of amount minus burn), leading to unexpected balance reductions.\",\"Location\":\"transfer function (line 85) and transferFrom function (line 106)\"},{\"Issue\":\"Standard ERC-20 Front-Running Vulnerability in Approve Function\",\"Severity\":\"Medium\",\"Description\":\"The approve function follows the standard ERC-20 pattern susceptible to front-running attacks when reducing allowances. This issue appears in the smart contract code only and is a known ERC-20 limitation.\",\"Impact\":\"Spenders can front-run allowance reduction transactions to use old, higher allowances, extracting more tokens than intended.\",\"Location\":\"approve function (lines 93-97)\"},{\"Issue\":\"Non-Standard Burn Mechanism Implementation\",\"Severity\":\"Medium\",\"Description\":\"The contract implements a non-standard burn mechanism that deviates from pure ERC-20 behavior, though it contains no owner privileges. This issue appears in the smart contract code only.\",\"Impact\":\"May cause integration issues with exchanges and wallets expecting standard ERC-20 behavior, and users may be unaware of burn mechanics.\",\"Location\":\"findOnePercent function called by transfer and transferFrom functions\"}]",
+      "model_used": "deepseek_school",
+      "session_id": "a4cc9078-1d72-470c-b0a9-51deec33f623",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 0,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 5.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(5.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 (Integer Overflow and Underflow) is reasonable because the findings include multiple instances of arithmetic vulnerabilities. The SafeMath ceil function contains potential integer overflow and division by zero issues, while the incorrect percentage calculation and balance deductions also create arithmetic risks. Evidence: SafeMath.ceil function contains potential integer overflow vulnerability; Incorrect percentage calculation in findOnePercent causes 10x token loss; Transfer functions incorrectly deduct full amount creating accounting errors",
+    "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"SafeMath.ceil function contains potential integer overflow vulnerability\", \"Incorrect percentage calculation in findOnePercent causes 10x token loss\", \"Transfer functions incorrectly deduct full amount creating accounting errors\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 (Integer Overflow and Underflow) is reasonable because the findings include multiple instances of arithmetic vulnerabilities. The SafeMath ceil function contains potential integer overflow and division by zero issues, while the incorrect percentage calculation and balance deductions also create arithmetic risks.\\\",\\n  \\\"evidence\\\": [\\n    \\\"SafeMath.ceil function contains potential integer overflow vulnerability\\\",\\n    \\\"Incorrect percentage calculation in findOnePercent causes 10x token loss\\\",\\n    \\\"Transfer functions incorrectly deduct full amount creating accounting errors\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 (Integer Overflow and Underflow) is reasonable because the findings include multiple instances of arithmetic vulnerabilities. The SafeMath ceil function contains potential integer overflow and division by zero issues, while the incorrect percentage calculation and balance deductions also create arithmetic risks.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 (Integer Overflow and Underflow) is reasonable because the findings include multiple instances of arithmetic vulnerabilities. The SafeMath ceil function contains potential integer overflow and division by zero issues, while the incorrect percentage calculation and balance deductions also create arithmetic risks.",
+      "evidence": [
+        "SafeMath.ceil function contains potential integer overflow vulnerability",
+        "Incorrect percentage calculation in findOnePercent causes 10x token loss",
+        "Transfer functions incorrectly deduct full amount creating accounting errors"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 (Integer Overflow and Underflow) is reasonable because the findings include multiple instances of arithmetic vulnerabilities. The SafeMath ceil function contains potential integer overflow and division by zero issues, while the incorrect percentage calculation and balance deductions also create arithmetic risks.\",\n  \"evidence\": [\n    \"SafeMath.ceil function contains potential integer overflow vulnerability\",\n    \"Incorrect percentage calculation in findOnePercent causes 10x token loss\",\n    \"Transfer functions incorrectly deduct full amount creating accounting errors\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "a4cc9078-1d72-470c-b0a9-51deec33f623",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 2508,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

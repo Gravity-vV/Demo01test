@@ -1,0 +1,240 @@
+{
+  "address": "0x064d54c858f884698ef34b1cae5d989a2414e1b6",
+  "session_id": "82df7df2-7f7d-4b4a-8a9e-b5fd3270d4c0",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-105 label applies due to the uncontrolled ETH withdrawal vulnerability in _withdraw() allowing arbitrary fund transfers. SWC-107 is justified because multiple minting functions perform external calls before state updates, creating reentrancy risks. Evidence: Arbitrary ETH transfer in _withdraw() without access controls (SWC-105); Minting functions make external calls before state changes (SWC-107)",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 4.5, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"kw:arbitrary-send-eth\", \"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Arbitrary ETH transfer in _withdraw() without access controls (SWC-105)\", \"Minting functions make external calls before state changes (SWC-107)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-105 label applies due to the uncontrolled ETH withdrawal vulnerability in _withdraw() allowing arbitrary fund transfers. SWC-107 is justified because multiple minting functions perform external calls before state updates, creating reentrancy risks.\\\",\\n  \\\"evidence\\\": [\\\"Arbitrary ETH transfer in _withdraw() without access controls (SWC-105)\\\", \\\"Minting functions make external calls before state changes (SWC-107)\\\"]\\n}\", \"reason\": \"The SWC-105 label applies due to the uncontrolled ETH withdrawal vulnerability in _withdraw() allowing arbitrary fund transfers. SWC-107 is justified because multiple minting functions perform external calls before state updates, creating reentrancy risks.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2651,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x064d54c858f884698ef34b1cae5d989a2414e1b6/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 547.5773770809174,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x064d54c858f884698ef34b1cae5d989a2414e1b6",
+    "model": "deepseek_school",
+    "session_id": "82df7df2-7f7d-4b4a-8a9e-b5fd3270d4c0",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Arbitrary ETH Transfer Vulnerability",
+        "Severity": "High",
+        "Description": "The _withdraw function in WithdrawFairly contract allows sending arbitrary amounts of ETH to any address without proper access control validation. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Potential loss of contract funds if called by unauthorized users due to missing access control checks.",
+        "Location": "WithdrawFairly._withdraw() function and static analysis finding 'arbitrary-send-eth'"
+      },
+      {
+        "Issue": "Reentrancy Risk in Minting Functions",
+        "Severity": "Medium",
+        "Description": "Multiple minting functions (whitelistSalesMint, preSalesMint, publicSalesMint) perform external calls before updating state and emitting events, creating reentrancy risks. This issue is identified in the static analysis results. This issue appears in the auditing result.",
+        "Impact": "Potential reentrancy attacks during token transfers if the recipient is a malicious contract.",
+        "Location": "Static analysis finding 'reentrancy-events' for WhattyClub minting functions"
+      },
+      {
+        "Issue": "Timestamp Dependence for Sales Timing",
+        "Severity": "Low",
+        "Description": "Sales state functions (whitelistSalesIsOpen, preSalesIsOpen, publicSalesIsOpen) rely on block timestamps for critical timing logic. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Miners can manipulate block timestamps to affect sale timing, potentially allowing unauthorized early access.",
+        "Location": "WhattyClub sales state functions and static analysis finding 'timestamp'"
+      },
+      {
+        "Issue": "External Calls in Loops",
+        "Severity": "Low",
+        "Description": "Multiple functions contain external calls within loops, which could lead to gas limitations and failed transactions. This issue is identified in the static analysis results. This issue appears in the auditing result.",
+        "Impact": "Potential transaction failures and gas exhaustion when processing multiple recipients or token transfers.",
+        "Location": "Static analysis findings 'calls-loop' for WithdrawFairly._withdraw() and ERC721._checkOnERC721Received()"
+      },
+      {
+        "Issue": "Variable Shadowing",
+        "Severity": "Low",
+        "Description": "The walletOfOwner function parameter _owner shadows the Ownable contract's _owner state variable. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential confusion and unintended behavior when accessing the _owner variable within the function scope.",
+        "Location": "WhattyClub.walletOfOwner() function and static analysis finding 'shadowing-local'"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T12:46:41.239714",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "82df7df2-7f7d-4b4a-8a9e-b5fd3270d4c0",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-he_1s94l/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.8.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 547.5773770809174,
+        "total_tasks": 0
+      },
+      "execution_time": 547.5773770809174,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "The _withdraw function in WithdrawFairly contract allows sending arbitrary amounts of ETH to any address without proper access control validation. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Potential loss of contract funds if called by unauthorized users due to missing access control checks.",
+          "Issue": "Arbitrary ETH Transfer Vulnerability",
+          "Location": "WithdrawFairly._withdraw() function and static analysis finding 'arbitrary-send-eth'",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple minting functions (whitelistSalesMint, preSalesMint, publicSalesMint) perform external calls before updating state and emitting events, creating reentrancy risks. This issue is identified in the static analysis results. This issue appears in the auditing result.",
+          "Impact": "Potential reentrancy attacks during token transfers if the recipient is a malicious contract.",
+          "Issue": "Reentrancy Risk in Minting Functions",
+          "Location": "Static analysis finding 'reentrancy-events' for WhattyClub minting functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Sales state functions (whitelistSalesIsOpen, preSalesIsOpen, publicSalesIsOpen) rely on block timestamps for critical timing logic. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Miners can manipulate block timestamps to affect sale timing, potentially allowing unauthorized early access.",
+          "Issue": "Timestamp Dependence for Sales Timing",
+          "Location": "WhattyClub sales state functions and static analysis finding 'timestamp'",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Multiple functions contain external calls within loops, which could lead to gas limitations and failed transactions. This issue is identified in the static analysis results. This issue appears in the auditing result.",
+          "Impact": "Potential transaction failures and gas exhaustion when processing multiple recipients or token transfers.",
+          "Issue": "External Calls in Loops",
+          "Location": "Static analysis findings 'calls-loop' for WithdrawFairly._withdraw() and ERC721._checkOnERC721Received()",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The walletOfOwner function parameter _owner shadows the Ownable contract's _owner state variable. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential confusion and unintended behavior when accessing the _owner variable within the function scope.",
+          "Issue": "Variable Shadowing",
+          "Location": "WhattyClub.walletOfOwner() function and static analysis finding 'shadowing-local'",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The _withdraw function in WithdrawFairly contract allows sending arbitrary amounts of ETH to any address without proper access control validation. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Potential loss of contract funds if called by unauthorized users due to missing access control checks.",
+          "Issue": "Arbitrary ETH Transfer Vulnerability",
+          "Location": "WithdrawFairly._withdraw() function and static analysis finding 'arbitrary-send-eth'",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Arbitrary ETH Transfer Vulnerability\",\n    \"Severity\": \"High\",\n    \"Description\": \"The _withdraw function in WithdrawFairly contract allows sending arbitrary amounts of ETH to any address without proper access control validation. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Potential loss of contract funds if called by unauthorized users due to missing access control checks.\",\n    \"Location\": \"WithdrawFairly._withdraw() function and static analysis finding 'arbitrary-send-eth'\"\n  },\n  {\n    \"Issue\": \"Reentrancy Risk in Minting Functions\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Multiple minting functions (whitelistSalesMint, preSalesMint, publicSalesMint) perform external calls before updating state and emitting events, creating reentrancy risks. This issue is identified in the static analysis results.\",\n    \"Impact\": \"Potential reentrancy attacks during token transfers if the recipient is a malicious contract.\",\n    \"Location\": \"Static analysis finding 'reentrancy-events' for WhattyClub minting functions\"\n  },\n  {\n    \"Issue\": \"Timestamp Dependence for Sales Timing\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Sales state functions (whitelistSalesIsOpen, preSalesIsOpen, publicSalesIsOpen) rely on block timestamps for critical timing logic. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Miners can manipulate block timestamps to affect sale timing, potentially allowing unauthorized early access.\",\n    \"Location\": \"WhattyClub sales state functions and static analysis finding 'timestamp'\"\n  },\n  {\n    \"Issue\": \"External Calls in Loops\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Multiple functions contain external calls within loops, which could lead to gas limitations and failed transactions. This issue is identified in the static analysis results.\",\n    \"Impact\": \"Potential transaction failures and gas exhaustion when processing multiple recipients or token transfers.\",\n    \"Location\": \"Static analysis findings 'calls-loop' for WithdrawFairly._withdraw() and ERC721._checkOnERC721Received()\"\n  },\n  {\n    \"Issue\": \"Variable Shadowing\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The walletOfOwner function parameter _owner shadows the Ownable contract's _owner state variable. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential confusion and unintended behavior when accessing the _owner variable within the function scope.\",\n    \"Location\": \"WhattyClub.walletOfOwner() function and static analysis finding 'shadowing-local'\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "82df7df2-7f7d-4b4a-8a9e-b5fd3270d4c0",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 3,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-105"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 4.5,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [
+          "kw:arbitrary-send-eth",
+          "re:arbitrary-send"
+        ],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-105(4.5)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-105",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-105",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-105|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-105 label applies due to the uncontrolled ETH withdrawal vulnerability in _withdraw() allowing arbitrary fund transfers. SWC-107 is justified because multiple minting functions perform external calls before state updates, creating reentrancy risks. Evidence: Arbitrary ETH transfer in _withdraw() without access controls (SWC-105); Minting functions make external calls before state changes (SWC-107)",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 4.5, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"kw:arbitrary-send-eth\", \"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Arbitrary ETH transfer in _withdraw() without access controls (SWC-105)\", \"Minting functions make external calls before state changes (SWC-107)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-105 label applies due to the uncontrolled ETH withdrawal vulnerability in _withdraw() allowing arbitrary fund transfers. SWC-107 is justified because multiple minting functions perform external calls before state updates, creating reentrancy risks.\\\",\\n  \\\"evidence\\\": [\\\"Arbitrary ETH transfer in _withdraw() without access controls (SWC-105)\\\", \\\"Minting functions make external calls before state changes (SWC-107)\\\"]\\n}\", \"reason\": \"The SWC-105 label applies due to the uncontrolled ETH withdrawal vulnerability in _withdraw() allowing arbitrary fund transfers. SWC-107 is justified because multiple minting functions perform external calls before state updates, creating reentrancy risks.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-105 label applies due to the uncontrolled ETH withdrawal vulnerability in _withdraw() allowing arbitrary fund transfers. SWC-107 is justified because multiple minting functions perform external calls before state updates, creating reentrancy risks.",
+      "evidence": [
+        "Arbitrary ETH transfer in _withdraw() without access controls (SWC-105)",
+        "Minting functions make external calls before state changes (SWC-107)"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-105 label applies due to the uncontrolled ETH withdrawal vulnerability in _withdraw() allowing arbitrary fund transfers. SWC-107 is justified because multiple minting functions perform external calls before state updates, creating reentrancy risks.\",\n  \"evidence\": [\"Arbitrary ETH transfer in _withdraw() without access controls (SWC-105)\", \"Minting functions make external calls before state changes (SWC-107)\"]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "82df7df2-7f7d-4b4a-8a9e-b5fd3270d4c0",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 2651,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

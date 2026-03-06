@@ -1,0 +1,237 @@
+{
+  "address": "0x005d36beef6cf9844d5cf844dde9507736022ca5",
+  "session_id": "89f3c2b0-bab9-4a3a-a0e7-48aeb1332450",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-101 label applies due to the integer overflow in findOnePercent when handling extreme values, while SWC-107 fits because the reentrancy vulnerability in transferFrom violates the checks-effects-interactions pattern. Evidence: Integer overflow in findOnePercent with large inputs causes transaction reverts (SWC-101); transferFrom updates allowance after external calls, enabling reentrancy attacks (SWC-107)",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Integer overflow in findOnePercent with large inputs causes transaction reverts (SWC-101)\", \"transferFrom updates allowance after external calls, enabling reentrancy attacks (SWC-107)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label applies due to the integer overflow in findOnePercent when handling extreme values, while SWC-107 fits because the reentrancy vulnerability in transferFrom violates the checks-effects-interactions pattern.\\\",\\n  \\\"evidence\\\": [\\\"Integer overflow in findOnePercent with large inputs causes transaction reverts (SWC-101)\\\", \\\"transferFrom updates allowance after external calls, enabling reentrancy attacks (SWC-107)\\\"]\\n}\", \"reason\": \"The SWC-101 label applies due to the integer overflow in findOnePercent when handling extreme values, while SWC-107 fits because the reentrancy vulnerability in transferFrom violates the checks-effects-interactions pattern.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3982,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x005d36beef6cf9844d5cf844dde9507736022ca5/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 1678.9655449390411,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x005d36beef6cf9844d5cf844dde9507736022ca5",
+    "model": "deepseek_school",
+    "session_id": "89f3c2b0-bab9-4a3a-a0e7-48aeb1332450",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy Vulnerability in transferFrom Function",
+        "Severity": "High",
+        "Description": "The transferFrom function violates the Checks-Effects-Interactions pattern by updating the allowance mapping after emitting Transfer events, creating a reentrancy vulnerability. This issue appears in the smart contract code only and was identified through manual audit analysis.",
+        "Impact": "An attacker could re-enter the contract and drain tokens from approved addresses multiple times before the allowance is properly updated, potentially resulting in significant token loss.",
+        "Location": "transferFrom function in WenCoinbase contract, allowance update occurs after Transfer events"
+      },
+      {
+        "Issue": "Integer Overflow in findOnePercent Function",
+        "Severity": "High",
+        "Description": "The findOnePercent function contains an integer overflow vulnerability when handling extreme values (e.g., type(uint256).max) due to multiplication before division. This issue appears in the smart contract code only and was identified through manual testing with extreme values.",
+        "Impact": "Transactions involving large amounts will revert, blocking legitimate transfers and potentially disrupting contract functionality, especially for users attempting to transfer their entire balance.",
+        "Location": "findOnePercent function in WenCoinbase contract, roundAmount.mul(oneHundredPercent) operation"
+      },
+      {
+        "Issue": "ERC-20 Allowance Race Condition",
+        "Severity": "Medium",
+        "Description": "The approve function is susceptible to the ERC-20 allowance race condition as it allows changing allowances from non-zero values without prior reset to zero. This issue appears in the smart contract code only and follows the known ERC-20 vulnerability pattern.",
+        "Impact": "A malicious spender could front-run allowance changes to spend more tokens than intended, potentially resulting in financial loss for users who grant large allowances.",
+        "Location": "approve function in WenCoinbase contract, line ~95-99"
+      },
+      {
+        "Issue": "Front-Running Vulnerability in Burn Mechanism",
+        "Severity": "Medium",
+        "Description": "The deterministic burn calculation in transfer and transferFrom functions creates front-running opportunities where attackers can predict and profit from supply reductions. This issue appears in the smart contract code only due to the predictable ceil-based percentage calculation.",
+        "Impact": "Sophisticated users can front-run transactions to profit from predictable token burning, undermining the intended deflationary mechanism and creating unfair advantages.",
+        "Location": "findOnePercent function and transfer/transferFrom functions in WenCoinbase contract"
+      },
+      {
+        "Issue": "Incorrect Percentage Calculation in findOnePercent",
+        "Severity": "Medium",
+        "Description": "The findOnePercent function actually calculates 10% instead of 1% due to incorrect divisor (1000 instead of 100), and the function name is misleading. This issue appears in the smart contract code only.",
+        "Impact": "The token burning mechanism burns 10x more tokens than intended based on the function name, significantly altering the intended tokenomics and deflation rate.",
+        "Location": "findOnePercent function in WenCoinbase contract, div(1000) operation instead of div(100)"
+      },
+      {
+        "Issue": "Centralization Risk from Initial Token Distribution",
+        "Severity": "Medium",
+        "Description": "The contract deployer receives 100% of the initial token supply, creating significant centralization risk and privileged control over token economics. This issue appears in the smart contract code only.",
+        "Impact": "The contract owner can manipulate token supply dynamics, influence deflation rates through strategic transfers, and control market liquidity, undermining post-deployment immutability.",
+        "Location": "Constructor and _totalSupply assignment in WenCoinbase contract"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T01:32:34.618698",
+      "execution_summary": {
+        "completed_tasks": 11,
+        "failed_tasks": 1,
+        "session_id": "89f3c2b0-bab9-4a3a-a0e7-48aeb1332450",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-femfzewp/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1678.9655449390411,
+        "total_tasks": 12
+      },
+      "execution_time": 1678.9655449390411,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The transferFrom function violates the Checks-Effects-Interactions pattern by updating the allowance mapping after emitting Transfer events, creating a reentrancy vulnerability. This issue appears in the smart contract code only and was identified through manual audit analysis.",
+          "Impact": "An attacker could re-enter the contract and drain tokens from approved addresses multiple times before the allowance is properly updated, potentially resulting in significant token loss.",
+          "Issue": "Reentrancy Vulnerability in transferFrom Function",
+          "Location": "transferFrom function in WenCoinbase contract, allowance update occurs after Transfer events",
+          "Severity": "High"
+        },
+        {
+          "Description": "The findOnePercent function contains an integer overflow vulnerability when handling extreme values (e.g., type(uint256).max) due to multiplication before division. This issue appears in the smart contract code only and was identified through manual testing with extreme values.",
+          "Impact": "Transactions involving large amounts will revert, blocking legitimate transfers and potentially disrupting contract functionality, especially for users attempting to transfer their entire balance.",
+          "Issue": "Integer Overflow in findOnePercent Function",
+          "Location": "findOnePercent function in WenCoinbase contract, roundAmount.mul(oneHundredPercent) operation",
+          "Severity": "High"
+        },
+        {
+          "Description": "The approve function is susceptible to the ERC-20 allowance race condition as it allows changing allowances from non-zero values without prior reset to zero. This issue appears in the smart contract code only and follows the known ERC-20 vulnerability pattern.",
+          "Impact": "A malicious spender could front-run allowance changes to spend more tokens than intended, potentially resulting in financial loss for users who grant large allowances.",
+          "Issue": "ERC-20 Allowance Race Condition",
+          "Location": "approve function in WenCoinbase contract, line ~95-99",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The deterministic burn calculation in transfer and transferFrom functions creates front-running opportunities where attackers can predict and profit from supply reductions. This issue appears in the smart contract code only due to the predictable ceil-based percentage calculation.",
+          "Impact": "Sophisticated users can front-run transactions to profit from predictable token burning, undermining the intended deflationary mechanism and creating unfair advantages.",
+          "Issue": "Front-Running Vulnerability in Burn Mechanism",
+          "Location": "findOnePercent function and transfer/transferFrom functions in WenCoinbase contract",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The findOnePercent function actually calculates 10% instead of 1% due to incorrect divisor (1000 instead of 100), and the function name is misleading. This issue appears in the smart contract code only.",
+          "Impact": "The token burning mechanism burns 10x more tokens than intended based on the function name, significantly altering the intended tokenomics and deflation rate.",
+          "Issue": "Incorrect Percentage Calculation in findOnePercent",
+          "Location": "findOnePercent function in WenCoinbase contract, div(1000) operation instead of div(100)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract deployer receives 100% of the initial token supply, creating significant centralization risk and privileged control over token economics. This issue appears in the smart contract code only.",
+          "Impact": "The contract owner can manipulate token supply dynamics, influence deflation rates through strategic transfers, and control market liquidity, undermining post-deployment immutability.",
+          "Issue": "Centralization Risk from Initial Token Distribution",
+          "Location": "Constructor and _totalSupply assignment in WenCoinbase contract",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The transferFrom function violates the Checks-Effects-Interactions pattern by updating the allowance mapping after emitting Transfer events, creating a reentrancy vulnerability. This issue appears in the smart contract code only and was identified through manual audit analysis.",
+          "Impact": "An attacker could re-enter the contract and drain tokens from approved addresses multiple times before the allowance is properly updated, potentially resulting in significant token loss.",
+          "Issue": "Reentrancy Vulnerability in transferFrom Function",
+          "Location": "transferFrom function in WenCoinbase contract, allowance update occurs after Transfer events",
+          "Severity": "High"
+        }
+      },
+      "full_report": "```json\n[\n  {\n    \"Issue\": \"Reentrancy Vulnerability in transferFrom Function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The transferFrom function violates the Checks-Effects-Interactions pattern by updating the allowance mapping after emitting Transfer events, creating a reentrancy vulnerability. This issue appears in the smart contract code only and was identified through manual audit analysis.\",\n    \"Impact\": \"An attacker could re-enter the contract and drain tokens from approved addresses multiple times before the allowance is properly updated, potentially resulting in significant token loss.\",\n    \"Location\": \"transferFrom function in WenCoinbase contract, allowance update occurs after Transfer events\"\n  },\n  {\n    \"Issue\": \"Integer Overflow in findOnePercent Function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The findOnePercent function contains an integer overflow vulnerability when handling extreme values (e.g., type(uint256).max) due to multiplication before division. This issue appears in the smart contract code only and was identified through manual testing with extreme values.\",\n    \"Impact\": \"Transactions involving large amounts will revert, blocking legitimate transfers and potentially disrupting contract functionality, especially for users attempting to transfer their entire balance.\",\n    \"Location\": \"findOnePercent function in WenCoinbase contract, roundAmount.mul(oneHundredPercent) operation\"\n  },\n  {\n    \"Issue\": \"ERC-20 Allowance Race Condition\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The approve function is susceptible to the ERC-20 allowance race condition as it allows changing allowances from non-zero values without prior reset to zero. This issue appears in the smart contract code only and follows the known ERC-20 vulnerability pattern.\",\n    \"Impact\": \"A malicious spender could front-run allowance changes to spend more tokens than intended, potentially resulting in financial loss for users who grant large allowances.\",\n    \"Location\": \"approve function in WenCoinbase contract, line ~95-99\"\n  },\n  {\n    \"Issue\": \"Front-Running Vulnerability in Burn Mechanism\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The deterministic burn calculation in transfer and transferFrom functions creates front-running opportunities where attackers can predict and profit from supply reductions. This issue appears in the smart contract code only due to the predictable ceil-based percentage calculation.\",\n    \"Impact\": \"Sophisticated users can front-run transactions to profit from predictable token burning, undermining the intended deflationary mechanism and creating unfair advantages.\",\n    \"Location\": \"findOnePercent function and transfer/transferFrom functions in WenCoinbase contract\"\n  },\n  {\n    \"Issue\": \"Incorrect Percentage Calculation in findOnePercent\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The findOnePercent function actually calculates 10% instead of 1% due to incorrect divisor (1000 instead of 100), and the function name is misleading. This issue appears in the smart contract code only.\",\n    \"Impact\": \"The token burning mechanism burns 10x more tokens than intended based on the function name, significantly altering the intended tokenomics and deflation rate.\",\n    \"Location\": \"findOnePercent function in WenCoinbase contract, div(1000) operation instead of div(100)\"\n  },\n  {\n    \"Issue\": \"Centralization Risk from Initial Token Distribution\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract deployer receives 100% of the initial token supply, creating significant centralization risk and privileged control over token economics. This issue appears in the smart contract code only.\",\n    \"Impact\": \"The contract owner can manipulate token supply dynamics, influence deflation rates through strategic transfers, and control market liquidity, undermining post-deployment immutability.\",\n    \"Location\": \"Constructor and _totalSupply assignment in WenCoinbase contract\"\n  }\n]\n```",
+      "model_used": "deepseek_school",
+      "session_id": "89f3c2b0-bab9-4a3a-a0e7-48aeb1332450",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 0,
+        "Medium": 4
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-101 label applies due to the integer overflow in findOnePercent when handling extreme values, while SWC-107 fits because the reentrancy vulnerability in transferFrom violates the checks-effects-interactions pattern. Evidence: Integer overflow in findOnePercent with large inputs causes transaction reverts (SWC-101); transferFrom updates allowance after external calls, enabling reentrancy attacks (SWC-107)",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Integer overflow in findOnePercent with large inputs causes transaction reverts (SWC-101)\", \"transferFrom updates allowance after external calls, enabling reentrancy attacks (SWC-107)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label applies due to the integer overflow in findOnePercent when handling extreme values, while SWC-107 fits because the reentrancy vulnerability in transferFrom violates the checks-effects-interactions pattern.\\\",\\n  \\\"evidence\\\": [\\\"Integer overflow in findOnePercent with large inputs causes transaction reverts (SWC-101)\\\", \\\"transferFrom updates allowance after external calls, enabling reentrancy attacks (SWC-107)\\\"]\\n}\", \"reason\": \"The SWC-101 label applies due to the integer overflow in findOnePercent when handling extreme values, while SWC-107 fits because the reentrancy vulnerability in transferFrom violates the checks-effects-interactions pattern.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-101 label applies due to the integer overflow in findOnePercent when handling extreme values, while SWC-107 fits because the reentrancy vulnerability in transferFrom violates the checks-effects-interactions pattern.",
+      "evidence": [
+        "Integer overflow in findOnePercent with large inputs causes transaction reverts (SWC-101)",
+        "transferFrom updates allowance after external calls, enabling reentrancy attacks (SWC-107)"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-101 label applies due to the integer overflow in findOnePercent when handling extreme values, while SWC-107 fits because the reentrancy vulnerability in transferFrom violates the checks-effects-interactions pattern.\",\n  \"evidence\": [\"Integer overflow in findOnePercent with large inputs causes transaction reverts (SWC-101)\", \"transferFrom updates allowance after external calls, enabling reentrancy attacks (SWC-107)\"]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "89f3c2b0-bab9-4a3a-a0e7-48aeb1332450",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 3982,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

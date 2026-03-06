@@ -1,0 +1,240 @@
+{
+  "address": "0x0222c64f84f1e8ea57e0ee8e1038e84c268586bf",
+  "session_id": "7572f74e-a50a-487b-98ce-1340674fc77e",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-105 applies due to unprotected ETH withdrawals allowing arbitrary fund transfers by devs. SWC-107 applies because multiple functions ignore return values from critical external calls like token transfers and reserve checks. Evidence: emergencyWithdraw enables arbitrary ETH transfer without safeguards (Finding 1); _sendProfit performs token transfers without return value checks (Finding 3); Multiple functions ignore return values from getReserves and transfers (Finding 4)",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 4.5, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"kw:arbitrary-send-eth\", \"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"emergencyWithdraw enables arbitrary ETH transfer without safeguards (Finding 1)\", \"_sendProfit performs token transfers without return value checks (Finding 3)\", \"Multiple functions ignore return values from getReserves and transfers (Finding 4)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-105 applies due to unprotected ETH withdrawals allowing arbitrary fund transfers by devs. SWC-107 applies because multiple functions ignore return values from critical external calls like token transfers and reserve checks.\\\",\\n  \\\"evidence\\\": [\\n    \\\"emergencyWithdraw enables arbitrary ETH transfer without safeguards (Finding 1)\\\",\\n    \\\"_sendProfit performs token transfers without return value checks (Finding 3)\\\",\\n    \\\"Multiple functions ignore return values from getReserves and transfers (Finding 4)\\\"\\n  ]\\n}\", \"reason\": \"SWC-105 applies due to unprotected ETH withdrawals allowing arbitrary fund transfers by devs. SWC-107 applies because multiple functions ignore return values from critical external calls like token transfers and reserve checks.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3672,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x0222c64f84f1e8ea57e0ee8e1038e84c268586bf/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 1424.5568072795868,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0222c64f84f1e8ea57e0ee8e1038e84c268586bf",
+    "model": "deepseek_school",
+    "session_id": "7572f74e-a50a-487b-98ce-1340674fc77e",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Arbitrary ETH Transfer in emergencyWithdraw",
+        "Severity": "High",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. The emergencyWithdraw function allows the dev to transfer the entire contract balance to themselves without any access control beyond the onlyDev modifier, which could lead to fund loss if the dev key is compromised.",
+        "Impact": "Potential complete drainage of contract funds if dev account is malicious or compromised.",
+        "Location": "SwapBot.emergencyWithdraw() function in contract code and static analysis finding 'arbitrary-send-eth'"
+      },
+      {
+        "Issue": "Reentrancy Vulnerability in Profit Withdrawal Functions",
+        "Severity": "High",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. The withdrawProfitDev and withdrawProfitOwner functions are vulnerable to reentrancy attacks as they perform external calls before updating state variables.",
+        "Impact": "Potential reentrancy attacks could allow malicious contracts to re-enter and manipulate contract state.",
+        "Location": "SwapBot.withdrawProfitDev() and SwapBot.withdrawProfitOwner() functions in contract code and static analysis finding 'reentrancy-eth'"
+      },
+      {
+        "Issue": "Unchecked Token Transfers in _sendProfit Function",
+        "Severity": "High",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. The _sendProfit function performs token transfers without checking the return value, which could lead to silent failures with tokens that don't revert on failure.",
+        "Impact": "Potential loss of funds if token transfers fail but the function continues execution.",
+        "Location": "SwapBot._sendProfit() function in contract code and static analysis finding 'unchecked-transfer'"
+      },
+      {
+        "Issue": "Unchecked Return Values in Multiple Functions",
+        "Severity": "Medium",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. Multiple functions ignore return values from external calls, including getReserves() calls and token transfers, which could lead to incorrect state assumptions.",
+        "Impact": "Potential incorrect calculations or silent failures in swap operations and profit distribution.",
+        "Location": "Various functions including getAmountOutFor(), _swapSupportingFeeOnTransferTokens(), and removeOddTokens() in contract code and static analysis finding 'unused-return'"
+      },
+      {
+        "Issue": "Shadowing of State Variables in Withdrawal Functions",
+        "Severity": "Low",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. The withdrawProfitDev and withdrawProfitOwner functions use parameter names that shadow inherited state variables, which could lead to confusion and potential bugs.",
+        "Impact": "Code readability issues and potential logical errors in function implementation.",
+        "Location": "SwapBot.withdrawProfitDev() and SwapBot.withdrawProfitOwner() functions in contract code and static analysis finding 'shadowing-local'"
+      },
+      {
+        "Issue": "Missing Events for Critical State Changes",
+        "Severity": "Low",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. The setDevFee function changes a critical parameter without emitting an event, reducing transparency and off-chain monitoring capability.",
+        "Impact": "Reduced auditability and transparency for fee changes.",
+        "Location": "SwapBot.setDevFee() function in contract code and static analysis finding 'events-maths'"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T01:56:26.214321",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "session_id": "7572f74e-a50a-487b-98ce-1340674fc77e",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-9pn0j_17/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0",
+            "0.8.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1424.5568072795868,
+        "total_tasks": 0
+      },
+      "execution_time": 1424.5568072795868,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The emergencyWithdraw function allows the dev to transfer the entire contract balance to themselves without any access control beyond the onlyDev modifier, which could lead to fund loss if the dev key is compromised.",
+          "Impact": "Potential complete drainage of contract funds if dev account is malicious or compromised.",
+          "Issue": "Arbitrary ETH Transfer in emergencyWithdraw",
+          "Location": "SwapBot.emergencyWithdraw() function in contract code and static analysis finding 'arbitrary-send-eth'",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The withdrawProfitDev and withdrawProfitOwner functions are vulnerable to reentrancy attacks as they perform external calls before updating state variables.",
+          "Impact": "Potential reentrancy attacks could allow malicious contracts to re-enter and manipulate contract state.",
+          "Issue": "Reentrancy Vulnerability in Profit Withdrawal Functions",
+          "Location": "SwapBot.withdrawProfitDev() and SwapBot.withdrawProfitOwner() functions in contract code and static analysis finding 'reentrancy-eth'",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The _sendProfit function performs token transfers without checking the return value, which could lead to silent failures with tokens that don't revert on failure.",
+          "Impact": "Potential loss of funds if token transfers fail but the function continues execution.",
+          "Issue": "Unchecked Token Transfers in _sendProfit Function",
+          "Location": "SwapBot._sendProfit() function in contract code and static analysis finding 'unchecked-transfer'",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. Multiple functions ignore return values from external calls, including getReserves() calls and token transfers, which could lead to incorrect state assumptions.",
+          "Impact": "Potential incorrect calculations or silent failures in swap operations and profit distribution.",
+          "Issue": "Unchecked Return Values in Multiple Functions",
+          "Location": "Various functions including getAmountOutFor(), _swapSupportingFeeOnTransferTokens(), and removeOddTokens() in contract code and static analysis finding 'unused-return'",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The withdrawProfitDev and withdrawProfitOwner functions use parameter names that shadow inherited state variables, which could lead to confusion and potential bugs.",
+          "Impact": "Code readability issues and potential logical errors in function implementation.",
+          "Issue": "Shadowing of State Variables in Withdrawal Functions",
+          "Location": "SwapBot.withdrawProfitDev() and SwapBot.withdrawProfitOwner() functions in contract code and static analysis finding 'shadowing-local'",
+          "Severity": "Low"
+        },
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The setDevFee function changes a critical parameter without emitting an event, reducing transparency and off-chain monitoring capability.",
+          "Impact": "Reduced auditability and transparency for fee changes.",
+          "Issue": "Missing Events for Critical State Changes",
+          "Location": "SwapBot.setDevFee() function in contract code and static analysis finding 'events-maths'",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The emergencyWithdraw function allows the dev to transfer the entire contract balance to themselves without any access control beyond the onlyDev modifier, which could lead to fund loss if the dev key is compromised.",
+          "Impact": "Potential complete drainage of contract funds if dev account is malicious or compromised.",
+          "Issue": "Arbitrary ETH Transfer in emergencyWithdraw",
+          "Location": "SwapBot.emergencyWithdraw() function in contract code and static analysis finding 'arbitrary-send-eth'",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Arbitrary ETH Transfer in emergencyWithdraw\",\n    \"Severity\": \"High\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. The emergencyWithdraw function allows the dev to transfer the entire contract balance to themselves without any access control beyond the onlyDev modifier, which could lead to fund loss if the dev key is compromised.\",\n    \"Impact\": \"Potential complete drainage of contract funds if dev account is malicious or compromised.\",\n    \"Location\": \"SwapBot.emergencyWithdraw() function in contract code and static analysis finding 'arbitrary-send-eth'\"\n  },\n  {\n    \"Issue\": \"Reentrancy Vulnerability in Profit Withdrawal Functions\",\n    \"Severity\": \"High\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. The withdrawProfitDev and withdrawProfitOwner functions are vulnerable to reentrancy attacks as they perform external calls before updating state variables.\",\n    \"Impact\": \"Potential reentrancy attacks could allow malicious contracts to re-enter and manipulate contract state.\",\n    \"Location\": \"SwapBot.withdrawProfitDev() and SwapBot.withdrawProfitOwner() functions in contract code and static analysis finding 'reentrancy-eth'\"\n  },\n  {\n    \"Issue\": \"Unchecked Token Transfers in _sendProfit Function\",\n    \"Severity\": \"High\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. The _sendProfit function performs token transfers without checking the return value, which could lead to silent failures with tokens that don't revert on failure.\",\n    \"Impact\": \"Potential loss of funds if token transfers fail but the function continues execution.\",\n    \"Location\": \"SwapBot._sendProfit() function in contract code and static analysis finding 'unchecked-transfer'\"\n  },\n  {\n    \"Issue\": \"Unchecked Return Values in Multiple Functions\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. Multiple functions ignore return values from external calls, including getReserves() calls and token transfers, which could lead to incorrect state assumptions.\",\n    \"Impact\": \"Potential incorrect calculations or silent failures in swap operations and profit distribution.\",\n    \"Location\": \"Various functions including getAmountOutFor(), _swapSupportingFeeOnTransferTokens(), and removeOddTokens() in contract code and static analysis finding 'unused-return'\"\n  },\n  {\n    \"Issue\": \"Shadowing of State Variables in Withdrawal Functions\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. The withdrawProfitDev and withdrawProfitOwner functions use parameter names that shadow inherited state variables, which could lead to confusion and potential bugs.\",\n    \"Impact\": \"Code readability issues and potential logical errors in function implementation.\",\n    \"Location\": \"SwapBot.withdrawProfitDev() and SwapBot.withdrawProfitOwner() functions in contract code and static analysis finding 'shadowing-local'\"\n  },\n  {\n    \"Issue\": \"Missing Events for Critical State Changes\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. The setDevFee function changes a critical parameter without emitting an event, reducing transparency and off-chain monitoring capability.\",\n    \"Impact\": \"Reduced auditability and transparency for fee changes.\",\n    \"Location\": \"SwapBot.setDevFee() function in contract code and static analysis finding 'events-maths'\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "7572f74e-a50a-487b-98ce-1340674fc77e",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 2,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-105"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 4.5,
+        "SWC-106": 0.0,
+        "SWC-107": 10.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [
+          "kw:arbitrary-send-eth",
+          "re:arbitrary-send"
+        ],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "kw:reentrancy-eth",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(10.0), SWC-105(4.5)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-105",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-105",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-105|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-105 applies due to unprotected ETH withdrawals allowing arbitrary fund transfers by devs. SWC-107 applies because multiple functions ignore return values from critical external calls like token transfers and reserve checks. Evidence: emergencyWithdraw enables arbitrary ETH transfer without safeguards (Finding 1); _sendProfit performs token transfers without return value checks (Finding 3); Multiple functions ignore return values from getReserves and transfers (Finding 4)",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 4.5, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"kw:arbitrary-send-eth\", \"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"emergencyWithdraw enables arbitrary ETH transfer without safeguards (Finding 1)\", \"_sendProfit performs token transfers without return value checks (Finding 3)\", \"Multiple functions ignore return values from getReserves and transfers (Finding 4)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-105 applies due to unprotected ETH withdrawals allowing arbitrary fund transfers by devs. SWC-107 applies because multiple functions ignore return values from critical external calls like token transfers and reserve checks.\\\",\\n  \\\"evidence\\\": [\\n    \\\"emergencyWithdraw enables arbitrary ETH transfer without safeguards (Finding 1)\\\",\\n    \\\"_sendProfit performs token transfers without return value checks (Finding 3)\\\",\\n    \\\"Multiple functions ignore return values from getReserves and transfers (Finding 4)\\\"\\n  ]\\n}\", \"reason\": \"SWC-105 applies due to unprotected ETH withdrawals allowing arbitrary fund transfers by devs. SWC-107 applies because multiple functions ignore return values from critical external calls like token transfers and reserve checks.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-105 applies due to unprotected ETH withdrawals allowing arbitrary fund transfers by devs. SWC-107 applies because multiple functions ignore return values from critical external calls like token transfers and reserve checks.",
+      "evidence": [
+        "emergencyWithdraw enables arbitrary ETH transfer without safeguards (Finding 1)",
+        "_sendProfit performs token transfers without return value checks (Finding 3)",
+        "Multiple functions ignore return values from getReserves and transfers (Finding 4)"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-105 applies due to unprotected ETH withdrawals allowing arbitrary fund transfers by devs. SWC-107 applies because multiple functions ignore return values from critical external calls like token transfers and reserve checks.\",\n  \"evidence\": [\n    \"emergencyWithdraw enables arbitrary ETH transfer without safeguards (Finding 1)\",\n    \"_sendProfit performs token transfers without return value checks (Finding 3)\",\n    \"Multiple functions ignore return values from getReserves and transfers (Finding 4)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "7572f74e-a50a-487b-98ce-1340674fc77e",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 3672,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

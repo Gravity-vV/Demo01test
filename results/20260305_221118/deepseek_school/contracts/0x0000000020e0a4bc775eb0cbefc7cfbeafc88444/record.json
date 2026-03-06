@@ -1,0 +1,159 @@
+{
+  "address": "0x0000000020e0a4bc775eb0cbefc7cfbeafc88444",
+  "session_id": "52454748-16ea-4dcd-b711-7a5b673e7d07",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "llm",
+  "pred_reason": "The contract lacks protection against integer overflow in the deposit and withdrawal mechanisms. Specifically, depositedEther is updated without overflow checks, and FLAG_BLOCK_NONCE_LIMIT is used in a way that could lead to unintended arithmetic behavior. Evidence: depositedEther[msg.sender] += msg.value; without overflow protection; claimedBlockNonce[hash] = FLAG_BLOCK_NONCE_LIMIT + blockNonce; may cause overflow if blockNonce is large; depositedEther[mevProducerAddress] -= blockPayment; lacks underflow check",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 0.7, \"labels\": [\"SWC-105\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-105\\\"],\\n  \\\"confidence\\\": 0.7,\\n  \\\"reason\\\": \\\"Direct transfer to miningPoolAddress without access control in submitClaim function\\\"\\n}\", \"reason\": \"Direct transfer to miningPoolAddress without access control in submitClaim function\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"depositedEther[msg.sender] += msg.value; without overflow protection\", \"claimedBlockNonce[hash] = FLAG_BLOCK_NONCE_LIMIT + blockNonce; may cause overflow if blockNonce is large\", \"depositedEther[mevProducerAddress] -= blockPayment; lacks underflow check\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract lacks protection against integer overflow in the deposit and withdrawal mechanisms. Specifically, depositedEther is updated without overflow checks, and FLAG_BLOCK_NONCE_LIMIT is used in a way that could lead to unintended arithmetic behavior.\\\",\\n  \\\"evidence\\\": [\\\"depositedEther[msg.sender] += msg.value; without overflow protection\\\", \\\"claimedBlockNonce[hash] = FLAG_BLOCK_NONCE_LIMIT + blockNonce; may cause overflow if blockNonce is large\\\", \\\"depositedEther[mevProducerAddress] -= blockPayment; lacks underflow check\\\"]\\n}\", \"reason\": \"The contract lacks protection against integer overflow in the deposit and withdrawal mechanisms. Specifically, depositedEther is updated without overflow checks, and FLAG_BLOCK_NONCE_LIMIT is used in a way that could lead to unintended arithmetic behavior.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260305_221118/deepseek_school/contracts/0x0000000020e0a4bc775eb0cbefc7cfbeafc88444/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 0,
+  "execution_time": 279.3891079425812,
+  "gt_swc_set": "SWC-101|SWC-105",
+  "error": "",
+  "raw": {
+    "address": "0x0000000020e0a4bc775eb0cbefc7cfbeafc88444",
+    "model": "deepseek_school",
+    "session_id": "52454748-16ea-4dcd-b711-7a5b673e7d07",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [],
+    "result_payload": {
+      "created_at": "2026-03-05T22:15:58.310961",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "52454748-16ea-4dcd-b711-7a5b673e7d07",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-meipq356/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.7.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 279.3891079425812,
+        "total_tasks": 0
+      },
+      "execution_time": 279.3891079425812,
+      "finding_number": 0,
+      "findings": [],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": null
+      },
+      "full_report": "[]",
+      "model_used": "deepseek_school",
+      "session_id": "52454748-16ea-4dcd-b711-7a5b673e7d07",
+      "severity_breakdown": {
+        "High": 0,
+        "Low": 0,
+        "Medium": 0
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [
+        "SWC-105"
+      ],
+      "source": "llm",
+      "confidence": 0.7,
+      "reason": "Direct transfer to miningPoolAddress without access control in submitClaim function",
+      "raw": "{\n  \"labels\": [\"SWC-105\"],\n  \"confidence\": 0.7,\n  \"reason\": \"Direct transfer to miningPoolAddress without access control in submitClaim function\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [
+      "SWC-105"
+    ],
+    "pred_labels": [
+      "SWC-105"
+    ],
+    "pred_swc_list": "SWC-105",
+    "pred_source": "llm",
+    "is_other": 0,
+    "pred_reason": "The contract lacks protection against integer overflow in the deposit and withdrawal mechanisms. Specifically, depositedEther is updated without overflow checks, and FLAG_BLOCK_NONCE_LIMIT is used in a way that could lead to unintended arithmetic behavior. Evidence: depositedEther[msg.sender] += msg.value; without overflow protection; claimedBlockNonce[hash] = FLAG_BLOCK_NONCE_LIMIT + blockNonce; may cause overflow if blockNonce is large; depositedEther[mevProducerAddress] -= blockPayment; lacks underflow check",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 0.7, \"labels\": [\"SWC-105\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-105\\\"],\\n  \\\"confidence\\\": 0.7,\\n  \\\"reason\\\": \\\"Direct transfer to miningPoolAddress without access control in submitClaim function\\\"\\n}\", \"reason\": \"Direct transfer to miningPoolAddress without access control in submitClaim function\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"depositedEther[msg.sender] += msg.value; without overflow protection\", \"claimedBlockNonce[hash] = FLAG_BLOCK_NONCE_LIMIT + blockNonce; may cause overflow if blockNonce is large\", \"depositedEther[mevProducerAddress] -= blockPayment; lacks underflow check\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract lacks protection against integer overflow in the deposit and withdrawal mechanisms. Specifically, depositedEther is updated without overflow checks, and FLAG_BLOCK_NONCE_LIMIT is used in a way that could lead to unintended arithmetic behavior.\\\",\\n  \\\"evidence\\\": [\\\"depositedEther[msg.sender] += msg.value; without overflow protection\\\", \\\"claimedBlockNonce[hash] = FLAG_BLOCK_NONCE_LIMIT + blockNonce; may cause overflow if blockNonce is large\\\", \\\"depositedEther[mevProducerAddress] -= blockPayment; lacks underflow check\\\"]\\n}\", \"reason\": \"The contract lacks protection against integer overflow in the deposit and withdrawal mechanisms. Specifically, depositedEther is updated without overflow checks, and FLAG_BLOCK_NONCE_LIMIT is used in a way that could lead to unintended arithmetic behavior.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract lacks protection against integer overflow in the deposit and withdrawal mechanisms. Specifically, depositedEther is updated without overflow checks, and FLAG_BLOCK_NONCE_LIMIT is used in a way that could lead to unintended arithmetic behavior.",
+      "evidence": [
+        "depositedEther[msg.sender] += msg.value; without overflow protection",
+        "claimedBlockNonce[hash] = FLAG_BLOCK_NONCE_LIMIT + blockNonce; may cause overflow if blockNonce is large",
+        "depositedEther[mevProducerAddress] -= blockPayment; lacks underflow check"
+      ],
+      "raw": "{\n  \"reason\": \"The contract lacks protection against integer overflow in the deposit and withdrawal mechanisms. Specifically, depositedEther is updated without overflow checks, and FLAG_BLOCK_NONCE_LIMIT is used in a way that could lead to unintended arithmetic behavior.\",\n  \"evidence\": [\"depositedEther[msg.sender] += msg.value; without overflow protection\", \"claimedBlockNonce[hash] = FLAG_BLOCK_NONCE_LIMIT + blockNonce; may cause overflow if blockNonce is large\", \"depositedEther[mevProducerAddress] -= blockPayment; lacks underflow check\"]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "52454748-16ea-4dcd-b711-7a5b673e7d07",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 0,
+        "full_report_chars": 2,
+        "empty_report": true
+      }
+    ],
+    "selected_is_empty_report": true,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

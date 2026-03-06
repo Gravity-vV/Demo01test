@@ -1,0 +1,248 @@
+{
+  "address": "0x005d36beef6cf9844d5cf844dde9507736022ca5",
+  "session_id": "2b175d31-2976-46a3-a6e7-15b9087b533f",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-101 label is justified as Finding 2 directly identifies an integer overflow vulnerability in the burn calculation. This matches the SWC-101 pattern where large values in roundAmount.mul(oneHundredPercent) cause overflow. The overflow risk blocks large transactions and can lock funds, aligning with SWC-101 impacts. Evidence: Integer overflow risk in findOnePercent function when calculating roundAmount.mul(oneHundredPercent) for large values; Direct reference to SWC-101 integer overflow vulnerability pattern in Finding 2 description; Impact includes transaction reverts and potential fund locking for large transfers",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Integer overflow risk in findOnePercent function when calculating roundAmount.mul(oneHundredPercent) for large values\", \"Direct reference to SWC-101 integer overflow vulnerability pattern in Finding 2 description\", \"Impact includes transaction reverts and potential fund locking for large transfers\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is justified as Finding 2 directly identifies an integer overflow vulnerability in the burn calculation. This matches the SWC-101 pattern where large values in roundAmount.mul(oneHundredPercent) cause overflow. The overflow risk blocks large transactions and can lock funds, aligning with SWC-101 impacts.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Integer overflow risk in findOnePercent function when calculating roundAmount.mul(oneHundredPercent) for large values\\\",\\n    \\\"Direct reference to SWC-101 integer overflow vulnerability pattern in Finding 2 description\\\",\\n    \\\"Impact includes transaction reverts and potential fund locking for large transfers\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is justified as Finding 2 directly identifies an integer overflow vulnerability in the burn calculation. This matches the SWC-101 pattern where large values in roundAmount.mul(oneHundredPercent) cause overflow. The overflow risk blocks large transactions and can lock funds, aligning with SWC-101 impacts.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3470,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260305_234828/deepseek_school/contracts/0x005d36beef6cf9844d5cf844dde9507736022ca5/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 2823.7643756866455,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x005d36beef6cf9844d5cf844dde9507736022ca5",
+    "model": "deepseek_school",
+    "session_id": "2b175d31-2976-46a3-a6e7-15b9087b533f",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Incorrect Percentage Calculation in Burn Mechanism",
+        "Severity": "High",
+        "Description": "The findOnePercent function incorrectly calculates 10% instead of 1% due to division by 1000 instead of 10000, and uses unnecessary ceiling operations that cause over-burning. This issue appears in the smart contract code only and was identified through manual code analysis.",
+        "Impact": "Users lose 10 times more tokens than intended during transfers, causing significant financial loss and disrupting token economics with unintended deflationary pressure.",
+        "Location": "findOnePercent function (lines ~78-82), transfer and transferFrom functions"
+      },
+      {
+        "Issue": "Integer Overflow Risk in Burn Calculation",
+        "Severity": "High",
+        "Description": "The findOnePercent function contains a potential integer overflow when calculating roundAmount.mul(oneHundredPercent) for large values. This issue appears in the smart contract code only and relates to the SWC-101 integer overflow vulnerability pattern from the retrieved evidence.",
+        "Impact": "Large transfers may revert due to overflow, blocking legitimate transactions and potentially locking funds for whale transactions.",
+        "Location": "findOnePercent function (line ~81), related to SWC-101 integer overflow vulnerability"
+      },
+      {
+        "Issue": "ERC-20 Approval Race Condition",
+        "Severity": "Medium",
+        "Description": "The approve function is vulnerable to front-running attacks where spenders can use old allowances before new approvals take effect. This issue appears in the smart contract code only and is a known ERC-20 standard vulnerability.",
+        "Impact": "Spenders may transfer more tokens than intended when allowances are reduced, violating user intent and potentially causing unexpected token transfers.",
+        "Location": "approve function (lines ~107-111)"
+      },
+      {
+        "Issue": "Allowance-Token Transfer Semantic Mismatch",
+        "Severity": "Medium",
+        "Description": "transferFrom deducts the full amount from allowance but only transfers amount minus burn tokens to recipient, creating a semantic mismatch. This issue appears in the smart contract code only.",
+        "Impact": "Spenders lose allowance value to the burn mechanism without recipient benefit, causing integration issues with wallets and DeFi protocols expecting standard ERC-20 behavior.",
+        "Location": "transferFrom function (allowance deduction logic)"
+      },
+      {
+        "Issue": "Zero-Value Transfer Inefficiency",
+        "Severity": "Low",
+        "Description": "The contract processes zero-value transfers with unnecessary state changes and event emissions. This issue appears in the smart contract code only.",
+        "Impact": "Wastes gas for zero-value operations, pollutes event logs, and could enable spam transactions with minimal gas cost.",
+        "Location": "transfer and transferFrom functions (lack of zero-value checks)"
+      },
+      {
+        "Issue": "Edge Case Handling in Small Transfers",
+        "Severity": "Medium",
+        "Description": "The ceiling operation in findOnePercent causes excessive burning for small amounts (e.g., 1 token attempts to burn 10 tokens). This issue appears in the smart contract code only.",
+        "Impact": "Small transfers may revert due to insufficient balance for burn calculation, preventing legitimate small transactions and disrupting normal token operations.",
+        "Location": "findOnePercent function (ceil operation), transfer functions"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-06T01:09:05.675861",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 1,
+        "rag_used": false,
+        "session_id": "2b175d31-2976-46a3-a6e7-15b9087b533f",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-8zbcj0cs/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 2823.7643756866455,
+        "total_tasks": 12
+      },
+      "execution_time": 2823.7643756866455,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The findOnePercent function incorrectly calculates 10% instead of 1% due to division by 1000 instead of 10000, and uses unnecessary ceiling operations that cause over-burning. This issue appears in the smart contract code only and was identified through manual code analysis.",
+          "Impact": "Users lose 10 times more tokens than intended during transfers, causing significant financial loss and disrupting token economics with unintended deflationary pressure.",
+          "Issue": "Incorrect Percentage Calculation in Burn Mechanism",
+          "Location": "findOnePercent function (lines ~78-82), transfer and transferFrom functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "The findOnePercent function contains a potential integer overflow when calculating roundAmount.mul(oneHundredPercent) for large values. This issue appears in the smart contract code only and relates to the SWC-101 integer overflow vulnerability pattern from the retrieved evidence.",
+          "Impact": "Large transfers may revert due to overflow, blocking legitimate transactions and potentially locking funds for whale transactions.",
+          "Issue": "Integer Overflow Risk in Burn Calculation",
+          "Location": "findOnePercent function (line ~81), related to SWC-101 integer overflow vulnerability",
+          "Severity": "High"
+        },
+        {
+          "Description": "The approve function is vulnerable to front-running attacks where spenders can use old allowances before new approvals take effect. This issue appears in the smart contract code only and is a known ERC-20 standard vulnerability.",
+          "Impact": "Spenders may transfer more tokens than intended when allowances are reduced, violating user intent and potentially causing unexpected token transfers.",
+          "Issue": "ERC-20 Approval Race Condition",
+          "Location": "approve function (lines ~107-111)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "transferFrom deducts the full amount from allowance but only transfers amount minus burn tokens to recipient, creating a semantic mismatch. This issue appears in the smart contract code only.",
+          "Impact": "Spenders lose allowance value to the burn mechanism without recipient benefit, causing integration issues with wallets and DeFi protocols expecting standard ERC-20 behavior.",
+          "Issue": "Allowance-Token Transfer Semantic Mismatch",
+          "Location": "transferFrom function (allowance deduction logic)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract processes zero-value transfers with unnecessary state changes and event emissions. This issue appears in the smart contract code only.",
+          "Impact": "Wastes gas for zero-value operations, pollutes event logs, and could enable spam transactions with minimal gas cost.",
+          "Issue": "Zero-Value Transfer Inefficiency",
+          "Location": "transfer and transferFrom functions (lack of zero-value checks)",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The ceiling operation in findOnePercent causes excessive burning for small amounts (e.g., 1 token attempts to burn 10 tokens). This issue appears in the smart contract code only.",
+          "Impact": "Small transfers may revert due to insufficient balance for burn calculation, preventing legitimate small transactions and disrupting normal token operations.",
+          "Issue": "Edge Case Handling in Small Transfers",
+          "Location": "findOnePercent function (ceil operation), transfer functions",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The findOnePercent function incorrectly calculates 10% instead of 1% due to division by 1000 instead of 10000, and uses unnecessary ceiling operations that cause over-burning. This issue appears in the smart contract code only and was identified through manual code analysis.",
+          "Impact": "Users lose 10 times more tokens than intended during transfers, causing significant financial loss and disrupting token economics with unintended deflationary pressure.",
+          "Issue": "Incorrect Percentage Calculation in Burn Mechanism",
+          "Location": "findOnePercent function (lines ~78-82), transfer and transferFrom functions",
+          "Severity": "High"
+        }
+      },
+      "full_report": "```json\n[\n  {\n    \"Issue\": \"Incorrect Percentage Calculation in Burn Mechanism\",\n    \"Severity\": \"High\",\n    \"Description\": \"The findOnePercent function incorrectly calculates 10% instead of 1% due to division by 1000 instead of 10000, and uses unnecessary ceiling operations that cause over-burning. This issue appears in the smart contract code only and was identified through manual code analysis.\",\n    \"Impact\": \"Users lose 10 times more tokens than intended during transfers, causing significant financial loss and disrupting token economics with unintended deflationary pressure.\",\n    \"Location\": \"findOnePercent function (lines ~78-82), transfer and transferFrom functions\"\n  },\n  {\n    \"Issue\": \"Integer Overflow Risk in Burn Calculation\",\n    \"Severity\": \"High\",\n    \"Description\": \"The findOnePercent function contains a potential integer overflow when calculating roundAmount.mul(oneHundredPercent) for large values. This issue appears in the smart contract code only and relates to the SWC-101 integer overflow vulnerability pattern from the retrieved evidence.\",\n    \"Impact\": \"Large transfers may revert due to overflow, blocking legitimate transactions and potentially locking funds for whale transactions.\",\n    \"Location\": \"findOnePercent function (line ~81), related to SWC-101 integer overflow vulnerability\"\n  },\n  {\n    \"Issue\": \"ERC-20 Approval Race Condition\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The approve function is vulnerable to front-running attacks where spenders can use old allowances before new approvals take effect. This issue appears in the smart contract code only and is a known ERC-20 standard vulnerability.\",\n    \"Impact\": \"Spenders may transfer more tokens than intended when allowances are reduced, violating user intent and potentially causing unexpected token transfers.\",\n    \"Location\": \"approve function (lines ~107-111)\"\n  },\n  {\n    \"Issue\": \"Allowance-Token Transfer Semantic Mismatch\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"transferFrom deducts the full amount from allowance but only transfers amount minus burn tokens to recipient, creating a semantic mismatch. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Spenders lose allowance value to the burn mechanism without recipient benefit, causing integration issues with wallets and DeFi protocols expecting standard ERC-20 behavior.\",\n    \"Location\": \"transferFrom function (allowance deduction logic)\"\n  },\n  {\n    \"Issue\": \"Zero-Value Transfer Inefficiency\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The contract processes zero-value transfers with unnecessary state changes and event emissions. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Wastes gas for zero-value operations, pollutes event logs, and could enable spam transactions with minimal gas cost.\",\n    \"Location\": \"transfer and transferFrom functions (lack of zero-value checks)\"\n  },\n  {\n    \"Issue\": \"Edge Case Handling in Small Transfers\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The ceiling operation in findOnePercent causes excessive burning for small amounts (e.g., 1 token attempts to burn 10 tokens). This issue appears in the smart contract code only.\",\n    \"Impact\": \"Small transfers may revert due to insufficient balance for burn calculation, preventing legitimate small transactions and disrupting normal token operations.\",\n    \"Location\": \"findOnePercent function (ceil operation), transfer functions\"\n  }\n]\n```",
+      "model_used": "deepseek_school",
+      "session_id": "2b175d31-2976-46a3-a6e7-15b9087b533f",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 1,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-101 label is justified as Finding 2 directly identifies an integer overflow vulnerability in the burn calculation. This matches the SWC-101 pattern where large values in roundAmount.mul(oneHundredPercent) cause overflow. The overflow risk blocks large transactions and can lock funds, aligning with SWC-101 impacts. Evidence: Integer overflow risk in findOnePercent function when calculating roundAmount.mul(oneHundredPercent) for large values; Direct reference to SWC-101 integer overflow vulnerability pattern in Finding 2 description; Impact includes transaction reverts and potential fund locking for large transfers",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Integer overflow risk in findOnePercent function when calculating roundAmount.mul(oneHundredPercent) for large values\", \"Direct reference to SWC-101 integer overflow vulnerability pattern in Finding 2 description\", \"Impact includes transaction reverts and potential fund locking for large transfers\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is justified as Finding 2 directly identifies an integer overflow vulnerability in the burn calculation. This matches the SWC-101 pattern where large values in roundAmount.mul(oneHundredPercent) cause overflow. The overflow risk blocks large transactions and can lock funds, aligning with SWC-101 impacts.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Integer overflow risk in findOnePercent function when calculating roundAmount.mul(oneHundredPercent) for large values\\\",\\n    \\\"Direct reference to SWC-101 integer overflow vulnerability pattern in Finding 2 description\\\",\\n    \\\"Impact includes transaction reverts and potential fund locking for large transfers\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is justified as Finding 2 directly identifies an integer overflow vulnerability in the burn calculation. This matches the SWC-101 pattern where large values in roundAmount.mul(oneHundredPercent) cause overflow. The overflow risk blocks large transactions and can lock funds, aligning with SWC-101 impacts.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-101 label is justified as Finding 2 directly identifies an integer overflow vulnerability in the burn calculation. This matches the SWC-101 pattern where large values in roundAmount.mul(oneHundredPercent) cause overflow. The overflow risk blocks large transactions and can lock funds, aligning with SWC-101 impacts.",
+      "evidence": [
+        "Integer overflow risk in findOnePercent function when calculating roundAmount.mul(oneHundredPercent) for large values",
+        "Direct reference to SWC-101 integer overflow vulnerability pattern in Finding 2 description",
+        "Impact includes transaction reverts and potential fund locking for large transfers"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-101 label is justified as Finding 2 directly identifies an integer overflow vulnerability in the burn calculation. This matches the SWC-101 pattern where large values in roundAmount.mul(oneHundredPercent) cause overflow. The overflow risk blocks large transactions and can lock funds, aligning with SWC-101 impacts.\",\n  \"evidence\": [\n    \"Integer overflow risk in findOnePercent function when calculating roundAmount.mul(oneHundredPercent) for large values\",\n    \"Direct reference to SWC-101 integer overflow vulnerability pattern in Finding 2 description\",\n    \"Impact includes transaction reverts and potential fund locking for large transfers\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "2b175d31-2976-46a3-a6e7-15b9087b533f",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 3470,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

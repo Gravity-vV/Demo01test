@@ -1,0 +1,323 @@
+{
+  "address": "0x2a8e126e36954e9394d4978f08b7884eefcaa2c4",
+  "session_id": "5a77efa7-ca21-49cb-994d-aa335e29f2a4",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract violates Checks-Effects-Interactions pattern in multiple functions (SWC-107) and contains arithmetic operations vulnerable to overflow without proper safeguards (SWC-101). These issues are repeatedly identified across stake/unstake functions and bonus calculations. Evidence: External call in stakeNFT occurs after state updates, violating CEI pattern; getBonusValue calculation uses unprotected arithmetic with potential overflow; Multiple functions making external calls lack reentrancy guards",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"External call in stakeNFT occurs after state updates, violating CEI pattern\", \"getBonusValue calculation uses unprotected arithmetic with potential overflow\", \"Multiple functions making external calls lack reentrancy guards\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract violates Checks-Effects-Interactions pattern in multiple functions (SWC-107) and contains arithmetic operations vulnerable to overflow without proper safeguards (SWC-101). These issues are repeatedly identified across stake/unstake functions and bonus calculations.\\\",\\n  \\\"evidence\\\": [\\n    \\\"External call in stakeNFT occurs after state updates, violating CEI pattern\\\",\\n    \\\"getBonusValue calculation uses unprotected arithmetic with potential overflow\\\",\\n    \\\"Multiple functions making external calls lack reentrancy guards\\\"\\n  ]\\n}\", \"reason\": \"The contract violates Checks-Effects-Interactions pattern in multiple functions (SWC-107) and contains arithmetic operations vulnerable to overflow without proper safeguards (SWC-101). These issues are repeatedly identified across stake/unstake functions and bonus calculations.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1445.9542632102966,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x2a8e126e36954e9394d4978f08b7884eefcaa2c4",
+    "model": "deepseek_school",
+    "session_id": "5a77efa7-ca21-49cb-994d-aa335e29f2a4",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Action:** Verify that the external call `CERC115...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the provided smart contract code, I have completed the specific audit task regarding the Checks-Effects-Interactions pattern in the `stakeNFT` function. ## 1. Issue Analy... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: **Action:** Verify that the external call `CERC1155.safeTransferFrom` in `stakeNFT` occurs *after* all state updates (Checks-Effects-Interactions pattern is violated)."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Action:** Verify that the external `.claim` call...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the provided smart contract code, I have identified a critical vulnerability related to the audit task. Here is my detailed assessment: ## 1. Issue Analysis **Yes, there... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: **Action:** Verify that the external `.claim` call to a service contract in `unStakeNFT` occurs *before* state updates, making it critically vulnerable. Develop a Proof-of-Concept (PoC) for a reentrancy attack on this function."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Task:** Review `migrateNFT` and `unstakeNFT` for...",
+        "Severity": "High",
+        "Description": "After a thorough review of the `migrateNFT` and `unstakeNFT` functions in the provided smart contract code, I have identified a critical security vulnerability related to the pattern of external calls... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: **Task:** Review `migrateNFT` and `unstakeNFT` for any similar patterns of external calls after state changes."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Recommendation:** Propose the implementation of ...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I will provide a detailed security assessment for the specific audit task regarding reentrancy guards. ## 1. Issue Analysis **Yes, there is ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: **Recommendation:** Propose the implementation of a reentrancy guard (e.g., OpenZeppelin's `ReentrancyGuard`) for all functions making external calls."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Action:** Check for potential overflows in `getB...",
+        "Severity": "High",
+        "Description": "## Audit Report: Potential Overflow in `getBonusValue` Calculation ### 1. Issue Analysis **Yes, there is a critical issue** related to potential overflows in the `getBonusValue` function. The calcula... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: **Action:** Check for potential overflows in `getBonusValue` during the `_to.sub(startFrom).mul(bonusValue)` calculation with large values."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Task:** Map all modifiers and require statements...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the provided smart contract code for the **StrongNFTBonusV10** contract, I have completed the access control matrix mapping task. Here are my detailed findings: ## 1. Iss... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: **Task:** Map all modifiers and require statements to create a comprehensive access control matrix."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Conduct a line-by-line analysis of `stak...",
+        "Severity": "High",
+        "Description": "After conducting a thorough line-by-line analysis of the `stakeNFT` and `unStakeNFT` functions in the provided smart contract, I have identified several security concerns and potential vulnerabilities... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **Task:** Conduct a line-by-line analysis of `stakeNFT` and `unStakeNFT` functions."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Confirm that all arithmetic operations a...",
+        "Severity": "High",
+        "Description": "Based on my manual review of the provided Solidity contract code, I will analyze whether all arithmetic operations are properly protected by SafeMath as requested in the audit task. ## 1. Issue Analy... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: **Task:** Confirm that all arithmetic operations are protected by SafeMath. Manually verify that no unprotected `+`, `-`, `*`, or `/` operations exist."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Action:** Specifically test the `_deleteIndex` f...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the `_deleteIndex` function in the provided smart contract, I can confirm the presence of a logic error that causes a revert when `array.length == 1`. ## 1. Issue Analysi... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: **Action:** Specifically test the `_deleteIndex` function in a scenario where `array.length == 1`. Confirm that `array.length.sub(1)` reverts, breaking the function. Document this as a confirmed logic error."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Action:** Validate the authorization logic in `u...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the authorization logic in the `unstakeNFT` function, I have identified a significant security vulnerability. Here is my detailed assessment: ## 1. Issue Analysis **Yes,... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: **Action:** Validate the authorization logic in `unstakeNFT(addr entity, ...)`. Confirm that a whitelisted service contract can only unstake NFTs for the user it is currently processing a claim for, and not for any arbitrary user."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Action:** Verify that the `superAdmin` is the on...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the provided smart contract code, I have completed the specific audit task regarding access control for critical functions. Here are my detailed findings: ## 1. Issue Ana... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: **Action:** Verify that the `superAdmin` is the only role that can update critical contract addresses (`updateContracts`) and modify the service contract whitelist (`addServiceContract`, `removeServiceContract`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Action:** Assess the risk associated with trust ...",
+        "Severity": "High",
+        "Description": "After a thorough analysis of the provided Solidity smart contract code for the **StrongNFTBonusV10** contract, I have completed the specific audit task regarding the risk associated with trust in whit... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: **Action:** Assess the risk associated with trust in whitelisted service contracts. Determine if a malicious service contract could drain funds or NFTs from users who have interacted with it."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T07:58:24.149852",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "5a77efa7-ca21-49cb-994d-aa335e29f2a4",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0",
+            "0.8.9",
+            "0.6.12"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.8.0/solc-0.8.0 --version' running '/Users/hh/.solc-select/artifacts/solc-0.8.0/solc-0.8.0 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation war",
+          "status": "failed"
+        },
+        "total_execution_time": 1445.9542632102966,
+        "total_tasks": 12
+      },
+      "execution_time": 1445.9542632102966,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "After a thorough analysis of the provided smart contract code, I have completed the specific audit task regarding the Checks-Effects-Interactions pattern in the `stakeNFT` function.\n\n## 1. Issue Analy... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Action:** Verify that the external call `CERC115...",
+          "Location": "Task 2: **Action:** Verify that the external call `CERC1155.safeTransferFrom` in `stakeNFT` occurs *after* all state updates (Checks-Effects-Interactions pattern is violated).",
+          "Severity": "High"
+        },
+        {
+          "Description": "After a thorough analysis of the provided smart contract code, I have identified a critical vulnerability related to the audit task. Here is my detailed assessment:\n\n## 1. Issue Analysis\n\n**Yes, there... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Action:** Verify that the external `.claim` call...",
+          "Location": "Task 3: **Action:** Verify that the external `.claim` call to a service contract in `unStakeNFT` occurs *before* state updates, making it critically vulnerable. Develop a Proof-of-Concept (PoC) for a reentrancy attack on this function.",
+          "Severity": "High"
+        },
+        {
+          "Description": "After a thorough review of the `migrateNFT` and `unstakeNFT` functions in the provided smart contract code, I have identified a critical security vulnerability related to the pattern of external calls... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Review `migrateNFT` and `unstakeNFT` for...",
+          "Location": "Task 4: **Task:** Review `migrateNFT` and `unstakeNFT` for any similar patterns of external calls after state changes.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I will provide a detailed security assessment for the specific audit task regarding reentrancy guards.\n\n## 1. Issue Analysis\n\n**Yes, there is ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Recommendation:** Propose the implementation of ...",
+          "Location": "Task 5: **Recommendation:** Propose the implementation of a reentrancy guard (e.g., OpenZeppelin's `ReentrancyGuard`) for all functions making external calls.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Potential Overflow in `getBonusValue` Calculation\n\n### 1. Issue Analysis\n**Yes, there is a critical issue** related to potential overflows in the `getBonusValue` function. The calcula... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Action:** Check for potential overflows in `getB...",
+          "Location": "Task 8: **Action:** Check for potential overflows in `getBonusValue` during the `_to.sub(startFrom).mul(bonusValue)` calculation with large values.",
+          "Severity": "High"
+        },
+        {
+          "Description": "After a thorough analysis of the provided smart contract code for the **StrongNFTBonusV10** contract, I have completed the access control matrix mapping task. Here are my detailed findings:\n\n## 1. Iss... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Map all modifiers and require statements...",
+          "Location": "Task 9: **Task:** Map all modifiers and require statements to create a comprehensive access control matrix.",
+          "Severity": "High"
+        },
+        {
+          "Description": "After conducting a thorough line-by-line analysis of the `stakeNFT` and `unStakeNFT` functions in the provided smart contract, I have identified several security concerns and potential vulnerabilities... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Conduct a line-by-line analysis of `stak...",
+          "Location": "Task 1: **Task:** Conduct a line-by-line analysis of `stakeNFT` and `unStakeNFT` functions.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my manual review of the provided Solidity contract code, I will analyze whether all arithmetic operations are properly protected by SafeMath as requested in the audit task.\n\n## 1. Issue Analy... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Confirm that all arithmetic operations a...",
+          "Location": "Task 6: **Task:** Confirm that all arithmetic operations are protected by SafeMath. Manually verify that no unprotected `+`, `-`, `*`, or `/` operations exist.",
+          "Severity": "High"
+        },
+        {
+          "Description": "After a thorough analysis of the `_deleteIndex` function in the provided smart contract, I can confirm the presence of a logic error that causes a revert when `array.length == 1`.\n\n## 1. Issue Analysi... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Action:** Specifically test the `_deleteIndex` f...",
+          "Location": "Task 7: **Action:** Specifically test the `_deleteIndex` function in a scenario where `array.length == 1`. Confirm that `array.length.sub(1)` reverts, breaking the function. Document this as a confirmed logic error.",
+          "Severity": "High"
+        },
+        {
+          "Description": "After a thorough analysis of the authorization logic in the `unstakeNFT` function, I have identified a significant security vulnerability. Here is my detailed assessment:\n\n## 1. Issue Analysis\n\n**Yes,... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Action:** Validate the authorization logic in `u...",
+          "Location": "Task 10: **Action:** Validate the authorization logic in `unstakeNFT(addr entity, ...)`. Confirm that a whitelisted service contract can only unstake NFTs for the user it is currently processing a claim for, and not for any arbitrary user.",
+          "Severity": "High"
+        },
+        {
+          "Description": "After a thorough analysis of the provided smart contract code, I have completed the specific audit task regarding access control for critical functions. Here are my detailed findings:\n\n## 1. Issue Ana... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Action:** Verify that the `superAdmin` is the on...",
+          "Location": "Task 11: **Action:** Verify that the `superAdmin` is the only role that can update critical contract addresses (`updateContracts`) and modify the service contract whitelist (`addServiceContract`, `removeServiceContract`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "After a thorough analysis of the provided Solidity smart contract code for the **StrongNFTBonusV10** contract, I have completed the specific audit task regarding the risk associated with trust in whit... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Action:** Assess the risk associated with trust ...",
+          "Location": "Task 12: **Action:** Assess the risk associated with trust in whitelisted service contracts. Determine if a malicious service contract could drain funds or NFTs from users who have interacted with it.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "After a thorough analysis of the provided smart contract code, I have completed the specific audit task regarding the Checks-Effects-Interactions pattern in the `stakeNFT` function.\n\n## 1. Issue Analy... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Action:** Verify that the external call `CERC115...",
+          "Location": "Task 2: **Action:** Verify that the external call `CERC1155.safeTransferFrom` in `stakeNFT` occurs *after* all state updates (Checks-Effects-Interactions pattern is violated).",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "5a77efa7-ca21-49cb-994d-aa335e29f2a4",
+      "severity_breakdown": {
+        "High": 12,
+        "Low": 0,
+        "Medium": 0
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract violates Checks-Effects-Interactions pattern in multiple functions (SWC-107) and contains arithmetic operations vulnerable to overflow without proper safeguards (SWC-101). These issues are repeatedly identified across stake/unstake functions and bonus calculations. Evidence: External call in stakeNFT occurs after state updates, violating CEI pattern; getBonusValue calculation uses unprotected arithmetic with potential overflow; Multiple functions making external calls lack reentrancy guards",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"External call in stakeNFT occurs after state updates, violating CEI pattern\", \"getBonusValue calculation uses unprotected arithmetic with potential overflow\", \"Multiple functions making external calls lack reentrancy guards\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract violates Checks-Effects-Interactions pattern in multiple functions (SWC-107) and contains arithmetic operations vulnerable to overflow without proper safeguards (SWC-101). These issues are repeatedly identified across stake/unstake functions and bonus calculations.\\\",\\n  \\\"evidence\\\": [\\n    \\\"External call in stakeNFT occurs after state updates, violating CEI pattern\\\",\\n    \\\"getBonusValue calculation uses unprotected arithmetic with potential overflow\\\",\\n    \\\"Multiple functions making external calls lack reentrancy guards\\\"\\n  ]\\n}\", \"reason\": \"The contract violates Checks-Effects-Interactions pattern in multiple functions (SWC-107) and contains arithmetic operations vulnerable to overflow without proper safeguards (SWC-101). These issues are repeatedly identified across stake/unstake functions and bonus calculations.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract violates Checks-Effects-Interactions pattern in multiple functions (SWC-107) and contains arithmetic operations vulnerable to overflow without proper safeguards (SWC-101). These issues are repeatedly identified across stake/unstake functions and bonus calculations.",
+      "evidence": [
+        "External call in stakeNFT occurs after state updates, violating CEI pattern",
+        "getBonusValue calculation uses unprotected arithmetic with potential overflow",
+        "Multiple functions making external calls lack reentrancy guards"
+      ],
+      "raw": "{\n  \"reason\": \"The contract violates Checks-Effects-Interactions pattern in multiple functions (SWC-107) and contains arithmetic operations vulnerable to overflow without proper safeguards (SWC-101). These issues are repeatedly identified across stake/unstake functions and bonus calculations.\",\n  \"evidence\": [\n    \"External call in stakeNFT occurs after state updates, violating CEI pattern\",\n    \"getBonusValue calculation uses unprotected arithmetic with potential overflow\",\n    \"Multiple functions making external calls lack reentrancy guards\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "5a77efa7-ca21-49cb-994d-aa335e29f2a4",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

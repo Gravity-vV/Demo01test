@@ -1,0 +1,262 @@
+{
+  "address": "0x10c0be5becdfafa53a2b20a987f7d55f24cb2011",
+  "session_id": "2953312f-4c5f-48b8-80a9-0582ffb22855",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105|SWC-106|SWC-107",
+  "pred_swc_count": 3,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-105 applies due to unprotected selfdestruct allowing arbitrary contract destruction. SWC-106 fits because uninitialized arrays create unhandled storage references. SWC-107 matches as strict equality checks create precision risks in financial operations. Evidence: setup() enables selfdestruct to arbitrary addresses without constraints; wallets/percent/cap arrays declared with size 0 but never properly initialized; Multiple == checks on balances and calculations without tolerance margins",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 4.5, \"SWC-106\": 4.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"kw:arbitrary-send-eth\", \"re:arbitrary-send\"], \"SWC-106\": [\"kw:suicidal\", \"re:\\\\bsuicid\"], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-benign\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"setup() enables selfdestruct to arbitrary addresses without constraints\", \"wallets/percent/cap arrays declared with size 0 but never properly initialized\", \"Multiple == checks on balances and calculations without tolerance margins\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-105 applies due to unprotected selfdestruct allowing arbitrary contract destruction. SWC-106 fits because uninitialized arrays create unhandled storage references. SWC-107 matches as strict equality checks create precision risks in financial operations.\\\",\\n  \\\"evidence\\\": [\\n    \\\"setup() enables selfdestruct to arbitrary addresses without constraints\\\",\\n    \\\"wallets/percent/cap arrays declared with size 0 but never properly initialized\\\",\\n    \\\"Multiple == checks on balances and calculations without tolerance margins\\\"\\n  ]\\n}\", \"reason\": \"SWC-105 applies due to unprotected selfdestruct allowing arbitrary contract destruction. SWC-106 fits because uninitialized arrays create unhandled storage references. SWC-107 matches as strict equality checks create precision risks in financial operations.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3114,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x10c0be5becdfafa53a2b20a987f7d55f24cb2011/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 446.5548312664032,
+  "gt_swc_set": "SWC-101|SWC-106",
+  "error": "",
+  "raw": {
+    "address": "0x10c0be5becdfafa53a2b20a987f7d55f24cb2011",
+    "model": "deepseek_school",
+    "session_id": "2953312f-4c5f-48b8-80a9-0582ffb22855",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Arbitrary Self-Destruct",
+        "Severity": "High",
+        "Description": "The setup function allows authorized users to destroy the contract and send remaining ETH to an arbitrary address. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Complete loss of contract functionality and potential fund theft if attacker gains authorized access.",
+        "Location": "FinancialStrategy.setup() function with _state == 0, and static analysis suicidal finding"
+      },
+      {
+        "Issue": "Uninitialized State Variables",
+        "Severity": "High",
+        "Description": "Critical arrays (wallets, percent, cap) are declared but never initialized, leading to potential out-of-bounds access. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Contract functions may revert unexpectedly or allow unauthorized access when accessing uninitialized arrays.",
+        "Location": "Arrays declared at lines with uint256[0] and address[0], and static analysis uninitialized-state findings"
+      },
+      {
+        "Issue": "Arbitrary ETH Transfer",
+        "Severity": "High",
+        "Description": "Multiple functions transfer ETH to arbitrary addresses without proper validation. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential fund loss if malicious addresses are specified or authorization is bypassed.",
+        "Location": "refund(), getBeneficiaryCash(), getPartnerCash() functions, and static analysis arbitrary-send-eth findings"
+      },
+      {
+        "Issue": "Dangerous Strict Equality Checks",
+        "Severity": "Medium",
+        "Description": "Multiple functions use strict equality checks for balance comparisons and condition checks. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Unexpected behavior due to rounding errors or precision issues, potentially blocking contract operations.",
+        "Location": "setup() function (address(this).balance == 0), internalCalc() (free == 0), getBeneficiaryCash() (move == 0), and static analysis incorrect-equality findings"
+      },
+      {
+        "Issue": "Missing Zero Address Validation",
+        "Severity": "Low",
+        "Description": "Functions transferring ETH do not validate that recipient addresses are not zero addresses. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential permanent loss of funds if ETH is sent to address(0).",
+        "Location": "refund() function _investor parameter, and static analysis missing-zero-check finding"
+      },
+      {
+        "Issue": "Benign Reentrancy Patterns",
+        "Severity": "Low",
+        "Description": "Multiple functions exhibit reentrancy patterns with external calls followed by state changes. This appears in both the smart contract code and static analysis results.",
+        "Impact": "While not immediately exploitable, these patterns could become vulnerable if contract logic changes or in combination with other issues.",
+        "Location": "getPartnerCash(), getBeneficiaryCash(), deposit(), setup() functions, and static analysis reentrancy-benign findings"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T14:10:18.632393",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "2953312f-4c5f-48b8-80a9-0582ffb22855",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-b257_aj7/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.21"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 446.5548312664032,
+        "total_tasks": 0
+      },
+      "execution_time": 446.5548312664032,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The setup function allows authorized users to destroy the contract and send remaining ETH to an arbitrary address. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Complete loss of contract functionality and potential fund theft if attacker gains authorized access.",
+          "Issue": "Arbitrary Self-Destruct",
+          "Location": "FinancialStrategy.setup() function with _state == 0, and static analysis suicidal finding",
+          "Severity": "High"
+        },
+        {
+          "Description": "Critical arrays (wallets, percent, cap) are declared but never initialized, leading to potential out-of-bounds access. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Contract functions may revert unexpectedly or allow unauthorized access when accessing uninitialized arrays.",
+          "Issue": "Uninitialized State Variables",
+          "Location": "Arrays declared at lines with uint256[0] and address[0], and static analysis uninitialized-state findings",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple functions transfer ETH to arbitrary addresses without proper validation. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential fund loss if malicious addresses are specified or authorization is bypassed.",
+          "Issue": "Arbitrary ETH Transfer",
+          "Location": "refund(), getBeneficiaryCash(), getPartnerCash() functions, and static analysis arbitrary-send-eth findings",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple functions use strict equality checks for balance comparisons and condition checks. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Unexpected behavior due to rounding errors or precision issues, potentially blocking contract operations.",
+          "Issue": "Dangerous Strict Equality Checks",
+          "Location": "setup() function (address(this).balance == 0), internalCalc() (free == 0), getBeneficiaryCash() (move == 0), and static analysis incorrect-equality findings",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Functions transferring ETH do not validate that recipient addresses are not zero addresses. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential permanent loss of funds if ETH is sent to address(0).",
+          "Issue": "Missing Zero Address Validation",
+          "Location": "refund() function _investor parameter, and static analysis missing-zero-check finding",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Multiple functions exhibit reentrancy patterns with external calls followed by state changes. This appears in both the smart contract code and static analysis results.",
+          "Impact": "While not immediately exploitable, these patterns could become vulnerable if contract logic changes or in combination with other issues.",
+          "Issue": "Benign Reentrancy Patterns",
+          "Location": "getPartnerCash(), getBeneficiaryCash(), deposit(), setup() functions, and static analysis reentrancy-benign findings",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The setup function allows authorized users to destroy the contract and send remaining ETH to an arbitrary address. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Complete loss of contract functionality and potential fund theft if attacker gains authorized access.",
+          "Issue": "Arbitrary Self-Destruct",
+          "Location": "FinancialStrategy.setup() function with _state == 0, and static analysis suicidal finding",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Arbitrary Self-Destruct\",\n    \"Severity\": \"High\",\n    \"Description\": \"The setup function allows authorized users to destroy the contract and send remaining ETH to an arbitrary address. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Complete loss of contract functionality and potential fund theft if attacker gains authorized access.\",\n    \"Location\": \"FinancialStrategy.setup() function with _state == 0, and static analysis suicidal finding\"\n  },\n  {\n    \"Issue\": \"Uninitialized State Variables\",\n    \"Severity\": \"High\",\n    \"Description\": \"Critical arrays (wallets, percent, cap) are declared but never initialized, leading to potential out-of-bounds access. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Contract functions may revert unexpectedly or allow unauthorized access when accessing uninitialized arrays.\",\n    \"Location\": \"Arrays declared at lines with uint256[0] and address[0], and static analysis uninitialized-state findings\"\n  },\n  {\n    \"Issue\": \"Arbitrary ETH Transfer\",\n    \"Severity\": \"High\",\n    \"Description\": \"Multiple functions transfer ETH to arbitrary addresses without proper validation. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential fund loss if malicious addresses are specified or authorization is bypassed.\",\n    \"Location\": \"refund(), getBeneficiaryCash(), getPartnerCash() functions, and static analysis arbitrary-send-eth findings\"\n  },\n  {\n    \"Issue\": \"Dangerous Strict Equality Checks\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Multiple functions use strict equality checks for balance comparisons and condition checks. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Unexpected behavior due to rounding errors or precision issues, potentially blocking contract operations.\",\n    \"Location\": \"setup() function (address(this).balance == 0), internalCalc() (free == 0), getBeneficiaryCash() (move == 0), and static analysis incorrect-equality findings\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Validation\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Functions transferring ETH do not validate that recipient addresses are not zero addresses. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential permanent loss of funds if ETH is sent to address(0).\",\n    \"Location\": \"refund() function _investor parameter, and static analysis missing-zero-check finding\"\n  },\n  {\n    \"Issue\": \"Benign Reentrancy Patterns\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Multiple functions exhibit reentrancy patterns with external calls followed by state changes. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"While not immediately exploitable, these patterns could become vulnerable if contract logic changes or in combination with other issues.\",\n    \"Location\": \"getPartnerCash(), getBeneficiaryCash(), deposit(), setup() functions, and static analysis reentrancy-benign findings\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "2953312f-4c5f-48b8-80a9-0582ffb22855",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 2,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-105",
+        "SWC-106"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 4.5,
+        "SWC-106": 4.0,
+        "SWC-107": 10.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [
+          "kw:arbitrary-send-eth",
+          "re:arbitrary-send"
+        ],
+        "SWC-106": [
+          "kw:suicidal",
+          "re:\\bsuicid"
+        ],
+        "SWC-107": [
+          "kw:reentrancy",
+          "kw:reentrancy-benign",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(10.0), SWC-105(4.5), SWC-106(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-105",
+      "SWC-106",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-105",
+      "SWC-106",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-105|SWC-106|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-105 applies due to unprotected selfdestruct allowing arbitrary contract destruction. SWC-106 fits because uninitialized arrays create unhandled storage references. SWC-107 matches as strict equality checks create precision risks in financial operations. Evidence: setup() enables selfdestruct to arbitrary addresses without constraints; wallets/percent/cap arrays declared with size 0 but never properly initialized; Multiple == checks on balances and calculations without tolerance margins",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 4.5, \"SWC-106\": 4.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"kw:arbitrary-send-eth\", \"re:arbitrary-send\"], \"SWC-106\": [\"kw:suicidal\", \"re:\\\\bsuicid\"], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-benign\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"setup() enables selfdestruct to arbitrary addresses without constraints\", \"wallets/percent/cap arrays declared with size 0 but never properly initialized\", \"Multiple == checks on balances and calculations without tolerance margins\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-105 applies due to unprotected selfdestruct allowing arbitrary contract destruction. SWC-106 fits because uninitialized arrays create unhandled storage references. SWC-107 matches as strict equality checks create precision risks in financial operations.\\\",\\n  \\\"evidence\\\": [\\n    \\\"setup() enables selfdestruct to arbitrary addresses without constraints\\\",\\n    \\\"wallets/percent/cap arrays declared with size 0 but never properly initialized\\\",\\n    \\\"Multiple == checks on balances and calculations without tolerance margins\\\"\\n  ]\\n}\", \"reason\": \"SWC-105 applies due to unprotected selfdestruct allowing arbitrary contract destruction. SWC-106 fits because uninitialized arrays create unhandled storage references. SWC-107 matches as strict equality checks create precision risks in financial operations.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-105 applies due to unprotected selfdestruct allowing arbitrary contract destruction. SWC-106 fits because uninitialized arrays create unhandled storage references. SWC-107 matches as strict equality checks create precision risks in financial operations.",
+      "evidence": [
+        "setup() enables selfdestruct to arbitrary addresses without constraints",
+        "wallets/percent/cap arrays declared with size 0 but never properly initialized",
+        "Multiple == checks on balances and calculations without tolerance margins"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-105 applies due to unprotected selfdestruct allowing arbitrary contract destruction. SWC-106 fits because uninitialized arrays create unhandled storage references. SWC-107 matches as strict equality checks create precision risks in financial operations.\",\n  \"evidence\": [\n    \"setup() enables selfdestruct to arbitrary addresses without constraints\",\n    \"wallets/percent/cap arrays declared with size 0 but never properly initialized\",\n    \"Multiple == checks on balances and calculations without tolerance margins\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "2953312f-4c5f-48b8-80a9-0582ffb22855",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 3114,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

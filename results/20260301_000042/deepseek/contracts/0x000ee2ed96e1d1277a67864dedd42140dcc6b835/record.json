@@ -1,0 +1,231 @@
+{
+  "address": "0x000ee2ed96e1d1277a67864dedd42140dcc6b835",
+  "session_id": "7a414bd3-d3e1-45e9-a11c-7aa87a748374",
+  "audit_status": "completed",
+  "model": "deepseek",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-101 label is appropriate as multiple findings demonstrate integer arithmetic issues without safeguards. The decreaseAllowance function contains unchecked multiplication that could overflow, and the contract uses an outdated compiler version prone to known vulnerabilities. Evidence: decreaseAllowance performs rTotal = amount * 10**18 without overflow protection; Solidity version 0.6.9 lacks built-in overflow checks present in newer versions; No safemath or explicit checks found in arithmetic operations throughout contract",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"decreaseAllowance performs rTotal = amount * 10**18 without overflow protection\", \"Solidity version 0.6.9 lacks built-in overflow checks present in newer versions\", \"No safemath or explicit checks found in arithmetic operations throughout contract\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is appropriate as multiple findings demonstrate integer arithmetic issues without safeguards. The decreaseAllowance function contains unchecked multiplication that could overflow, and the contract uses an outdated compiler version prone to known vulnerabilities.\\\",\\n  \\\"evidence\\\": [\\n    \\\"decreaseAllowance performs rTotal = amount * 10**18 without overflow protection\\\",\\n    \\\"Solidity version 0.6.9 lacks built-in overflow checks present in newer versions\\\",\\n    \\\"No safemath or explicit checks found in arithmetic operations throughout contract\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is appropriate as multiple findings demonstrate integer arithmetic issues without safeguards. The decreaseAllowance function contains unchecked multiplication that could overflow, and the contract uses an outdated compiler version prone to known vulnerabilities.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3382,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260301_000042/deepseek/contracts/0x000ee2ed96e1d1277a67864dedd42140dcc6b835/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 419.2673239707947,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x000ee2ed96e1d1277a67864dedd42140dcc6b835",
+    "model": "deepseek",
+    "session_id": "7a414bd3-d3e1-45e9-a11c-7aa87a748374",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Missing Zero Address Check in setrouteChain Function",
+        "Severity": "Low",
+        "Description": "The function setrouteChain lacks a zero address check for the input parameter Uniswaprouterv02. This issue is present in the smart contract code and is also identified in the static analysis results. This issue appears in the auditing result.",
+        "Impact": "Setting the router to a zero address could lead to failed transactions or loss of functionality if the router is used in critical operations.",
+        "Location": "HamtaroReloaded.setrouteChain(address), static analysis finding: missing-zero-check"
+      },
+      {
+        "Issue": "Missing Zero Address Check in Approve Function",
+        "Severity": "Low",
+        "Description": "The function Approve lacks a zero address check for the input parameter trade. This issue is present in the smart contract code and is also identified in the static analysis results. This issue appears in the auditing result.",
+        "Impact": "Setting the caller to a zero address could disrupt intended contract behavior, potentially affecting access control or transaction processing.",
+        "Location": "HamtaroReloaded.Approve(address), static analysis finding: missing-zero-check"
+      },
+      {
+        "Issue": "Missing Event Emission in decreaseAllowance Function",
+        "Severity": "Low",
+        "Description": "The function decreaseAllowance modifies the state variable rTotal without emitting an event. This issue is present in the smart contract code and is also identified in the static analysis results. This issue appears in the auditing result.",
+        "Impact": "Lack of event emission reduces transparency and makes it harder for off-chain systems to track state changes, affecting monitoring and user trust.",
+        "Location": "HamtaroReloaded.decreaseAllowance(uint256), static analysis finding: events-maths"
+      },
+      {
+        "Issue": "Potential Integer Overflow in decreaseAllowance",
+        "Severity": "Low",
+        "Description": "The function decreaseAllowance uses multiplication without overflow checks, which could theoretically lead to integer overflow. This issue is based on code patterns in the smart contract and is not explicitly mentioned in the static analysis. This issue appears in the auditing result.",
+        "Impact": "If amount is too large, multiplication could overflow, resulting in incorrect rTotal value and unexpected contract behavior.",
+        "Location": "HamtaroReloaded.decreaseAllowance(uint256): rTotal = amount * 10**18"
+      },
+      {
+        "Issue": "Use of Deprecated Solidity Version",
+        "Severity": "Low",
+        "Description": "The contract uses Solidity version 0.6.9, which is outdated and may contain known vulnerabilities or lack modern security features. This issue is present in the smart contract code only. This issue appears in the auditing result.",
+        "Impact": "Increased risk of exploiting known vulnerabilities in the compiler or language features, potentially leading to security breaches.",
+        "Location": "pragma solidity ^0.6.9;"
+      },
+      {
+        "Issue": "Incorrect Constructor Transfer Event",
+        "Severity": "Low",
+        "Description": "The constructor emits a Transfer event from address(0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B) instead of the standard address(0) for minting. This issue is present in the smart contract code only. This issue appears in the auditing result.",
+        "Impact": "Non-standard event emission may confuse external applications or block explorers that expect minting events to come from the zero address.",
+        "Location": "Constructor: emit Transfer(address(0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B), _call(), _totalTokens);"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-01T00:07:45.891755",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "session_id": "7a414bd3-d3e1-45e9-a11c-7aa87a748374",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-93_ojyvx/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.9"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 419.2673239707947,
+        "total_tasks": 0
+      },
+      "execution_time": 419.2673239707947,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The function setrouteChain lacks a zero address check for the input parameter Uniswaprouterv02. This issue is present in the smart contract code and is also identified in the static analysis results. This issue appears in the auditing result.",
+          "Impact": "Setting the router to a zero address could lead to failed transactions or loss of functionality if the router is used in critical operations.",
+          "Issue": "Missing Zero Address Check in setrouteChain Function",
+          "Location": "HamtaroReloaded.setrouteChain(address), static analysis finding: missing-zero-check",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The function Approve lacks a zero address check for the input parameter trade. This issue is present in the smart contract code and is also identified in the static analysis results. This issue appears in the auditing result.",
+          "Impact": "Setting the caller to a zero address could disrupt intended contract behavior, potentially affecting access control or transaction processing.",
+          "Issue": "Missing Zero Address Check in Approve Function",
+          "Location": "HamtaroReloaded.Approve(address), static analysis finding: missing-zero-check",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The function decreaseAllowance modifies the state variable rTotal without emitting an event. This issue is present in the smart contract code and is also identified in the static analysis results. This issue appears in the auditing result.",
+          "Impact": "Lack of event emission reduces transparency and makes it harder for off-chain systems to track state changes, affecting monitoring and user trust.",
+          "Issue": "Missing Event Emission in decreaseAllowance Function",
+          "Location": "HamtaroReloaded.decreaseAllowance(uint256), static analysis finding: events-maths",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The function decreaseAllowance uses multiplication without overflow checks, which could theoretically lead to integer overflow. This issue is based on code patterns in the smart contract and is not explicitly mentioned in the static analysis. This issue appears in the auditing result.",
+          "Impact": "If amount is too large, multiplication could overflow, resulting in incorrect rTotal value and unexpected contract behavior.",
+          "Issue": "Potential Integer Overflow in decreaseAllowance",
+          "Location": "HamtaroReloaded.decreaseAllowance(uint256): rTotal = amount * 10**18",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The contract uses Solidity version 0.6.9, which is outdated and may contain known vulnerabilities or lack modern security features. This issue is present in the smart contract code only. This issue appears in the auditing result.",
+          "Impact": "Increased risk of exploiting known vulnerabilities in the compiler or language features, potentially leading to security breaches.",
+          "Issue": "Use of Deprecated Solidity Version",
+          "Location": "pragma solidity ^0.6.9;",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The constructor emits a Transfer event from address(0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B) instead of the standard address(0) for minting. This issue is present in the smart contract code only. This issue appears in the auditing result.",
+          "Impact": "Non-standard event emission may confuse external applications or block explorers that expect minting events to come from the zero address.",
+          "Issue": "Incorrect Constructor Transfer Event",
+          "Location": "Constructor: emit Transfer(address(0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B), _call(), _totalTokens);",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The function setrouteChain lacks a zero address check for the input parameter Uniswaprouterv02. This issue is present in the smart contract code and is also identified in the static analysis results. This issue appears in the auditing result.",
+          "Impact": "Setting the router to a zero address could lead to failed transactions or loss of functionality if the router is used in critical operations.",
+          "Issue": "Missing Zero Address Check in setrouteChain Function",
+          "Location": "HamtaroReloaded.setrouteChain(address), static analysis finding: missing-zero-check",
+          "Severity": "Low"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Missing Zero Address Check in setrouteChain Function\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The function setrouteChain lacks a zero address check for the input parameter Uniswaprouterv02. This issue is present in the smart contract code and is also identified in the static analysis results.\",\n    \"Impact\": \"Setting the router to a zero address could lead to failed transactions or loss of functionality if the router is used in critical operations.\",\n    \"Location\": \"HamtaroReloaded.setrouteChain(address), static analysis finding: missing-zero-check\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Check in Approve Function\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The function Approve lacks a zero address check for the input parameter trade. This issue is present in the smart contract code and is also identified in the static analysis results.\",\n    \"Impact\": \"Setting the caller to a zero address could disrupt intended contract behavior, potentially affecting access control or transaction processing.\",\n    \"Location\": \"HamtaroReloaded.Approve(address), static analysis finding: missing-zero-check\"\n  },\n  {\n    \"Issue\": \"Missing Event Emission in decreaseAllowance Function\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The function decreaseAllowance modifies the state variable rTotal without emitting an event. This issue is present in the smart contract code and is also identified in the static analysis results.\",\n    \"Impact\": \"Lack of event emission reduces transparency and makes it harder for off-chain systems to track state changes, affecting monitoring and user trust.\",\n    \"Location\": \"HamtaroReloaded.decreaseAllowance(uint256), static analysis finding: events-maths\"\n  },\n  {\n    \"Issue\": \"Potential Integer Overflow in decreaseAllowance\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The function decreaseAllowance uses multiplication without overflow checks, which could theoretically lead to integer overflow. This issue is based on code patterns in the smart contract and is not explicitly mentioned in the static analysis.\",\n    \"Impact\": \"If amount is too large, multiplication could overflow, resulting in incorrect rTotal value and unexpected contract behavior.\",\n    \"Location\": \"HamtaroReloaded.decreaseAllowance(uint256): rTotal = amount * 10**18\"\n  },\n  {\n    \"Issue\": \"Use of Deprecated Solidity Version\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The contract uses Solidity version 0.6.9, which is outdated and may contain known vulnerabilities or lack modern security features. This issue is present in the smart contract code only.\",\n    \"Impact\": \"Increased risk of exploiting known vulnerabilities in the compiler or language features, potentially leading to security breaches.\",\n    \"Location\": \"pragma solidity ^0.6.9;\"\n  },\n  {\n    \"Issue\": \"Incorrect Constructor Transfer Event\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The constructor emits a Transfer event from address(0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B) instead of the standard address(0) for minting. This issue is present in the smart contract code only.\",\n    \"Impact\": \"Non-standard event emission may confuse external applications or block explorers that expect minting events to come from the zero address.\",\n    \"Location\": \"Constructor: emit Transfer(address(0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B), _call(), _totalTokens);\"\n  }\n]",
+      "model_used": "deepseek",
+      "session_id": "7a414bd3-d3e1-45e9-a11c-7aa87a748374",
+      "severity_breakdown": {
+        "High": 0,
+        "Low": 6,
+        "Medium": 0
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-101 label is appropriate as multiple findings demonstrate integer arithmetic issues without safeguards. The decreaseAllowance function contains unchecked multiplication that could overflow, and the contract uses an outdated compiler version prone to known vulnerabilities. Evidence: decreaseAllowance performs rTotal = amount * 10**18 without overflow protection; Solidity version 0.6.9 lacks built-in overflow checks present in newer versions; No safemath or explicit checks found in arithmetic operations throughout contract",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"decreaseAllowance performs rTotal = amount * 10**18 without overflow protection\", \"Solidity version 0.6.9 lacks built-in overflow checks present in newer versions\", \"No safemath or explicit checks found in arithmetic operations throughout contract\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is appropriate as multiple findings demonstrate integer arithmetic issues without safeguards. The decreaseAllowance function contains unchecked multiplication that could overflow, and the contract uses an outdated compiler version prone to known vulnerabilities.\\\",\\n  \\\"evidence\\\": [\\n    \\\"decreaseAllowance performs rTotal = amount * 10**18 without overflow protection\\\",\\n    \\\"Solidity version 0.6.9 lacks built-in overflow checks present in newer versions\\\",\\n    \\\"No safemath or explicit checks found in arithmetic operations throughout contract\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is appropriate as multiple findings demonstrate integer arithmetic issues without safeguards. The decreaseAllowance function contains unchecked multiplication that could overflow, and the contract uses an outdated compiler version prone to known vulnerabilities.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-101 label is appropriate as multiple findings demonstrate integer arithmetic issues without safeguards. The decreaseAllowance function contains unchecked multiplication that could overflow, and the contract uses an outdated compiler version prone to known vulnerabilities.",
+      "evidence": [
+        "decreaseAllowance performs rTotal = amount * 10**18 without overflow protection",
+        "Solidity version 0.6.9 lacks built-in overflow checks present in newer versions",
+        "No safemath or explicit checks found in arithmetic operations throughout contract"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-101 label is appropriate as multiple findings demonstrate integer arithmetic issues without safeguards. The decreaseAllowance function contains unchecked multiplication that could overflow, and the contract uses an outdated compiler version prone to known vulnerabilities.\",\n  \"evidence\": [\n    \"decreaseAllowance performs rTotal = amount * 10**18 without overflow protection\",\n    \"Solidity version 0.6.9 lacks built-in overflow checks present in newer versions\",\n    \"No safemath or explicit checks found in arithmetic operations throughout contract\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "7a414bd3-d3e1-45e9-a11c-7aa87a748374",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 3382,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

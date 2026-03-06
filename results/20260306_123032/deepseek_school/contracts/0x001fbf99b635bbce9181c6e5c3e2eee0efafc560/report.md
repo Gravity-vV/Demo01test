@@ -1,0 +1,1 @@
+Workflow execution failed: Workflow failed at step 1 (llm): All AI models failed. Last error: deepseek_school model call attempt 1/2 failed: deepseek_school API call failed after 0.01s: Error code: 406 - {'detail': '模型不支持； Qwen3.5-397B-A17B'}

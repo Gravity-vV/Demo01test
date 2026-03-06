@@ -1,0 +1,243 @@
+{
+  "address": "0x0000000020e0a4bc775eb0cbefc7cfbeafc88444",
+  "session_id": "9971a6e6-a516-444d-adf2-ed7704b8bd31",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "Rule hits: SWC-105(4.5)",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 4.5, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"kw:arbitrary-send-eth\", \"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"ok\": false, \"raw\": \"\", \"reason\": \"LLM explanation call failed: timed out\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3678,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260304_175512/deepseek_school/contracts/0x0000000020e0a4bc775eb0cbefc7cfbeafc88444/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 3264.3607380390167,
+  "gt_swc_set": "SWC-101|SWC-105",
+  "error": "",
+  "raw": {
+    "address": "0x0000000020e0a4bc775eb0cbefc7cfbeafc88444",
+    "model": "deepseek_school",
+    "session_id": "9971a6e6-a516-444d-adf2-ed7704b8bd31",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Arbitrary ETH Transfer to User-Controlled Address",
+        "Severity": "High",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. The dispersePaymentForShares function in GasOptimisedPayoutsToMiners transfers ETH to addresses derived from user-provided data without proper validation, allowing potential fund theft.",
+        "Impact": "Malicious users could drain contract funds by crafting minerPayoutData array to redirect payments to attacker-controlled addresses.",
+        "Location": "GasOptimisedPayoutsToMiners.dispersePaymentForShares function, static analysis finding 'arbitrary-send-eth'"
+      },
+      {
+        "Issue": "External Calls in Loop Without Gas Limits",
+        "Severity": "Medium",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. The dispersePaymentForShares function performs multiple external transfers in a loop without gas limit considerations, making it vulnerable to out-of-gas errors and denial of service.",
+        "Impact": "An attacker could craft a large minerPayoutData array to cause the transaction to run out of gas, preventing legitimate payouts and potentially locking funds.",
+        "Location": "GasOptimisedPayoutsToMiners.dispersePaymentForShares function, static analysis finding 'calls-loop'"
+      },
+      {
+        "Issue": "Timestamp Dependency for Critical Operations",
+        "Severity": "Low",
+        "Description": "This issue appears in both the smart contract code and the static analysis results. Multiple functions (withdrawUpTo and remainingDurationForWorkClaim) use block.timestamp for critical logic, which can be slightly manipulated by miners.",
+        "Impact": "Miners could potentially influence timing-dependent operations, though the impact is limited due to the small manipulation range (≈30 seconds).",
+        "Location": "LogOfClaimedMEVBlocks.withdrawUpTo and remainingDurationForWorkClaim functions, static analysis findings 'timestamp'"
+      },
+      {
+        "Issue": "Lack of Input Validation in dispersePaymentForShares",
+        "Severity": "Medium",
+        "Description": "This issue appears in the smart contract code only. The function does not validate that the minerPayoutData array elements are properly formatted or that the division operation won't cause unexpected behavior.",
+        "Impact": "Malformed input data could lead to incorrect payment calculations, fund loss, or contract malfunction.",
+        "Location": "GasOptimisedPayoutsToMiners.dispersePaymentForShares function, line with 'singlePayout / (16 ** 40)' calculation"
+      },
+      {
+        "Issue": "Potential Signature Replay Vulnerability",
+        "Severity": "Medium",
+        "Description": "This issue appears in the smart contract code only. The submitClaim function uses ecrecover without including a nonce or chain ID in the signed message, potentially allowing signature reuse across different chains or contexts.",
+        "Impact": "Signatures could be replayed on different chains or in different contexts, leading to unauthorized claims.",
+        "Location": "LogOfClaimedMEVBlocks.submitClaim function, ecrecover usage with fixed message prefix"
+      },
+      {
+        "Issue": "Insufficient Deposit Validation",
+        "Severity": "Low",
+        "Description": "This issue appears in the smart contract code only. The depositAndLock function does not validate that the deposited amount matches the user's intended lock duration, potentially leading to user errors.",
+        "Impact": "Users might accidentally deposit funds with incorrect lock durations, limiting their flexibility.",
+        "Location": "LogOfClaimedMEVBlocks.depositAndLock function, lack of amount-to-duration ratio validation"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-04T18:49:36.977413",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "9971a6e6-a516-444d-adf2-ed7704b8bd31",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-dy4y51ac/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.7.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 3264.3607380390167,
+        "total_tasks": 0
+      },
+      "execution_time": 3264.3607380390167,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The dispersePaymentForShares function in GasOptimisedPayoutsToMiners transfers ETH to addresses derived from user-provided data without proper validation, allowing potential fund theft.",
+          "Impact": "Malicious users could drain contract funds by crafting minerPayoutData array to redirect payments to attacker-controlled addresses.",
+          "Issue": "Arbitrary ETH Transfer to User-Controlled Address",
+          "Location": "GasOptimisedPayoutsToMiners.dispersePaymentForShares function, static analysis finding 'arbitrary-send-eth'",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The dispersePaymentForShares function performs multiple external transfers in a loop without gas limit considerations, making it vulnerable to out-of-gas errors and denial of service.",
+          "Impact": "An attacker could craft a large minerPayoutData array to cause the transaction to run out of gas, preventing legitimate payouts and potentially locking funds.",
+          "Issue": "External Calls in Loop Without Gas Limits",
+          "Location": "GasOptimisedPayoutsToMiners.dispersePaymentForShares function, static analysis finding 'calls-loop'",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. Multiple functions (withdrawUpTo and remainingDurationForWorkClaim) use block.timestamp for critical logic, which can be slightly manipulated by miners.",
+          "Impact": "Miners could potentially influence timing-dependent operations, though the impact is limited due to the small manipulation range (≈30 seconds).",
+          "Issue": "Timestamp Dependency for Critical Operations",
+          "Location": "LogOfClaimedMEVBlocks.withdrawUpTo and remainingDurationForWorkClaim functions, static analysis findings 'timestamp'",
+          "Severity": "Low"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. The function does not validate that the minerPayoutData array elements are properly formatted or that the division operation won't cause unexpected behavior.",
+          "Impact": "Malformed input data could lead to incorrect payment calculations, fund loss, or contract malfunction.",
+          "Issue": "Lack of Input Validation in dispersePaymentForShares",
+          "Location": "GasOptimisedPayoutsToMiners.dispersePaymentForShares function, line with 'singlePayout / (16 ** 40)' calculation",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. The submitClaim function uses ecrecover without including a nonce or chain ID in the signed message, potentially allowing signature reuse across different chains or contexts.",
+          "Impact": "Signatures could be replayed on different chains or in different contexts, leading to unauthorized claims.",
+          "Issue": "Potential Signature Replay Vulnerability",
+          "Location": "LogOfClaimedMEVBlocks.submitClaim function, ecrecover usage with fixed message prefix",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. The depositAndLock function does not validate that the deposited amount matches the user's intended lock duration, potentially leading to user errors.",
+          "Impact": "Users might accidentally deposit funds with incorrect lock durations, limiting their flexibility.",
+          "Issue": "Insufficient Deposit Validation",
+          "Location": "LogOfClaimedMEVBlocks.depositAndLock function, lack of amount-to-duration ratio validation",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "This issue appears in both the smart contract code and the static analysis results. The dispersePaymentForShares function in GasOptimisedPayoutsToMiners transfers ETH to addresses derived from user-provided data without proper validation, allowing potential fund theft.",
+          "Impact": "Malicious users could drain contract funds by crafting minerPayoutData array to redirect payments to attacker-controlled addresses.",
+          "Issue": "Arbitrary ETH Transfer to User-Controlled Address",
+          "Location": "GasOptimisedPayoutsToMiners.dispersePaymentForShares function, static analysis finding 'arbitrary-send-eth'",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Arbitrary ETH Transfer to User-Controlled Address\",\n    \"Severity\": \"High\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. The dispersePaymentForShares function in GasOptimisedPayoutsToMiners transfers ETH to addresses derived from user-provided data without proper validation, allowing potential fund theft.\",\n    \"Impact\": \"Malicious users could drain contract funds by crafting minerPayoutData array to redirect payments to attacker-controlled addresses.\",\n    \"Location\": \"GasOptimisedPayoutsToMiners.dispersePaymentForShares function, static analysis finding 'arbitrary-send-eth'\"\n  },\n  {\n    \"Issue\": \"External Calls in Loop Without Gas Limits\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. The dispersePaymentForShares function performs multiple external transfers in a loop without gas limit considerations, making it vulnerable to out-of-gas errors and denial of service.\",\n    \"Impact\": \"An attacker could craft a large minerPayoutData array to cause the transaction to run out of gas, preventing legitimate payouts and potentially locking funds.\",\n    \"Location\": \"GasOptimisedPayoutsToMiners.dispersePaymentForShares function, static analysis finding 'calls-loop'\"\n  },\n  {\n    \"Issue\": \"Timestamp Dependency for Critical Operations\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue appears in both the smart contract code and the static analysis results. Multiple functions (withdrawUpTo and remainingDurationForWorkClaim) use block.timestamp for critical logic, which can be slightly manipulated by miners.\",\n    \"Impact\": \"Miners could potentially influence timing-dependent operations, though the impact is limited due to the small manipulation range (≈30 seconds).\",\n    \"Location\": \"LogOfClaimedMEVBlocks.withdrawUpTo and remainingDurationForWorkClaim functions, static analysis findings 'timestamp'\"\n  },\n  {\n    \"Issue\": \"Lack of Input Validation in dispersePaymentForShares\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"This issue appears in the smart contract code only. The function does not validate that the minerPayoutData array elements are properly formatted or that the division operation won't cause unexpected behavior.\",\n    \"Impact\": \"Malformed input data could lead to incorrect payment calculations, fund loss, or contract malfunction.\",\n    \"Location\": \"GasOptimisedPayoutsToMiners.dispersePaymentForShares function, line with 'singlePayout / (16 ** 40)' calculation\"\n  },\n  {\n    \"Issue\": \"Potential Signature Replay Vulnerability\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"This issue appears in the smart contract code only. The submitClaim function uses ecrecover without including a nonce or chain ID in the signed message, potentially allowing signature reuse across different chains or contexts.\",\n    \"Impact\": \"Signatures could be replayed on different chains or in different contexts, leading to unauthorized claims.\",\n    \"Location\": \"LogOfClaimedMEVBlocks.submitClaim function, ecrecover usage with fixed message prefix\"\n  },\n  {\n    \"Issue\": \"Insufficient Deposit Validation\",\n    \"Severity\": \"Low\",\n    \"Description\": \"This issue appears in the smart contract code only. The depositAndLock function does not validate that the deposited amount matches the user's intended lock duration, potentially leading to user errors.\",\n    \"Impact\": \"Users might accidentally deposit funds with incorrect lock durations, limiting their flexibility.\",\n    \"Location\": \"LogOfClaimedMEVBlocks.depositAndLock function, lack of amount-to-duration ratio validation\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "9971a6e6-a516-444d-adf2-ed7704b8bd31",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 2,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-105"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 4.5,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [
+          "kw:arbitrary-send-eth",
+          "re:arbitrary-send"
+        ],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-105(4.5)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-105"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-105"
+    ],
+    "pred_swc_list": "SWC-105",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "Rule hits: SWC-105(4.5)",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 4.5, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [\"kw:arbitrary-send-eth\", \"re:arbitrary-send\"], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"ok\": false, \"raw\": \"\", \"reason\": \"LLM explanation call failed: timed out\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": false,
+      "reason": "LLM explanation call failed: timed out",
+      "raw": ""
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "9971a6e6-a516-444d-adf2-ed7704b8bd31",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 3678,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

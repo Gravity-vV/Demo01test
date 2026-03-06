@@ -1,0 +1,264 @@
+{
+  "address": "0x1daecd4761835ffd36c4f1cd3b7325ed110ee71e",
+  "session_id": "866a1597-8886-4f08-b1ed-661e3f9c4d93",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-101 label is appropriate because the contract uses an outdated Solidity version (0.4.24) which contains known compiler bugs and lacks modern security features. This exposes the contract to vulnerabilities that newer versions mitigate, increasing overall risk despite SafeMath usage. Evidence: pragma solidity ^0.4.24; explicitly declares use of deprecated compiler; Findings indicate potential arithmetic vulnerabilities due to compiler limitations; Static analysis confirms version-related risks not present in newer releases",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"pragma solidity ^0.4.24; explicitly declares use of deprecated compiler\", \"Findings indicate potential arithmetic vulnerabilities due to compiler limitations\", \"Static analysis confirms version-related risks not present in newer releases\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is appropriate because the contract uses an outdated Solidity version (0.4.24) which contains known compiler bugs and lacks modern security features. This exposes the contract to vulnerabilities that newer versions mitigate, increasing overall risk despite SafeMath usage.\\\",\\n  \\\"evidence\\\": [\\n    \\\"pragma solidity ^0.4.24; explicitly declares use of deprecated compiler\\\",\\n    \\\"Findings indicate potential arithmetic vulnerabilities due to compiler limitations\\\",\\n    \\\"Static analysis confirms version-related risks not present in newer releases\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is appropriate because the contract uses an outdated Solidity version (0.4.24) which contains known compiler bugs and lacks modern security features. This exposes the contract to vulnerabilities that newer versions mitigate, increasing overall risk despite SafeMath usage.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3955,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x1daecd4761835ffd36c4f1cd3b7325ed110ee71e/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 7,
+  "execution_time": 623.2454278469086,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x1daecd4761835ffd36c4f1cd3b7325ed110ee71e",
+    "model": "deepseek_school",
+    "session_id": "866a1597-8886-4f08-b1ed-661e3f9c4d93",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Unchecked Token Transfer Return Values",
+        "Severity": "High",
+        "Description": "The smart contract code ignores return values from ERC20 transfer calls, which can lead to silent failures when token transfers are unsuccessful. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Failed token transfers will not be detected, potentially causing loss of funds or incorrect accounting.",
+        "Location": "Crowdsale.createTokens(), Crowdsale.createTokensWithoutReffer(), Crowdsale.Crowdsale(), Crowdsale.manualWithdrawToken() in code; unchecked-transfer findings in static analysis"
+      },
+      {
+        "Issue": "Divide Before Multiply in Referral Calculation",
+        "Severity": "Medium",
+        "Description": "The referral bonus calculation performs division before multiplication, which can lead to precision loss and incorrect token amounts due to integer division truncation. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Incorrect token amounts may be transferred for referral bonuses, potentially leading to unfair distribution or loss of value.",
+        "Location": "Crowdsale.createTokens() function; divide-before-multiply finding in static analysis"
+      },
+      {
+        "Issue": "Missing Ownership Transfer Event",
+        "Severity": "Low",
+        "Description": "The transferOwnership function changes the contract owner without emitting an event, making it difficult for off-chain systems to track ownership changes. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Lack of transparency in ownership changes, making it harder to monitor and audit contract administration.",
+        "Location": "Ownable.transferOwnership() function; events-access finding in static analysis"
+      },
+      {
+        "Issue": "Missing Referral Bonus Change Event",
+        "Severity": "Low",
+        "Description": "The refferBonusFunction updates the referral bonus percentage without emitting an event, making it difficult to track changes to this important parameter. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Lack of transparency in referral bonus changes, reducing auditability and user confidence.",
+        "Location": "Crowdsale.refferBonusFunction() function; events-maths finding in static analysis"
+      },
+      {
+        "Issue": "External Calls in Loop",
+        "Severity": "Low",
+        "Description": "The airdropTokens function contains external token transfer calls within a loop, which could potentially lead to out-of-gas errors or transaction failures for large recipient lists. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Potential transaction failures and gas inefficiency when airdropping to many addresses, possibly causing incomplete airdrops.",
+        "Location": "Crowdsale.airdropTokens() function; calls-loop finding in static analysis"
+      },
+      {
+        "Issue": "Use of Deprecated Solidity Version",
+        "Severity": "Medium",
+        "Description": "The contract uses Solidity 0.4.24 which is outdated and contains known vulnerabilities. This issue appears in the smart contract code only.",
+        "Impact": "Exposure to known security vulnerabilities and lack of modern safety features available in newer Solidity versions.",
+        "Location": "pragma solidity ^0.4.24; at the top of the contract code"
+      },
+      {
+        "Issue": "Potential Integer Overflow/Underflow",
+        "Severity": "Medium",
+        "Description": "The contract uses SafeMath library for arithmetic operations, but there are potential risks with older compiler versions. This issue appears in the smart contract code context only.",
+        "Impact": "Possible arithmetic vulnerabilities despite SafeMath usage due to compiler version limitations.",
+        "Location": "All arithmetic operations throughout the contract code using SafeMath with Solidity 0.4.24"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T16:00:08.593559",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "866a1597-8886-4f08-b1ed-661e3f9c4d93",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-w62ry9kn/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.24"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 623.2454278469086,
+        "total_tasks": 0
+      },
+      "execution_time": 623.2454278469086,
+      "finding_number": 7,
+      "findings": [
+        {
+          "Description": "The smart contract code ignores return values from ERC20 transfer calls, which can lead to silent failures when token transfers are unsuccessful. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Failed token transfers will not be detected, potentially causing loss of funds or incorrect accounting.",
+          "Issue": "Unchecked Token Transfer Return Values",
+          "Location": "Crowdsale.createTokens(), Crowdsale.createTokensWithoutReffer(), Crowdsale.Crowdsale(), Crowdsale.manualWithdrawToken() in code; unchecked-transfer findings in static analysis",
+          "Severity": "High"
+        },
+        {
+          "Description": "The referral bonus calculation performs division before multiplication, which can lead to precision loss and incorrect token amounts due to integer division truncation. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Incorrect token amounts may be transferred for referral bonuses, potentially leading to unfair distribution or loss of value.",
+          "Issue": "Divide Before Multiply in Referral Calculation",
+          "Location": "Crowdsale.createTokens() function; divide-before-multiply finding in static analysis",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The transferOwnership function changes the contract owner without emitting an event, making it difficult for off-chain systems to track ownership changes. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Lack of transparency in ownership changes, making it harder to monitor and audit contract administration.",
+          "Issue": "Missing Ownership Transfer Event",
+          "Location": "Ownable.transferOwnership() function; events-access finding in static analysis",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The refferBonusFunction updates the referral bonus percentage without emitting an event, making it difficult to track changes to this important parameter. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Lack of transparency in referral bonus changes, reducing auditability and user confidence.",
+          "Issue": "Missing Referral Bonus Change Event",
+          "Location": "Crowdsale.refferBonusFunction() function; events-maths finding in static analysis",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The airdropTokens function contains external token transfer calls within a loop, which could potentially lead to out-of-gas errors or transaction failures for large recipient lists. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Potential transaction failures and gas inefficiency when airdropping to many addresses, possibly causing incomplete airdrops.",
+          "Issue": "External Calls in Loop",
+          "Location": "Crowdsale.airdropTokens() function; calls-loop finding in static analysis",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The contract uses Solidity 0.4.24 which is outdated and contains known vulnerabilities. This issue appears in the smart contract code only.",
+          "Impact": "Exposure to known security vulnerabilities and lack of modern safety features available in newer Solidity versions.",
+          "Issue": "Use of Deprecated Solidity Version",
+          "Location": "pragma solidity ^0.4.24; at the top of the contract code",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract uses SafeMath library for arithmetic operations, but there are potential risks with older compiler versions. This issue appears in the smart contract code context only.",
+          "Impact": "Possible arithmetic vulnerabilities despite SafeMath usage due to compiler version limitations.",
+          "Issue": "Potential Integer Overflow/Underflow",
+          "Location": "All arithmetic operations throughout the contract code using SafeMath with Solidity 0.4.24",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The smart contract code ignores return values from ERC20 transfer calls, which can lead to silent failures when token transfers are unsuccessful. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Failed token transfers will not be detected, potentially causing loss of funds or incorrect accounting.",
+          "Issue": "Unchecked Token Transfer Return Values",
+          "Location": "Crowdsale.createTokens(), Crowdsale.createTokensWithoutReffer(), Crowdsale.Crowdsale(), Crowdsale.manualWithdrawToken() in code; unchecked-transfer findings in static analysis",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Unchecked Token Transfer Return Values\",\n    \"Severity\": \"High\",\n    \"Description\": \"The smart contract code ignores return values from ERC20 transfer calls, which can lead to silent failures when token transfers are unsuccessful. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Failed token transfers will not be detected, potentially causing loss of funds or incorrect accounting.\",\n    \"Location\": \"Crowdsale.createTokens(), Crowdsale.createTokensWithoutReffer(), Crowdsale.Crowdsale(), Crowdsale.manualWithdrawToken() in code; unchecked-transfer findings in static analysis\"\n  },\n  {\n    \"Issue\": \"Divide Before Multiply in Referral Calculation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The referral bonus calculation performs division before multiplication, which can lead to precision loss and incorrect token amounts due to integer division truncation. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Incorrect token amounts may be transferred for referral bonuses, potentially leading to unfair distribution or loss of value.\",\n    \"Location\": \"Crowdsale.createTokens() function; divide-before-multiply finding in static analysis\"\n  },\n  {\n    \"Issue\": \"Missing Ownership Transfer Event\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The transferOwnership function changes the contract owner without emitting an event, making it difficult for off-chain systems to track ownership changes. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Lack of transparency in ownership changes, making it harder to monitor and audit contract administration.\",\n    \"Location\": \"Ownable.transferOwnership() function; events-access finding in static analysis\"\n  },\n  {\n    \"Issue\": \"Missing Referral Bonus Change Event\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The refferBonusFunction updates the referral bonus percentage without emitting an event, making it difficult to track changes to this important parameter. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Lack of transparency in referral bonus changes, reducing auditability and user confidence.\",\n    \"Location\": \"Crowdsale.refferBonusFunction() function; events-maths finding in static analysis\"\n  },\n  {\n    \"Issue\": \"External Calls in Loop\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The airdropTokens function contains external token transfer calls within a loop, which could potentially lead to out-of-gas errors or transaction failures for large recipient lists. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Potential transaction failures and gas inefficiency when airdropping to many addresses, possibly causing incomplete airdrops.\",\n    \"Location\": \"Crowdsale.airdropTokens() function; calls-loop finding in static analysis\"\n  },\n  {\n    \"Issue\": \"Use of Deprecated Solidity Version\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract uses Solidity 0.4.24 which is outdated and contains known vulnerabilities. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Exposure to known security vulnerabilities and lack of modern safety features available in newer Solidity versions.\",\n    \"Location\": \"pragma solidity ^0.4.24; at the top of the contract code\"\n  },\n  {\n    \"Issue\": \"Potential Integer Overflow/Underflow\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract uses SafeMath library for arithmetic operations, but there are potential risks with older compiler versions. This issue appears in the smart contract code context only.\",\n    \"Impact\": \"Possible arithmetic vulnerabilities despite SafeMath usage due to compiler version limitations.\",\n    \"Location\": \"All arithmetic operations throughout the contract code using SafeMath with Solidity 0.4.24\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "866a1597-8886-4f08-b1ed-661e3f9c4d93",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 3,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-101 label is appropriate because the contract uses an outdated Solidity version (0.4.24) which contains known compiler bugs and lacks modern security features. This exposes the contract to vulnerabilities that newer versions mitigate, increasing overall risk despite SafeMath usage. Evidence: pragma solidity ^0.4.24; explicitly declares use of deprecated compiler; Findings indicate potential arithmetic vulnerabilities due to compiler limitations; Static analysis confirms version-related risks not present in newer releases",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"pragma solidity ^0.4.24; explicitly declares use of deprecated compiler\", \"Findings indicate potential arithmetic vulnerabilities due to compiler limitations\", \"Static analysis confirms version-related risks not present in newer releases\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is appropriate because the contract uses an outdated Solidity version (0.4.24) which contains known compiler bugs and lacks modern security features. This exposes the contract to vulnerabilities that newer versions mitigate, increasing overall risk despite SafeMath usage.\\\",\\n  \\\"evidence\\\": [\\n    \\\"pragma solidity ^0.4.24; explicitly declares use of deprecated compiler\\\",\\n    \\\"Findings indicate potential arithmetic vulnerabilities due to compiler limitations\\\",\\n    \\\"Static analysis confirms version-related risks not present in newer releases\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is appropriate because the contract uses an outdated Solidity version (0.4.24) which contains known compiler bugs and lacks modern security features. This exposes the contract to vulnerabilities that newer versions mitigate, increasing overall risk despite SafeMath usage.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-101 label is appropriate because the contract uses an outdated Solidity version (0.4.24) which contains known compiler bugs and lacks modern security features. This exposes the contract to vulnerabilities that newer versions mitigate, increasing overall risk despite SafeMath usage.",
+      "evidence": [
+        "pragma solidity ^0.4.24; explicitly declares use of deprecated compiler",
+        "Findings indicate potential arithmetic vulnerabilities due to compiler limitations",
+        "Static analysis confirms version-related risks not present in newer releases"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-101 label is appropriate because the contract uses an outdated Solidity version (0.4.24) which contains known compiler bugs and lacks modern security features. This exposes the contract to vulnerabilities that newer versions mitigate, increasing overall risk despite SafeMath usage.\",\n  \"evidence\": [\n    \"pragma solidity ^0.4.24; explicitly declares use of deprecated compiler\",\n    \"Findings indicate potential arithmetic vulnerabilities due to compiler limitations\",\n    \"Static analysis confirms version-related risks not present in newer releases\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "866a1597-8886-4f08-b1ed-661e3f9c4d93",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 7,
+        "full_report_chars": 3955,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

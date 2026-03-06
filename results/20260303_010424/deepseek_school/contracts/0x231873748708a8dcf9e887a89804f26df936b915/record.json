@@ -1,0 +1,322 @@
+{
+  "address": "0x231873748708a8dcf9e887a89804f26df936b915",
+  "session_id": "6b19caf7-e476-4df0-a616-5049b3408328",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 is applicable due to integer overflow risks in arithmetic operations without SafeMath protection, particularly in _tTotal and _rTotal updates. SWC-107 is justified as the contract exhibits reentrancy vulnerabilities from external calls in _transfer and cross-function interactions with _uniRouter. Evidence: Arithmetic operations lack SafeMath safeguards (Finding 6), risking overflows (SWC-101).; External calls in _transfer function violate Checks-Effects-Interactions pattern (Finding 5).; Cross-function reentrancy exists between transfer() and _uniRouter functions (Finding 2).",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Arithmetic operations lack SafeMath safeguards (Finding 6), risking overflows (SWC-101).\", \"External calls in _transfer function violate Checks-Effects-Interactions pattern (Finding 5).\", \"Cross-function reentrancy exists between transfer() and _uniRouter functions (Finding 2).\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to integer overflow risks in arithmetic operations without SafeMath protection, particularly in _tTotal and _rTotal updates. SWC-107 is justified as the contract exhibits reentrancy vulnerabilities from external calls in _transfer and cross-function interactions with _uniRouter.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Arithmetic operations lack SafeMath safeguards (Finding 6), risking overflows (SWC-101).\\\",\\n    \\\"External calls in _transfer function violate Checks-Effects-Interactions pattern (Finding 5).\\\",\\n    \\\"Cross-function reentrancy exists between transfer() and _uniRouter functions (Finding 2).\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to integer overflow risks in arithmetic operations without SafeMath protection, particularly in _tTotal and _rTotal updates. SWC-107 is justified as the contract exhibits reentrancy vulnerabilities from external calls in _transfer and cross-function interactions with _uniRouter.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1484.6824970245361,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x231873748708a8dcf9e887a89804f26df936b915",
+    "model": "deepseek_school",
+    "session_id": "6b19caf7-e476-4df0-a616-5049b3408328",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **1.1.1.** Identify all external calls (e.g., `tra...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes, there is a critical issue related to external calls in the `_transfer` function.** The `_transfer` function (lines 459-480) contains an external call via the `Transfer` e... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **1.1.1.** Identify all external calls (e.g., `transfer`, `call`, low-level calls). **Primary Focus:** The `_transfer` function, which emits a `Transfer` event (an external call for contracts) after changing state."
+      },
+      {
+        "Issue": "High Priority Security Issue - **1.1.3.** Test for cross-function reentrancy, esp...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes, there is a critical cross-function reentrancy vulnerability** between the `transfer()` function and the `_uniRouter`-controlled functions. The contract allows external cal... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: **1.1.3.** Test for cross-function reentrancy, especially between `transfer()` and functions called by the `_uniRouter`."
+      },
+      {
+        "Issue": "High Priority Security Issue - **1.2.2.** Review `_tTotal` and `_rTotal` updates ...",
+        "Severity": "High",
+        "Description": "Based on the specific audit task to review `_tTotal` and `_rTotal` updates in the privileged `transfer()` function for potential overflow on extreme values, I have conducted a detailed analysis of the... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: **1.2.2.** Review `_tTotal` and `_rTotal` updates in the privileged `transfer()` function for potential overflow on extreme values."
+      },
+      {
+        "Issue": "High Priority Security Issue - **1.3.4.** Check for missing access controls on cr...",
+        "Severity": "High",
+        "Description": "## Audit Task 1.3.4: Missing Access Controls on Critical Functions ### 1. Issue Analysis **Issue Found:** Yes, critical access control vulnerabilities are present. **Detailed Description:** The func... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: **1.3.4.** Check for missing access controls on critical functions like `_takeTeam`, `restoreAll`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **1.1.2.** Determine if the state is updated befor...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I will now perform the specific audit task regarding Checks-Effects-Interactions pattern violations. ## 1. Issue Analysis **Yes, there is a ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: **1.1.2.** Determine if the state is updated before or after these calls (Checks-Effects-Interactions pattern violation)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **1.2.1.** Verify all arithmetic operations (+, -,...",
+        "Severity": "High",
+        "Description": "## Audit Task 1.2.1: Verification of SafeMath Protection for Arithmetic Operations ### 1. Issue Analysis **Issue Identified:** Yes, multiple arithmetic operations in the contract are **not protected ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: **1.2.1.** Verify all arithmetic operations (+, -, *, /, %) are protected by SafeMath. Confirm no manual calculations bypass these libraries."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **1.3.1.** **CRITICAL TASK:** Map all functions an...",
+        "Severity": "High",
+        "Description": "## Audit Report: Privileged Access Mapping for Vikings Contract ### **1. Issue Analysis** **Yes**, there are multiple issues related to privileged access control in this contract. The contract implem... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: **1.3.1.** **CRITICAL TASK:** Map all functions and state variables with privileged access (e.g., `onlyOwner`, `require (_uniRouter == _msgSender())`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **1.3.2.** Assess the risk of the `_uniRouter` add...",
+        "Severity": "High",
+        "Description": "Based on the provided smart contract code and the specific audit task **1.3.2. Assess the risk of the `_uniRouter` address** with medium priority, here is the detailed security assessment: ### 1. Iss... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: **1.3.2.** Assess the risk of the `_uniRouter` address:"
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Can it be changed? (It is set in the constructor a...",
+        "Severity": "High",
+        "Description": "## Audit Report: Immutability of Constructor-Set Variables ### 1. Issue Analysis **Issue Identified**: Yes The audit task focuses on whether a value set in the constructor without a setter function... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: Can it be changed? (It is set in the constructor and has no setter function)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - What happens if the owner renounces ownership? (`_...",
+        "Severity": "High",
+        "Description": "**Audit Task Analysis: What happens if the owner renounces ownership? (`_uniRouter` retains its powerful privileges)** ### 1. Issue Analysis **Yes, there is a significant issue related to this audit ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: What happens if the owner renounces ownership? (`_uniRouter` retains its powerful privileges)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **1.3.3.** **CRITICAL TASK:** Analyze the `transfe...",
+        "Severity": "High",
+        "Description": "## Audit Findings for Task 1.3.3: Analysis of `transfer()` Function (Without Parameters) ### 1. Issue Analysis **Yes, there is a critical issue related to this audit task.** The `transfer()` function... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: **1.3.3.** **CRITICAL TASK:** Analyze the `transfer()` function (without parameters) which allows `_uniRouter` to mint `_rTotal` tokens arbitrarily. This is a central failure point."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **1.4.1.** Evaluate if sensitive state-changing op...",
+        "Severity": "High",
+        "Description": "## Audit Report: Front-Running Susceptibility Analysis for Sensitive State-Changing Operations ### 1. Issue Analysis **Issue Found: Yes** The contract contains multiple sensitive state-changing fun... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: **1.4.1.** Evaluate if sensitive state-changing operations (e.g., `delBot`, `setCooldownEnabled`) are susceptible to being front-run by malicious actors."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T06:41:13.208977",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "6b19caf7-e476-4df0-a616-5049b3408328",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-2c7o7hln/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.7.6"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1484.6824970245361,
+        "total_tasks": 12
+      },
+      "execution_time": 1484.6824970245361,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there is a critical issue related to external calls in the `_transfer` function.**\n\nThe `_transfer` function (lines 459-480) contains an external call via the `Transfer` e... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **1.1.1.** Identify all external calls (e.g., `tra...",
+          "Location": "Task 1: **1.1.1.** Identify all external calls (e.g., `transfer`, `call`, low-level calls). **Primary Focus:** The `_transfer` function, which emits a `Transfer` event (an external call for contracts) after changing state.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there is a critical cross-function reentrancy vulnerability** between the `transfer()` function and the `_uniRouter`-controlled functions. The contract allows external cal... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **1.1.3.** Test for cross-function reentrancy, esp...",
+          "Location": "Task 3: **1.1.3.** Test for cross-function reentrancy, especially between `transfer()` and functions called by the `_uniRouter`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on the specific audit task to review `_tTotal` and `_rTotal` updates in the privileged `transfer()` function for potential overflow on extreme values, I have conducted a detailed analysis of the... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **1.2.2.** Review `_tTotal` and `_rTotal` updates ...",
+          "Location": "Task 5: **1.2.2.** Review `_tTotal` and `_rTotal` updates in the privileged `transfer()` function for potential overflow on extreme values.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Task 1.3.4: Missing Access Controls on Critical Functions\n\n### 1. Issue Analysis\n**Issue Found:** Yes, critical access control vulnerabilities are present.\n\n**Detailed Description:**\nThe func... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **1.3.4.** Check for missing access controls on cr...",
+          "Location": "Task 11: **1.3.4.** Check for missing access controls on critical functions like `_takeTeam`, `restoreAll`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I will now perform the specific audit task regarding Checks-Effects-Interactions pattern violations.\n\n## 1. Issue Analysis\n\n**Yes, there is a ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **1.1.2.** Determine if the state is updated befor...",
+          "Location": "Task 2: **1.1.2.** Determine if the state is updated before or after these calls (Checks-Effects-Interactions pattern violation).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Task 1.2.1: Verification of SafeMath Protection for Arithmetic Operations\n\n### 1. Issue Analysis\n**Issue Identified:** Yes, multiple arithmetic operations in the contract are **not protected ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **1.2.1.** Verify all arithmetic operations (+, -,...",
+          "Location": "Task 4: **1.2.1.** Verify all arithmetic operations (+, -, *, /, %) are protected by SafeMath. Confirm no manual calculations bypass these libraries.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Privileged Access Mapping for Vikings Contract\n\n### **1. Issue Analysis**\n**Yes**, there are multiple issues related to privileged access control in this contract. The contract implem... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **1.3.1.** **CRITICAL TASK:** Map all functions an...",
+          "Location": "Task 6: **1.3.1.** **CRITICAL TASK:** Map all functions and state variables with privileged access (e.g., `onlyOwner`, `require (_uniRouter == _msgSender())`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on the provided smart contract code and the specific audit task **1.3.2. Assess the risk of the `_uniRouter` address** with medium priority, here is the detailed security assessment:\n\n### 1. Iss... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **1.3.2.** Assess the risk of the `_uniRouter` add...",
+          "Location": "Task 7: **1.3.2.** Assess the risk of the `_uniRouter` address:",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Immutability of Constructor-Set Variables\n\n### 1. Issue Analysis\n\n**Issue Identified**: Yes\n\nThe audit task focuses on whether a value set in the constructor without a setter function... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Can it be changed? (It is set in the constructor a...",
+          "Location": "Task 8: Can it be changed? (It is set in the constructor and has no setter function).",
+          "Severity": "High"
+        },
+        {
+          "Description": "**Audit Task Analysis: What happens if the owner renounces ownership? (`_uniRouter` retains its powerful privileges)**\n\n### 1. Issue Analysis\n**Yes, there is a significant issue related to this audit ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - What happens if the owner renounces ownership? (`_...",
+          "Location": "Task 9: What happens if the owner renounces ownership? (`_uniRouter` retains its powerful privileges).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings for Task 1.3.3: Analysis of `transfer()` Function (Without Parameters)\n\n### 1. Issue Analysis\n**Yes, there is a critical issue related to this audit task.** The `transfer()` function... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **1.3.3.** **CRITICAL TASK:** Analyze the `transfe...",
+          "Location": "Task 10: **1.3.3.** **CRITICAL TASK:** Analyze the `transfer()` function (without parameters) which allows `_uniRouter` to mint `_rTotal` tokens arbitrarily. This is a central failure point.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Front-Running Susceptibility Analysis for Sensitive State-Changing Operations\n\n### 1. Issue Analysis\n**Issue Found: Yes**  \nThe contract contains multiple sensitive state-changing fun... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **1.4.1.** Evaluate if sensitive state-changing op...",
+          "Location": "Task 12: **1.4.1.** Evaluate if sensitive state-changing operations (e.g., `delBot`, `setCooldownEnabled`) are susceptible to being front-run by malicious actors.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there is a critical issue related to external calls in the `_transfer` function.**\n\nThe `_transfer` function (lines 459-480) contains an external call via the `Transfer` e... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **1.1.1.** Identify all external calls (e.g., `tra...",
+          "Location": "Task 1: **1.1.1.** Identify all external calls (e.g., `transfer`, `call`, low-level calls). **Primary Focus:** The `_transfer` function, which emits a `Transfer` event (an external call for contracts) after changing state.",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "6b19caf7-e476-4df0-a616-5049b3408328",
+      "severity_breakdown": {
+        "High": 12,
+        "Low": 0,
+        "Medium": 0
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 is applicable due to integer overflow risks in arithmetic operations without SafeMath protection, particularly in _tTotal and _rTotal updates. SWC-107 is justified as the contract exhibits reentrancy vulnerabilities from external calls in _transfer and cross-function interactions with _uniRouter. Evidence: Arithmetic operations lack SafeMath safeguards (Finding 6), risking overflows (SWC-101).; External calls in _transfer function violate Checks-Effects-Interactions pattern (Finding 5).; Cross-function reentrancy exists between transfer() and _uniRouter functions (Finding 2).",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Arithmetic operations lack SafeMath safeguards (Finding 6), risking overflows (SWC-101).\", \"External calls in _transfer function violate Checks-Effects-Interactions pattern (Finding 5).\", \"Cross-function reentrancy exists between transfer() and _uniRouter functions (Finding 2).\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to integer overflow risks in arithmetic operations without SafeMath protection, particularly in _tTotal and _rTotal updates. SWC-107 is justified as the contract exhibits reentrancy vulnerabilities from external calls in _transfer and cross-function interactions with _uniRouter.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Arithmetic operations lack SafeMath safeguards (Finding 6), risking overflows (SWC-101).\\\",\\n    \\\"External calls in _transfer function violate Checks-Effects-Interactions pattern (Finding 5).\\\",\\n    \\\"Cross-function reentrancy exists between transfer() and _uniRouter functions (Finding 2).\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to integer overflow risks in arithmetic operations without SafeMath protection, particularly in _tTotal and _rTotal updates. SWC-107 is justified as the contract exhibits reentrancy vulnerabilities from external calls in _transfer and cross-function interactions with _uniRouter.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 is applicable due to integer overflow risks in arithmetic operations without SafeMath protection, particularly in _tTotal and _rTotal updates. SWC-107 is justified as the contract exhibits reentrancy vulnerabilities from external calls in _transfer and cross-function interactions with _uniRouter.",
+      "evidence": [
+        "Arithmetic operations lack SafeMath safeguards (Finding 6), risking overflows (SWC-101).",
+        "External calls in _transfer function violate Checks-Effects-Interactions pattern (Finding 5).",
+        "Cross-function reentrancy exists between transfer() and _uniRouter functions (Finding 2)."
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 is applicable due to integer overflow risks in arithmetic operations without SafeMath protection, particularly in _tTotal and _rTotal updates. SWC-107 is justified as the contract exhibits reentrancy vulnerabilities from external calls in _transfer and cross-function interactions with _uniRouter.\",\n  \"evidence\": [\n    \"Arithmetic operations lack SafeMath safeguards (Finding 6), risking overflows (SWC-101).\",\n    \"External calls in _transfer function violate Checks-Effects-Interactions pattern (Finding 5).\",\n    \"Cross-function reentrancy exists between transfer() and _uniRouter functions (Finding 2).\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "6b19caf7-e476-4df0-a616-5049b3408328",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

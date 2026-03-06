@@ -1,0 +1,238 @@
+{
+  "address": "0x01d2a52708d0d8fc4d639f09a13ae87a2aec4390",
+  "model": "deepseek",
+  "session_id": "9d7901b5-b83e-42c3-8a39-6fe74c4762a2",
+  "audit_status": "completed",
+  "error": "",
+  "findings": [
+    {
+      "Issue": "Unprotected selfdestruct function",
+      "Severity": "High",
+      "Description": "The destroycontract function can be called by any user to terminate the contract, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+      "Impact": "Complete loss of contract functionality and potential theft of remaining ETH.",
+      "Location": "destroycontract function"
+    },
+    {
+      "Issue": "Reentrancy vulnerability in fallback function",
+      "Severity": "High",
+      "Description": "The fallback function allows recursive calling through ETH transfers, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+      "Impact": "Potential infinite recursion and token minting abuse.",
+      "Location": "Fallback function"
+    },
+    {
+      "Issue": "Decimal handling inconsistencies",
+      "Severity": "High",
+      "Description": "Inconsistent decimal handling across functions leading to incorrect token amounts, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+      "Impact": "Severely broken token economics and incorrect accounting.",
+      "Location": "transfer, burn functions and fallback"
+    },
+    {
+      "Issue": "Unsafe math operations without proper checks",
+      "Severity": "Medium",
+      "Description": "Multiple math operations performed without safe arithmetic checks, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+      "Impact": "Potential overflow/underflow leading to incorrect balances.",
+      "Location": "_transfer, burn, burnFrom functions"
+    },
+    {
+      "Issue": "Missing access controls for privileged functions",
+      "Severity": "Medium",
+      "Description": "Critical functions lack proper owner restrictions, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+      "Impact": "Unauthorized contract destruction or token manipulation.",
+      "Location": "destroycontract, Airdrop functions"
+    },
+    {
+      "Issue": "Front-running vulnerability in approve mechanism",
+      "Severity": "Medium",
+      "Description": "Approve/transferFrom pattern vulnerable to allowance race conditions, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+      "Impact": "Potential unauthorized token transfers.",
+      "Location": "approve and transferFrom functions"
+    },
+    {
+      "Issue": "Uninitialized airdrop function",
+      "Severity": "Medium",
+      "Description": "Airdrop function lacks proper validation and visibility specifier, found in the smart contract code. This issue appears in the auditing result.",
+      "Impact": "Potential failed airdrops or improper token transfers.",
+      "Location": "Airdrop function"
+    },
+    {
+      "Issue": "Incorrect burn event emission",
+      "Severity": "Medium",
+      "Description": "Burn events emit scaled values while operations use raw amounts, found in the smart contract code. This issue appears in the auditing result.",
+      "Impact": "Inconsistent event logging affecting off-chain tracking.",
+      "Location": "burn and burnFrom functions"
+    },
+    {
+      "Issue": "Potential overflow in fallback calculation",
+      "Severity": "Medium",
+      "Description": "msg.value multiplication in fallback could overflow, found in the smart contract code. This issue appears in the auditing result.",
+      "Impact": "Incorrect token minting amounts.",
+      "Location": "Fallback function calculation"
+    }
+  ],
+  "result_payload": {
+    "created_at": "2026-02-21T17:05:51.747639",
+    "execution_summary": {
+      "completed_tasks": 12,
+      "failed_tasks": 0,
+      "session_id": "9d7901b5-b83e-42c3-8a39-6fe74c4762a2",
+      "total_execution_time": 241.29109025001526,
+      "total_tasks": 12
+    },
+    "execution_time": 241.29109025001526,
+    "finding_number": 9,
+    "findings": [
+      {
+        "Description": "The destroycontract function can be called by any user to terminate the contract, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+        "Impact": "Complete loss of contract functionality and potential theft of remaining ETH.",
+        "Issue": "Unprotected selfdestruct function",
+        "Location": "destroycontract function",
+        "Severity": "High"
+      },
+      {
+        "Description": "The fallback function allows recursive calling through ETH transfers, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+        "Impact": "Potential infinite recursion and token minting abuse.",
+        "Issue": "Reentrancy vulnerability in fallback function",
+        "Location": "Fallback function",
+        "Severity": "High"
+      },
+      {
+        "Description": "Inconsistent decimal handling across functions leading to incorrect token amounts, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+        "Impact": "Severely broken token economics and incorrect accounting.",
+        "Issue": "Decimal handling inconsistencies",
+        "Location": "transfer, burn functions and fallback",
+        "Severity": "High"
+      },
+      {
+        "Description": "Multiple math operations performed without safe arithmetic checks, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+        "Impact": "Potential overflow/underflow leading to incorrect balances.",
+        "Issue": "Unsafe math operations without proper checks",
+        "Location": "_transfer, burn, burnFrom functions",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Critical functions lack proper owner restrictions, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+        "Impact": "Unauthorized contract destruction or token manipulation.",
+        "Issue": "Missing access controls for privileged functions",
+        "Location": "destroycontract, Airdrop functions",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Approve/transferFrom pattern vulnerable to allowance race conditions, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+        "Impact": "Potential unauthorized token transfers.",
+        "Issue": "Front-running vulnerability in approve mechanism",
+        "Location": "approve and transferFrom functions",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Airdrop function lacks proper validation and visibility specifier, found in the smart contract code. This issue appears in the auditing result.",
+        "Impact": "Potential failed airdrops or improper token transfers.",
+        "Issue": "Uninitialized airdrop function",
+        "Location": "Airdrop function",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Burn events emit scaled values while operations use raw amounts, found in the smart contract code. This issue appears in the auditing result.",
+        "Impact": "Inconsistent event logging affecting off-chain tracking.",
+        "Issue": "Incorrect burn event emission",
+        "Location": "burn and burnFrom functions",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "msg.value multiplication in fallback could overflow, found in the smart contract code. This issue appears in the auditing result.",
+        "Impact": "Incorrect token minting amounts.",
+        "Issue": "Potential overflow in fallback calculation",
+        "Location": "Fallback function calculation",
+        "Severity": "Medium"
+      }
+    ],
+    "format_validation": {
+      "findings_validated": true,
+      "required_fields": [
+        "Issue",
+        "Severity",
+        "Description",
+        "Impact",
+        "Location"
+      ],
+      "sample_finding": {
+        "Description": "The destroycontract function can be called by any user to terminate the contract, found in both the smart contract code and static analysis results. This issue appears in the auditing result.",
+        "Impact": "Complete loss of contract functionality and potential theft of remaining ETH.",
+        "Issue": "Unprotected selfdestruct function",
+        "Location": "destroycontract function",
+        "Severity": "High"
+      }
+    },
+    "full_report": "[\n  {\n    \"Issue\": \"Unprotected selfdestruct function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The destroycontract function can be called by any user to terminate the contract, found in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Complete loss of contract functionality and potential theft of remaining ETH.\",\n    \"Location\": \"destroycontract function\"\n  },\n  {\n    \"Issue\": \"Reentrancy vulnerability in fallback function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The fallback function allows recursive calling through ETH transfers, found in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential infinite recursion and token minting abuse.\",\n    \"Location\": \"Fallback function\"\n  },\n  {\n    \"Issue\": \"Decimal handling inconsistencies\",\n    \"Severity\": \"High\",\n    \"Description\": \"Inconsistent decimal handling across functions leading to incorrect token amounts, found in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Severely broken token economics and incorrect accounting.\",\n    \"Location\": \"transfer, burn functions and fallback\"\n  },\n  {\n    \"Issue\": \"Unsafe math operations without proper checks\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Multiple math operations performed without safe arithmetic checks, found in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential overflow/underflow leading to incorrect balances.\",\n    \"Location\": \"_transfer, burn, burnFrom functions\"\n  },\n  {\n    \"Issue\": \"Missing access controls for privileged functions\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Critical functions lack proper owner restrictions, found in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Unauthorized contract destruction or token manipulation.\",\n    \"Location\": \"destroycontract, Airdrop functions\"\n  },\n  {\n    \"Issue\": \"Front-running vulnerability in approve mechanism\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Approve/transferFrom pattern vulnerable to allowance race conditions, found in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential unauthorized token transfers.\",\n    \"Location\": \"approve and transferFrom functions\"\n  },\n  {\n    \"Issue\": \"Uninitialized airdrop function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Airdrop function lacks proper validation and visibility specifier, found in the smart contract code.\",\n    \"Impact\": \"Potential failed airdrops or improper token transfers.\",\n    \"Location\": \"Airdrop function\"\n  },\n  {\n    \"Issue\": \"Incorrect burn event emission\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Burn events emit scaled values while operations use raw amounts, found in the smart contract code.\",\n    \"Impact\": \"Inconsistent event logging affecting off-chain tracking.\",\n    \"Location\": \"burn and burnFrom functions\"\n  },\n  {\n    \"Issue\": \"Potential overflow in fallback calculation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"msg.value multiplication in fallback could overflow, found in the smart contract code.\",\n    \"Impact\": \"Incorrect token minting amounts.\",\n    \"Location\": \"Fallback function calculation\"\n  }\n]",
+    "model_used": "deepseek",
+    "session_id": "9d7901b5-b83e-42c3-8a39-6fe74c4762a2",
+    "severity_breakdown": {
+      "High": 3,
+      "Low": 0,
+      "Medium": 6
+    }
+  },
+  "rule_result": {
+    "labels": [
+      "SWC-101",
+      "SWC-106",
+      "SWC-107"
+    ],
+    "source": "rule_multi",
+    "scores": {
+      "SWC-101": 8.0,
+      "SWC-105": 0.0,
+      "SWC-106": 8.0,
+      "SWC-107": 8.0,
+      "SWC-115": 0.0
+    },
+    "matched": {
+      "SWC-101": [
+        "kw:overflow",
+        "kw:underflow",
+        "re:\\boverflow\\b",
+        "re:\\bunderflow\\b"
+      ],
+      "SWC-105": [],
+      "SWC-106": [
+        "kw:selfdestruct",
+        "kw:unprotected selfdestruct",
+        "re:\\bselfdestruct\\b"
+      ],
+      "SWC-107": [
+        "kw:reentrancy",
+        "re:\\bre-?entran",
+        "re:reentrancy"
+      ],
+      "SWC-115": []
+    },
+    "reason": "Rule hits: SWC-101(8.0), SWC-106(8.0), SWC-107(8.0)"
+  },
+  "llm_result": {
+    "labels": [],
+    "source": "llm_failed",
+    "confidence": 0.0,
+    "reason": "Failed to initialize LLM fallback: No module named 'dotenv'",
+    "raw": ""
+  },
+  "rule_labels": [
+    "SWC-101",
+    "SWC-106",
+    "SWC-107"
+  ],
+  "llm_labels": [],
+  "pred_labels": [
+    "SWC-101",
+    "SWC-106",
+    "SWC-107"
+  ],
+  "pred_swc_list": "SWC-101|SWC-106|SWC-107",
+  "pred_source": "rule_multi",
+  "is_other": 0,
+  "pred_reason": "Rule hits: SWC-101(8.0), SWC-106(8.0), SWC-107(8.0) | LLM: Failed to initialize LLM fallback: No module named 'dotenv'",
+  "static_tool_used": false,
+  "llm_explanation": {
+    "ok": false,
+    "reason": "Failed to initialize LLM fallback: No module named 'dotenv'",
+    "raw": ""
+  }
+}

@@ -1,0 +1,125 @@
+# Smart Contract Security Audit Plan
+
+## 1. Security Vulnerability Assessment
+
+1.  **Verify Access Control on `GasOptimisedPayoutsToMiners`:**
+    *   Confirm that `dispersePaymentForShares` lacks ownership checks.
+    *   Simulate an exploit where an unauthorized address calls the function with a contract balance > 0 to drain funds to `msg.sender`.
+    *   Document the exact steps required to drain the contract completely.
+
+2.  **Analyze Reentrancy Risks in `LogOfClaimedMEVBlocks`:**
+    *   Review `withdrawUpTo` and `submitClaim` to ensure state changes (`depositedEther` reduction) occur strictly before the `.transfer()` call.
+    *   Verify that the 2300 gas stipend from `.transfer()` is sufficient for recipient fallback functions and prevents state-changing reentrancy.
+    *   Test if a malicious recipient contract can revert the transaction to cause a Denial of Service (DoS) on the claim process.
+
+3.  **Validate Integer Arithmetic Safety (Solidity 0.7.x):**
+    *   Audit all arithmetic operations in `depositAndLock` and `withdrawUpTo` for potential overflow/underflow, as compiler checks are disabled in version <0.8.0.
+    *   Specifically test `depositedEther[msg.sender] += msg.value` with values approaching `type(uint256).max`.
+    *   Verify the bit-shifting math in `GasOptimisedPayoutsToMiners` (`16 ** 40`) does not result in precision loss or incorrect address/amount extraction.
+
+4.  **Assess Operator Authentication Logic:**
+    *   Test `setBlockClaimsOperator` to confirm any address can register itself as an operator for itself.
+    *   Evaluate if this allows an attacker to bypass intended trust assumptions in `submitClaim` by acting as both the mining pool and the operator.
+    *   Investigate the `assert(msg.data.length == 36)` check to determine if it can be bypassed via calldata manipulation or proxy calls.
+
+5.  **Examine Timestamp Dependence:**
+    *   Test `withdrawUpTo` and `remainingDurationForWorkClaim` to determine the impact of `block.timestamp` manipulation by miners (within the ~15-second window).
+    *   Verify if early withdrawal is possible if a miner manipulates the timestamp slightly forward.
+
+6.  **Audit External Call Safety:**
+    *   Verify that `miningPoolAddress.transfer(blockPayment)` in `submitClaim` handles cases where `miningPoolAddress` is a contract without a `receive`/`fallback` function.
+    *   Confirm that a failing transfer reverts the entire transaction without leaving the `claimedBlockNonce` in a partially updated state.
+
+7.  **Evaluate Front-Running and Replay Attacks:**
+    *   Analyze the `claimedBlockNonce` mapping to ensure a specific block hash/nonce combination cannot be submitted twice.
+    *   Test if a signature (`v, r, s`) used in `submitClaim` can be replayed on a different chain or if the hash construction prevents this.
+    *   Verify if an attacker can front-run a valid claim submission to redirect funds (though the signature binds the `mevProducerAddress`, check for logic gaps).
+
+## 2. Business Logic Validation
+
+8.  **Validate Deposit and Lockup Mechanics:**
+    *   Test `depositAndLock` with `depositDuration` below 24 hours and above 365 days to confirm `require` statements function correctly.
+    *   Verify the fallback function correctly delegates to `depositAndLock` and enforces the same duration constraints (note: fallback hardcodes 24 hours).
+    *   Confirm that `depositedEther` balances cannot become negative under any circulation of function calls.
+
+9.  **Verify MEV Claim Settlement Flow:**
+    *   Simulate a full lifecycle: Deposit -> Lock -> `setBlockClaimsOperator` -> `submitClaim`.
+    *   Confirm that `blockPayment` is deducted from `mevProducerAddress` and credited to `miningPoolAddress` exactly.
+    *   Verify that `claimedBlockNonce` is updated with the `FLAG_BLOCK_NONCE_LIMIT` offset correctly to distinguish between "unclaimed" (0) and "claimed" states.
+
+10. **Analyze Bit-Packing Logic in Payout Contract:**
+    *   Deconstruct the `minerPayoutData` packing scheme: `address` (160 bits) + `amount` (96 bits).
+    *   Verify that `payable(singlePayout)` correctly extracts the lower 160 bits as the address.
+    *   Verify that `singlePayout / (16 ** 40)` correctly extracts the upper 96 bits as the amount.
+    *   Test edge cases where the amount exceeds 96 bits (overflow into address space) or address has leading zeros.
+
+11. **Review Signature Verification Scheme:**
+    *   Confirm the hash preimage `abi.encodePacked("\x19Ethereum Signed Message:\n32", hash)` matches the standard `eth_sign` format.
+    *   Verify that `ecrecover` returns the correct `mevProducerAddress` and that the zero address is handled correctly if signature verification fails.
+
+12. **Assess Trust Assumptions:**
+    *   Document the reliance on off-chain verification of `blockNonce` and `mixDigest` as stated in the contract comments.
+    *   Evaluate the risk of a malicious operator submitting invalid block data that passes the contract's limited checks.
+
+## 3. Gas Optimization Analysis
+
+13. **Analyze Loop Gas Consumption:**
+    *   Calculate the gas cost per iteration in `dispersePaymentForShares`.
+    *   Determine the maximum array length (`minerPayoutData`) that can be processed within the Ethereum block gas limit.
+    *   Recommend a hard cap on array length if none exists to prevent DoS via out-of-gas errors.
+
+14. **Evaluate Storage vs. Memory Usage:**
+    *   Review `LogOfClaimedMEVBlocks` for redundant storage reads (e.g., reading `depositedEther[msg.sender]` multiple times in one function).
+    *   Suggest caching storage variables in memory where appropriate to reduce SLOAD costs.
+
+15. **Audit Expensive Cryptographic Operations:**
+    *   Measure the gas cost of `ecrecover` and `keccak256` in `submitClaim` and `remainingDurationForWorkClaim`.
+    *   Determine if the view function `remainingDurationForWorkClaim` is too expensive to be called frequently by off-chain watchers.
+
+16. **Review Function Visibility and Modifiers:**
+    *   Confirm all functions are marked `external` or `public` appropriately.
+    *   Check if internal helper functions can be extracted to reduce code size.
+    *   Verify if `claimedBlockNonce` and `claimedBlockMixDigest` need to be `public` (generating getter functions) or if `internal` access suffices.
+
+## 4. Standards Compliance
+
+17. **Verify Event Emission Completeness:**
+    *   Ensure every state-changing function (`depositAndLock`, `withdrawUpTo`, `submitClaim`) emits an event.
+    *   Check that event parameters are indexed correctly for efficient off-chain filtering (e.g., `address user` should be indexed).
+    *   Verify `GasOptimisedPayoutsToMiners` emits an event for batch transfers (currently appears to lack events for individual payouts).
+
+18. **Assess Solidity Version Compatibility:**
+    *   Plan migration steps from `0.7.0` to `0.8.0+` to enable built-in overflow checks.
+    *   Identify any breaking changes in `0.8.0` that might affect the code (e.g., explicit casting requirements, ABI encoder changes).
+
+19. **Check Interface Consistency:**
+    *   Although not ERC-20, verify if the contract follows any internal interface standards expected by the MEV producer or Mining Pool infrastructure.
+    *   Ensure function signatures match any off-chain SDKs or integrations currently in use.
+
+## 5. Specific Test Scenarios
+
+20. **Critical Function Exploit Simulation:**
+    *   **Scenario A:** Call `dispersePaymentForShares` on `GasOptimisedPayoutsToMiners` with 1 ETH balance from an unrelated address. Expectation: Funds drain to attacker.
+    *   **Scenario B:** Call `submitClaim` with a valid signature but insufficient `depositedEther`. Expectation: Transaction reverts.
+    *   **Scenario C:** Call `withdrawUpTo` before `timestampOfPossibleExit`. Expectation: Transaction reverts.
+
+21. **Boundary Condition Testing:**
+    *   Test `depositAndLock` with `msg.value = 0`.
+    *   Test `withdrawUpTo` with `etherAmount = 0` and `etherAmount > depositedEther`.
+    *   Test `submitClaim` with `blockNonce` exactly equal to `FLAG_BLOCK_NONCE_LIMIT`.
+    *   Test `minerPayoutData` with an empty array `[]`.
+
+22. **Malicious Recipient Testing:**
+    *   Deploy a contract with a reverting `receive()` function.
+    *   Attempt to withdraw funds or claim MEV rewards to this contract.
+    *   Verify the system handles the revert gracefully without locking funds permanently.
+
+23. **Signature Malleability Testing:**
+    *   Generate a valid signature (v, r, s).
+    *   Modify `s` (within the lower half of the curve order) to create a malleated signature.
+    *   Verify if `ecrecover` accepts the malleated signature and if the contract prevents double claiming via the same logical intent.
+
+24. **Integration Testing Points:**
+    *   Verify the interaction between `LogOfClaimedMEVBlocks` and the off-chain MEV producer software.
+    *   Test the workflow where `GasOptimisedPayoutsToMiners` is funded by withdrawals from `LogOfClaimedMEVBlocks` (if applicable in the broader system architecture).
+    *   Validate that the `miningPoolAddress` passed in `submitClaim` matches the operator set in `blockSubmissionsOperator`.

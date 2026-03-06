@@ -1,0 +1,319 @@
+{
+  "address": "0x0862ed7f6b2bc350508b29542511249b7e11a0a0",
+  "session_id": "fd7ecc30-d222-406f-bf9b-491ca5710445",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-107",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-107 label is justified due to the contract's multiple violations of the Checks-Effects-Interactions pattern, particularly in functions performing external token transfers before updating state. Additionally, unprotected arithmetic operations and improper access controls further demonstrate insufficient validation of external inputs and state integrity. Evidence: unStake and emergencyUnstake functions update state after external calls, violating CEI; SafeMath not consistently applied to arithmetic operations in key functions; Critical state-changing functions lack proper access controls",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"unStake and emergencyUnstake functions update state after external calls, violating CEI\", \"SafeMath not consistently applied to arithmetic operations in key functions\", \"Critical state-changing functions lack proper access controls\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label is justified due to the contract's multiple violations of the Checks-Effects-Interactions pattern, particularly in functions performing external token transfers before updating state. Additionally, unprotected arithmetic operations and improper access controls further demonstrate insufficient validation of external inputs and state integrity.\\\",\\n  \\\"evidence\\\": [\\n    \\\"unStake and emergencyUnstake functions update state after external calls, violating CEI\\\",\\n    \\\"SafeMath not consistently applied to arithmetic operations in key functions\\\",\\n    \\\"Critical state-changing functions lack proper access controls\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label is justified due to the contract's multiple violations of the Checks-Effects-Interactions pattern, particularly in functions performing external token transfers before updating state. Additionally, unprotected arithmetic operations and improper access controls further demonstrate insufficient validation of external inputs and state integrity.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1583.3575041294098,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0862ed7f6b2bc350508b29542511249b7e11a0a0",
+    "model": "deepseek_school",
+    "session_id": "fd7ecc30-d222-406f-bf9b-491ca5710445",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Task:** Identify all functions that make externa...",
+        "Severity": "High",
+        "Description": "Based on my analysis of the provided smart contract code, I have identified the following functions that make external calls to `u1`, `u1Proxy`, and ERC-20 tokens: ## 1. Issue Analysis **Yes**, ther... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **Task:** Identify all functions that make external calls (to `u1`, `u1Proxy`, and ERC-20 tokens)."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Task:** Assess the risk of reentrancy via callba...",
+        "Severity": "Medium",
+        "Description": "Based on the audit task and the provided smart contract code, here is my detailed security assessment: ## 1. Issue Analysis **Yes, there is a significant reentrancy risk related to non-standard ERC-... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 3: **Task:** Assess the risk of reentrancy via callback in `transfer`/`transferFrom` for non-standard ERC-20 tokens, even when CEI is followed."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Verify the order of operations in `unSta...",
+        "Severity": "Medium",
+        "Description": "### 1. Issue Analysis **Yes, there is an issue related to this audit task.** Both the `unStake` and `emergencyUnstake` functions violate the Checks-Effects-Interactions pattern by performing token tr... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 2: **Task:** Verify the order of operations in `unStake` and `emergencyUnstake` against the Checks-Effects-Interactions pattern. Confirm state variables (`u1UnstakeStatus`, `u1UpgradeTotalUnStaking`) are updated *before* any token transfers."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Confirm that all arithmetic operations a...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes**, there is a critical issue related to the audit task. While the contract imports and uses the SafeMath library in several places, **not all arithmetic operations are prot... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: **Task:** Confirm that all arithmetic operations are protected by `SafeMath` library usage. Manually review calculations in `_rewardCalculation`, `getOneDayReward`, `totalStaking`, and `claimRewards`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Specifically audit the `interval = endOf...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Interval Calculation Security ### 1. Issue Analysis **Yes, there is a critical issue** related to the `interval = endOfProfit.sub(stakeTime);` calculation. The code does not guara... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 5: **Task:** Specifically audit the `interval = endOfProfit.sub(stakeTime);` calculation to ensure `endOfProfit` is always greater than `stakeTime`."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Map all function modifiers (`onlyOwner`,...",
+        "Severity": "High",
+        "Description": "## **Audit Report: Function Modifier Privilege Mapping** ### **1. Issue Analysis** **Issue Identified:** Yes, there is a critical issue related to the privilege mapping of function modifiers. The a... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: **Task:** Map all function modifiers (`onlyOwner`, `onlyAdmin`, `whenNotPaused`) to their respective functions. Create a matrix of privileges."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Analyze the non-standard admin role (`_a...",
+        "Severity": "High",
+        "Description": "## Audit Report: Analysis of Non-Standard Admin Role in Custom Ownable Contract ### 1. Issue Analysis **Yes**, there is a significant issue related to the non-standard admin role implementation in th... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 7: **Task:** Analyze the non-standard admin role (`_admin`) in the custom `Ownable` contract. Verify its intended use and assess the risk of having two powerful addresses."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Review the `renounceOwnership` function ...",
+        "Severity": "High",
+        "Description": "## Audit Findings: `renounceOwnership` Function Governance Review ### 1. Issue Analysis **Issue Identified:** Yes, there is a critical governance flaw in the `renounceOwnership` function's logic and ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: **Task:** Review the `renounceOwnership` function logic, which uses `onlyAdmin` to set the owner to `_admin`, to ensure it aligns with intended governance."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Check that critical state-changing funct...",
+        "Severity": "High",
+        "Description": "## Audit Findings: Access Control for Critical State-Changing Functions ### 1. Issue Analysis **Issue Found**: Yes. Multiple critical state-changing functions lack proper access control, allowing una... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: **Task:** Check that critical state-changing functions (e.g., `setDailyDistribution`, `updateSequence`, `safeWithdraw`, `emergencyUnstake`) are properly access-controlled."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Evaluate if any user-facing function (e....",
+        "Severity": "High",
+        "Description": "### 1. Issue Analysis **No, there is no significant front-running vulnerability in the `unStake` function related to reward manipulation.** The reward calculation mechanism in this contract is based ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 10: **Task:** Evaluate if any user-facing function (e.g., `unStake`) is susceptible to front-running attacks (e.g., malicious preemption of a profitable unstake). Conclude that the linear reward calculation based on fixed timestamps makes this unlikely, but document the finding."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Review the use of `block.timestamp` in `...",
+        "Severity": "High",
+        "Description": "## Audit Task Assessment: Use of `block.timestamp` in `claimRewards` and Event Emission ### 1. Issue Analysis **No significant issue found related to minor timestamp manipulation.** The use of `block... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: **Task:** Review the use of `block.timestamp` in `claimRewards` and for emitting events. Confirm that minor timestamp manipulation by miners does not lead to significant reward miscalculation or exploitation."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - **Task:** Identify all loops. The main concern is ...",
+        "Severity": "High",
+        "Description": "## Audit Task: Loop Identification and Gas Limit Assessment in `_rewardCalculation` ### 1. Issue Analysis **Issue Identified**: No significant gas-related vulnerability exists in the loop within `_re... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: **Task:** Identify all loops. The main concern is in `_rewardCalculation`, which loops through `intervalDays`. Assess if the loop could ever exceed the block gas limit, given the fixed and small size of `intervalDays` (max 5)."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T02:52:54.671318",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "fd7ecc30-d222-406f-bf9b-491ca5710445",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-snz_3gca/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0",
+            "0.8.0",
+            "0.7.6",
+            "0.7.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1583.3575041294098,
+        "total_tasks": 12
+      },
+      "execution_time": 1583.3575041294098,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified the following functions that make external calls to `u1`, `u1Proxy`, and ERC-20 tokens:\n\n## 1. Issue Analysis\n\n**Yes**, ther... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Identify all functions that make externa...",
+          "Location": "Task 1: **Task:** Identify all functions that make external calls (to `u1`, `u1Proxy`, and ERC-20 tokens).",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on the audit task and the provided smart contract code, here is my detailed security assessment:\n\n## 1. Issue Analysis\n\n**Yes, there is a significant reentrancy risk related to non-standard ERC-... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Assess the risk of reentrancy via callba...",
+          "Location": "Task 3: **Task:** Assess the risk of reentrancy via callback in `transfer`/`transferFrom` for non-standard ERC-20 tokens, even when CEI is followed.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n\n**Yes, there is an issue related to this audit task.** Both the `unStake` and `emergencyUnstake` functions violate the Checks-Effects-Interactions pattern by performing token tr... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Verify the order of operations in `unSta...",
+          "Location": "Task 2: **Task:** Verify the order of operations in `unStake` and `emergencyUnstake` against the Checks-Effects-Interactions pattern. Confirm state variables (`u1UnstakeStatus`, `u1UpgradeTotalUnStaking`) are updated *before* any token transfers.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes**, there is a critical issue related to the audit task. While the contract imports and uses the SafeMath library in several places, **not all arithmetic operations are prot... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Confirm that all arithmetic operations a...",
+          "Location": "Task 4: **Task:** Confirm that all arithmetic operations are protected by `SafeMath` library usage. Manually review calculations in `_rewardCalculation`, `getOneDayReward`, `totalStaking`, and `claimRewards`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Interval Calculation Security\n\n### 1. Issue Analysis\n\n**Yes, there is a critical issue** related to the `interval = endOfProfit.sub(stakeTime);` calculation. The code does not guara... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Specifically audit the `interval = endOf...",
+          "Location": "Task 5: **Task:** Specifically audit the `interval = endOfProfit.sub(stakeTime);` calculation to ensure `endOfProfit` is always greater than `stakeTime`.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## **Audit Report: Function Modifier Privilege Mapping**\n\n### **1. Issue Analysis**\n\n**Issue Identified:** Yes, there is a critical issue related to the privilege mapping of function modifiers.\n\nThe a... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Map all function modifiers (`onlyOwner`,...",
+          "Location": "Task 6: **Task:** Map all function modifiers (`onlyOwner`, `onlyAdmin`, `whenNotPaused`) to their respective functions. Create a matrix of privileges.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Analysis of Non-Standard Admin Role in Custom Ownable Contract\n\n### 1. Issue Analysis\n**Yes**, there is a significant issue related to the non-standard admin role implementation in th... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Analyze the non-standard admin role (`_a...",
+          "Location": "Task 7: **Task:** Analyze the non-standard admin role (`_admin`) in the custom `Ownable` contract. Verify its intended use and assess the risk of having two powerful addresses.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: `renounceOwnership` Function Governance Review\n\n### 1. Issue Analysis\n**Issue Identified:** Yes, there is a critical governance flaw in the `renounceOwnership` function's logic and ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Review the `renounceOwnership` function ...",
+          "Location": "Task 8: **Task:** Review the `renounceOwnership` function logic, which uses `onlyAdmin` to set the owner to `_admin`, to ensure it aligns with intended governance.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Findings: Access Control for Critical State-Changing Functions\n\n### 1. Issue Analysis\n**Issue Found**: Yes. Multiple critical state-changing functions lack proper access control, allowing una... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Check that critical state-changing funct...",
+          "Location": "Task 9: **Task:** Check that critical state-changing functions (e.g., `setDailyDistribution`, `updateSequence`, `safeWithdraw`, `emergencyUnstake`) are properly access-controlled.",
+          "Severity": "High"
+        },
+        {
+          "Description": "### 1. Issue Analysis\n\n**No, there is no significant front-running vulnerability in the `unStake` function related to reward manipulation.** The reward calculation mechanism in this contract is based ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Evaluate if any user-facing function (e....",
+          "Location": "Task 10: **Task:** Evaluate if any user-facing function (e.g., `unStake`) is susceptible to front-running attacks (e.g., malicious preemption of a profitable unstake). Conclude that the linear reward calculation based on fixed timestamps makes this unlikely, but document the finding.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Task Assessment: Use of `block.timestamp` in `claimRewards` and Event Emission\n\n### 1. Issue Analysis\n**No significant issue found related to minor timestamp manipulation.** The use of `block... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Review the use of `block.timestamp` in `...",
+          "Location": "Task 11: **Task:** Review the use of `block.timestamp` in `claimRewards` and for emitting events. Confirm that minor timestamp manipulation by miners does not lead to significant reward miscalculation or exploitation.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Task: Loop Identification and Gas Limit Assessment in `_rewardCalculation`\n\n### 1. Issue Analysis\n**Issue Identified**: No significant gas-related vulnerability exists in the loop within `_re... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - **Task:** Identify all loops. The main concern is ...",
+          "Location": "Task 12: **Task:** Identify all loops. The main concern is in `_rewardCalculation`, which loops through `intervalDays`. Assess if the loop could ever exceed the block gas limit, given the fixed and small size of `intervalDays` (max 5).",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Based on my analysis of the provided smart contract code, I have identified the following functions that make external calls to `u1`, `u1Proxy`, and ERC-20 tokens:\n\n## 1. Issue Analysis\n\n**Yes**, ther... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Task:** Identify all functions that make externa...",
+          "Location": "Task 1: **Task:** Identify all functions that make external calls (to `u1`, `u1Proxy`, and ERC-20 tokens).",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "fd7ecc30-d222-406f-bf9b-491ca5710445",
+      "severity_breakdown": {
+        "High": 10,
+        "Low": 0,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-107 label is justified due to the contract's multiple violations of the Checks-Effects-Interactions pattern, particularly in functions performing external token transfers before updating state. Additionally, unprotected arithmetic operations and improper access controls further demonstrate insufficient validation of external inputs and state integrity. Evidence: unStake and emergencyUnstake functions update state after external calls, violating CEI; SafeMath not consistently applied to arithmetic operations in key functions; Critical state-changing functions lack proper access controls",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"unStake and emergencyUnstake functions update state after external calls, violating CEI\", \"SafeMath not consistently applied to arithmetic operations in key functions\", \"Critical state-changing functions lack proper access controls\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label is justified due to the contract's multiple violations of the Checks-Effects-Interactions pattern, particularly in functions performing external token transfers before updating state. Additionally, unprotected arithmetic operations and improper access controls further demonstrate insufficient validation of external inputs and state integrity.\\\",\\n  \\\"evidence\\\": [\\n    \\\"unStake and emergencyUnstake functions update state after external calls, violating CEI\\\",\\n    \\\"SafeMath not consistently applied to arithmetic operations in key functions\\\",\\n    \\\"Critical state-changing functions lack proper access controls\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label is justified due to the contract's multiple violations of the Checks-Effects-Interactions pattern, particularly in functions performing external token transfers before updating state. Additionally, unprotected arithmetic operations and improper access controls further demonstrate insufficient validation of external inputs and state integrity.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-107 label is justified due to the contract's multiple violations of the Checks-Effects-Interactions pattern, particularly in functions performing external token transfers before updating state. Additionally, unprotected arithmetic operations and improper access controls further demonstrate insufficient validation of external inputs and state integrity.",
+      "evidence": [
+        "unStake and emergencyUnstake functions update state after external calls, violating CEI",
+        "SafeMath not consistently applied to arithmetic operations in key functions",
+        "Critical state-changing functions lack proper access controls"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-107 label is justified due to the contract's multiple violations of the Checks-Effects-Interactions pattern, particularly in functions performing external token transfers before updating state. Additionally, unprotected arithmetic operations and improper access controls further demonstrate insufficient validation of external inputs and state integrity.\",\n  \"evidence\": [\n    \"unStake and emergencyUnstake functions update state after external calls, violating CEI\",\n    \"SafeMath not consistently applied to arithmetic operations in key functions\",\n    \"Critical state-changing functions lack proper access controls\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "fd7ecc30-d222-406f-bf9b-491ca5710445",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

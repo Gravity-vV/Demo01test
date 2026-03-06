@@ -1,0 +1,245 @@
+{
+  "address": "0x0040da8480b899f555ab6904f574e0c54b31386b",
+  "session_id": "80fb7e28-3a41-447a-aec0-4a423cea3d50",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "",
+  "pred_swc_count": 0,
+  "is_other": 1,
+  "pred_source": "llm",
+  "pred_reason": "The SWC-OTHER label is appropriate as the findings include multiple unique vulnerabilities not cleanly mapped to standard SWC IDs, such as a miner-manipulable timestamp-based approval gate combined with strict equality checks. These issues collectively represent custom logic flaws rather than classic SWC categories like weak PRNG (SWC-120) alone, justifying the generic classification. Evidence: Approve function uses `now % 10000000 == 0`—a timestamp-dependent condition vulnerable to miner manipulation.; Strict equality check with timestamp modulo enables exploitation via blockchain timestamp control.; Multiple low-severity issues (e.g., missing zero checks) further deviate from standard SWC mappings.",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 1.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 1.0,\\n  \\\"reason\\\": \\\"No findings match SWC-101, SWC-105, SWC-106, SWC-107, or SWC-115; all are other issues\\\"\\n}\", \"reason\": \"No findings match SWC-101, SWC-105, SWC-106, SWC-107, or SWC-115; all are other issues\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"Approve function uses `now % 10000000 == 0`—a timestamp-dependent condition vulnerable to miner manipulation.\", \"Strict equality check with timestamp modulo enables exploitation via blockchain timestamp control.\", \"Multiple low-severity issues (e.g., missing zero checks) further deviate from standard SWC mappings.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-OTHER label is appropriate as the findings include multiple unique vulnerabilities not cleanly mapped to standard SWC IDs, such as a miner-manipulable timestamp-based approval gate combined with strict equality checks. These issues collectively represent custom logic flaws rather than classic SWC categories like weak PRNG (SWC-120) alone, justifying the generic classification.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Approve function uses `now % 10000000 == 0`—a timestamp-dependent condition vulnerable to miner manipulation.\\\",\\n    \\\"Strict equality check with timestamp modulo enables exploitation via blockchain timestamp control.\\\",\\n    \\\"Multiple low-severity issues (e.g., missing zero checks) further deviate from standard SWC mappings.\\\"\\n  ]\\n}\", \"reason\": \"The SWC-OTHER label is appropriate as the findings include multiple unique vulnerabilities not cleanly mapped to standard SWC IDs, such as a miner-manipulable timestamp-based approval gate combined with strict equality checks. These issues collectively represent custom logic flaws rather than classic SWC categories like weak PRNG (SWC-120) alone, justifying the generic classification.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3170,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x0040da8480b899f555ab6904f574e0c54b31386b/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 453.62576818466187,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0040da8480b899f555ab6904f574e0c54b31386b",
+    "model": "deepseek_school",
+    "session_id": "80fb7e28-3a41-447a-aec0-4a423cea3d50",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Weak Pseudo-Random Number Generator (PRNG) in Approval",
+        "Severity": "High",
+        "Description": "The approve function uses a weak PRNG based on timestamp modulo operation (now % 10000000 == 0), which is predictable and manipulable by miners. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Attackers can time transactions to bypass the approval condition, potentially leading to unauthorized token approvals and fund theft.",
+        "Location": "AkitaRyu.approve function, static analysis finding: [High] weak-prng"
+      },
+      {
+        "Issue": "Dangerous Strict Equality Check",
+        "Severity": "Medium",
+        "Description": "The approve function uses a strict equality check (==) with timestamp modulo, which is unreliable due to blockchain timestamp manipulation. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Miners can manipulate timestamps to satisfy the condition, enabling unexpected behavior in approvals.",
+        "Location": "AkitaRyu.approve function, static analysis finding: [Medium] incorrect-equality"
+      },
+      {
+        "Issue": "Missing Zero Address Check in setrouteChain",
+        "Severity": "Low",
+        "Description": "The setrouteChain function lacks a zero address check for the input parameter Uniswaprouterv02. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Setting the router to address(0) could break token transfers involving the router, causing functional issues.",
+        "Location": "AkitaRyu.setrouteChain function, static analysis finding: [Low] missing-zero-check"
+      },
+      {
+        "Issue": "Missing Zero Address Check in Approve",
+        "Severity": "Low",
+        "Description": "The Approve function lacks a zero address check for the input parameter trade. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Setting caller to address(0) might disrupt intended transfer restrictions, leading to unexpected behavior.",
+        "Location": "AkitaRyu.Approve function, static analysis finding: [Low] missing-zero-check"
+      },
+      {
+        "Issue": "Timestamp Dependency in Approval",
+        "Severity": "Low",
+        "Description": "The approve function relies on block timestamp (now) for a critical condition, which is known to be manipulable. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Miners can influence transaction inclusion to exploit the timestamp condition, potentially bypassing security checks.",
+        "Location": "AkitaRyu.approve function, static analysis finding: [Low] timestamp"
+      },
+      {
+        "Issue": "Missing Event Emission on State Change",
+        "Severity": "Low",
+        "Description": "The decreaseAllowance function modifies rTotal without emitting an event, reducing transparency. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Off-chain monitors cannot track changes to rTotal, hindering auditability and user trust.",
+        "Location": "AkitaRyu.decreaseAllowance function, static analysis finding: [Low] events-maths"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T11:51:49.254066",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "80fb7e28-3a41-447a-aec0-4a423cea3d50",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-ywyk3rks/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.9"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 453.62576818466187,
+        "total_tasks": 0
+      },
+      "execution_time": 453.62576818466187,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The approve function uses a weak PRNG based on timestamp modulo operation (now % 10000000 == 0), which is predictable and manipulable by miners. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Attackers can time transactions to bypass the approval condition, potentially leading to unauthorized token approvals and fund theft.",
+          "Issue": "Weak Pseudo-Random Number Generator (PRNG) in Approval",
+          "Location": "AkitaRyu.approve function, static analysis finding: [High] weak-prng",
+          "Severity": "High"
+        },
+        {
+          "Description": "The approve function uses a strict equality check (==) with timestamp modulo, which is unreliable due to blockchain timestamp manipulation. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Miners can manipulate timestamps to satisfy the condition, enabling unexpected behavior in approvals.",
+          "Issue": "Dangerous Strict Equality Check",
+          "Location": "AkitaRyu.approve function, static analysis finding: [Medium] incorrect-equality",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The setrouteChain function lacks a zero address check for the input parameter Uniswaprouterv02. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Setting the router to address(0) could break token transfers involving the router, causing functional issues.",
+          "Issue": "Missing Zero Address Check in setrouteChain",
+          "Location": "AkitaRyu.setrouteChain function, static analysis finding: [Low] missing-zero-check",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The Approve function lacks a zero address check for the input parameter trade. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Setting caller to address(0) might disrupt intended transfer restrictions, leading to unexpected behavior.",
+          "Issue": "Missing Zero Address Check in Approve",
+          "Location": "AkitaRyu.Approve function, static analysis finding: [Low] missing-zero-check",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The approve function relies on block timestamp (now) for a critical condition, which is known to be manipulable. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Miners can influence transaction inclusion to exploit the timestamp condition, potentially bypassing security checks.",
+          "Issue": "Timestamp Dependency in Approval",
+          "Location": "AkitaRyu.approve function, static analysis finding: [Low] timestamp",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The decreaseAllowance function modifies rTotal without emitting an event, reducing transparency. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Off-chain monitors cannot track changes to rTotal, hindering auditability and user trust.",
+          "Issue": "Missing Event Emission on State Change",
+          "Location": "AkitaRyu.decreaseAllowance function, static analysis finding: [Low] events-maths",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The approve function uses a weak PRNG based on timestamp modulo operation (now % 10000000 == 0), which is predictable and manipulable by miners. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Attackers can time transactions to bypass the approval condition, potentially leading to unauthorized token approvals and fund theft.",
+          "Issue": "Weak Pseudo-Random Number Generator (PRNG) in Approval",
+          "Location": "AkitaRyu.approve function, static analysis finding: [High] weak-prng",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Weak Pseudo-Random Number Generator (PRNG) in Approval\",\n    \"Severity\": \"High\",\n    \"Description\": \"The approve function uses a weak PRNG based on timestamp modulo operation (now % 10000000 == 0), which is predictable and manipulable by miners. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Attackers can time transactions to bypass the approval condition, potentially leading to unauthorized token approvals and fund theft.\",\n    \"Location\": \"AkitaRyu.approve function, static analysis finding: [High] weak-prng\"\n  },\n  {\n    \"Issue\": \"Dangerous Strict Equality Check\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The approve function uses a strict equality check (==) with timestamp modulo, which is unreliable due to blockchain timestamp manipulation. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Miners can manipulate timestamps to satisfy the condition, enabling unexpected behavior in approvals.\",\n    \"Location\": \"AkitaRyu.approve function, static analysis finding: [Medium] incorrect-equality\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Check in setrouteChain\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The setrouteChain function lacks a zero address check for the input parameter Uniswaprouterv02. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Setting the router to address(0) could break token transfers involving the router, causing functional issues.\",\n    \"Location\": \"AkitaRyu.setrouteChain function, static analysis finding: [Low] missing-zero-check\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Check in Approve\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The Approve function lacks a zero address check for the input parameter trade. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Setting caller to address(0) might disrupt intended transfer restrictions, leading to unexpected behavior.\",\n    \"Location\": \"AkitaRyu.Approve function, static analysis finding: [Low] missing-zero-check\"\n  },\n  {\n    \"Issue\": \"Timestamp Dependency in Approval\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The approve function relies on block timestamp (now) for a critical condition, which is known to be manipulable. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Miners can influence transaction inclusion to exploit the timestamp condition, potentially bypassing security checks.\",\n    \"Location\": \"AkitaRyu.approve function, static analysis finding: [Low] timestamp\"\n  },\n  {\n    \"Issue\": \"Missing Event Emission on State Change\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The decreaseAllowance function modifies rTotal without emitting an event, reducing transparency. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Off-chain monitors cannot track changes to rTotal, hindering auditability and user trust.\",\n    \"Location\": \"AkitaRyu.decreaseAllowance function, static analysis finding: [Low] events-maths\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "80fb7e28-3a41-447a-aec0-4a423cea3d50",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 4,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [],
+      "source": "llm",
+      "confidence": 1.0,
+      "reason": "No findings match SWC-101, SWC-105, SWC-106, SWC-107, or SWC-115; all are other issues",
+      "raw": "{\n  \"labels\": [],\n  \"confidence\": 1.0,\n  \"reason\": \"No findings match SWC-101, SWC-105, SWC-106, SWC-107, or SWC-115; all are other issues\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [],
+    "pred_labels": [],
+    "pred_swc_list": "",
+    "pred_source": "llm",
+    "is_other": 1,
+    "pred_reason": "The SWC-OTHER label is appropriate as the findings include multiple unique vulnerabilities not cleanly mapped to standard SWC IDs, such as a miner-manipulable timestamp-based approval gate combined with strict equality checks. These issues collectively represent custom logic flaws rather than classic SWC categories like weak PRNG (SWC-120) alone, justifying the generic classification. Evidence: Approve function uses `now % 10000000 == 0`—a timestamp-dependent condition vulnerable to miner manipulation.; Strict equality check with timestamp modulo enables exploitation via blockchain timestamp control.; Multiple low-severity issues (e.g., missing zero checks) further deviate from standard SWC mappings.",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 1.0, \"labels\": [], \"raw\": \"{\\n  \\\"labels\\\": [],\\n  \\\"confidence\\\": 1.0,\\n  \\\"reason\\\": \\\"No findings match SWC-101, SWC-105, SWC-106, SWC-107, or SWC-115; all are other issues\\\"\\n}\", \"reason\": \"No findings match SWC-101, SWC-105, SWC-106, SWC-107, or SWC-115; all are other issues\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"Approve function uses `now % 10000000 == 0`—a timestamp-dependent condition vulnerable to miner manipulation.\", \"Strict equality check with timestamp modulo enables exploitation via blockchain timestamp control.\", \"Multiple low-severity issues (e.g., missing zero checks) further deviate from standard SWC mappings.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-OTHER label is appropriate as the findings include multiple unique vulnerabilities not cleanly mapped to standard SWC IDs, such as a miner-manipulable timestamp-based approval gate combined with strict equality checks. These issues collectively represent custom logic flaws rather than classic SWC categories like weak PRNG (SWC-120) alone, justifying the generic classification.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Approve function uses `now % 10000000 == 0`—a timestamp-dependent condition vulnerable to miner manipulation.\\\",\\n    \\\"Strict equality check with timestamp modulo enables exploitation via blockchain timestamp control.\\\",\\n    \\\"Multiple low-severity issues (e.g., missing zero checks) further deviate from standard SWC mappings.\\\"\\n  ]\\n}\", \"reason\": \"The SWC-OTHER label is appropriate as the findings include multiple unique vulnerabilities not cleanly mapped to standard SWC IDs, such as a miner-manipulable timestamp-based approval gate combined with strict equality checks. These issues collectively represent custom logic flaws rather than classic SWC categories like weak PRNG (SWC-120) alone, justifying the generic classification.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-OTHER label is appropriate as the findings include multiple unique vulnerabilities not cleanly mapped to standard SWC IDs, such as a miner-manipulable timestamp-based approval gate combined with strict equality checks. These issues collectively represent custom logic flaws rather than classic SWC categories like weak PRNG (SWC-120) alone, justifying the generic classification.",
+      "evidence": [
+        "Approve function uses `now % 10000000 == 0`—a timestamp-dependent condition vulnerable to miner manipulation.",
+        "Strict equality check with timestamp modulo enables exploitation via blockchain timestamp control.",
+        "Multiple low-severity issues (e.g., missing zero checks) further deviate from standard SWC mappings."
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-OTHER label is appropriate as the findings include multiple unique vulnerabilities not cleanly mapped to standard SWC IDs, such as a miner-manipulable timestamp-based approval gate combined with strict equality checks. These issues collectively represent custom logic flaws rather than classic SWC categories like weak PRNG (SWC-120) alone, justifying the generic classification.\",\n  \"evidence\": [\n    \"Approve function uses `now % 10000000 == 0`—a timestamp-dependent condition vulnerable to miner manipulation.\",\n    \"Strict equality check with timestamp modulo enables exploitation via blockchain timestamp control.\",\n    \"Multiple low-severity issues (e.g., missing zero checks) further deviate from standard SWC mappings.\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "80fb7e28-3a41-447a-aec0-4a423cea3d50",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 3170,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

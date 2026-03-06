@@ -1,0 +1,306 @@
+{
+  "address": "0x069d7af2443e7e9c7f3228a1f739a92decfe65fc",
+  "session_id": "d5d2b056-bf04-40e5-b74a-5de9d0eaa266",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-107",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-107 label is reasonable because multiple findings demonstrate reentrancy vulnerabilities violating the Checks-Effects-Interactions pattern, specifically in onSushiReward and reclaimTokens functions where state updates occur after external calls. Evidence: onSushiReward updates user.unpaidRewards after safeTransfer calls; reclaimTokens performs external transfers without lock modifier; reclaimTokens vulnerable to reentrancy via malicious ERC20 tokens",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-no-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"onSushiReward updates user.unpaidRewards after safeTransfer calls\", \"reclaimTokens performs external transfers without lock modifier\", \"reclaimTokens vulnerable to reentrancy via malicious ERC20 tokens\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label is reasonable because multiple findings demonstrate reentrancy vulnerabilities violating the Checks-Effects-Interactions pattern, specifically in onSushiReward and reclaimTokens functions where state updates occur after external calls.\\\",\\n  \\\"evidence\\\": [\\n    \\\"onSushiReward updates user.unpaidRewards after safeTransfer calls\\\",\\n    \\\"reclaimTokens performs external transfers without lock modifier\\\",\\n    \\\"reclaimTokens vulnerable to reentrancy via malicious ERC20 tokens\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label is reasonable because multiple findings demonstrate reentrancy vulnerabilities violating the Checks-Effects-Interactions pattern, specifically in onSushiReward and reclaimTokens functions where state updates occur after external calls.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 5001,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_232459/deepseek_school/contracts/0x069d7af2443e7e9c7f3228a1f739a92decfe65fc/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 10,
+  "execution_time": 889.3338642120361,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x069d7af2443e7e9c7f3228a1f739a92decfe65fc",
+    "model": "deepseek_school",
+    "session_id": "d5d2b056-bf04-40e5-b74a-5de9d0eaa266",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy in onSushiReward due to state changes after external call",
+        "Severity": "High",
+        "Description": "The onSushiReward function violates Checks-Effects-Interactions pattern by updating user.unpaidRewards after external token transfers. This vulnerability appears in both the smart contract code and was detected by static analysis.",
+        "Impact": "Potential reentrancy attacks allowing manipulation of reward calculations, fund loss, or state corruption if reward token is malicious",
+        "Location": "onSushiReward function, lines with safeTransfer calls followed by user.unpaidRewards updates; Static analysis reentrancy-no-eth findings"
+      },
+      {
+        "Issue": "Missing lock modifier on reclaimTokens function",
+        "Severity": "High",
+        "Description": "The reclaimTokens function performs external transfers without the lock modifier, creating reentrancy vulnerability. This issue appears in the smart contract code only.",
+        "Impact": "Potential reentrancy attacks allowing fund theft or state manipulation if called with malicious token contracts",
+        "Location": "reclaimTokens function definition missing lock modifier"
+      },
+      {
+        "Issue": "Reentrancy risk in reclaimTokens with malicious tokens",
+        "Severity": "High",
+        "Description": "The reclaimTokens function is vulnerable to reentrancy when handling malicious ERC20 tokens, despite onlyOwner restriction. This issue appears in the smart contract code only.",
+        "Impact": "Potential loss of all contract funds if owner is compromised or tricked into calling with malicious token",
+        "Location": "reclaimTokens function with external safeTransfer calls"
+      },
+      {
+        "Issue": "Missing onlyMCV2 modifier on pendingTokens function",
+        "Severity": "Medium",
+        "Description": "The pendingTokens function lacks the onlyMCV2 modifier, allowing unauthorized access to sensitive reward data. This issue appears in the smart contract code only.",
+        "Impact": "Unauthorized access to pending reward information, potential data scraping for manipulation",
+        "Location": "pendingTokens function definition missing onlyMCV2 modifier"
+      },
+      {
+        "Issue": "Missing zero-address validation in constructor",
+        "Severity": "Medium",
+        "Description": "The constructor lacks validation for _MASTERCHEF_V2 parameter, allowing zero address assignment. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Contract bricking if zero address is passed, requiring redeployment",
+        "Location": "AmunRewarder constructor; Static analysis missing-zero-check finding"
+      },
+      {
+        "Issue": "Missing zero-address validation for to parameter in reclaimTokens",
+        "Severity": "Medium",
+        "Description": "The reclaimTokens function lacks zero-address validation for the to parameter, risking irreversible fund loss. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Permanent loss of funds if to address is set to zero",
+        "Location": "reclaimTokens function; Static analysis missing-zero-check finding"
+      },
+      {
+        "Issue": "Missing zero-address validation in init function parameters",
+        "Severity": "Medium",
+        "Description": "The init function lacks zero-address validation for owner and masterLpToken parameters. This issue appears in the smart contract code only.",
+        "Impact": "Potential contract bricking or loss of administrative control if zero addresses are set",
+        "Location": "init function parameter decoding section"
+      },
+      {
+        "Issue": "Unprotected division operations in pendingToken function",
+        "Severity": "Medium",
+        "Description": "The pendingToken function performs division operations without BoringMath protection, risking precision loss. This issue appears in the smart contract code only.",
+        "Impact": "Inaccurate reward calculations leading to unfair distribution or dust accumulation",
+        "Location": "pendingToken function division operations (/ lpSupply and / ACC_TOKEN_PRECISION)"
+      },
+      {
+        "Issue": "Precision loss in accToken1PerShare calculation",
+        "Severity": "Medium",
+        "Description": "Division in accToken1PerShare calculation may round down to zero for small rewards or large LP supply. This issue appears in the smart contract code only.",
+        "Impact": "Loss of reward accuracy, systematic underpayment of small rewards over time",
+        "Location": "updatePool and pendingToken functions, sushiReward.mul(ACC_TOKEN_PRECISION) / lpSupply"
+      },
+      {
+        "Issue": "Miner-influenced timestamp manipulation in reward calculations",
+        "Severity": "Medium",
+        "Description": "Block.timestamp usage in updatePool and pendingToken allows miner manipulation within limits. This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential reward amount manipulation within ~15 minute range, affecting fairness",
+        "Location": "updatePool and pendingToken functions; Static analysis timestamp findings"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-04T04:44:22.949455",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "d5d2b056-bf04-40e5-b74a-5de9d0eaa266",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-obymc4sp/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.12"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 889.3338642120361,
+        "total_tasks": 12
+      },
+      "execution_time": 889.3338642120361,
+      "finding_number": 10,
+      "findings": [
+        {
+          "Description": "The onSushiReward function violates Checks-Effects-Interactions pattern by updating user.unpaidRewards after external token transfers. This vulnerability appears in both the smart contract code and was detected by static analysis.",
+          "Impact": "Potential reentrancy attacks allowing manipulation of reward calculations, fund loss, or state corruption if reward token is malicious",
+          "Issue": "Reentrancy in onSushiReward due to state changes after external call",
+          "Location": "onSushiReward function, lines with safeTransfer calls followed by user.unpaidRewards updates; Static analysis reentrancy-no-eth findings",
+          "Severity": "High"
+        },
+        {
+          "Description": "The reclaimTokens function performs external transfers without the lock modifier, creating reentrancy vulnerability. This issue appears in the smart contract code only.",
+          "Impact": "Potential reentrancy attacks allowing fund theft or state manipulation if called with malicious token contracts",
+          "Issue": "Missing lock modifier on reclaimTokens function",
+          "Location": "reclaimTokens function definition missing lock modifier",
+          "Severity": "High"
+        },
+        {
+          "Description": "The reclaimTokens function is vulnerable to reentrancy when handling malicious ERC20 tokens, despite onlyOwner restriction. This issue appears in the smart contract code only.",
+          "Impact": "Potential loss of all contract funds if owner is compromised or tricked into calling with malicious token",
+          "Issue": "Reentrancy risk in reclaimTokens with malicious tokens",
+          "Location": "reclaimTokens function with external safeTransfer calls",
+          "Severity": "High"
+        },
+        {
+          "Description": "The pendingTokens function lacks the onlyMCV2 modifier, allowing unauthorized access to sensitive reward data. This issue appears in the smart contract code only.",
+          "Impact": "Unauthorized access to pending reward information, potential data scraping for manipulation",
+          "Issue": "Missing onlyMCV2 modifier on pendingTokens function",
+          "Location": "pendingTokens function definition missing onlyMCV2 modifier",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The constructor lacks validation for _MASTERCHEF_V2 parameter, allowing zero address assignment. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Contract bricking if zero address is passed, requiring redeployment",
+          "Issue": "Missing zero-address validation in constructor",
+          "Location": "AmunRewarder constructor; Static analysis missing-zero-check finding",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The reclaimTokens function lacks zero-address validation for the to parameter, risking irreversible fund loss. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Permanent loss of funds if to address is set to zero",
+          "Issue": "Missing zero-address validation for to parameter in reclaimTokens",
+          "Location": "reclaimTokens function; Static analysis missing-zero-check finding",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The init function lacks zero-address validation for owner and masterLpToken parameters. This issue appears in the smart contract code only.",
+          "Impact": "Potential contract bricking or loss of administrative control if zero addresses are set",
+          "Issue": "Missing zero-address validation in init function parameters",
+          "Location": "init function parameter decoding section",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The pendingToken function performs division operations without BoringMath protection, risking precision loss. This issue appears in the smart contract code only.",
+          "Impact": "Inaccurate reward calculations leading to unfair distribution or dust accumulation",
+          "Issue": "Unprotected division operations in pendingToken function",
+          "Location": "pendingToken function division operations (/ lpSupply and / ACC_TOKEN_PRECISION)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Division in accToken1PerShare calculation may round down to zero for small rewards or large LP supply. This issue appears in the smart contract code only.",
+          "Impact": "Loss of reward accuracy, systematic underpayment of small rewards over time",
+          "Issue": "Precision loss in accToken1PerShare calculation",
+          "Location": "updatePool and pendingToken functions, sushiReward.mul(ACC_TOKEN_PRECISION) / lpSupply",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Block.timestamp usage in updatePool and pendingToken allows miner manipulation within limits. This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential reward amount manipulation within ~15 minute range, affecting fairness",
+          "Issue": "Miner-influenced timestamp manipulation in reward calculations",
+          "Location": "updatePool and pendingToken functions; Static analysis timestamp findings",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The onSushiReward function violates Checks-Effects-Interactions pattern by updating user.unpaidRewards after external token transfers. This vulnerability appears in both the smart contract code and was detected by static analysis.",
+          "Impact": "Potential reentrancy attacks allowing manipulation of reward calculations, fund loss, or state corruption if reward token is malicious",
+          "Issue": "Reentrancy in onSushiReward due to state changes after external call",
+          "Location": "onSushiReward function, lines with safeTransfer calls followed by user.unpaidRewards updates; Static analysis reentrancy-no-eth findings",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Reentrancy in onSushiReward due to state changes after external call\",\n    \"Severity\": \"High\",\n    \"Description\": \"The onSushiReward function violates Checks-Effects-Interactions pattern by updating user.unpaidRewards after external token transfers. This vulnerability appears in both the smart contract code and was detected by static analysis.\",\n    \"Impact\": \"Potential reentrancy attacks allowing manipulation of reward calculations, fund loss, or state corruption if reward token is malicious\",\n    \"Location\": \"onSushiReward function, lines with safeTransfer calls followed by user.unpaidRewards updates; Static analysis reentrancy-no-eth findings\"\n  },\n  {\n    \"Issue\": \"Missing lock modifier on reclaimTokens function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The reclaimTokens function performs external transfers without the lock modifier, creating reentrancy vulnerability. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential reentrancy attacks allowing fund theft or state manipulation if called with malicious token contracts\",\n    \"Location\": \"reclaimTokens function definition missing lock modifier\"\n  },\n  {\n    \"Issue\": \"Reentrancy risk in reclaimTokens with malicious tokens\",\n    \"Severity\": \"High\",\n    \"Description\": \"The reclaimTokens function is vulnerable to reentrancy when handling malicious ERC20 tokens, despite onlyOwner restriction. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential loss of all contract funds if owner is compromised or tricked into calling with malicious token\",\n    \"Location\": \"reclaimTokens function with external safeTransfer calls\"\n  },\n  {\n    \"Issue\": \"Missing onlyMCV2 modifier on pendingTokens function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The pendingTokens function lacks the onlyMCV2 modifier, allowing unauthorized access to sensitive reward data. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Unauthorized access to pending reward information, potential data scraping for manipulation\",\n    \"Location\": \"pendingTokens function definition missing onlyMCV2 modifier\"\n  },\n  {\n    \"Issue\": \"Missing zero-address validation in constructor\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The constructor lacks validation for _MASTERCHEF_V2 parameter, allowing zero address assignment. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Contract bricking if zero address is passed, requiring redeployment\",\n    \"Location\": \"AmunRewarder constructor; Static analysis missing-zero-check finding\"\n  },\n  {\n    \"Issue\": \"Missing zero-address validation for to parameter in reclaimTokens\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The reclaimTokens function lacks zero-address validation for the to parameter, risking irreversible fund loss. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Permanent loss of funds if to address is set to zero\",\n    \"Location\": \"reclaimTokens function; Static analysis missing-zero-check finding\"\n  },\n  {\n    \"Issue\": \"Missing zero-address validation in init function parameters\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The init function lacks zero-address validation for owner and masterLpToken parameters. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential contract bricking or loss of administrative control if zero addresses are set\",\n    \"Location\": \"init function parameter decoding section\"\n  },\n  {\n    \"Issue\": \"Unprotected division operations in pendingToken function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The pendingToken function performs division operations without BoringMath protection, risking precision loss. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Inaccurate reward calculations leading to unfair distribution or dust accumulation\",\n    \"Location\": \"pendingToken function division operations (/ lpSupply and / ACC_TOKEN_PRECISION)\"\n  },\n  {\n    \"Issue\": \"Precision loss in accToken1PerShare calculation\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Division in accToken1PerShare calculation may round down to zero for small rewards or large LP supply. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Loss of reward accuracy, systematic underpayment of small rewards over time\",\n    \"Location\": \"updatePool and pendingToken functions, sushiReward.mul(ACC_TOKEN_PRECISION) / lpSupply\"\n  },\n  {\n    \"Issue\": \"Miner-influenced timestamp manipulation in reward calculations\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Block.timestamp usage in updatePool and pendingToken allows miner manipulation within limits. This issue appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential reward amount manipulation within ~15 minute range, affecting fairness\",\n    \"Location\": \"updatePool and pendingToken functions; Static analysis timestamp findings\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "d5d2b056-bf04-40e5-b74a-5de9d0eaa266",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 0,
+        "Medium": 7
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 10.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "kw:reentrancy-no-eth",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(10.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-107 label is reasonable because multiple findings demonstrate reentrancy vulnerabilities violating the Checks-Effects-Interactions pattern, specifically in onSushiReward and reclaimTokens functions where state updates occur after external calls. Evidence: onSushiReward updates user.unpaidRewards after safeTransfer calls; reclaimTokens performs external transfers without lock modifier; reclaimTokens vulnerable to reentrancy via malicious ERC20 tokens",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-no-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"onSushiReward updates user.unpaidRewards after safeTransfer calls\", \"reclaimTokens performs external transfers without lock modifier\", \"reclaimTokens vulnerable to reentrancy via malicious ERC20 tokens\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label is reasonable because multiple findings demonstrate reentrancy vulnerabilities violating the Checks-Effects-Interactions pattern, specifically in onSushiReward and reclaimTokens functions where state updates occur after external calls.\\\",\\n  \\\"evidence\\\": [\\n    \\\"onSushiReward updates user.unpaidRewards after safeTransfer calls\\\",\\n    \\\"reclaimTokens performs external transfers without lock modifier\\\",\\n    \\\"reclaimTokens vulnerable to reentrancy via malicious ERC20 tokens\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label is reasonable because multiple findings demonstrate reentrancy vulnerabilities violating the Checks-Effects-Interactions pattern, specifically in onSushiReward and reclaimTokens functions where state updates occur after external calls.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-107 label is reasonable because multiple findings demonstrate reentrancy vulnerabilities violating the Checks-Effects-Interactions pattern, specifically in onSushiReward and reclaimTokens functions where state updates occur after external calls.",
+      "evidence": [
+        "onSushiReward updates user.unpaidRewards after safeTransfer calls",
+        "reclaimTokens performs external transfers without lock modifier",
+        "reclaimTokens vulnerable to reentrancy via malicious ERC20 tokens"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-107 label is reasonable because multiple findings demonstrate reentrancy vulnerabilities violating the Checks-Effects-Interactions pattern, specifically in onSushiReward and reclaimTokens functions where state updates occur after external calls.\",\n  \"evidence\": [\n    \"onSushiReward updates user.unpaidRewards after safeTransfer calls\",\n    \"reclaimTokens performs external transfers without lock modifier\",\n    \"reclaimTokens vulnerable to reentrancy via malicious ERC20 tokens\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "d5d2b056-bf04-40e5-b74a-5de9d0eaa266",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 10,
+        "full_report_chars": 5001,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

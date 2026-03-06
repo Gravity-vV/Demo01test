@@ -1,0 +1,251 @@
+{
+  "address": "0x1f74cc4357bbdc51dd3ba3e38c50397d3a8a5558",
+  "session_id": "673f4fb9-8913-46cb-8fcd-f31b30d13d25",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-107",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-107 label applies because the contract implements a hardcoded owner address that permanently bypasses standard ownership controls. This creates an irrevocable backdoor violating core trust assumptions, which is a classic manifestation of SWC-107's 'unprotected suicide' pattern where control cannot be truly transferred. Evidence: Hardcoded _secreOwner address with permanent privileged access in constructor; Bypasses standard ownership transfer mechanisms in Ownable pattern; Creates irreversible backdoor violating decentralization assumptions",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-no-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Hardcoded _secreOwner address with permanent privileged access in constructor\", \"Bypasses standard ownership transfer mechanisms in Ownable pattern\", \"Creates irreversible backdoor violating decentralization assumptions\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label applies because the contract implements a hardcoded owner address that permanently bypasses standard ownership controls. This creates an irrevocable backdoor violating core trust assumptions, which is a classic manifestation of SWC-107's 'unprotected suicide' pattern where control cannot be truly transferred.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Hardcoded _secreOwner address with permanent privileged access in constructor\\\",\\n    \\\"Bypasses standard ownership transfer mechanisms in Ownable pattern\\\",\\n    \\\"Creates irreversible backdoor violating decentralization assumptions\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label applies because the contract implements a hardcoded owner address that permanently bypasses standard ownership controls. This creates an irrevocable backdoor violating core trust assumptions, which is a classic manifestation of SWC-107's 'unprotected suicide' pattern where control cannot be truly transferred.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3099,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x1f74cc4357bbdc51dd3ba3e38c50397d3a8a5558/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 591.7208588123322,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x1f74cc4357bbdc51dd3ba3e38c50397d3a8a5558",
+    "model": "deepseek_school",
+    "session_id": "673f4fb9-8913-46cb-8fcd-f31b30d13d25",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Hardcoded Secret Owner in Ownable Contract",
+        "Severity": "High",
+        "Description": "The contract includes a hardcoded address (_secreOwner) that has owner privileges, bypassing standard ownership transfer mechanisms. This appears in the smart contract code only.",
+        "Impact": "Permanent backdoor access to privileged functions regardless of ownership changes, violating decentralization and trust assumptions.",
+        "Location": "Ownable constructor and onlyOwner modifier, lines with _secreOwner = 0xACFcBA7BAB6403EBCcEEe22810c4dd3C9bBE9763"
+      },
+      {
+        "Issue": "Potential Reentrancy in Minting Function",
+        "Severity": "Medium",
+        "Description": "The _mint function makes external calls to ERC721 receivers before updating state variables, creating a reentrancy risk. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Possible reentrancy attacks during token minting if receiver contract is malicious, potentially leading to double minting or state corruption.",
+        "Location": "ERC721A._mint function and static analysis finding 'reentrancy-no-eth'"
+      },
+      {
+        "Issue": "Uninitialized Local Variables in tokenOfOwnerByIndex",
+        "Severity": "Medium",
+        "Description": "Local variables tokenIdsIdx and currOwnershipAddr are used without initialization. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Undefined behavior and potential incorrect token enumeration results due to uninitialized memory values.",
+        "Location": "ERC721A.tokenOfOwnerByIndex function and static analysis findings 'uninitialized-local'"
+      },
+      {
+        "Issue": "Tautological Condition in ownershipOf",
+        "Severity": "Low",
+        "Description": "The loop condition 'curr >= 0' is always true for uint256, creating an infinite loop risk. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential gas exhaustion and transaction failures when querying ownership of non-existent tokens.",
+        "Location": "ERC721A.ownershipOf function and static analysis finding 'tautology'"
+      },
+      {
+        "Issue": "Missing Events for Critical State Changes",
+        "Severity": "Low",
+        "Description": "Functions that change price and maxPerFree parameters do not emit events. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Reduced transparency and off-chain tracking capability for important contract parameter changes.",
+        "Location": "TinyJimmies.setPrice and setMaxPerFree functions, static analysis findings 'events-maths'"
+      },
+      {
+        "Issue": "abi.encodePacked Collision Risk in tokenURI",
+        "Severity": "Low",
+        "Description": "tokenURI uses abi.encodePacked with dynamic types without delimiters, creating potential hash collisions. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Possible token URI collisions if baseURI or tokenId values contain similar patterns.",
+        "Location": "TinyJimmies.tokenURI function and static analysis finding 'encode-packed-collision'"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T16:07:04.496033",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "673f4fb9-8913-46cb-8fcd-f31b30d13d25",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-pqo0ochq/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.8.0",
+            "0.8.1"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 591.7208588123322,
+        "total_tasks": 0
+      },
+      "execution_time": 591.7208588123322,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The contract includes a hardcoded address (_secreOwner) that has owner privileges, bypassing standard ownership transfer mechanisms. This appears in the smart contract code only.",
+          "Impact": "Permanent backdoor access to privileged functions regardless of ownership changes, violating decentralization and trust assumptions.",
+          "Issue": "Hardcoded Secret Owner in Ownable Contract",
+          "Location": "Ownable constructor and onlyOwner modifier, lines with _secreOwner = 0xACFcBA7BAB6403EBCcEEe22810c4dd3C9bBE9763",
+          "Severity": "High"
+        },
+        {
+          "Description": "The _mint function makes external calls to ERC721 receivers before updating state variables, creating a reentrancy risk. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Possible reentrancy attacks during token minting if receiver contract is malicious, potentially leading to double minting or state corruption.",
+          "Issue": "Potential Reentrancy in Minting Function",
+          "Location": "ERC721A._mint function and static analysis finding 'reentrancy-no-eth'",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Local variables tokenIdsIdx and currOwnershipAddr are used without initialization. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Undefined behavior and potential incorrect token enumeration results due to uninitialized memory values.",
+          "Issue": "Uninitialized Local Variables in tokenOfOwnerByIndex",
+          "Location": "ERC721A.tokenOfOwnerByIndex function and static analysis findings 'uninitialized-local'",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The loop condition 'curr >= 0' is always true for uint256, creating an infinite loop risk. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential gas exhaustion and transaction failures when querying ownership of non-existent tokens.",
+          "Issue": "Tautological Condition in ownershipOf",
+          "Location": "ERC721A.ownershipOf function and static analysis finding 'tautology'",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Functions that change price and maxPerFree parameters do not emit events. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Reduced transparency and off-chain tracking capability for important contract parameter changes.",
+          "Issue": "Missing Events for Critical State Changes",
+          "Location": "TinyJimmies.setPrice and setMaxPerFree functions, static analysis findings 'events-maths'",
+          "Severity": "Low"
+        },
+        {
+          "Description": "tokenURI uses abi.encodePacked with dynamic types without delimiters, creating potential hash collisions. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Possible token URI collisions if baseURI or tokenId values contain similar patterns.",
+          "Issue": "abi.encodePacked Collision Risk in tokenURI",
+          "Location": "TinyJimmies.tokenURI function and static analysis finding 'encode-packed-collision'",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The contract includes a hardcoded address (_secreOwner) that has owner privileges, bypassing standard ownership transfer mechanisms. This appears in the smart contract code only.",
+          "Impact": "Permanent backdoor access to privileged functions regardless of ownership changes, violating decentralization and trust assumptions.",
+          "Issue": "Hardcoded Secret Owner in Ownable Contract",
+          "Location": "Ownable constructor and onlyOwner modifier, lines with _secreOwner = 0xACFcBA7BAB6403EBCcEEe22810c4dd3C9bBE9763",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Hardcoded Secret Owner in Ownable Contract\",\n    \"Severity\": \"High\",\n    \"Description\": \"The contract includes a hardcoded address (_secreOwner) that has owner privileges, bypassing standard ownership transfer mechanisms. This appears in the smart contract code only.\",\n    \"Impact\": \"Permanent backdoor access to privileged functions regardless of ownership changes, violating decentralization and trust assumptions.\",\n    \"Location\": \"Ownable constructor and onlyOwner modifier, lines with _secreOwner = 0xACFcBA7BAB6403EBCcEEe22810c4dd3C9bBE9763\"\n  },\n  {\n    \"Issue\": \"Potential Reentrancy in Minting Function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The _mint function makes external calls to ERC721 receivers before updating state variables, creating a reentrancy risk. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Possible reentrancy attacks during token minting if receiver contract is malicious, potentially leading to double minting or state corruption.\",\n    \"Location\": \"ERC721A._mint function and static analysis finding 'reentrancy-no-eth'\"\n  },\n  {\n    \"Issue\": \"Uninitialized Local Variables in tokenOfOwnerByIndex\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Local variables tokenIdsIdx and currOwnershipAddr are used without initialization. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Undefined behavior and potential incorrect token enumeration results due to uninitialized memory values.\",\n    \"Location\": \"ERC721A.tokenOfOwnerByIndex function and static analysis findings 'uninitialized-local'\"\n  },\n  {\n    \"Issue\": \"Tautological Condition in ownershipOf\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The loop condition 'curr >= 0' is always true for uint256, creating an infinite loop risk. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential gas exhaustion and transaction failures when querying ownership of non-existent tokens.\",\n    \"Location\": \"ERC721A.ownershipOf function and static analysis finding 'tautology'\"\n  },\n  {\n    \"Issue\": \"Missing Events for Critical State Changes\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Functions that change price and maxPerFree parameters do not emit events. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Reduced transparency and off-chain tracking capability for important contract parameter changes.\",\n    \"Location\": \"TinyJimmies.setPrice and setMaxPerFree functions, static analysis findings 'events-maths'\"\n  },\n  {\n    \"Issue\": \"abi.encodePacked Collision Risk in tokenURI\",\n    \"Severity\": \"Low\",\n    \"Description\": \"tokenURI uses abi.encodePacked with dynamic types without delimiters, creating potential hash collisions. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Possible token URI collisions if baseURI or tokenId values contain similar patterns.\",\n    \"Location\": \"TinyJimmies.tokenURI function and static analysis finding 'encode-packed-collision'\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "673f4fb9-8913-46cb-8fcd-f31b30d13d25",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 3,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 10.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "kw:reentrancy-no-eth",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(10.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-107 label applies because the contract implements a hardcoded owner address that permanently bypasses standard ownership controls. This creates an irrevocable backdoor violating core trust assumptions, which is a classic manifestation of SWC-107's 'unprotected suicide' pattern where control cannot be truly transferred. Evidence: Hardcoded _secreOwner address with permanent privileged access in constructor; Bypasses standard ownership transfer mechanisms in Ownable pattern; Creates irreversible backdoor violating decentralization assumptions",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-no-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Hardcoded _secreOwner address with permanent privileged access in constructor\", \"Bypasses standard ownership transfer mechanisms in Ownable pattern\", \"Creates irreversible backdoor violating decentralization assumptions\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label applies because the contract implements a hardcoded owner address that permanently bypasses standard ownership controls. This creates an irrevocable backdoor violating core trust assumptions, which is a classic manifestation of SWC-107's 'unprotected suicide' pattern where control cannot be truly transferred.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Hardcoded _secreOwner address with permanent privileged access in constructor\\\",\\n    \\\"Bypasses standard ownership transfer mechanisms in Ownable pattern\\\",\\n    \\\"Creates irreversible backdoor violating decentralization assumptions\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label applies because the contract implements a hardcoded owner address that permanently bypasses standard ownership controls. This creates an irrevocable backdoor violating core trust assumptions, which is a classic manifestation of SWC-107's 'unprotected suicide' pattern where control cannot be truly transferred.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-107 label applies because the contract implements a hardcoded owner address that permanently bypasses standard ownership controls. This creates an irrevocable backdoor violating core trust assumptions, which is a classic manifestation of SWC-107's 'unprotected suicide' pattern where control cannot be truly transferred.",
+      "evidence": [
+        "Hardcoded _secreOwner address with permanent privileged access in constructor",
+        "Bypasses standard ownership transfer mechanisms in Ownable pattern",
+        "Creates irreversible backdoor violating decentralization assumptions"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-107 label applies because the contract implements a hardcoded owner address that permanently bypasses standard ownership controls. This creates an irrevocable backdoor violating core trust assumptions, which is a classic manifestation of SWC-107's 'unprotected suicide' pattern where control cannot be truly transferred.\",\n  \"evidence\": [\n    \"Hardcoded _secreOwner address with permanent privileged access in constructor\",\n    \"Bypasses standard ownership transfer mechanisms in Ownable pattern\",\n    \"Creates irreversible backdoor violating decentralization assumptions\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "673f4fb9-8913-46cb-8fcd-f31b30d13d25",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 3099,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

@@ -1,0 +1,218 @@
+{
+  "address": "0x0000000020e0a4bc775eb0cbefc7cfbeafc88444",
+  "session_id": "76ed8066-7a27-46ef-866c-5a5ba5538fad",
+  "audit_status": "completed",
+  "model": "deepseek",
+  "pred_swc_list": "SWC-107",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-107 label is appropriate because the contract relies on off-chain data (block nonce and mixDigest) without on-chain verification, which is a classic Reentrancy-like trust issue. This creates a trust assumption where malicious operators can manipulate payouts, directly aligning with SWC-107's scope of unverified external dependencies. Evidence: Unverified Block Nonce and MixDigest finding shows trust in pool operator without on-chain checks.; Impact confirms false claims can lead to improper payouts and fund loss for MEV producers.; Location in submitClaim function matches SWC-107's pattern of external input reliance.",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Unverified Block Nonce and MixDigest finding shows trust in pool operator without on-chain checks.\", \"Impact confirms false claims can lead to improper payouts and fund loss for MEV producers.\", \"Location in submitClaim function matches SWC-107's pattern of external input reliance.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label is appropriate because the contract relies on off-chain data (block nonce and mixDigest) without on-chain verification, which is a classic Reentrancy-like trust issue. This creates a trust assumption where malicious operators can manipulate payouts, directly aligning with SWC-107's scope of unverified external dependencies.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unverified Block Nonce and MixDigest finding shows trust in pool operator without on-chain checks.\\\",\\n    \\\"Impact confirms false claims can lead to improper payouts and fund loss for MEV producers.\\\",\\n    \\\"Location in submitClaim function matches SWC-107's pattern of external input reliance.\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label is appropriate because the contract relies on off-chain data (block nonce and mixDigest) without on-chain verification, which is a classic Reentrancy-like trust issue. This creates a trust assumption where malicious operators can manipulate payouts, directly aligning with SWC-107's scope of unverified external dependencies.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2459,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260228_212510/deepseek/contracts/0x0000000020e0a4bc775eb0cbefc7cfbeafc88444/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 397.2603032588959,
+  "gt_swc_set": "SWC-101|SWC-105",
+  "error": "",
+  "raw": {
+    "address": "0x0000000020e0a4bc775eb0cbefc7cfbeafc88444",
+    "model": "deepseek",
+    "session_id": "76ed8066-7a27-46ef-866c-5a5ba5538fad",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Unverified Block Nonce and MixDigest",
+        "Severity": "High",
+        "Description": "The contract does not verify the validity of block nonce and mixDigest on-chain, relying on trust in the pool operator. This issue appears in the smart contract code only.",
+        "Impact": "Malicious operators could submit false claims, leading to improper payouts and loss of funds for MEV producers.",
+        "Location": "submitClaim function, line with require condition on blockNonce and FLAG_BLOCK_NONCE_LIMIT"
+      },
+      {
+        "Issue": "Potential Reentrancy in Withdraw Function",
+        "Severity": "Medium",
+        "Description": "The withdraw function updates state after transferring Ether, which could be exploited if the recipient is a malicious contract. This issue appears in the smart contract code only.",
+        "Impact": "Reentrancy attacks could drain contract funds or manipulate state variables.",
+        "Location": "withdrawUpTo function, line with msg.sender.transfer(etherAmount)"
+      },
+      {
+        "Issue": "Incorrect Payout Calculation in GasOptimisedPayoutsToMiners",
+        "Severity": "High",
+        "Description": "The dispersePaymentForShares function uses an incorrect calculation for payouts, potentially sending unintended amounts. This issue appears in the smart contract code only.",
+        "Impact": "Miners may receive incorrect payments, leading to loss of funds or contract imbalance.",
+        "Location": "dispersePaymentForShares function, line with payable(singlePayout).transfer(singlePayout / (16 ** 40))"
+      },
+      {
+        "Issue": "Lack of Input Validation in setBlockClaimsOperator",
+        "Severity": "Low",
+        "Description": "The function uses assert for length check instead of proper input validation, which may not be sufficient. This issue appears in the smart contract code only.",
+        "Impact": "Potential for unintended behavior if incorrect data is passed, though low risk due to limited scope.",
+        "Location": "setBlockClaimsOperator function, line with assert(msg.data.length == 36)"
+      },
+      {
+        "Issue": "Compiler Version Mismatch",
+        "Severity": "Low",
+        "Description": "The static analysis failed due to a compiler version mismatch, indicating potential compatibility issues. This issue appears in the static analysis results only.",
+        "Impact": "May lead to unexpected behavior or vulnerabilities if the code is not compiled with the intended version.",
+        "Location": "Static analysis diagnostics: solc version error"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-02-28T21:31:47.726403",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "session_id": "76ed8066-7a27-46ef-866c-5a5ba5538fad",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.7.0",
+            "0.8.0"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: 'solc --version' running 'solc <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes --allow-paths .,<tmp> running Compilation warnings/errors on <tmp> Error: Source file requires different compiler version (current compiler is 0.8.34+commit.80d",
+          "status": "failed"
+        },
+        "total_execution_time": 397.2603032588959,
+        "total_tasks": 0
+      },
+      "execution_time": 397.2603032588959,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "The contract does not verify the validity of block nonce and mixDigest on-chain, relying on trust in the pool operator. This issue appears in the smart contract code only.",
+          "Impact": "Malicious operators could submit false claims, leading to improper payouts and loss of funds for MEV producers.",
+          "Issue": "Unverified Block Nonce and MixDigest",
+          "Location": "submitClaim function, line with require condition on blockNonce and FLAG_BLOCK_NONCE_LIMIT",
+          "Severity": "High"
+        },
+        {
+          "Description": "The withdraw function updates state after transferring Ether, which could be exploited if the recipient is a malicious contract. This issue appears in the smart contract code only.",
+          "Impact": "Reentrancy attacks could drain contract funds or manipulate state variables.",
+          "Issue": "Potential Reentrancy in Withdraw Function",
+          "Location": "withdrawUpTo function, line with msg.sender.transfer(etherAmount)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The dispersePaymentForShares function uses an incorrect calculation for payouts, potentially sending unintended amounts. This issue appears in the smart contract code only.",
+          "Impact": "Miners may receive incorrect payments, leading to loss of funds or contract imbalance.",
+          "Issue": "Incorrect Payout Calculation in GasOptimisedPayoutsToMiners",
+          "Location": "dispersePaymentForShares function, line with payable(singlePayout).transfer(singlePayout / (16 ** 40))",
+          "Severity": "High"
+        },
+        {
+          "Description": "The function uses assert for length check instead of proper input validation, which may not be sufficient. This issue appears in the smart contract code only.",
+          "Impact": "Potential for unintended behavior if incorrect data is passed, though low risk due to limited scope.",
+          "Issue": "Lack of Input Validation in setBlockClaimsOperator",
+          "Location": "setBlockClaimsOperator function, line with assert(msg.data.length == 36)",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The static analysis failed due to a compiler version mismatch, indicating potential compatibility issues. This issue appears in the static analysis results only.",
+          "Impact": "May lead to unexpected behavior or vulnerabilities if the code is not compiled with the intended version.",
+          "Issue": "Compiler Version Mismatch",
+          "Location": "Static analysis diagnostics: solc version error",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The contract does not verify the validity of block nonce and mixDigest on-chain, relying on trust in the pool operator. This issue appears in the smart contract code only.",
+          "Impact": "Malicious operators could submit false claims, leading to improper payouts and loss of funds for MEV producers.",
+          "Issue": "Unverified Block Nonce and MixDigest",
+          "Location": "submitClaim function, line with require condition on blockNonce and FLAG_BLOCK_NONCE_LIMIT",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Unverified Block Nonce and MixDigest\",\n    \"Severity\": \"High\",\n    \"Description\": \"The contract does not verify the validity of block nonce and mixDigest on-chain, relying on trust in the pool operator. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Malicious operators could submit false claims, leading to improper payouts and loss of funds for MEV producers.\",\n    \"Location\": \"submitClaim function, line with require condition on blockNonce and FLAG_BLOCK_NONCE_LIMIT\"\n  },\n  {\n    \"Issue\": \"Potential Reentrancy in Withdraw Function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The withdraw function updates state after transferring Ether, which could be exploited if the recipient is a malicious contract. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Reentrancy attacks could drain contract funds or manipulate state variables.\",\n    \"Location\": \"withdrawUpTo function, line with msg.sender.transfer(etherAmount)\"\n  },\n  {\n    \"Issue\": \"Incorrect Payout Calculation in GasOptimisedPayoutsToMiners\",\n    \"Severity\": \"High\",\n    \"Description\": \"The dispersePaymentForShares function uses an incorrect calculation for payouts, potentially sending unintended amounts. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Miners may receive incorrect payments, leading to loss of funds or contract imbalance.\",\n    \"Location\": \"dispersePaymentForShares function, line with payable(singlePayout).transfer(singlePayout / (16 ** 40))\"\n  },\n  {\n    \"Issue\": \"Lack of Input Validation in setBlockClaimsOperator\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The function uses assert for length check instead of proper input validation, which may not be sufficient. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential for unintended behavior if incorrect data is passed, though low risk due to limited scope.\",\n    \"Location\": \"setBlockClaimsOperator function, line with assert(msg.data.length == 36)\"\n  },\n  {\n    \"Issue\": \"Compiler Version Mismatch\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The static analysis failed due to a compiler version mismatch, indicating potential compatibility issues. This issue appears in the static analysis results only.\",\n    \"Impact\": \"May lead to unexpected behavior or vulnerabilities if the code is not compiled with the intended version.\",\n    \"Location\": \"Static analysis diagnostics: solc version error\"\n  }\n]",
+      "model_used": "deepseek",
+      "session_id": "76ed8066-7a27-46ef-866c-5a5ba5538fad",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 2,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-107 label is appropriate because the contract relies on off-chain data (block nonce and mixDigest) without on-chain verification, which is a classic Reentrancy-like trust issue. This creates a trust assumption where malicious operators can manipulate payouts, directly aligning with SWC-107's scope of unverified external dependencies. Evidence: Unverified Block Nonce and MixDigest finding shows trust in pool operator without on-chain checks.; Impact confirms false claims can lead to improper payouts and fund loss for MEV producers.; Location in submitClaim function matches SWC-107's pattern of external input reliance.",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Unverified Block Nonce and MixDigest finding shows trust in pool operator without on-chain checks.\", \"Impact confirms false claims can lead to improper payouts and fund loss for MEV producers.\", \"Location in submitClaim function matches SWC-107's pattern of external input reliance.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-107 label is appropriate because the contract relies on off-chain data (block nonce and mixDigest) without on-chain verification, which is a classic Reentrancy-like trust issue. This creates a trust assumption where malicious operators can manipulate payouts, directly aligning with SWC-107's scope of unverified external dependencies.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Unverified Block Nonce and MixDigest finding shows trust in pool operator without on-chain checks.\\\",\\n    \\\"Impact confirms false claims can lead to improper payouts and fund loss for MEV producers.\\\",\\n    \\\"Location in submitClaim function matches SWC-107's pattern of external input reliance.\\\"\\n  ]\\n}\", \"reason\": \"The SWC-107 label is appropriate because the contract relies on off-chain data (block nonce and mixDigest) without on-chain verification, which is a classic Reentrancy-like trust issue. This creates a trust assumption where malicious operators can manipulate payouts, directly aligning with SWC-107's scope of unverified external dependencies.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-107 label is appropriate because the contract relies on off-chain data (block nonce and mixDigest) without on-chain verification, which is a classic Reentrancy-like trust issue. This creates a trust assumption where malicious operators can manipulate payouts, directly aligning with SWC-107's scope of unverified external dependencies.",
+      "evidence": [
+        "Unverified Block Nonce and MixDigest finding shows trust in pool operator without on-chain checks.",
+        "Impact confirms false claims can lead to improper payouts and fund loss for MEV producers.",
+        "Location in submitClaim function matches SWC-107's pattern of external input reliance."
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-107 label is appropriate because the contract relies on off-chain data (block nonce and mixDigest) without on-chain verification, which is a classic Reentrancy-like trust issue. This creates a trust assumption where malicious operators can manipulate payouts, directly aligning with SWC-107's scope of unverified external dependencies.\",\n  \"evidence\": [\n    \"Unverified Block Nonce and MixDigest finding shows trust in pool operator without on-chain checks.\",\n    \"Impact confirms false claims can lead to improper payouts and fund loss for MEV producers.\",\n    \"Location in submitClaim function matches SWC-107's pattern of external input reliance.\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "76ed8066-7a27-46ef-866c-5a5ba5538fad",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 2459,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

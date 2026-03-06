@@ -1,0 +1,219 @@
+{
+  "address": "0x0886e3c97ec9e030382335a13df3fe6263bbf4a1",
+  "session_id": "0aa29bdb-d709-4322-9421-41012258d33d",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "llm",
+  "pred_reason": "The SWC-105 label is appropriate because the contract contains unprotected functions that allow arbitrary ownership transfer initiation. This violates access control requirements by permitting unauthorized state changes through direct function calls. Evidence: Duplicate transferOwnership functions: one protected with onlyOwner, one unprotected; Any address can initiate ownership transfer, enabling complete contract takeover; Impact includes draining accidentally sent ERC20 tokens and gaining all owner privileges",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 0.8, \"labels\": [\"SWC-105\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-105\\\"],\\n  \\\"confidence\\\": 0.8,\\n  \\\"reason\\\": \\\"Unprotected ownership transfer functions allow arbitrary address to initiate ownership change, leading to potential unauthorized withdrawals if owner privileges are exploited.\\\"\\n}\", \"reason\": \"Unprotected ownership transfer functions allow arbitrary address to initiate ownership change, leading to potential unauthorized withdrawals if owner privileges are exploited.\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"Duplicate transferOwnership functions: one protected with onlyOwner, one unprotected\", \"Any address can initiate ownership transfer, enabling complete contract takeover\", \"Impact includes draining accidentally sent ERC20 tokens and gaining all owner privileges\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-105 label is appropriate because the contract contains unprotected functions that allow arbitrary ownership transfer initiation. This violates access control requirements by permitting unauthorized state changes through direct function calls.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Duplicate transferOwnership functions: one protected with onlyOwner, one unprotected\\\",\\n    \\\"Any address can initiate ownership transfer, enabling complete contract takeover\\\",\\n    \\\"Impact includes draining accidentally sent ERC20 tokens and gaining all owner privileges\\\"\\n  ]\\n}\", \"reason\": \"The SWC-105 label is appropriate because the contract contains unprotected functions that allow arbitrary ownership transfer initiation. This violates access control requirements by permitting unauthorized state changes through direct function calls.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2621,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x0886e3c97ec9e030382335a13df3fe6263bbf4a1/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 1424.0229880809784,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0886e3c97ec9e030382335a13df3fe6263bbf4a1",
+    "model": "deepseek_school",
+    "session_id": "0aa29bdb-d709-4322-9421-41012258d33d",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Critical Access Control Vulnerability in Ownership Transfer",
+        "Severity": "High",
+        "Description": "The contract has duplicate transferOwnership functions - one protected with onlyOwner modifier and one unprotected. This allows any address to initiate ownership transfer, potentially leading to complete contract takeover. This issue appears in the smart contract code only.",
+        "Impact": "Complete contract takeover, allowing attacker to drain accidentally sent ERC20 tokens and gain all owner privileges",
+        "Location": "Owned contract, transferOwnership function (line ~50)"
+      },
+      {
+        "Issue": "Two-Step Ownership Transfer Process Vulnerability",
+        "Severity": "High",
+        "Description": "The acceptOwnership function fails to reset newOwner to address(0) after successful ownership transfer, allowing previously proposed owners to hijack ownership later. This issue appears in the smart contract code only.",
+        "Impact": "Potential ownership hijacking even after legitimate transfers, leading to complete contract control by malicious actors",
+        "Location": "Owned contract, acceptOwnership function (line ~74-79)"
+      },
+      {
+        "Issue": "ERC-20 Allowance Race Condition",
+        "Severity": "Medium",
+        "Description": "Standard ERC-20 allowance race condition vulnerability where malicious spenders can front-run approval changes to use both old and new allowances. This is a known ERC-20 standard issue, not a code bug. Appears in the smart contract code as standard implementation. This issue appears in the auditing result.",
+        "Impact": "Users may unintentionally allow spenders to use more tokens than intended, potentially leading to financial loss",
+        "Location": "approve function (lines ~168-172)"
+      },
+      {
+        "Issue": "Front-running Susceptibility in Approval Mechanism",
+        "Severity": "Medium",
+        "Description": "The contract is susceptible to front-running attacks, particularly in the approve function where spenders can front-run allowance changes. This appears in the smart contract code as standard ERC-20 implementation.",
+        "Impact": "Malicious spenders can withdraw more tokens than intended by exploiting transaction ordering",
+        "Location": "approve function (lines ~136-141) and transferFrom function (lines ~150-157)"
+      },
+      {
+        "Issue": "Inaccurate Total Supply Calculation",
+        "Severity": "Low",
+        "Description": "The totalSupply() function assumes all burned tokens are sent to address(0), but if tokens are burned to other addresses, the supply calculation becomes inaccurate. This issue appears in the smart contract code only.",
+        "Impact": "Inaccurate token supply reporting, which could mislead external systems relying on accurate supply data",
+        "Location": "totalSupply function (line ~147)"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T02:56:34.964098",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "0aa29bdb-d709-4322-9421-41012258d33d",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.6"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.6.12/solc-0.6.12 --version' running '/Users/hh/.solc-select/artifacts/solc-0.6.12/solc-0.6.12 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation",
+          "status": "failed"
+        },
+        "total_execution_time": 1424.0229880809784,
+        "total_tasks": 12
+      },
+      "execution_time": 1424.0229880809784,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "The contract has duplicate transferOwnership functions - one protected with onlyOwner modifier and one unprotected. This allows any address to initiate ownership transfer, potentially leading to complete contract takeover. This issue appears in the smart contract code only.",
+          "Impact": "Complete contract takeover, allowing attacker to drain accidentally sent ERC20 tokens and gain all owner privileges",
+          "Issue": "Critical Access Control Vulnerability in Ownership Transfer",
+          "Location": "Owned contract, transferOwnership function (line ~50)",
+          "Severity": "High"
+        },
+        {
+          "Description": "The acceptOwnership function fails to reset newOwner to address(0) after successful ownership transfer, allowing previously proposed owners to hijack ownership later. This issue appears in the smart contract code only.",
+          "Impact": "Potential ownership hijacking even after legitimate transfers, leading to complete contract control by malicious actors",
+          "Issue": "Two-Step Ownership Transfer Process Vulnerability",
+          "Location": "Owned contract, acceptOwnership function (line ~74-79)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Standard ERC-20 allowance race condition vulnerability where malicious spenders can front-run approval changes to use both old and new allowances. This is a known ERC-20 standard issue, not a code bug. Appears in the smart contract code as standard implementation. This issue appears in the auditing result.",
+          "Impact": "Users may unintentionally allow spenders to use more tokens than intended, potentially leading to financial loss",
+          "Issue": "ERC-20 Allowance Race Condition",
+          "Location": "approve function (lines ~168-172)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract is susceptible to front-running attacks, particularly in the approve function where spenders can front-run allowance changes. This appears in the smart contract code as standard ERC-20 implementation.",
+          "Impact": "Malicious spenders can withdraw more tokens than intended by exploiting transaction ordering",
+          "Issue": "Front-running Susceptibility in Approval Mechanism",
+          "Location": "approve function (lines ~136-141) and transferFrom function (lines ~150-157)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The totalSupply() function assumes all burned tokens are sent to address(0), but if tokens are burned to other addresses, the supply calculation becomes inaccurate. This issue appears in the smart contract code only.",
+          "Impact": "Inaccurate token supply reporting, which could mislead external systems relying on accurate supply data",
+          "Issue": "Inaccurate Total Supply Calculation",
+          "Location": "totalSupply function (line ~147)",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The contract has duplicate transferOwnership functions - one protected with onlyOwner modifier and one unprotected. This allows any address to initiate ownership transfer, potentially leading to complete contract takeover. This issue appears in the smart contract code only.",
+          "Impact": "Complete contract takeover, allowing attacker to drain accidentally sent ERC20 tokens and gain all owner privileges",
+          "Issue": "Critical Access Control Vulnerability in Ownership Transfer",
+          "Location": "Owned contract, transferOwnership function (line ~50)",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[{\"Issue\": \"Critical Access Control Vulnerability in Ownership Transfer\", \"Severity\": \"High\", \"Description\": \"The contract has duplicate transferOwnership functions - one protected with onlyOwner modifier and one unprotected. This allows any address to initiate ownership transfer, potentially leading to complete contract takeover. This issue appears in the smart contract code only.\", \"Impact\": \"Complete contract takeover, allowing attacker to drain accidentally sent ERC20 tokens and gain all owner privileges\", \"Location\": \"Owned contract, transferOwnership function (line ~50)\"}, {\"Issue\": \"Two-Step Ownership Transfer Process Vulnerability\", \"Severity\": \"High\", \"Description\": \"The acceptOwnership function fails to reset newOwner to address(0) after successful ownership transfer, allowing previously proposed owners to hijack ownership later. This issue appears in the smart contract code only.\", \"Impact\": \"Potential ownership hijacking even after legitimate transfers, leading to complete contract control by malicious actors\", \"Location\": \"Owned contract, acceptOwnership function (line ~74-79)\"}, {\"Issue\": \"ERC-20 Allowance Race Condition\", \"Severity\": \"Medium\", \"Description\": \"Standard ERC-20 allowance race condition vulnerability where malicious spenders can front-run approval changes to use both old and new allowances. This is a known ERC-20 standard issue, not a code bug. Appears in the smart contract code as standard implementation.\", \"Impact\": \"Users may unintentionally allow spenders to use more tokens than intended, potentially leading to financial loss\", \"Location\": \"approve function (lines ~168-172)\"}, {\"Issue\": \"Front-running Susceptibility in Approval Mechanism\", \"Severity\": \"Medium\", \"Description\": \"The contract is susceptible to front-running attacks, particularly in the approve function where spenders can front-run allowance changes. This appears in the smart contract code as standard ERC-20 implementation.\", \"Impact\": \"Malicious spenders can withdraw more tokens than intended by exploiting transaction ordering\", \"Location\": \"approve function (lines ~136-141) and transferFrom function (lines ~150-157)\"}, {\"Issue\": \"Inaccurate Total Supply Calculation\", \"Severity\": \"Low\", \"Description\": \"The totalSupply() function assumes all burned tokens are sent to address(0), but if tokens are burned to other addresses, the supply calculation becomes inaccurate. This issue appears in the smart contract code only.\", \"Impact\": \"Inaccurate token supply reporting, which could mislead external systems relying on accurate supply data\", \"Location\": \"totalSupply function (line ~147)\"}]",
+      "model_used": "deepseek_school",
+      "session_id": "0aa29bdb-d709-4322-9421-41012258d33d",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 1,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [
+        "SWC-105"
+      ],
+      "source": "llm",
+      "confidence": 0.8,
+      "reason": "Unprotected ownership transfer functions allow arbitrary address to initiate ownership change, leading to potential unauthorized withdrawals if owner privileges are exploited.",
+      "raw": "{\n  \"labels\": [\"SWC-105\"],\n  \"confidence\": 0.8,\n  \"reason\": \"Unprotected ownership transfer functions allow arbitrary address to initiate ownership change, leading to potential unauthorized withdrawals if owner privileges are exploited.\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [
+      "SWC-105"
+    ],
+    "pred_labels": [
+      "SWC-105"
+    ],
+    "pred_swc_list": "SWC-105",
+    "pred_source": "llm",
+    "is_other": 0,
+    "pred_reason": "The SWC-105 label is appropriate because the contract contains unprotected functions that allow arbitrary ownership transfer initiation. This violates access control requirements by permitting unauthorized state changes through direct function calls. Evidence: Duplicate transferOwnership functions: one protected with onlyOwner, one unprotected; Any address can initiate ownership transfer, enabling complete contract takeover; Impact includes draining accidentally sent ERC20 tokens and gaining all owner privileges",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 0.8, \"labels\": [\"SWC-105\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-105\\\"],\\n  \\\"confidence\\\": 0.8,\\n  \\\"reason\\\": \\\"Unprotected ownership transfer functions allow arbitrary address to initiate ownership change, leading to potential unauthorized withdrawals if owner privileges are exploited.\\\"\\n}\", \"reason\": \"Unprotected ownership transfer functions allow arbitrary address to initiate ownership change, leading to potential unauthorized withdrawals if owner privileges are exploited.\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"Duplicate transferOwnership functions: one protected with onlyOwner, one unprotected\", \"Any address can initiate ownership transfer, enabling complete contract takeover\", \"Impact includes draining accidentally sent ERC20 tokens and gaining all owner privileges\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-105 label is appropriate because the contract contains unprotected functions that allow arbitrary ownership transfer initiation. This violates access control requirements by permitting unauthorized state changes through direct function calls.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Duplicate transferOwnership functions: one protected with onlyOwner, one unprotected\\\",\\n    \\\"Any address can initiate ownership transfer, enabling complete contract takeover\\\",\\n    \\\"Impact includes draining accidentally sent ERC20 tokens and gaining all owner privileges\\\"\\n  ]\\n}\", \"reason\": \"The SWC-105 label is appropriate because the contract contains unprotected functions that allow arbitrary ownership transfer initiation. This violates access control requirements by permitting unauthorized state changes through direct function calls.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-105 label is appropriate because the contract contains unprotected functions that allow arbitrary ownership transfer initiation. This violates access control requirements by permitting unauthorized state changes through direct function calls.",
+      "evidence": [
+        "Duplicate transferOwnership functions: one protected with onlyOwner, one unprotected",
+        "Any address can initiate ownership transfer, enabling complete contract takeover",
+        "Impact includes draining accidentally sent ERC20 tokens and gaining all owner privileges"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-105 label is appropriate because the contract contains unprotected functions that allow arbitrary ownership transfer initiation. This violates access control requirements by permitting unauthorized state changes through direct function calls.\",\n  \"evidence\": [\n    \"Duplicate transferOwnership functions: one protected with onlyOwner, one unprotected\",\n    \"Any address can initiate ownership transfer, enabling complete contract takeover\",\n    \"Impact includes draining accidentally sent ERC20 tokens and gaining all owner privileges\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "0aa29bdb-d709-4322-9421-41012258d33d",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 2621,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

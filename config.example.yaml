@@ -1,0 +1,39 @@
+# Example config for run_smartauditflow_rq2.py
+
+api_base: http://127.0.0.1:5001
+
+ground_truth_csv: ../EmpiricalSCST/_RQ2/manual/ground_truth/RQ2_ground_truth.csv
+mainnet_dir: ../EmpiricalSCST/mainnet
+vulnerability_json: ../EmpiricalSCST/_RQ2/RQ2_tools_vulnerabilities.json
+vulnerability_csv: ../EmpiricalSCST/_RQ2/vulnerability_types.csv
+output_dir: ./results
+resume: false
+# run_id: 20260221_120000
+
+# Models: comma string, YAML list, or all
+models: all
+# models:
+#   - gemini
+#   - deepseek
+
+concurrency: 1
+poll_interval: 3
+max_wait_seconds: 1800
+request_timeout: 30
+retry: 2
+
+# Optional static_tool input directory (address-based file lookup)
+# If empty, static_tool is sent as empty string
+static_tool_dir: ""
+static_tool_max_chars: 12000
+
+enable_llm_fallback: true
+enable_llm_explanation: true
+llm_timeout: 40
+llm_confidence_threshold: 0.6
+
+# Single mode convenience field (optional)
+# address: 0x01d2a52708d0d8fc4d639f09a13ae87a2aec4390
+
+# Batch mode convenience field (optional)
+# limit: 20

@@ -1,0 +1,298 @@
+{
+  "address": "0x0aaf33aecb9b5561fed882abe6c1cbff0c0052fd",
+  "session_id": "0f4117bf-fdb1-4b23-b183-b7d03d34c822",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract contains multiple instances of integer arithmetic underflows and incorrect state updates due to reentrancy vulnerabilities. These findings directly correspond to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) patterns. Evidence: Time calculation underflow in updatePool() when block.timestamp < lastRewardTime; External token transfer before state update in onSushiReward() violating CEI pattern; Missing reentrancy protection on critical functions like setRewardPerSecond()",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:underflow\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-no-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Time calculation underflow in updatePool() when block.timestamp < lastRewardTime\", \"External token transfer before state update in onSushiReward() violating CEI pattern\", \"Missing reentrancy protection on critical functions like setRewardPerSecond()\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple instances of integer arithmetic underflows and incorrect state updates due to reentrancy vulnerabilities. These findings directly correspond to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) patterns.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Time calculation underflow in updatePool() when block.timestamp < lastRewardTime\\\",\\n    \\\"External token transfer before state update in onSushiReward() violating CEI pattern\\\",\\n    \\\"Missing reentrancy protection on critical functions like setRewardPerSecond()\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple instances of integer arithmetic underflows and incorrect state updates due to reentrancy vulnerabilities. These findings directly correspond to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) patterns.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4730,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x0aaf33aecb9b5561fed882abe6c1cbff0c0052fd/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 9,
+  "execution_time": 1658.5024619102478,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0aaf33aecb9b5561fed882abe6c1cbff0c0052fd",
+    "model": "deepseek_school",
+    "session_id": "0f4117bf-fdb1-4b23-b183-b7d03d34c822",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy Vulnerability in onSushiReward",
+        "Severity": "High",
+        "Description": "The onSushiReward function performs external token transfers before updating critical state variables (user.unpaidRewards), violating checks-effects-interactions pattern. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential for cross-function reentrancy attacks if rewardToken is malicious, leading to incorrect reward calculations, fund loss, or manipulation of reward distribution.",
+        "Location": "EverRewarder.onSushiReward() function, lines with rewardToken.safeTransfer calls before state updates; Static analysis reentrancy-no-eth findings"
+      },
+      {
+        "Issue": "Missing Access Control on init() Function",
+        "Severity": "High",
+        "Description": "The init() function is publicly callable without any access restrictions, allowing any caller to initialize contract parameters including setting themselves as owner. This appears in the smart contract code only.",
+        "Impact": "Complete contract takeover possible, allowing attacker to set reward parameters, drain funds via reclaimTokens, and gain full administrative control.",
+        "Location": "EverRewarder.init() function - missing access modifier"
+      },
+      {
+        "Issue": "Unprotected Ownership Transfer Function",
+        "Severity": "High",
+        "Description": "The transferOwnership function in BoringOwnable lacks the onlyOwner modifier, making it publicly callable by any address. This appears in the smart contract code only.",
+        "Impact": "Any attacker can transfer contract ownership to themselves, gaining control over all owner-restricted functions including setRewardPerSecond and reclaimTokens.",
+        "Location": "BoringOwnable.transferOwnership() function - missing onlyOwner modifier"
+      },
+      {
+        "Issue": "Time Calculation Underflow Vulnerability",
+        "Severity": "High",
+        "Description": "The updatePool function uses block.timestamp.sub(pool.lastRewardTime) which can underflow if lastRewardTime is greater than current timestamp. This appears in the smart contract code only.",
+        "Impact": "Permanent denial of service for the affected pool, freezing reward distribution and making the contract inoperable for that pool.",
+        "Location": "EverRewarder.updatePool() function, line with timestamp subtraction"
+      },
+      {
+        "Issue": "Missing Zero Address Checks",
+        "Severity": "Medium",
+        "Description": "Multiple critical address parameters lack zero address validation, including constructor parameters and ownership transfer functions. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential for contract deployment with invalid addresses, accidental ownership loss to zero address, and operational failures.",
+        "Location": "Constructor parameter _MASTERCHEF_V2; BoringOwnable.transferOwnership; reclaimTokens to parameter; Static analysis missing-zero-check findings"
+      },
+      {
+        "Issue": "Incomplete Lock Modifier Application",
+        "Severity": "Medium",
+        "Description": "The lock modifier is only applied to onSushiReward but missing from other state-changing functions like setRewardPerSecond and reclaimTokens. This appears in the smart contract code only.",
+        "Impact": "Potential cross-function reentrancy and race conditions in critical state-changing operations that lack reentrancy protection.",
+        "Location": "setRewardPerSecond(), reclaimTokens(), and updatePool() functions - missing lock modifier"
+      },
+      {
+        "Issue": "Uninitialized Local Variable",
+        "Severity": "Medium",
+        "Description": "The pending variable in onSushiReward is declared but not explicitly initialized before use. This appears in the static analysis results only.",
+        "Impact": "Potential for unexpected behavior or calculation errors if the variable contains garbage values, though the logic may initialize it properly.",
+        "Location": "Static analysis uninitialized-local finding for EverRewarder.onSushiReward"
+      },
+      {
+        "Issue": "Timestamp Dependency in Comparisons",
+        "Severity": "Low",
+        "Description": "Multiple functions use block.timestamp for critical comparisons and calculations, creating potential miner manipulation risks. This appears in the static analysis results only.",
+        "Impact": "Theoretical vulnerability to miner timestamp manipulation, though practical impact is limited in this reward distribution context.",
+        "Location": "Static analysis timestamp findings for onSushiReward, updatePool, and pendingToken functions"
+      },
+      {
+        "Issue": "Reentrancy-Related Event Emission",
+        "Severity": "Low",
+        "Description": "Events are emitted after external calls in onSushiReward, which could be manipulated during reentrancy. This appears in the static analysis results only.",
+        "Impact": "Potential for misleading event logging during reentrancy attacks, though this is secondary to the main reentrancy vulnerability.",
+        "Location": "Static analysis reentrancy-events finding for EverRewarder.onSushiReward"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T13:52:37.640567",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "0f4117bf-fdb1-4b23-b183-b7d03d34c822",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-f33xgope/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.12"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1658.5024619102478,
+        "total_tasks": 12
+      },
+      "execution_time": 1658.5024619102478,
+      "finding_number": 9,
+      "findings": [
+        {
+          "Description": "The onSushiReward function performs external token transfers before updating critical state variables (user.unpaidRewards), violating checks-effects-interactions pattern. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential for cross-function reentrancy attacks if rewardToken is malicious, leading to incorrect reward calculations, fund loss, or manipulation of reward distribution.",
+          "Issue": "Reentrancy Vulnerability in onSushiReward",
+          "Location": "EverRewarder.onSushiReward() function, lines with rewardToken.safeTransfer calls before state updates; Static analysis reentrancy-no-eth findings",
+          "Severity": "High"
+        },
+        {
+          "Description": "The init() function is publicly callable without any access restrictions, allowing any caller to initialize contract parameters including setting themselves as owner. This appears in the smart contract code only.",
+          "Impact": "Complete contract takeover possible, allowing attacker to set reward parameters, drain funds via reclaimTokens, and gain full administrative control.",
+          "Issue": "Missing Access Control on init() Function",
+          "Location": "EverRewarder.init() function - missing access modifier",
+          "Severity": "High"
+        },
+        {
+          "Description": "The transferOwnership function in BoringOwnable lacks the onlyOwner modifier, making it publicly callable by any address. This appears in the smart contract code only.",
+          "Impact": "Any attacker can transfer contract ownership to themselves, gaining control over all owner-restricted functions including setRewardPerSecond and reclaimTokens.",
+          "Issue": "Unprotected Ownership Transfer Function",
+          "Location": "BoringOwnable.transferOwnership() function - missing onlyOwner modifier",
+          "Severity": "High"
+        },
+        {
+          "Description": "The updatePool function uses block.timestamp.sub(pool.lastRewardTime) which can underflow if lastRewardTime is greater than current timestamp. This appears in the smart contract code only.",
+          "Impact": "Permanent denial of service for the affected pool, freezing reward distribution and making the contract inoperable for that pool.",
+          "Issue": "Time Calculation Underflow Vulnerability",
+          "Location": "EverRewarder.updatePool() function, line with timestamp subtraction",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple critical address parameters lack zero address validation, including constructor parameters and ownership transfer functions. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential for contract deployment with invalid addresses, accidental ownership loss to zero address, and operational failures.",
+          "Issue": "Missing Zero Address Checks",
+          "Location": "Constructor parameter _MASTERCHEF_V2; BoringOwnable.transferOwnership; reclaimTokens to parameter; Static analysis missing-zero-check findings",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The lock modifier is only applied to onSushiReward but missing from other state-changing functions like setRewardPerSecond and reclaimTokens. This appears in the smart contract code only.",
+          "Impact": "Potential cross-function reentrancy and race conditions in critical state-changing operations that lack reentrancy protection.",
+          "Issue": "Incomplete Lock Modifier Application",
+          "Location": "setRewardPerSecond(), reclaimTokens(), and updatePool() functions - missing lock modifier",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The pending variable in onSushiReward is declared but not explicitly initialized before use. This appears in the static analysis results only.",
+          "Impact": "Potential for unexpected behavior or calculation errors if the variable contains garbage values, though the logic may initialize it properly.",
+          "Issue": "Uninitialized Local Variable",
+          "Location": "Static analysis uninitialized-local finding for EverRewarder.onSushiReward",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Multiple functions use block.timestamp for critical comparisons and calculations, creating potential miner manipulation risks. This appears in the static analysis results only.",
+          "Impact": "Theoretical vulnerability to miner timestamp manipulation, though practical impact is limited in this reward distribution context.",
+          "Issue": "Timestamp Dependency in Comparisons",
+          "Location": "Static analysis timestamp findings for onSushiReward, updatePool, and pendingToken functions",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Events are emitted after external calls in onSushiReward, which could be manipulated during reentrancy. This appears in the static analysis results only.",
+          "Impact": "Potential for misleading event logging during reentrancy attacks, though this is secondary to the main reentrancy vulnerability.",
+          "Issue": "Reentrancy-Related Event Emission",
+          "Location": "Static analysis reentrancy-events finding for EverRewarder.onSushiReward",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The onSushiReward function performs external token transfers before updating critical state variables (user.unpaidRewards), violating checks-effects-interactions pattern. This appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential for cross-function reentrancy attacks if rewardToken is malicious, leading to incorrect reward calculations, fund loss, or manipulation of reward distribution.",
+          "Issue": "Reentrancy Vulnerability in onSushiReward",
+          "Location": "EverRewarder.onSushiReward() function, lines with rewardToken.safeTransfer calls before state updates; Static analysis reentrancy-no-eth findings",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[{\"Issue\":\"Reentrancy Vulnerability in onSushiReward\",\"Severity\":\"High\",\"Description\":\"The onSushiReward function performs external token transfers before updating critical state variables (user.unpaidRewards), violating checks-effects-interactions pattern. This appears in both the smart contract code and static analysis results.\",\"Impact\":\"Potential for cross-function reentrancy attacks if rewardToken is malicious, leading to incorrect reward calculations, fund loss, or manipulation of reward distribution.\",\"Location\":\"EverRewarder.onSushiReward() function, lines with rewardToken.safeTransfer calls before state updates; Static analysis reentrancy-no-eth findings\"},{\"Issue\":\"Missing Access Control on init() Function\",\"Severity\":\"High\",\"Description\":\"The init() function is publicly callable without any access restrictions, allowing any caller to initialize contract parameters including setting themselves as owner. This appears in the smart contract code only.\",\"Impact\":\"Complete contract takeover possible, allowing attacker to set reward parameters, drain funds via reclaimTokens, and gain full administrative control.\",\"Location\":\"EverRewarder.init() function - missing access modifier\"},{\"Issue\":\"Unprotected Ownership Transfer Function\",\"Severity\":\"High\",\"Description\":\"The transferOwnership function in BoringOwnable lacks the onlyOwner modifier, making it publicly callable by any address. This appears in the smart contract code only.\",\"Impact\":\"Any attacker can transfer contract ownership to themselves, gaining control over all owner-restricted functions including setRewardPerSecond and reclaimTokens.\",\"Location\":\"BoringOwnable.transferOwnership() function - missing onlyOwner modifier\"},{\"Issue\":\"Time Calculation Underflow Vulnerability\",\"Severity\":\"High\",\"Description\":\"The updatePool function uses block.timestamp.sub(pool.lastRewardTime) which can underflow if lastRewardTime is greater than current timestamp. This appears in the smart contract code only.\",\"Impact\":\"Permanent denial of service for the affected pool, freezing reward distribution and making the contract inoperable for that pool.\",\"Location\":\"EverRewarder.updatePool() function, line with timestamp subtraction\"},{\"Issue\":\"Missing Zero Address Checks\",\"Severity\":\"Medium\",\"Description\":\"Multiple critical address parameters lack zero address validation, including constructor parameters and ownership transfer functions. This appears in both the smart contract code and static analysis results.\",\"Impact\":\"Potential for contract deployment with invalid addresses, accidental ownership loss to zero address, and operational failures.\",\"Location\":\"Constructor parameter _MASTERCHEF_V2; BoringOwnable.transferOwnership; reclaimTokens to parameter; Static analysis missing-zero-check findings\"},{\"Issue\":\"Incomplete Lock Modifier Application\",\"Severity\":\"Medium\",\"Description\":\"The lock modifier is only applied to onSushiReward but missing from other state-changing functions like setRewardPerSecond and reclaimTokens. This appears in the smart contract code only.\",\"Impact\":\"Potential cross-function reentrancy and race conditions in critical state-changing operations that lack reentrancy protection.\",\"Location\":\"setRewardPerSecond(), reclaimTokens(), and updatePool() functions - missing lock modifier\"},{\"Issue\":\"Uninitialized Local Variable\",\"Severity\":\"Medium\",\"Description\":\"The pending variable in onSushiReward is declared but not explicitly initialized before use. This appears in the static analysis results only.\",\"Impact\":\"Potential for unexpected behavior or calculation errors if the variable contains garbage values, though the logic may initialize it properly.\",\"Location\":\"Static analysis uninitialized-local finding for EverRewarder.onSushiReward\"},{\"Issue\":\"Timestamp Dependency in Comparisons\",\"Severity\":\"Low\",\"Description\":\"Multiple functions use block.timestamp for critical comparisons and calculations, creating potential miner manipulation risks. This appears in the static analysis results only.\",\"Impact\":\"Theoretical vulnerability to miner timestamp manipulation, though practical impact is limited in this reward distribution context.\",\"Location\":\"Static analysis timestamp findings for onSushiReward, updatePool, and pendingToken functions\"},{\"Issue\":\"Reentrancy-Related Event Emission\",\"Severity\":\"Low\",\"Description\":\"Events are emitted after external calls in onSushiReward, which could be manipulated during reentrancy. This appears in the static analysis results only.\",\"Impact\":\"Potential for misleading event logging during reentrancy attacks, though this is secondary to the main reentrancy vulnerability.\",\"Location\":\"Static analysis reentrancy-events finding for EverRewarder.onSushiReward\"}]",
+      "model_used": "deepseek_school",
+      "session_id": "0f4117bf-fdb1-4b23-b183-b7d03d34c822",
+      "severity_breakdown": {
+        "High": 4,
+        "Low": 2,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 10.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:underflow",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "kw:reentrancy-no-eth",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(10.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract contains multiple instances of integer arithmetic underflows and incorrect state updates due to reentrancy vulnerabilities. These findings directly correspond to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) patterns. Evidence: Time calculation underflow in updatePool() when block.timestamp < lastRewardTime; External token transfer before state update in onSushiReward() violating CEI pattern; Missing reentrancy protection on critical functions like setRewardPerSecond()",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 10.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:underflow\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"kw:reentrancy-no-eth\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Time calculation underflow in updatePool() when block.timestamp < lastRewardTime\", \"External token transfer before state update in onSushiReward() violating CEI pattern\", \"Missing reentrancy protection on critical functions like setRewardPerSecond()\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple instances of integer arithmetic underflows and incorrect state updates due to reentrancy vulnerabilities. These findings directly correspond to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) patterns.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Time calculation underflow in updatePool() when block.timestamp < lastRewardTime\\\",\\n    \\\"External token transfer before state update in onSushiReward() violating CEI pattern\\\",\\n    \\\"Missing reentrancy protection on critical functions like setRewardPerSecond()\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple instances of integer arithmetic underflows and incorrect state updates due to reentrancy vulnerabilities. These findings directly correspond to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) patterns.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract contains multiple instances of integer arithmetic underflows and incorrect state updates due to reentrancy vulnerabilities. These findings directly correspond to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) patterns.",
+      "evidence": [
+        "Time calculation underflow in updatePool() when block.timestamp < lastRewardTime",
+        "External token transfer before state update in onSushiReward() violating CEI pattern",
+        "Missing reentrancy protection on critical functions like setRewardPerSecond()"
+      ],
+      "raw": "{\n  \"reason\": \"The contract contains multiple instances of integer arithmetic underflows and incorrect state updates due to reentrancy vulnerabilities. These findings directly correspond to SWC-101 (Integer Overflow and Underflow) and SWC-107 (Reentrancy) patterns.\",\n  \"evidence\": [\n    \"Time calculation underflow in updatePool() when block.timestamp < lastRewardTime\",\n    \"External token transfer before state update in onSushiReward() violating CEI pattern\",\n    \"Missing reentrancy protection on critical functions like setRewardPerSecond()\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "0f4117bf-fdb1-4b23-b183-b7d03d34c822",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 9,
+        "full_report_chars": 4730,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

@@ -1,0 +1,246 @@
+{
+  "address": "0x0000000020e0a4bc775eb0cbefc7cfbeafc88444",
+  "session_id": "097cdfce-601c-46a9-b263-7dd244c29aac",
+  "audit_status": "completed",
+  "model": "deepseek",
+  "pred_swc_list": "SWC-107",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract's submitClaim function allows replay of signatures due to missing nonce/timestamp in signed messages, directly enabling repeated unauthorized reward claims. This matches SWC-107's description of signature reuse vulnerabilities in smart contracts. Evidence: Signature Replay Vulnerability: No nonce or timestamp in signed message hash; Impact: Attacker can replay signatures to drain MEV producer deposits; Location: submitClaim function with ecrecover call",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Signature Replay Vulnerability: No nonce or timestamp in signed message hash\", \"Impact: Attacker can replay signatures to drain MEV producer deposits\", \"Location: submitClaim function with ecrecover call\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract's submitClaim function allows replay of signatures due to missing nonce/timestamp in signed messages, directly enabling repeated unauthorized reward claims. This matches SWC-107's description of signature reuse vulnerabilities in smart contracts.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Signature Replay Vulnerability: No nonce or timestamp in signed message hash\\\",\\n    \\\"Impact: Attacker can replay signatures to drain MEV producer deposits\\\",\\n    \\\"Location: submitClaim function with ecrecover call\\\"\\n  ]\\n}\", \"reason\": \"The contract's submitClaim function allows replay of signatures due to missing nonce/timestamp in signed messages, directly enabling repeated unauthorized reward claims. This matches SWC-107's description of signature reuse vulnerabilities in smart contracts.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3556,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260228_221503/deepseek/contracts/0x0000000020e0a4bc775eb0cbefc7cfbeafc88444/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 7,
+  "execution_time": 414.7551329135895,
+  "gt_swc_set": "SWC-101|SWC-105",
+  "error": "",
+  "raw": {
+    "address": "0x0000000020e0a4bc775eb0cbefc7cfbeafc88444",
+    "model": "deepseek",
+    "session_id": "097cdfce-601c-46a9-b263-7dd244c29aac",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Trusted Operator Risk in MEV Block Submission",
+        "Severity": "High",
+        "Description": "The contract relies on trusted operators to submit block claims without on-chain verification of block validity. This issue appears in the smart contract code only.",
+        "Impact": "Malicious or compromised operators could submit fraudulent block claims, leading to unauthorized fund transfers from MEV producers' deposits.",
+        "Location": "submitClaim function in LogOfClaimedMEVBlocks contract"
+      },
+      {
+        "Issue": "Signature Replay Vulnerability",
+        "Severity": "High",
+        "Description": "The contract does not include a nonce or timestamp in the signed message hash, making signatures reusable. This issue appears in the smart contract code only.",
+        "Impact": "An attacker could replay valid signatures to repeatedly claim block rewards, draining MEV producer deposits.",
+        "Location": "submitClaim function, line with ecrecover call in LogOfClaimedMEVBlocks contract"
+      },
+      {
+        "Issue": "Incorrect Payment Calculation in GasOptimisedPayoutsToMiners",
+        "Severity": "High",
+        "Description": "The dispersePaymentForShares function uses incorrect bit manipulation for payment calculation, potentially sending wrong amounts. This issue appears in the smart contract code only.",
+        "Impact": "Miners may receive incorrect payments, either too much (contract drain) or too little (funds locked).",
+        "Location": "dispersePaymentForShares function in GasOptimisedPayoutsToMiners contract, line: 'singlePayout / (16 ** 40)'"
+      },
+      {
+        "Issue": "Lack of Deposit Withdrawal Limits",
+        "Severity": "Medium",
+        "Description": "Users can withdraw any amount up to their deposit without checks, potentially enabling partial withdrawals that disrupt contract economics. This issue appears in the smart contract code only.",
+        "Impact": "MEV producers could withdraw funds needed for pending block payments, breaking the payment guarantee mechanism.",
+        "Location": "withdrawUpTo function in LogOfClaimedMEVBlocks contract"
+      },
+      {
+        "Issue": "Missing Reentrancy Protection",
+        "Severity": "Medium",
+        "Description": "The withdrawUpTo function uses transfer() but lacks reentrancy guards, making it vulnerable to reentrancy if called from malicious contracts. This issue appears in the smart contract code only.",
+        "Impact": "Potential reentrancy attacks could drain contract funds or manipulate state variables.",
+        "Location": "withdrawUpTo function, line: 'msg.sender.transfer(etherAmount)' in LogOfClaimedMEVBlocks contract"
+      },
+      {
+        "Issue": "Insufficient Input Validation in dispersePaymentForShares",
+        "Severity": "Medium",
+        "Description": "The function does not validate that minerPayoutData array elements are valid addresses or reasonable values. This issue appears in the smart contract code only.",
+        "Impact": "Malicious input could cause failed transfers, fund loss, or excessive gas consumption.",
+        "Location": "dispersePaymentForShares function in GasOptimisedPayoutsToMiners contract"
+      },
+      {
+        "Issue": "Hardcoded Deposit Duration Limits",
+        "Severity": "Low",
+        "Description": "The contract enforces fixed minimum (24 hours) and maximum (1 year) deposit durations without flexibility. This issue appears in the smart contract code only.",
+        "Impact": "Reduces usability and flexibility for MEV producers who may need different lockup periods.",
+        "Location": "depositAndLock function, require statement with duration checks in LogOfClaimedMEVBlocks contract"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-02-28T22:21:59.147967",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "session_id": "097cdfce-601c-46a9-b263-7dd244c29aac",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.7.0",
+            "0.8.0"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '<tmp> --version' running '<tmp> --version' running '<tmp> --version' running",
+          "status": "failed"
+        },
+        "total_execution_time": 414.7551329135895,
+        "total_tasks": 0
+      },
+      "execution_time": 414.7551329135895,
+      "finding_number": 7,
+      "findings": [
+        {
+          "Description": "The contract relies on trusted operators to submit block claims without on-chain verification of block validity. This issue appears in the smart contract code only.",
+          "Impact": "Malicious or compromised operators could submit fraudulent block claims, leading to unauthorized fund transfers from MEV producers' deposits.",
+          "Issue": "Trusted Operator Risk in MEV Block Submission",
+          "Location": "submitClaim function in LogOfClaimedMEVBlocks contract",
+          "Severity": "High"
+        },
+        {
+          "Description": "The contract does not include a nonce or timestamp in the signed message hash, making signatures reusable. This issue appears in the smart contract code only.",
+          "Impact": "An attacker could replay valid signatures to repeatedly claim block rewards, draining MEV producer deposits.",
+          "Issue": "Signature Replay Vulnerability",
+          "Location": "submitClaim function, line with ecrecover call in LogOfClaimedMEVBlocks contract",
+          "Severity": "High"
+        },
+        {
+          "Description": "The dispersePaymentForShares function uses incorrect bit manipulation for payment calculation, potentially sending wrong amounts. This issue appears in the smart contract code only.",
+          "Impact": "Miners may receive incorrect payments, either too much (contract drain) or too little (funds locked).",
+          "Issue": "Incorrect Payment Calculation in GasOptimisedPayoutsToMiners",
+          "Location": "dispersePaymentForShares function in GasOptimisedPayoutsToMiners contract, line: 'singlePayout / (16 ** 40)'",
+          "Severity": "High"
+        },
+        {
+          "Description": "Users can withdraw any amount up to their deposit without checks, potentially enabling partial withdrawals that disrupt contract economics. This issue appears in the smart contract code only.",
+          "Impact": "MEV producers could withdraw funds needed for pending block payments, breaking the payment guarantee mechanism.",
+          "Issue": "Lack of Deposit Withdrawal Limits",
+          "Location": "withdrawUpTo function in LogOfClaimedMEVBlocks contract",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The withdrawUpTo function uses transfer() but lacks reentrancy guards, making it vulnerable to reentrancy if called from malicious contracts. This issue appears in the smart contract code only.",
+          "Impact": "Potential reentrancy attacks could drain contract funds or manipulate state variables.",
+          "Issue": "Missing Reentrancy Protection",
+          "Location": "withdrawUpTo function, line: 'msg.sender.transfer(etherAmount)' in LogOfClaimedMEVBlocks contract",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The function does not validate that minerPayoutData array elements are valid addresses or reasonable values. This issue appears in the smart contract code only.",
+          "Impact": "Malicious input could cause failed transfers, fund loss, or excessive gas consumption.",
+          "Issue": "Insufficient Input Validation in dispersePaymentForShares",
+          "Location": "dispersePaymentForShares function in GasOptimisedPayoutsToMiners contract",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The contract enforces fixed minimum (24 hours) and maximum (1 year) deposit durations without flexibility. This issue appears in the smart contract code only.",
+          "Impact": "Reduces usability and flexibility for MEV producers who may need different lockup periods.",
+          "Issue": "Hardcoded Deposit Duration Limits",
+          "Location": "depositAndLock function, require statement with duration checks in LogOfClaimedMEVBlocks contract",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The contract relies on trusted operators to submit block claims without on-chain verification of block validity. This issue appears in the smart contract code only.",
+          "Impact": "Malicious or compromised operators could submit fraudulent block claims, leading to unauthorized fund transfers from MEV producers' deposits.",
+          "Issue": "Trusted Operator Risk in MEV Block Submission",
+          "Location": "submitClaim function in LogOfClaimedMEVBlocks contract",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Trusted Operator Risk in MEV Block Submission\",\n    \"Severity\": \"High\",\n    \"Description\": \"The contract relies on trusted operators to submit block claims without on-chain verification of block validity. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Malicious or compromised operators could submit fraudulent block claims, leading to unauthorized fund transfers from MEV producers' deposits.\",\n    \"Location\": \"submitClaim function in LogOfClaimedMEVBlocks contract\"\n  },\n  {\n    \"Issue\": \"Signature Replay Vulnerability\",\n    \"Severity\": \"High\",\n    \"Description\": \"The contract does not include a nonce or timestamp in the signed message hash, making signatures reusable. This issue appears in the smart contract code only.\",\n    \"Impact\": \"An attacker could replay valid signatures to repeatedly claim block rewards, draining MEV producer deposits.\",\n    \"Location\": \"submitClaim function, line with ecrecover call in LogOfClaimedMEVBlocks contract\"\n  },\n  {\n    \"Issue\": \"Incorrect Payment Calculation in GasOptimisedPayoutsToMiners\",\n    \"Severity\": \"High\",\n    \"Description\": \"The dispersePaymentForShares function uses incorrect bit manipulation for payment calculation, potentially sending wrong amounts. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Miners may receive incorrect payments, either too much (contract drain) or too little (funds locked).\",\n    \"Location\": \"dispersePaymentForShares function in GasOptimisedPayoutsToMiners contract, line: 'singlePayout / (16 ** 40)'\"\n  },\n  {\n    \"Issue\": \"Lack of Deposit Withdrawal Limits\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Users can withdraw any amount up to their deposit without checks, potentially enabling partial withdrawals that disrupt contract economics. This issue appears in the smart contract code only.\",\n    \"Impact\": \"MEV producers could withdraw funds needed for pending block payments, breaking the payment guarantee mechanism.\",\n    \"Location\": \"withdrawUpTo function in LogOfClaimedMEVBlocks contract\"\n  },\n  {\n    \"Issue\": \"Missing Reentrancy Protection\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The withdrawUpTo function uses transfer() but lacks reentrancy guards, making it vulnerable to reentrancy if called from malicious contracts. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential reentrancy attacks could drain contract funds or manipulate state variables.\",\n    \"Location\": \"withdrawUpTo function, line: 'msg.sender.transfer(etherAmount)' in LogOfClaimedMEVBlocks contract\"\n  },\n  {\n    \"Issue\": \"Insufficient Input Validation in dispersePaymentForShares\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The function does not validate that minerPayoutData array elements are valid addresses or reasonable values. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Malicious input could cause failed transfers, fund loss, or excessive gas consumption.\",\n    \"Location\": \"dispersePaymentForShares function in GasOptimisedPayoutsToMiners contract\"\n  },\n  {\n    \"Issue\": \"Hardcoded Deposit Duration Limits\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The contract enforces fixed minimum (24 hours) and maximum (1 year) deposit durations without flexibility. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Reduces usability and flexibility for MEV producers who may need different lockup periods.\",\n    \"Location\": \"depositAndLock function, require statement with duration checks in LogOfClaimedMEVBlocks contract\"\n  }\n]",
+      "model_used": "deepseek",
+      "session_id": "097cdfce-601c-46a9-b263-7dd244c29aac",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 1,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract's submitClaim function allows replay of signatures due to missing nonce/timestamp in signed messages, directly enabling repeated unauthorized reward claims. This matches SWC-107's description of signature reuse vulnerabilities in smart contracts. Evidence: Signature Replay Vulnerability: No nonce or timestamp in signed message hash; Impact: Attacker can replay signatures to drain MEV producer deposits; Location: submitClaim function with ecrecover call",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Signature Replay Vulnerability: No nonce or timestamp in signed message hash\", \"Impact: Attacker can replay signatures to drain MEV producer deposits\", \"Location: submitClaim function with ecrecover call\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract's submitClaim function allows replay of signatures due to missing nonce/timestamp in signed messages, directly enabling repeated unauthorized reward claims. This matches SWC-107's description of signature reuse vulnerabilities in smart contracts.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Signature Replay Vulnerability: No nonce or timestamp in signed message hash\\\",\\n    \\\"Impact: Attacker can replay signatures to drain MEV producer deposits\\\",\\n    \\\"Location: submitClaim function with ecrecover call\\\"\\n  ]\\n}\", \"reason\": \"The contract's submitClaim function allows replay of signatures due to missing nonce/timestamp in signed messages, directly enabling repeated unauthorized reward claims. This matches SWC-107's description of signature reuse vulnerabilities in smart contracts.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract's submitClaim function allows replay of signatures due to missing nonce/timestamp in signed messages, directly enabling repeated unauthorized reward claims. This matches SWC-107's description of signature reuse vulnerabilities in smart contracts.",
+      "evidence": [
+        "Signature Replay Vulnerability: No nonce or timestamp in signed message hash",
+        "Impact: Attacker can replay signatures to drain MEV producer deposits",
+        "Location: submitClaim function with ecrecover call"
+      ],
+      "raw": "{\n  \"reason\": \"The contract's submitClaim function allows replay of signatures due to missing nonce/timestamp in signed messages, directly enabling repeated unauthorized reward claims. This matches SWC-107's description of signature reuse vulnerabilities in smart contracts.\",\n  \"evidence\": [\n    \"Signature Replay Vulnerability: No nonce or timestamp in signed message hash\",\n    \"Impact: Attacker can replay signatures to drain MEV producer deposits\",\n    \"Location: submitClaim function with ecrecover call\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "097cdfce-601c-46a9-b263-7dd244c29aac",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 7,
+        "full_report_chars": 3556,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

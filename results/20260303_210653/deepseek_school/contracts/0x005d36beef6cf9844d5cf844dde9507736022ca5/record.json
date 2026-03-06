@@ -1,0 +1,255 @@
+{
+  "address": "0x005d36beef6cf9844d5cf844dde9507736022ca5",
+  "session_id": "e82b2829-8bab-44ff-90d3-170f445d6175",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-101 label applies due to the integer underflow in SafeMath.ceil, which violates arithmetic safety. SWC-107 is appropriate because the reentrancy vulnerability in transferFrom breaks the checks-effects-interactions pattern. Evidence: Integer underflow occurs in SafeMath.ceil when subtracting 1 from overflowed values (Finding 2); transferFrom updates state after external calls via event emissions, enabling reentrancy attacks (Finding 1)",
+  "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Integer underflow occurs in SafeMath.ceil when subtracting 1 from overflowed values (Finding 2)\", \"transferFrom updates state after external calls via event emissions, enabling reentrancy attacks (Finding 1)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label applies due to the integer underflow in SafeMath.ceil, which violates arithmetic safety. SWC-107 is appropriate because the reentrancy vulnerability in transferFrom breaks the checks-effects-interactions pattern.\\\",\\n  \\\"evidence\\\": [\\\"Integer underflow occurs in SafeMath.ceil when subtracting 1 from overflowed values (Finding 2)\\\", \\\"transferFrom updates state after external calls via event emissions, enabling reentrancy attacks (Finding 1)\\\"]\\n}\", \"reason\": \"The SWC-101 label applies due to the integer underflow in SafeMath.ceil, which violates arithmetic safety. SWC-107 is appropriate because the reentrancy vulnerability in transferFrom breaks the checks-effects-interactions pattern.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2921,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_210653/deepseek_school/contracts/0x005d36beef6cf9844d5cf844dde9507736022ca5/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 1666.1351280212402,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x005d36beef6cf9844d5cf844dde9507736022ca5",
+    "model": "deepseek_school",
+    "session_id": "e82b2829-8bab-44ff-90d3-170f445d6175",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy vulnerability in transferFrom function",
+        "Severity": "High",
+        "Description": "The transferFrom function updates state after potential external interactions (event emissions), violating checks-effects-interactions pattern. This appears in the smart contract code only and was identified during manual audit.",
+        "Impact": "Potential for attackers to drain funds through recursive calls before allowances are properly updated",
+        "Location": "transferFrom function, lines 118-135 in WenCoinbase contract"
+      },
+      {
+        "Issue": "Integer underflow in SafeMath.ceil function",
+        "Severity": "High",
+        "Description": "The ceil function can underflow when subtracting 1 from an overflowed value. This appears in the smart contract code only and was identified during manual audit.",
+        "Impact": "Denial of service for large token transfers, breaking core contract functionality",
+        "Location": "SafeMath.ceil function, line 49-52 in SafeMath library"
+      },
+      {
+        "Issue": "Missing division-by-zero check in SafeMath.div",
+        "Severity": "Medium",
+        "Description": "The div function lacks a zero-division check, which could cause runtime reverts. This appears in the smart contract code only and was identified during manual audit.",
+        "Impact": "Transaction failures and potential denial of service if division by zero occurs",
+        "Location": "SafeMath.div function, line 33-36 in SafeMath library"
+      },
+      {
+        "Issue": "Lack of access controls for administrative functions",
+        "Severity": "High",
+        "Description": "No ownership controls or administrative restrictions exist, making the contract inflexible and unable to respond to emergencies. This appears in the smart contract code only and was identified during manual audit.",
+        "Impact": "Cannot modify burn rate, pause transfers, or recover tokens; permanent rigid tokenomics",
+        "Location": "Contract structure - missing ownership pattern throughout WenCoinbase contract"
+      },
+      {
+        "Issue": "Front-running vulnerability in approve function",
+        "Severity": "Medium",
+        "Description": "Standard ERC-20 approve front-running vulnerability where spenders can use old allowances before updates. This appears in the smart contract code only and is a known ERC-20 issue.",
+        "Impact": "Spenders can exceed intended allowance limits by front-running allowance reduction transactions",
+        "Location": "approve function in WenCoinbase contract"
+      },
+      {
+        "Issue": "Precision loss and calculation issues in findOnePercent",
+        "Severity": "Medium",
+        "Description": "The fee calculation may suffer from precision loss and uses confusing variable naming. This appears in the smart contract code only and was identified during manual audit.",
+        "Impact": "Incorrect token burning amounts, affecting token economics and supply",
+        "Location": "findOnePercent function in WenCoinbase contract"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T22:14:52.711636",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "e82b2829-8bab-44ff-90d3-170f445d6175",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-ylu9sdde/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1666.1351280212402,
+        "total_tasks": 12
+      },
+      "execution_time": 1666.1351280212402,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The transferFrom function updates state after potential external interactions (event emissions), violating checks-effects-interactions pattern. This appears in the smart contract code only and was identified during manual audit.",
+          "Impact": "Potential for attackers to drain funds through recursive calls before allowances are properly updated",
+          "Issue": "Reentrancy vulnerability in transferFrom function",
+          "Location": "transferFrom function, lines 118-135 in WenCoinbase contract",
+          "Severity": "High"
+        },
+        {
+          "Description": "The ceil function can underflow when subtracting 1 from an overflowed value. This appears in the smart contract code only and was identified during manual audit.",
+          "Impact": "Denial of service for large token transfers, breaking core contract functionality",
+          "Issue": "Integer underflow in SafeMath.ceil function",
+          "Location": "SafeMath.ceil function, line 49-52 in SafeMath library",
+          "Severity": "High"
+        },
+        {
+          "Description": "The div function lacks a zero-division check, which could cause runtime reverts. This appears in the smart contract code only and was identified during manual audit.",
+          "Impact": "Transaction failures and potential denial of service if division by zero occurs",
+          "Issue": "Missing division-by-zero check in SafeMath.div",
+          "Location": "SafeMath.div function, line 33-36 in SafeMath library",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "No ownership controls or administrative restrictions exist, making the contract inflexible and unable to respond to emergencies. This appears in the smart contract code only and was identified during manual audit.",
+          "Impact": "Cannot modify burn rate, pause transfers, or recover tokens; permanent rigid tokenomics",
+          "Issue": "Lack of access controls for administrative functions",
+          "Location": "Contract structure - missing ownership pattern throughout WenCoinbase contract",
+          "Severity": "High"
+        },
+        {
+          "Description": "Standard ERC-20 approve front-running vulnerability where spenders can use old allowances before updates. This appears in the smart contract code only and is a known ERC-20 issue.",
+          "Impact": "Spenders can exceed intended allowance limits by front-running allowance reduction transactions",
+          "Issue": "Front-running vulnerability in approve function",
+          "Location": "approve function in WenCoinbase contract",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The fee calculation may suffer from precision loss and uses confusing variable naming. This appears in the smart contract code only and was identified during manual audit.",
+          "Impact": "Incorrect token burning amounts, affecting token economics and supply",
+          "Issue": "Precision loss and calculation issues in findOnePercent",
+          "Location": "findOnePercent function in WenCoinbase contract",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The transferFrom function updates state after potential external interactions (event emissions), violating checks-effects-interactions pattern. This appears in the smart contract code only and was identified during manual audit.",
+          "Impact": "Potential for attackers to drain funds through recursive calls before allowances are properly updated",
+          "Issue": "Reentrancy vulnerability in transferFrom function",
+          "Location": "transferFrom function, lines 118-135 in WenCoinbase contract",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Reentrancy vulnerability in transferFrom function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The transferFrom function updates state after potential external interactions (event emissions), violating checks-effects-interactions pattern. This appears in the smart contract code only and was identified during manual audit.\",\n    \"Impact\": \"Potential for attackers to drain funds through recursive calls before allowances are properly updated\",\n    \"Location\": \"transferFrom function, lines 118-135 in WenCoinbase contract\"\n  },\n  {\n    \"Issue\": \"Integer underflow in SafeMath.ceil function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The ceil function can underflow when subtracting 1 from an overflowed value. This appears in the smart contract code only and was identified during manual audit.\",\n    \"Impact\": \"Denial of service for large token transfers, breaking core contract functionality\",\n    \"Location\": \"SafeMath.ceil function, line 49-52 in SafeMath library\"\n  },\n  {\n    \"Issue\": \"Missing division-by-zero check in SafeMath.div\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The div function lacks a zero-division check, which could cause runtime reverts. This appears in the smart contract code only and was identified during manual audit.\",\n    \"Impact\": \"Transaction failures and potential denial of service if division by zero occurs\",\n    \"Location\": \"SafeMath.div function, line 33-36 in SafeMath library\"\n  },\n  {\n    \"Issue\": \"Lack of access controls for administrative functions\",\n    \"Severity\": \"High\",\n    \"Description\": \"No ownership controls or administrative restrictions exist, making the contract inflexible and unable to respond to emergencies. This appears in the smart contract code only and was identified during manual audit.\",\n    \"Impact\": \"Cannot modify burn rate, pause transfers, or recover tokens; permanent rigid tokenomics\",\n    \"Location\": \"Contract structure - missing ownership pattern throughout WenCoinbase contract\"\n  },\n  {\n    \"Issue\": \"Front-running vulnerability in approve function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Standard ERC-20 approve front-running vulnerability where spenders can use old allowances before updates. This appears in the smart contract code only and is a known ERC-20 issue.\",\n    \"Impact\": \"Spenders can exceed intended allowance limits by front-running allowance reduction transactions\",\n    \"Location\": \"approve function in WenCoinbase contract\"\n  },\n  {\n    \"Issue\": \"Precision loss and calculation issues in findOnePercent\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The fee calculation may suffer from precision loss and uses confusing variable naming. This appears in the smart contract code only and was identified during manual audit.\",\n    \"Impact\": \"Incorrect token burning amounts, affecting token economics and supply\",\n    \"Location\": \"findOnePercent function in WenCoinbase contract\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "e82b2829-8bab-44ff-90d3-170f445d6175",
+      "severity_breakdown": {
+        "High": 3,
+        "Low": 0,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 5.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(5.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-101 label applies due to the integer underflow in SafeMath.ceil, which violates arithmetic safety. SWC-107 is appropriate because the reentrancy vulnerability in transferFrom breaks the checks-effects-interactions pattern. Evidence: Integer underflow occurs in SafeMath.ceil when subtracting 1 from overflowed values (Finding 2); transferFrom updates state after external calls via event emissions, enabling reentrancy attacks (Finding 1)",
+    "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Integer underflow occurs in SafeMath.ceil when subtracting 1 from overflowed values (Finding 2)\", \"transferFrom updates state after external calls via event emissions, enabling reentrancy attacks (Finding 1)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label applies due to the integer underflow in SafeMath.ceil, which violates arithmetic safety. SWC-107 is appropriate because the reentrancy vulnerability in transferFrom breaks the checks-effects-interactions pattern.\\\",\\n  \\\"evidence\\\": [\\\"Integer underflow occurs in SafeMath.ceil when subtracting 1 from overflowed values (Finding 2)\\\", \\\"transferFrom updates state after external calls via event emissions, enabling reentrancy attacks (Finding 1)\\\"]\\n}\", \"reason\": \"The SWC-101 label applies due to the integer underflow in SafeMath.ceil, which violates arithmetic safety. SWC-107 is appropriate because the reentrancy vulnerability in transferFrom breaks the checks-effects-interactions pattern.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-101 label applies due to the integer underflow in SafeMath.ceil, which violates arithmetic safety. SWC-107 is appropriate because the reentrancy vulnerability in transferFrom breaks the checks-effects-interactions pattern.",
+      "evidence": [
+        "Integer underflow occurs in SafeMath.ceil when subtracting 1 from overflowed values (Finding 2)",
+        "transferFrom updates state after external calls via event emissions, enabling reentrancy attacks (Finding 1)"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-101 label applies due to the integer underflow in SafeMath.ceil, which violates arithmetic safety. SWC-107 is appropriate because the reentrancy vulnerability in transferFrom breaks the checks-effects-interactions pattern.\",\n  \"evidence\": [\"Integer underflow occurs in SafeMath.ceil when subtracting 1 from overflowed values (Finding 2)\", \"transferFrom updates state after external calls via event emissions, enabling reentrancy attacks (Finding 1)\"]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "e82b2829-8bab-44ff-90d3-170f445d6175",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 2921,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

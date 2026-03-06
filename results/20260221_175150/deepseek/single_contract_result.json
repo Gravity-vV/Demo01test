@@ -1,0 +1,244 @@
+{
+  "address": "0x01d2a52708d0d8fc4d639f09a13ae87a2aec4390",
+  "model": "deepseek",
+  "session_id": "b769dbc9-be0f-4479-8b72-09a15d920a13",
+  "audit_status": "completed",
+  "error": "",
+  "findings": [
+    {
+      "Issue": "Reentrancy vulnerability in fallback function",
+      "Severity": "High",
+      "Description": "The fallback function performs an external ETH transfer before completing state updates, making it vulnerable to reentrancy attacks. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Attackers could recursively call the function to drain funds or manipulate token balances.",
+      "Location": "Fallback function (transfer of ETH before state updates)"
+    },
+    {
+      "Issue": "Reentrancy vulnerability in approveAndCall",
+      "Severity": "High",
+      "Description": "The approveAndCall function makes an external call after state changes without reentrancy protection. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Malicious contracts could re-enter during the callback to manipulate approvals or steal tokens.",
+      "Location": "approveAndCall function"
+    },
+    {
+      "Issue": "Missing access control on destroycontract",
+      "Severity": "High",
+      "Description": "The destroycontract function is publicly callable without any ownership checks. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Any attacker can destroy the contract and steal remaining ETH.",
+      "Location": "destroycontract function"
+    },
+    {
+      "Issue": "Unsafe arithmetic in fallback function",
+      "Severity": "High",
+      "Description": "The fallback function performs unsafe multiplication (msg.value * 50000) without overflow checks. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Large ETH values could cause overflow, leading to incorrect token minting.",
+      "Location": "Fallback function (token calculation)"
+    },
+    {
+      "Issue": "Missing access control on Airdrop function",
+      "Severity": "Medium",
+      "Description": "The Airdrop function is publicly callable without any ownership checks. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Anyone can trigger token distributions, potentially disrupting token economics.",
+      "Location": "Airdrop function"
+    },
+    {
+      "Issue": "Inconsistent decimal handling in burn functions",
+      "Severity": "Medium",
+      "Description": "Burn events show decimal-adjusted values but internal accounting uses raw values. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Creates mismatch between event logs and actual state changes, confusing external systems.",
+      "Location": "burn and burnFrom functions"
+    },
+    {
+      "Issue": "Inconsistent SafeMath usage",
+      "Severity": "Medium",
+      "Description": "Some arithmetic operations don't use inherited SafeMath methods. This appears in both the smart contract code and static analysis results.",
+      "Impact": "Potential for arithmetic overflow/underflow in unprotected operations.",
+      "Location": "_transfer, transferFrom, and burn functions"
+    },
+    {
+      "Issue": "Function visibility not explicitly declared",
+      "Severity": "Medium",
+      "Description": "Critical functions like destroycontract and Airdrop lack explicit visibility modifiers. This appears in the smart contract code only.",
+      "Impact": "Functions default to public when they should likely be restricted.",
+      "Location": "destroycontract and Airdrop functions"
+    },
+    {
+      "Issue": "No array length check in Airdrop",
+      "Severity": "Medium",
+      "Description": "The Airdrop function doesn't verify recipients and amounts arrays have equal length. This appears in the smart contract code only.",
+      "Impact": "Could lead to failed transactions or incorrect transfers if array lengths mismatch.",
+      "Location": "Airdrop function parameters"
+    },
+    {
+      "Issue": "Outdated Solidity version",
+      "Severity": "Medium",
+      "Description": "Contract uses vulnerable Solidity 0.4.16. This appears in the smart contract code only.",
+      "Impact": "Missing important security features and compiler protections.",
+      "Location": "pragma solidity declaration"
+    }
+  ],
+  "result_payload": {
+    "created_at": "2026-02-21T17:55:35.911208",
+    "execution_summary": {
+      "completed_tasks": 12,
+      "failed_tasks": 0,
+      "session_id": "b769dbc9-be0f-4479-8b72-09a15d920a13",
+      "total_execution_time": 225.04888892173767,
+      "total_tasks": 12
+    },
+    "execution_time": 225.04888892173767,
+    "finding_number": 10,
+    "findings": [
+      {
+        "Description": "The fallback function performs an external ETH transfer before completing state updates, making it vulnerable to reentrancy attacks. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Attackers could recursively call the function to drain funds or manipulate token balances.",
+        "Issue": "Reentrancy vulnerability in fallback function",
+        "Location": "Fallback function (transfer of ETH before state updates)",
+        "Severity": "High"
+      },
+      {
+        "Description": "The approveAndCall function makes an external call after state changes without reentrancy protection. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Malicious contracts could re-enter during the callback to manipulate approvals or steal tokens.",
+        "Issue": "Reentrancy vulnerability in approveAndCall",
+        "Location": "approveAndCall function",
+        "Severity": "High"
+      },
+      {
+        "Description": "The destroycontract function is publicly callable without any ownership checks. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Any attacker can destroy the contract and steal remaining ETH.",
+        "Issue": "Missing access control on destroycontract",
+        "Location": "destroycontract function",
+        "Severity": "High"
+      },
+      {
+        "Description": "The fallback function performs unsafe multiplication (msg.value * 50000) without overflow checks. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Large ETH values could cause overflow, leading to incorrect token minting.",
+        "Issue": "Unsafe arithmetic in fallback function",
+        "Location": "Fallback function (token calculation)",
+        "Severity": "High"
+      },
+      {
+        "Description": "The Airdrop function is publicly callable without any ownership checks. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Anyone can trigger token distributions, potentially disrupting token economics.",
+        "Issue": "Missing access control on Airdrop function",
+        "Location": "Airdrop function",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Burn events show decimal-adjusted values but internal accounting uses raw values. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Creates mismatch between event logs and actual state changes, confusing external systems.",
+        "Issue": "Inconsistent decimal handling in burn functions",
+        "Location": "burn and burnFrom functions",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Some arithmetic operations don't use inherited SafeMath methods. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential for arithmetic overflow/underflow in unprotected operations.",
+        "Issue": "Inconsistent SafeMath usage",
+        "Location": "_transfer, transferFrom, and burn functions",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Critical functions like destroycontract and Airdrop lack explicit visibility modifiers. This appears in the smart contract code only.",
+        "Impact": "Functions default to public when they should likely be restricted.",
+        "Issue": "Function visibility not explicitly declared",
+        "Location": "destroycontract and Airdrop functions",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "The Airdrop function doesn't verify recipients and amounts arrays have equal length. This appears in the smart contract code only.",
+        "Impact": "Could lead to failed transactions or incorrect transfers if array lengths mismatch.",
+        "Issue": "No array length check in Airdrop",
+        "Location": "Airdrop function parameters",
+        "Severity": "Medium"
+      },
+      {
+        "Description": "Contract uses vulnerable Solidity 0.4.16. This appears in the smart contract code only.",
+        "Impact": "Missing important security features and compiler protections.",
+        "Issue": "Outdated Solidity version",
+        "Location": "pragma solidity declaration",
+        "Severity": "Medium"
+      }
+    ],
+    "format_validation": {
+      "findings_validated": true,
+      "required_fields": [
+        "Issue",
+        "Severity",
+        "Description",
+        "Impact",
+        "Location"
+      ],
+      "sample_finding": {
+        "Description": "The fallback function performs an external ETH transfer before completing state updates, making it vulnerable to reentrancy attacks. This appears in both the smart contract code and static analysis results.",
+        "Impact": "Attackers could recursively call the function to drain funds or manipulate token balances.",
+        "Issue": "Reentrancy vulnerability in fallback function",
+        "Location": "Fallback function (transfer of ETH before state updates)",
+        "Severity": "High"
+      }
+    },
+    "full_report": "[\n  {\n    \"Issue\": \"Reentrancy vulnerability in fallback function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The fallback function performs an external ETH transfer before completing state updates, making it vulnerable to reentrancy attacks. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Attackers could recursively call the function to drain funds or manipulate token balances.\",\n    \"Location\": \"Fallback function (transfer of ETH before state updates)\"\n  },\n  {\n    \"Issue\": \"Reentrancy vulnerability in approveAndCall\",\n    \"Severity\": \"High\",\n    \"Description\": \"The approveAndCall function makes an external call after state changes without reentrancy protection. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Malicious contracts could re-enter during the callback to manipulate approvals or steal tokens.\",\n    \"Location\": \"approveAndCall function\"\n  },\n  {\n    \"Issue\": \"Missing access control on destroycontract\",\n    \"Severity\": \"High\",\n    \"Description\": \"The destroycontract function is publicly callable without any ownership checks. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Any attacker can destroy the contract and steal remaining ETH.\",\n    \"Location\": \"destroycontract function\"\n  },\n  {\n    \"Issue\": \"Unsafe arithmetic in fallback function\",\n    \"Severity\": \"High\",\n    \"Description\": \"The fallback function performs unsafe multiplication (msg.value * 50000) without overflow checks. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Large ETH values could cause overflow, leading to incorrect token minting.\",\n    \"Location\": \"Fallback function (token calculation)\"\n  },\n  {\n    \"Issue\": \"Missing access control on Airdrop function\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The Airdrop function is publicly callable without any ownership checks. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Anyone can trigger token distributions, potentially disrupting token economics.\",\n    \"Location\": \"Airdrop function\"\n  },\n  {\n    \"Issue\": \"Inconsistent decimal handling in burn functions\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Burn events show decimal-adjusted values but internal accounting uses raw values. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Creates mismatch between event logs and actual state changes, confusing external systems.\",\n    \"Location\": \"burn and burnFrom functions\"\n  },\n  {\n    \"Issue\": \"Inconsistent SafeMath usage\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Some arithmetic operations don't use inherited SafeMath methods. This appears in both the smart contract code and static analysis results.\",\n    \"Impact\": \"Potential for arithmetic overflow/underflow in unprotected operations.\",\n    \"Location\": \"_transfer, transferFrom, and burn functions\"\n  },\n  {\n    \"Issue\": \"Function visibility not explicitly declared\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Critical functions like destroycontract and Airdrop lack explicit visibility modifiers. This appears in the smart contract code only.\",\n    \"Impact\": \"Functions default to public when they should likely be restricted.\",\n    \"Location\": \"destroycontract and Airdrop functions\"\n  },\n  {\n    \"Issue\": \"No array length check in Airdrop\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The Airdrop function doesn't verify recipients and amounts arrays have equal length. This appears in the smart contract code only.\",\n    \"Impact\": \"Could lead to failed transactions or incorrect transfers if array lengths mismatch.\",\n    \"Location\": \"Airdrop function parameters\"\n  },\n  {\n    \"Issue\": \"Outdated Solidity version\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Contract uses vulnerable Solidity 0.4.16. This appears in the smart contract code only.\",\n    \"Impact\": \"Missing important security features and compiler protections.\",\n    \"Location\": \"pragma solidity declaration\"\n  }\n]",
+    "model_used": "deepseek",
+    "session_id": "b769dbc9-be0f-4479-8b72-09a15d920a13",
+    "severity_breakdown": {
+      "High": 4,
+      "Low": 0,
+      "Medium": 6
+    }
+  },
+  "rule_result": {
+    "labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "source": "rule_multi",
+    "scores": {
+      "SWC-101": 8.0,
+      "SWC-105": 0.0,
+      "SWC-106": 0.0,
+      "SWC-107": 8.0,
+      "SWC-115": 0.0
+    },
+    "matched": {
+      "SWC-101": [
+        "kw:overflow",
+        "kw:underflow",
+        "re:\\boverflow\\b",
+        "re:\\bunderflow\\b"
+      ],
+      "SWC-105": [],
+      "SWC-106": [],
+      "SWC-107": [
+        "kw:reentrancy",
+        "re:\\bre-?entran",
+        "re:reentrancy"
+      ],
+      "SWC-115": []
+    },
+    "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+  },
+  "llm_result": {},
+  "rule_labels": [
+    "SWC-101",
+    "SWC-107"
+  ],
+  "llm_labels": [],
+  "pred_labels": [
+    "SWC-101",
+    "SWC-107"
+  ],
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_source": "rule_multi",
+  "is_other": 0,
+  "pred_reason": "The contract shows multiple instances of integer overflow vulnerabilities (SWC-101) in arithmetic operations and reentrancy risks (SWC-107) in critical functions. Evidence includes unsafe multiplication in fallback and unprotected external calls in approveAndCall. Evidence: Unsafe arithmetic in fallback function (msg.value * 50000) without overflow checks; Reentrancy in fallback via ETH transfer before state updates; Reentrancy in approveAndCall via callback after state changes",
+  "static_tool_used": false,
+  "llm_explanation": {
+    "ok": true,
+    "reason": "The contract shows multiple instances of integer overflow vulnerabilities (SWC-101) in arithmetic operations and reentrancy risks (SWC-107) in critical functions. Evidence includes unsafe multiplication in fallback and unprotected external calls in approveAndCall.",
+    "evidence": [
+      "Unsafe arithmetic in fallback function (msg.value * 50000) without overflow checks",
+      "Reentrancy in fallback via ETH transfer before state updates",
+      "Reentrancy in approveAndCall via callback after state changes"
+    ],
+    "raw": "```json\n{\n  \"reason\": \"The contract shows multiple instances of integer overflow vulnerabilities (SWC-101) in arithmetic operations and reentrancy risks (SWC-107) in critical functions. Evidence includes unsafe multiplication in fallback and unprotected external calls in approveAndCall.\",\n  \"evidence\": [\n    \"Unsafe arithmetic in fallback function (msg.value * 50000) without overflow checks\",\n    \"Reentrancy in fallback via ETH transfer before state updates\",\n    \"Reentrancy in approveAndCall via callback after state changes\"\n  ]\n}\n```"
+  }
+}

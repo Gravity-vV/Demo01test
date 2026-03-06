@@ -1,0 +1,234 @@
+{
+  "address": "0x13a83fe455f51e57e11cbb3dda805774420ea671",
+  "session_id": "2e76c75a-0084-4dce-8c60-423a20b4d1a2",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-105",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "llm",
+  "pred_reason": "The SWC-105 label applies because the contract's payable receive function lacks a withdrawal mechanism, permanently locking any Ether sent. This matches the classic SWC-105 'Unprotected Ether Withdrawal' pattern where funds become irretrievable. Evidence: The receive() external payable function exists without any method to withdraw Ether.; Static analysis and code review both confirm the locked-ether vulnerability.; Impact confirms permanent loss of any Ether sent to the contract.",
+  "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{\"confidence\": 0.9, \"labels\": [\"SWC-105\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-105\\\"],\\n  \\\"confidence\\\": 0.9,\\n  \\\"reason\\\": \\\"Locked Ether Vulnerability indicates unprotected ether withdrawal issue\\\"\\n}\", \"reason\": \"Locked Ether Vulnerability indicates unprotected ether withdrawal issue\", \"source\": \"llm\"}",
+  "llm_explanation_json": "{\"evidence\": [\"The receive() external payable function exists without any method to withdraw Ether.\", \"Static analysis and code review both confirm the locked-ether vulnerability.\", \"Impact confirms permanent loss of any Ether sent to the contract.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-105 label applies because the contract's payable receive function lacks a withdrawal mechanism, permanently locking any Ether sent. This matches the classic SWC-105 'Unprotected Ether Withdrawal' pattern where funds become irretrievable.\\\",\\n  \\\"evidence\\\": [\\\"The receive() external payable function exists without any method to withdraw Ether.\\\", \\\"Static analysis and code review both confirm the locked-ether vulnerability.\\\", \\\"Impact confirms permanent loss of any Ether sent to the contract.\\\"]\\n}\", \"reason\": \"The SWC-105 label applies because the contract's payable receive function lacks a withdrawal mechanism, permanently locking any Ether sent. This matches the classic SWC-105 'Unprotected Ether Withdrawal' pattern where funds become irretrievable.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 3210,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x13a83fe455f51e57e11cbb3dda805774420ea671/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 6,
+  "execution_time": 417.07139134407043,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x13a83fe455f51e57e11cbb3dda805774420ea671",
+    "model": "deepseek_school",
+    "session_id": "2e76c75a-0084-4dce-8c60-423a20b4d1a2",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Locked Ether Vulnerability",
+        "Severity": "Medium",
+        "Description": "The contract has a payable fallback function but lacks a withdrawal mechanism, potentially locking ether sent to the contract. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Any ether sent to the contract accidentally or intentionally will be permanently locked, leading to loss of funds.",
+        "Location": "Static analysis: locked-ether finding; Code: receive() external payable function in ButterFlyEffectToken contract"
+      },
+      {
+        "Issue": "Shadowing State Variable",
+        "Severity": "Low",
+        "Description": "Local variables in functions shadow the inherited state variable 'owner'. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Could cause confusion in code logic and potentially lead to unintended behavior if the wrong variable is referenced.",
+        "Location": "Static analysis: shadowing-local findings; Code: _approve() and allowance() functions in ButterFlyEffectToken contract"
+      },
+      {
+        "Issue": "Missing Event Emission for Critical Parameters",
+        "Severity": "Low",
+        "Description": "Functions that modify critical parameters (fees and transaction limits) do not emit events. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Lack of transparency for off-chain monitoring; users cannot easily track changes to important contract parameters.",
+        "Location": "Static analysis: events-maths findings; Code: SetFee() and setMaxTxPercent() functions in ButterFlyEffectToken contract"
+      },
+      {
+        "Issue": "Missing Zero Address Check",
+        "Severity": "Low",
+        "Description": "setMarketingWallet function lacks a zero address validation check. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Potential loss of marketing funds if the marketing wallet is accidentally set to address(0).",
+        "Location": "Static analysis: missing-zero-check finding; Code: setMarketingWallet() function in ButterFlyEffectToken contract"
+      },
+      {
+        "Issue": "Inconsistent Pausable Modifier Application",
+        "Severity": "Low",
+        "Description": "The pause modifier is inconsistently applied to view functions and state-changing functions. This issue appears in the smart contract code only.",
+        "Impact": "View functions might return incorrect data when contract is paused, potentially causing confusion for integrators.",
+        "Location": "Code: Multiple view functions (balanceOf, allowance, etc.) in ButterFlyEffectToken contract have pause checks while other view functions (name, symbol, decimals) do not"
+      },
+      {
+        "Issue": "Potential Division Precision Loss",
+        "Severity": "Low",
+        "Description": "Fee calculations use integer division which may lead to precision loss. This issue appears in the smart contract code only.",
+        "Impact": "Small amounts of tokens might be lost in fee calculations due to rounding down in integer division.",
+        "Location": "Code: calculateTaxFee() function and fee calculations in _tokenTransfer() function in ButterFlyEffectToken contract"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T04:22:48.663799",
+      "execution_summary": {
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "session_id": "2e76c75a-0084-4dce-8c60-423a20b4d1a2",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-2ahpet3c/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.12"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 417.07139134407043,
+        "total_tasks": 0
+      },
+      "execution_time": 417.07139134407043,
+      "finding_number": 6,
+      "findings": [
+        {
+          "Description": "The contract has a payable fallback function but lacks a withdrawal mechanism, potentially locking ether sent to the contract. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Any ether sent to the contract accidentally or intentionally will be permanently locked, leading to loss of funds.",
+          "Issue": "Locked Ether Vulnerability",
+          "Location": "Static analysis: locked-ether finding; Code: receive() external payable function in ButterFlyEffectToken contract",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Local variables in functions shadow the inherited state variable 'owner'. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Could cause confusion in code logic and potentially lead to unintended behavior if the wrong variable is referenced.",
+          "Issue": "Shadowing State Variable",
+          "Location": "Static analysis: shadowing-local findings; Code: _approve() and allowance() functions in ButterFlyEffectToken contract",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Functions that modify critical parameters (fees and transaction limits) do not emit events. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Lack of transparency for off-chain monitoring; users cannot easily track changes to important contract parameters.",
+          "Issue": "Missing Event Emission for Critical Parameters",
+          "Location": "Static analysis: events-maths findings; Code: SetFee() and setMaxTxPercent() functions in ButterFlyEffectToken contract",
+          "Severity": "Low"
+        },
+        {
+          "Description": "setMarketingWallet function lacks a zero address validation check. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Potential loss of marketing funds if the marketing wallet is accidentally set to address(0).",
+          "Issue": "Missing Zero Address Check",
+          "Location": "Static analysis: missing-zero-check finding; Code: setMarketingWallet() function in ButterFlyEffectToken contract",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The pause modifier is inconsistently applied to view functions and state-changing functions. This issue appears in the smart contract code only.",
+          "Impact": "View functions might return incorrect data when contract is paused, potentially causing confusion for integrators.",
+          "Issue": "Inconsistent Pausable Modifier Application",
+          "Location": "Code: Multiple view functions (balanceOf, allowance, etc.) in ButterFlyEffectToken contract have pause checks while other view functions (name, symbol, decimals) do not",
+          "Severity": "Low"
+        },
+        {
+          "Description": "Fee calculations use integer division which may lead to precision loss. This issue appears in the smart contract code only.",
+          "Impact": "Small amounts of tokens might be lost in fee calculations due to rounding down in integer division.",
+          "Issue": "Potential Division Precision Loss",
+          "Location": "Code: calculateTaxFee() function and fee calculations in _tokenTransfer() function in ButterFlyEffectToken contract",
+          "Severity": "Low"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The contract has a payable fallback function but lacks a withdrawal mechanism, potentially locking ether sent to the contract. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Any ether sent to the contract accidentally or intentionally will be permanently locked, leading to loss of funds.",
+          "Issue": "Locked Ether Vulnerability",
+          "Location": "Static analysis: locked-ether finding; Code: receive() external payable function in ButterFlyEffectToken contract",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Locked Ether Vulnerability\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract has a payable fallback function but lacks a withdrawal mechanism, potentially locking ether sent to the contract. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Any ether sent to the contract accidentally or intentionally will be permanently locked, leading to loss of funds.\",\n    \"Location\": \"Static analysis: locked-ether finding; Code: receive() external payable function in ButterFlyEffectToken contract\"\n  },\n  {\n    \"Issue\": \"Shadowing State Variable\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Local variables in functions shadow the inherited state variable 'owner'. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Could cause confusion in code logic and potentially lead to unintended behavior if the wrong variable is referenced.\",\n    \"Location\": \"Static analysis: shadowing-local findings; Code: _approve() and allowance() functions in ButterFlyEffectToken contract\"\n  },\n  {\n    \"Issue\": \"Missing Event Emission for Critical Parameters\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Functions that modify critical parameters (fees and transaction limits) do not emit events. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Lack of transparency for off-chain monitoring; users cannot easily track changes to important contract parameters.\",\n    \"Location\": \"Static analysis: events-maths findings; Code: SetFee() and setMaxTxPercent() functions in ButterFlyEffectToken contract\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Check\",\n    \"Severity\": \"Low\",\n    \"Description\": \"setMarketingWallet function lacks a zero address validation check. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Potential loss of marketing funds if the marketing wallet is accidentally set to address(0).\",\n    \"Location\": \"Static analysis: missing-zero-check finding; Code: setMarketingWallet() function in ButterFlyEffectToken contract\"\n  },\n  {\n    \"Issue\": \"Inconsistent Pausable Modifier Application\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The pause modifier is inconsistently applied to view functions and state-changing functions. This issue appears in the smart contract code only.\",\n    \"Impact\": \"View functions might return incorrect data when contract is paused, potentially causing confusion for integrators.\",\n    \"Location\": \"Code: Multiple view functions (balanceOf, allowance, etc.) in ButterFlyEffectToken contract have pause checks while other view functions (name, symbol, decimals) do not\"\n  },\n  {\n    \"Issue\": \"Potential Division Precision Loss\",\n    \"Severity\": \"Low\",\n    \"Description\": \"Fee calculations use integer division which may lead to precision loss. This issue appears in the smart contract code only.\",\n    \"Impact\": \"Small amounts of tokens might be lost in fee calculations due to rounding down in integer division.\",\n    \"Location\": \"Code: calculateTaxFee() function and fee calculations in _tokenTransfer() function in ButterFlyEffectToken contract\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "2e76c75a-0084-4dce-8c60-423a20b4d1a2",
+      "severity_breakdown": {
+        "High": 0,
+        "Low": 5,
+        "Medium": 1
+      }
+    },
+    "rule_result": {
+      "labels": [],
+      "source": "rule_none_multi",
+      "scores": {
+        "SWC-101": 0.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "No rule hit."
+    },
+    "llm_result": {
+      "labels": [
+        "SWC-105"
+      ],
+      "source": "llm",
+      "confidence": 0.9,
+      "reason": "Locked Ether Vulnerability indicates unprotected ether withdrawal issue",
+      "raw": "{\n  \"labels\": [\"SWC-105\"],\n  \"confidence\": 0.9,\n  \"reason\": \"Locked Ether Vulnerability indicates unprotected ether withdrawal issue\"\n}"
+    },
+    "rule_labels": [],
+    "llm_labels": [
+      "SWC-105"
+    ],
+    "pred_labels": [
+      "SWC-105"
+    ],
+    "pred_swc_list": "SWC-105",
+    "pred_source": "llm",
+    "is_other": 0,
+    "pred_reason": "The SWC-105 label applies because the contract's payable receive function lacks a withdrawal mechanism, permanently locking any Ether sent. This matches the classic SWC-105 'Unprotected Ether Withdrawal' pattern where funds become irretrievable. Evidence: The receive() external payable function exists without any method to withdraw Ether.; Static analysis and code review both confirm the locked-ether vulnerability.; Impact confirms permanent loss of any Ether sent to the contract.",
+    "rule_scores_json": "{\"SWC-101\": 0.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{\"confidence\": 0.9, \"labels\": [\"SWC-105\"], \"raw\": \"{\\n  \\\"labels\\\": [\\\"SWC-105\\\"],\\n  \\\"confidence\\\": 0.9,\\n  \\\"reason\\\": \\\"Locked Ether Vulnerability indicates unprotected ether withdrawal issue\\\"\\n}\", \"reason\": \"Locked Ether Vulnerability indicates unprotected ether withdrawal issue\", \"source\": \"llm\"}",
+    "llm_explanation_json": "{\"evidence\": [\"The receive() external payable function exists without any method to withdraw Ether.\", \"Static analysis and code review both confirm the locked-ether vulnerability.\", \"Impact confirms permanent loss of any Ether sent to the contract.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-105 label applies because the contract's payable receive function lacks a withdrawal mechanism, permanently locking any Ether sent. This matches the classic SWC-105 'Unprotected Ether Withdrawal' pattern where funds become irretrievable.\\\",\\n  \\\"evidence\\\": [\\\"The receive() external payable function exists without any method to withdraw Ether.\\\", \\\"Static analysis and code review both confirm the locked-ether vulnerability.\\\", \\\"Impact confirms permanent loss of any Ether sent to the contract.\\\"]\\n}\", \"reason\": \"The SWC-105 label applies because the contract's payable receive function lacks a withdrawal mechanism, permanently locking any Ether sent. This matches the classic SWC-105 'Unprotected Ether Withdrawal' pattern where funds become irretrievable.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-105 label applies because the contract's payable receive function lacks a withdrawal mechanism, permanently locking any Ether sent. This matches the classic SWC-105 'Unprotected Ether Withdrawal' pattern where funds become irretrievable.",
+      "evidence": [
+        "The receive() external payable function exists without any method to withdraw Ether.",
+        "Static analysis and code review both confirm the locked-ether vulnerability.",
+        "Impact confirms permanent loss of any Ether sent to the contract."
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-105 label applies because the contract's payable receive function lacks a withdrawal mechanism, permanently locking any Ether sent. This matches the classic SWC-105 'Unprotected Ether Withdrawal' pattern where funds become irretrievable.\",\n  \"evidence\": [\"The receive() external payable function exists without any method to withdraw Ether.\", \"Static analysis and code review both confirm the locked-ether vulnerability.\", \"Impact confirms permanent loss of any Ether sent to the contract.\"]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "2e76c75a-0084-4dce-8c60-423a20b4d1a2",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 6,
+        "full_report_chars": 3210,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

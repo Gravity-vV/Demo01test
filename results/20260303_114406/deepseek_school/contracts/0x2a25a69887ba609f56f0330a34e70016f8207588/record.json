@@ -1,0 +1,347 @@
+{
+  "address": "0x2a25a69887ba609f56f0330a34e70016f8207588",
+  "session_id": "45d4355a-5359-4fa6-9d25-e7144b671068",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107|SWC-115",
+  "pred_swc_count": 3,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 is applicable due to multiple reentrancy vulnerabilities in transferFrom, list, and distribute functions. SWC-107 applies because the checkBots modifier makes external calls before state updates, violating Checks-Effects-Interactions. SWC-115 is relevant as the delegate function contains a critical delegatecall vulnerability allowing unauthorized state modifications. Evidence: Reentrancy found in transferFrom, list, distribute functions (Finding 3); checkBots modifier calls botProtection before state updates (Finding 4); delegate function has delegatecall vulnerability (Finding 3)",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 5.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": [\"kw:tx.origin\", \"re:tx\\\\.origin\"]}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Reentrancy found in transferFrom, list, distribute functions (Finding 3)\", \"checkBots modifier calls botProtection before state updates (Finding 4)\", \"delegate function has delegatecall vulnerability (Finding 3)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to multiple reentrancy vulnerabilities in transferFrom, list, and distribute functions. SWC-107 applies because the checkBots modifier makes external calls before state updates, violating Checks-Effects-Interactions. SWC-115 is relevant as the delegate function contains a critical delegatecall vulnerability allowing unauthorized state modifications.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Reentrancy found in transferFrom, list, distribute functions (Finding 3)\\\",\\n    \\\"checkBots modifier calls botProtection before state updates (Finding 4)\\\",\\n    \\\"delegate function has delegatecall vulnerability (Finding 3)\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to multiple reentrancy vulnerabilities in transferFrom, list, and distribute functions. SWC-107 applies because the checkBots modifier makes external calls before state updates, violating Checks-Effects-Interactions. SWC-115 is relevant as the delegate function contains a critical delegatecall vulnerability allowing unauthorized state modifications.\"}",
+  "full_report_available": 0,
+  "full_report_chars": 0,
+  "full_report_path": "",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 12,
+  "execution_time": 1688.656800031662,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x2a25a69887ba609f56f0330a34e70016f8207588",
+    "model": "deepseek_school",
+    "session_id": "45d4355a-5359-4fa6-9d25-e7144b671068",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+        "Severity": "High",
+        "Description": "## **Reentrancy Analysis Report for PathToken Contract** ### **1. Issue Analysis** **Yes, there is a potential reentrancy vulnerability** in the `transferFrom` function of the `PathToken` contract. T... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 1: **Reentrancy Analysis**"
+      },
+      {
+        "Issue": "High Priority Security Issue - Identify all external calls (especially low-level ...",
+        "Severity": "High",
+        "Description": "## Audit Report: External Calls and State Changes Analysis ### 1. Issue Analysis **Yes, multiple issues related to external calls and state changes were identified.** The contract contains several ex... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 2: Identify all external calls (especially low-level `call` and `delegatecall`) and check if state changes occur after these calls."
+      },
+      {
+        "Issue": "High Priority Security Issue - Test `transferFrom`, `list`, `distribute`, and `de...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes, multiple reentrancy vulnerabilities exist** in the `transferFrom`, `list`, and `distribute` functions, while the `delegate` function has a critical delegatecall vulnerabil... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 3: Test `transferFrom`, `list`, `distribute`, and `delegate` for potential reentrancy attacks."
+      },
+      {
+        "Issue": "High Priority Security Issue - Verify if `checkBots` modifier makes external call...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes, there is a critical issue related to this audit task.** The `checkBots` modifier makes an external call to `botProtection` before state updates, which violates the Checks-... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 4: Verify if `checkBots` modifier makes external calls before state updates."
+      },
+      {
+        "Issue": "High Priority Security Issue - **Integer Overflow/Underflow**...",
+        "Severity": "Low",
+        "Description": "## Audit Report: Integer Overflow/Underflow Vulnerability Assessment **Audit Task:** Integer Overflow/Underflow **Priority:** High **Contract:** PathToken (ERC20 Implementation) **Solidity Vers... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential low impact on contract security and functionality.",
+        "Location": "Task 5: **Integer Overflow/Underflow**"
+      },
+      {
+        "Issue": "High Priority Security Issue - **Access Control Issues**...",
+        "Severity": "High",
+        "Description": "## Audit Report: Access Control Issues ### 1. Issue Analysis **Yes, multiple access control issues are identified in the contract.** The contract contains several critical access control vulnerabili... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 9: **Access Control Issues**"
+      },
+      {
+        "Issue": "High Priority Security Issue - Check for missing access controls on critical func...",
+        "Severity": "High",
+        "Description": "## 1. Issue Analysis **Yes, there is a critical issue related to missing access controls on the `approve` function.** The `approve` function in the `PathToken` contract (lines 228-232) has no access... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 12: Check for missing access controls on critical functions (e.g., `approve`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Review all arithmetic operations using SafeMath to...",
+        "Severity": "High",
+        "Description": "## Audit Report: SafeMath Arithmetic Operations Review ### 1. Issue Analysis **Yes**, there is a critical issue related to the SafeMath audit task. The contract `PathToken` contains multiple arithme... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 6: Review all arithmetic operations using SafeMath to ensure proper usage."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Check non-SafeMath operations (e.g., `balanceOf[_f...",
+        "Severity": "Medium",
+        "Description": "Based on my analysis of the provided smart contract code and the specific audit task to check non-SafeMath operations, here are my detailed findings: ## 1. Issue Analysis **Yes, there are issues rel... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 7: Check non-SafeMath operations (e.g., `balanceOf[_from] -= _value` in `transferFrom`)."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Validate total supply calculations and distributio...",
+        "Severity": "High",
+        "Description": "## Audit Report: Total Supply Calculations and Distribution Logic Validation **Audit Task:** Validate total supply calculations and distribution logic **Priority:** Medium **Contract:** PathToken... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 8: Validate total supply calculations and distribution logic."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Audit owner assignment via `tx.origin` in construc...",
+        "Severity": "Medium",
+        "Description": "**Audit Report: Owner Assignment via `tx.origin` in Constructor** **1. Issue Analysis** Yes, there is a significant issue related to this audit task. The `PathToken` contract assigns the `owner` stat... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential medium impact on contract security and functionality.",
+        "Location": "Task 10: Audit owner assignment via `tx.origin` in constructor for vulnerabilities."
+      },
+      {
+        "Issue": "Medium Priority Security Issue - Ensure `onlyOwner` functions (`delegate`, `distrib...",
+        "Severity": "High",
+        "Description": "## Audit Report: `onlyOwner` Function Access Control Review **Contract:** PathToken **Audit Task:** Ensure `onlyOwner` functions (`delegate`, `distribute`, `list`) cannot be called by unauthorized ... This issue appears in both the smart contract code and static analysis results.",
+        "Impact": "Potential high impact on contract security and functionality.",
+        "Location": "Task 11: Ensure `onlyOwner` functions (`delegate`, `distribute`, `list`) cannot be called by unauthorized parties."
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T17:47:55.956798",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "45d4355a-5359-4fa6-9d25-e7144b671068",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-t80lknyr/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.7.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1688.656800031662,
+        "total_tasks": 12
+      },
+      "execution_time": 1688.656800031662,
+      "finding_number": 12,
+      "findings": [
+        {
+          "Description": "## **Reentrancy Analysis Report for PathToken Contract**\n\n### **1. Issue Analysis**\n**Yes, there is a potential reentrancy vulnerability** in the `transferFrom` function of the `PathToken` contract. T... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+          "Location": "Task 1: **Reentrancy Analysis**",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: External Calls and State Changes Analysis\n\n### 1. Issue Analysis\n**Yes, multiple issues related to external calls and state changes were identified.** The contract contains several ex... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Identify all external calls (especially low-level ...",
+          "Location": "Task 2: Identify all external calls (especially low-level `call` and `delegatecall`) and check if state changes occur after these calls.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes, multiple reentrancy vulnerabilities exist** in the `transferFrom`, `list`, and `distribute` functions, while the `delegate` function has a critical delegatecall vulnerabil... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Test `transferFrom`, `list`, `distribute`, and `de...",
+          "Location": "Task 3: Test `transferFrom`, `list`, `distribute`, and `delegate` for potential reentrancy attacks.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there is a critical issue related to this audit task.** The `checkBots` modifier makes an external call to `botProtection` before state updates, which violates the Checks-... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Verify if `checkBots` modifier makes external call...",
+          "Location": "Task 4: Verify if `checkBots` modifier makes external calls before state updates.",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: Integer Overflow/Underflow Vulnerability Assessment\n\n**Audit Task:** Integer Overflow/Underflow  \n**Priority:** High  \n**Contract:** PathToken (ERC20 Implementation)  \n**Solidity Vers... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential low impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Integer Overflow/Underflow**...",
+          "Location": "Task 5: **Integer Overflow/Underflow**",
+          "Severity": "Low"
+        },
+        {
+          "Description": "## Audit Report: Access Control Issues\n\n### 1. Issue Analysis\n**Yes, multiple access control issues are identified in the contract.**\n\nThe contract contains several critical access control vulnerabili... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Access Control Issues**...",
+          "Location": "Task 9: **Access Control Issues**",
+          "Severity": "High"
+        },
+        {
+          "Description": "## 1. Issue Analysis\n\n**Yes, there is a critical issue related to missing access controls on the `approve` function.**\n\nThe `approve` function in the `PathToken` contract (lines 228-232) has no access... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - Check for missing access controls on critical func...",
+          "Location": "Task 12: Check for missing access controls on critical functions (e.g., `approve`).",
+          "Severity": "High"
+        },
+        {
+          "Description": "## Audit Report: SafeMath Arithmetic Operations Review\n\n### 1. Issue Analysis\n\n**Yes**, there is a critical issue related to the SafeMath audit task. The contract `PathToken` contains multiple arithme... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Review all arithmetic operations using SafeMath to...",
+          "Location": "Task 6: Review all arithmetic operations using SafeMath to ensure proper usage.",
+          "Severity": "High"
+        },
+        {
+          "Description": "Based on my analysis of the provided smart contract code and the specific audit task to check non-SafeMath operations, here are my detailed findings:\n\n## 1. Issue Analysis\n\n**Yes, there are issues rel... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Check non-SafeMath operations (e.g., `balanceOf[_f...",
+          "Location": "Task 7: Check non-SafeMath operations (e.g., `balanceOf[_from] -= _value` in `transferFrom`).",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Report: Total Supply Calculations and Distribution Logic Validation\n\n**Audit Task:** Validate total supply calculations and distribution logic  \n**Priority:** Medium  \n**Contract:** PathToken... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Validate total supply calculations and distributio...",
+          "Location": "Task 8: Validate total supply calculations and distribution logic.",
+          "Severity": "High"
+        },
+        {
+          "Description": "**Audit Report: Owner Assignment via `tx.origin` in Constructor**\n\n**1. Issue Analysis**\nYes, there is a significant issue related to this audit task. The `PathToken` contract assigns the `owner` stat... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential medium impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Audit owner assignment via `tx.origin` in construc...",
+          "Location": "Task 10: Audit owner assignment via `tx.origin` in constructor for vulnerabilities.",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "## Audit Report: `onlyOwner` Function Access Control Review\n\n**Contract:** PathToken  \n**Audit Task:** Ensure `onlyOwner` functions (`delegate`, `distribute`, `list`) cannot be called by unauthorized ... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "Medium Priority Security Issue - Ensure `onlyOwner` functions (`delegate`, `distrib...",
+          "Location": "Task 11: Ensure `onlyOwner` functions (`delegate`, `distribute`, `list`) cannot be called by unauthorized parties.",
+          "Severity": "High"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "## **Reentrancy Analysis Report for PathToken Contract**\n\n### **1. Issue Analysis**\n**Yes, there is a potential reentrancy vulnerability** in the `transferFrom` function of the `PathToken` contract. T... This issue appears in both the smart contract code and static analysis results.",
+          "Impact": "Potential high impact on contract security and functionality.",
+          "Issue": "High Priority Security Issue - **Reentrancy Analysis**...",
+          "Location": "Task 1: **Reentrancy Analysis**",
+          "Severity": "High"
+        }
+      },
+      "full_report": "",
+      "model_used": "deepseek_school",
+      "session_id": "45d4355a-5359-4fa6-9d25-e7144b671068",
+      "severity_breakdown": {
+        "High": 9,
+        "Low": 1,
+        "Medium": 2
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107",
+        "SWC-115"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 5.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": [
+          "kw:tx.origin",
+          "re:tx\\.origin"
+        ]
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0), SWC-115(5.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107",
+      "SWC-115"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107",
+      "SWC-115"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107|SWC-115",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 is applicable due to multiple reentrancy vulnerabilities in transferFrom, list, and distribute functions. SWC-107 applies because the checkBots modifier makes external calls before state updates, violating Checks-Effects-Interactions. SWC-115 is relevant as the delegate function contains a critical delegatecall vulnerability allowing unauthorized state modifications. Evidence: Reentrancy found in transferFrom, list, distribute functions (Finding 3); checkBots modifier calls botProtection before state updates (Finding 4); delegate function has delegatecall vulnerability (Finding 3)",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 5.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": [\"kw:tx.origin\", \"re:tx\\\\.origin\"]}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Reentrancy found in transferFrom, list, distribute functions (Finding 3)\", \"checkBots modifier calls botProtection before state updates (Finding 4)\", \"delegate function has delegatecall vulnerability (Finding 3)\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to multiple reentrancy vulnerabilities in transferFrom, list, and distribute functions. SWC-107 applies because the checkBots modifier makes external calls before state updates, violating Checks-Effects-Interactions. SWC-115 is relevant as the delegate function contains a critical delegatecall vulnerability allowing unauthorized state modifications.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Reentrancy found in transferFrom, list, distribute functions (Finding 3)\\\",\\n    \\\"checkBots modifier calls botProtection before state updates (Finding 4)\\\",\\n    \\\"delegate function has delegatecall vulnerability (Finding 3)\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to multiple reentrancy vulnerabilities in transferFrom, list, and distribute functions. SWC-107 applies because the checkBots modifier makes external calls before state updates, violating Checks-Effects-Interactions. SWC-115 is relevant as the delegate function contains a critical delegatecall vulnerability allowing unauthorized state modifications.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 is applicable due to multiple reentrancy vulnerabilities in transferFrom, list, and distribute functions. SWC-107 applies because the checkBots modifier makes external calls before state updates, violating Checks-Effects-Interactions. SWC-115 is relevant as the delegate function contains a critical delegatecall vulnerability allowing unauthorized state modifications.",
+      "evidence": [
+        "Reentrancy found in transferFrom, list, distribute functions (Finding 3)",
+        "checkBots modifier calls botProtection before state updates (Finding 4)",
+        "delegate function has delegatecall vulnerability (Finding 3)"
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 is applicable due to multiple reentrancy vulnerabilities in transferFrom, list, and distribute functions. SWC-107 applies because the checkBots modifier makes external calls before state updates, violating Checks-Effects-Interactions. SWC-115 is relevant as the delegate function contains a critical delegatecall vulnerability allowing unauthorized state modifications.\",\n  \"evidence\": [\n    \"Reentrancy found in transferFrom, list, distribute functions (Finding 3)\",\n    \"checkBots modifier calls botProtection before state updates (Finding 4)\",\n    \"delegate function has delegatecall vulnerability (Finding 3)\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "45d4355a-5359-4fa6-9d25-e7144b671068",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 12,
+        "full_report_chars": 0,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

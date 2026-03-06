@@ -1,0 +1,179 @@
+# Smart Contract Audit Plan: SwapEncryption
+
+**Contract Address:** [To Be Determined]
+**Compiler Version:** Solidity 0.4.18
+**Audit Scope:** Full Security, Logic, and Compliance Review
+**Auditor Role:** Senior Smart Contract Security Auditor
+
+---
+
+## 1. Security Vulnerability Assessment
+
+**Objective:** Identify and validate critical security flaws, focusing on the deprecated compiler version and identified logic errors.
+
+1.  **Validate `EncryptedSwap` Inflation Vulnerability**
+    *   **Action:** Deploy the contract to a testnet. Fund an address with 0 token balance.
+    *   **Task:** Call `EncryptedSwap` from the `bot` or `keeper` address, setting `fromAddress` to the zero-balance account and `amount` > 0.
+    *   **Expected Result:** Transaction should revert.
+    *   **Actual Result Verification:** Confirm if tokens are minted to `toAddress` without deduction from `fromAddress`, validating the inflation bug.
+
+2.  **Analyze Reentrancy in `ResetConfiguration`**
+    *   **Action:** Create a malicious `IBOT` mock contract.
+    *   **Task:** Implement `ShowConfiguration()` in the mock to call back into `SwapEncryption` (e.g., calling `ResetKeeper`) before the original function finishes updating state.
+    *   **Verification:** Determine if state variables (`bot`, `keeper`, `weth`) can be left in an inconsistent state or if the attacker can escalate privileges during the external call.
+
+3.  **Inspect External Call Return Values (`Release`)**
+    *   **Action:** Deploy a mock ERC-20 token that returns `false` on `transfer` but does not revert (e.g., legacy tokens).
+    *   **Task:** Call `Release` with this token address.
+    *   **Verification:** Confirm if `SwapEncryption` returns `true` despite the underlying transfer failing. Check if funds remain stuck in the contract.
+
+4.  **Assess Compiler Version Risks (0.4.18)**
+    *   **Action:** Review code for patterns known to be buggy in Solidity 0.4.x (e.g., ABI encoding issues, optimizer bugs).
+    *   **Task:** Specifically check the `constructor` decoding of the `IBOT` return tuple. Ensure the tuple order matches the interface exactly to prevent storage collision.
+    *   **Verification:** Confirm if upgrading to 0.8.x+ is feasible without breaking logic, noting that SafeMath is manual in 0.4.18.
+
+5.  **Evaluate Access Control Centralization**
+    *   **Action:** Review `BotPower` modifier usage.
+    *   **Task:** Verify if `bot` or `keeper` can transfer their privileges to an EOA that is subsequently compromised.
+    *   **Verification:** Check if `ResetBot` and `ResetKeeper` allow setting the address to `address(0)` (blocked by require) or to the same address (redundant).
+
+6.  **Check for Front-Running Vectors**
+    *   **Action:** Analyze `ResetConfiguration` and `ResetWETHContracts`.
+    *   **Task:** Simulate a scenario where `weth[0]` is changed publicly.
+    *   **Verification:** Determine if a user can front-run a `ResetWETHContracts` call to manipulate `totalSupply` calculations for their benefit before the change settles.
+
+---
+
+## 2. Business Logic Validation
+
+**Objective:** Ensure the contract behaves according to its intended economic model and state management rules.
+
+7.  **Verify `totalSupply` Consistency**
+    *   **Action:** Monitor `totalSupply()` output while changing `weth[0]` ETH balance.
+    *   **Task:** Send ETH to the address stored in `weth[0]`.
+    *   **Verification:** Confirm `totalSupply` increases by `ETH_Amount * 1,000,000,000`. Assess if this dynamic supply breaks ERC-20 assumptions for exchanges or wallets.
+
+8.  **Validate `transferFrom` Allowance Logic**
+    *   **Action:** Test standard ERC-20 allowance flow.
+    *   **Task:** Set allowance to `X`. Call `transferFrom` for `X + 1`.
+    *   **Verification:** Ensure transaction reverts. Then call for `X`. Ensure allowance becomes 0 (unless set to `uint(-1)`).
+
+9.  **Test Initialization Integrity**
+    *   **Action:** Deploy with a malicious or malfunctioning `IBOT` address.
+    *   **Task:** Attempt deployment where `IBOT(addr).ShowConfiguration()` reverts or returns empty addresses.
+    *   **Verification:** Confirm the constructor reverts properly and does not deploy a contract with uninitialized admin addresses.
+
+10. **Audit Admin Function Side-Effects**
+    *   **Action:** Review `ResetName`, `ResetSymbol`, and `ResetWETHContracts`.
+    *   **Task:** Call these functions and check if they inadvertently affect balance mappings or allowances.
+    *   **Verification:** Ensure metadata changes do not impact token ownership or transferability.
+
+11. **Validate Zero-Address Protections**
+    *   **Action:** Test boundary conditions on admin functions.
+    *   **Task:** Attempt to `ResetBot` or `ResetKeeper` to `address(0)`.
+    *   **Verification:** Confirm `require` statements prevent this. Attempt to `Release` tokens to `address(0)`.
+
+---
+
+## 3. Gas Optimization Analysis
+
+**Objective:** Identify unnecessary gas costs and storage inefficiencies.
+
+12. **Analyze `totalSupply` Gas Cost**
+    *   **Action:** Measure gas usage of `totalSupply()`.
+    *   **Task:** Note that `weth[0].balance` requires an external `BALANCE` opcode.
+    *   **Verification:** Document the gas cost implication for off-chain callers (wallets/exchanges) polling this function frequently.
+
+13. **Review Storage Slot Usage (`weth` Array)**
+    *   **Action:** Inspect `address[3] public weth`.
+    *   **Task:** Verify usage of `weth[1]` and `weth[2]`.
+    *   **Verification:** If unused, recommend removing them to save deployment gas and storage slots.
+
+14. **Optimize `transfer` Function**
+    *   **Action:** Review `transfer` calling `transferFrom`.
+    *   **Task:** Analyze stack depth and opcode cost.
+    *   **Verification:** Recommend refactoring `transfer` to directly modify balances if `msg.sender` is the source, bypassing the allowance check logic in `transferFrom`.
+
+15. **Check Function Visibility**
+    *   **Action:** Review all public functions.
+    *   **Task:** Identify functions that are never called internally (e.g., `approve`, `transfer`).
+    *   **Verification:** Recommend changing `public` to `external` where applicable to save calldata copying gas.
+
+---
+
+## 4. Standards Compliance
+
+**Objective:** Ensure compatibility with ERC-20 standards and general best practices.
+
+16. **Verify ERC-20 Event Emissions**
+    *   **Action:** Trigger `transfer`, `transferFrom`, and `approve`.
+    *   **Task:** Check logs for `Transfer` and `Approval` events.
+    *   **Verification:** Ensure parameters match the ERC-20 specification (indexed arguments).
+
+17. **Audit Admin Event Logging**
+    *   **Action:** Trigger `Release`, `ResetBot`, `ResetKeeper`, `ResetConfiguration`.
+    *   **Task:** Check transaction logs.
+    *   **Verification:** Confirm absence of events (as noted in initial analysis). **Task:** Draft new event definitions for these actions to improve off-chain auditability.
+
+18. **Validate Mutable Metadata**
+    *   **Action:** Review `name` and `symbol` mutability.
+    *   **Task:** Call `ResetName` and `ResetSymbol`.
+    *   **Verification:** Note that standard ERC-20 tokens usually have immutable metadata. Document this deviation as a compliance risk for integrations.
+
+19. **Check `decimals` Consistency**
+    *   **Action:** Verify `decimals` is 18.
+    *   **Task:** Confirm `totalSupply` multiplier (`1000000000`) aligns with 18 decimals.
+    *   **Verification:** `1e9 * ETH_BALANCE` suggests a specific peg. Ensure this is documented, as it is non-standard.
+
+---
+
+## 5. Specific Test Scenarios
+
+**Objective:** Execute targeted attacks and boundary tests to confirm resilience.
+
+20. **Simulation: The "Free Token" Exploit**
+    *   **Scenario:** `bot` account wants to inflate supply.
+    *   **Steps:**
+        1.  Create Address A (0 balance).
+        2.  Create Address B.
+        3.  `bot` calls `EncryptedSwap(A, B, 1000)`.
+    *   **Pass Condition:** Contract prevents this (reverts).
+    *   **Fail Condition:** Address B receives 1000 tokens; Total Supply discrepancy noted.
+
+21. **Simulation: The "Stuck Funds" Scenario**
+    *   **Scenario:** Contract holds USDT (returns false on failure).
+    *   **Steps:**
+        1.  Send USDT to `SwapEncryption`.
+        2.  `bot` calls `Release(USDT, Attacker, Amount)`.
+        3.  Mock USDT returns `false`.
+    *   **Pass Condition:** `Release` reverts or returns `false`.
+    *   **Fail Condition:** `Release` returns `true`, funds remain stuck.
+
+22. **Simulation: Reentrancy on Configuration Reset**
+    *   **Scenario:** Attacker controls `IBOT` contract.
+    *   **Steps:**
+        1.  `bot` calls `ResetConfiguration(AttackerContract)`.
+        2.  `AttackerContract.ShowConfiguration()` calls `ResetKeeper(Attacker)` on `SwapEncryption`.
+    *   **Pass Condition:** Transaction reverts or state remains consistent.
+    *   **Fail Condition:** Attacker becomes `keeper` before original transaction completes.
+
+23. **Simulation: `totalSupply` Manipulation**
+    *   **Scenario:** Admin changes `weth[0]`.
+    *   **Steps:**
+        1.  Record `totalSupply`.
+        2.  `bot` calls `ResetWETHContracts` pointing to a whale address.
+        3.  Record new `totalSupply`.
+    *   **Pass Condition:** Supply changes reflect the new address balance.
+    *   **Risk Assessment:** Document the potential for misleading supply metrics if `weth[0]` is set to an address with arbitrary ETH.
+
+24. **Integration Test: Exchange Deposit/Withdrawal**
+    *   **Scenario:** List token on a test exchange.
+    *   **Steps:**
+        1.  Deposit tokens to exchange.
+        2.  Withdraw tokens from exchange.
+    *   **Verification:** Ensure the dynamic `totalSupply` does not cause the exchange's wallet balancing logic to fail.
+
+---
+
+**Audit Deliverable:**
+Upon completion of these tasks, a final report will be generated categorizing findings by severity (Critical, High, Medium, Low, Informational) with specific code snippets and remediation recommendations for each failed task.

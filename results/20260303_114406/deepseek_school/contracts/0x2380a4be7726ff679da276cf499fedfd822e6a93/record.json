@@ -1,0 +1,237 @@
+{
+  "address": "0x2380a4be7726ff679da276cf499fedfd822e6a93",
+  "session_id": "26f3d72a-64b3-42fd-96b4-b887e65447f0",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101",
+  "pred_swc_count": 1,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The SWC-101 label is reasonable because the contract contains multiple integer arithmetic issues without proper safeguards. These include unprotected subtraction in undoFee that could underflow and boundary condition vulnerabilities with uint128 maximum values. Evidence: Integer underflow in undoFee function due to unprotected subtraction; Boundary condition vulnerability with maximum uint128 values in setFeeRate; Incomplete SafeMath protection in critical arithmetic operations",
+  "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Integer underflow in undoFee function due to unprotected subtraction\", \"Boundary condition vulnerability with maximum uint128 values in setFeeRate\", \"Incomplete SafeMath protection in critical arithmetic operations\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is reasonable because the contract contains multiple integer arithmetic issues without proper safeguards. These include unprotected subtraction in undoFee that could underflow and boundary condition vulnerabilities with uint128 maximum values.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Integer underflow in undoFee function due to unprotected subtraction\\\",\\n    \\\"Boundary condition vulnerability with maximum uint128 values in setFeeRate\\\",\\n    \\\"Incomplete SafeMath protection in critical arithmetic operations\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is reasonable because the contract contains multiple integer arithmetic issues without proper safeguards. These include unprotected subtraction in undoFee that could underflow and boundary condition vulnerabilities with uint128 maximum values.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 2285,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x2380a4be7726ff679da276cf499fedfd822e6a93/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 5,
+  "execution_time": 1675.4552903175354,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x2380a4be7726ff679da276cf499fedfd822e6a93",
+    "model": "deepseek_school",
+    "session_id": "26f3d72a-64b3-42fd-96b4-b887e65447f0",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Missing Zero Address Check in Constructor",
+        "Severity": "Medium",
+        "Description": "The FeeLogic constructor lacks a zero address validation for the recipient_ parameter. This issue appears in both the static analysis results and the smart contract code.",
+        "Impact": "If recipient is set to address(0), all fees will be permanently lost as they would be sent to the zero address.",
+        "Location": "FeeLogic constructor, line ~394; Static analysis result: 'missing-zero-check'"
+      },
+      {
+        "Issue": "Integer Underflow in undoFee Function",
+        "Severity": "High",
+        "Description": "The undoFee function performs unprotected subtraction (_feeRateDen - _feeRateNum) without SafeMath protection. This issue appears in the smart contract code only.",
+        "Impact": "Potential underflow could cause incorrect fee calculations, transaction reversions, or protocol inconsistency in fee handling.",
+        "Location": "FeeLogic.undoFee() function, line ~191"
+      },
+      {
+        "Issue": "Division by Zero Vulnerability in undoFee",
+        "Severity": "Medium",
+        "Description": "The undoFee function could encounter division by zero if _feeRateDen equals _feeRateNum. This issue appears in the smart contract code only.",
+        "Impact": "Could permanently disable fee reversal functionality and cause transaction reverts.",
+        "Location": "FeeLogic.undoFee() function, line ~191"
+      },
+      {
+        "Issue": "Incomplete SafeMath Protection",
+        "Severity": "Medium",
+        "Description": "SafeMath protections are inconsistently applied. Critical arithmetic operations in setFeeRate and undoFee functions lack proper SafeMath safeguards. This issue appears in the smart contract code only.",
+        "Impact": "Potential for arithmetic overflows/underflows leading to incorrect fee calculations and potential fund loss scenarios.",
+        "Location": "setFeeRate() function (line ~402) and undoFee() function (line ~191)"
+      },
+      {
+        "Issue": "Boundary Condition Vulnerability with Maximum uint128 Values",
+        "Severity": "Medium",
+        "Description": "The setFeeRate function doesn't properly handle maximum uint128 values (2^128-1), which could lead to underflow in undoFee calculations. This issue appears in the smart contract code only.",
+        "Impact": "Permanent denial of service for undoFee functionality and potential cascading failures in dependent contracts.",
+        "Location": "setFeeRate() function (line ~410) and undoFee() function (line ~220)"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T16:35:44.580177",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "26f3d72a-64b3-42fd-96b4-b887e65447f0",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-vi5nkp2s/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.6.0",
+            "0.7.6",
+            "0.7.0"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1675.4552903175354,
+        "total_tasks": 12
+      },
+      "execution_time": 1675.4552903175354,
+      "finding_number": 5,
+      "findings": [
+        {
+          "Description": "The FeeLogic constructor lacks a zero address validation for the recipient_ parameter. This issue appears in both the static analysis results and the smart contract code.",
+          "Impact": "If recipient is set to address(0), all fees will be permanently lost as they would be sent to the zero address.",
+          "Issue": "Missing Zero Address Check in Constructor",
+          "Location": "FeeLogic constructor, line ~394; Static analysis result: 'missing-zero-check'",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The undoFee function performs unprotected subtraction (_feeRateDen - _feeRateNum) without SafeMath protection. This issue appears in the smart contract code only.",
+          "Impact": "Potential underflow could cause incorrect fee calculations, transaction reversions, or protocol inconsistency in fee handling.",
+          "Issue": "Integer Underflow in undoFee Function",
+          "Location": "FeeLogic.undoFee() function, line ~191",
+          "Severity": "High"
+        },
+        {
+          "Description": "The undoFee function could encounter division by zero if _feeRateDen equals _feeRateNum. This issue appears in the smart contract code only.",
+          "Impact": "Could permanently disable fee reversal functionality and cause transaction reverts.",
+          "Issue": "Division by Zero Vulnerability in undoFee",
+          "Location": "FeeLogic.undoFee() function, line ~191",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "SafeMath protections are inconsistently applied. Critical arithmetic operations in setFeeRate and undoFee functions lack proper SafeMath safeguards. This issue appears in the smart contract code only.",
+          "Impact": "Potential for arithmetic overflows/underflows leading to incorrect fee calculations and potential fund loss scenarios.",
+          "Issue": "Incomplete SafeMath Protection",
+          "Location": "setFeeRate() function (line ~402) and undoFee() function (line ~191)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The setFeeRate function doesn't properly handle maximum uint128 values (2^128-1), which could lead to underflow in undoFee calculations. This issue appears in the smart contract code only.",
+          "Impact": "Permanent denial of service for undoFee functionality and potential cascading failures in dependent contracts.",
+          "Issue": "Boundary Condition Vulnerability with Maximum uint128 Values",
+          "Location": "setFeeRate() function (line ~410) and undoFee() function (line ~220)",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The FeeLogic constructor lacks a zero address validation for the recipient_ parameter. This issue appears in both the static analysis results and the smart contract code.",
+          "Impact": "If recipient is set to address(0), all fees will be permanently lost as they would be sent to the zero address.",
+          "Issue": "Missing Zero Address Check in Constructor",
+          "Location": "FeeLogic constructor, line ~394; Static analysis result: 'missing-zero-check'",
+          "Severity": "Medium"
+        }
+      },
+      "full_report": "[{\"Issue\":\"Missing Zero Address Check in Constructor\",\"Severity\":\"Medium\",\"Description\":\"The FeeLogic constructor lacks a zero address validation for the recipient_ parameter. This issue appears in both the static analysis results and the smart contract code.\",\"Impact\":\"If recipient is set to address(0), all fees will be permanently lost as they would be sent to the zero address.\",\"Location\":\"FeeLogic constructor, line ~394; Static analysis result: 'missing-zero-check'\"},{\"Issue\":\"Integer Underflow in undoFee Function\",\"Severity\":\"High\",\"Description\":\"The undoFee function performs unprotected subtraction (_feeRateDen - _feeRateNum) without SafeMath protection. This issue appears in the smart contract code only.\",\"Impact\":\"Potential underflow could cause incorrect fee calculations, transaction reversions, or protocol inconsistency in fee handling.\",\"Location\":\"FeeLogic.undoFee() function, line ~191\"},{\"Issue\":\"Division by Zero Vulnerability in undoFee\",\"Severity\":\"Medium\",\"Description\":\"The undoFee function could encounter division by zero if _feeRateDen equals _feeRateNum. This issue appears in the smart contract code only.\",\"Impact\":\"Could permanently disable fee reversal functionality and cause transaction reverts.\",\"Location\":\"FeeLogic.undoFee() function, line ~191\"},{\"Issue\":\"Incomplete SafeMath Protection\",\"Severity\":\"Medium\",\"Description\":\"SafeMath protections are inconsistently applied. Critical arithmetic operations in setFeeRate and undoFee functions lack proper SafeMath safeguards. This issue appears in the smart contract code only.\",\"Impact\":\"Potential for arithmetic overflows/underflows leading to incorrect fee calculations and potential fund loss scenarios.\",\"Location\":\"setFeeRate() function (line ~402) and undoFee() function (line ~191)\"},{\"Issue\":\"Boundary Condition Vulnerability with Maximum uint128 Values\",\"Severity\":\"Medium\",\"Description\":\"The setFeeRate function doesn't properly handle maximum uint128 values (2^128-1), which could lead to underflow in undoFee calculations. This issue appears in the smart contract code only.\",\"Impact\":\"Permanent denial of service for undoFee functionality and potential cascading failures in dependent contracts.\",\"Location\":\"setFeeRate() function (line ~410) and undoFee() function (line ~220)\"}]",
+      "model_used": "deepseek_school",
+      "session_id": "26f3d72a-64b3-42fd-96b4-b887e65447f0",
+      "severity_breakdown": {
+        "High": 1,
+        "Low": 0,
+        "Medium": 4
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 5.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 0.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(5.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101"
+    ],
+    "pred_swc_list": "SWC-101",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The SWC-101 label is reasonable because the contract contains multiple integer arithmetic issues without proper safeguards. These include unprotected subtraction in undoFee that could underflow and boundary condition vulnerabilities with uint128 maximum values. Evidence: Integer underflow in undoFee function due to unprotected subtraction; Boundary condition vulnerability with maximum uint128 values in setFeeRate; Incomplete SafeMath protection in critical arithmetic operations",
+    "rule_scores_json": "{\"SWC-101\": 5.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 0.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Integer underflow in undoFee function due to unprotected subtraction\", \"Boundary condition vulnerability with maximum uint128 values in setFeeRate\", \"Incomplete SafeMath protection in critical arithmetic operations\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The SWC-101 label is reasonable because the contract contains multiple integer arithmetic issues without proper safeguards. These include unprotected subtraction in undoFee that could underflow and boundary condition vulnerabilities with uint128 maximum values.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Integer underflow in undoFee function due to unprotected subtraction\\\",\\n    \\\"Boundary condition vulnerability with maximum uint128 values in setFeeRate\\\",\\n    \\\"Incomplete SafeMath protection in critical arithmetic operations\\\"\\n  ]\\n}\", \"reason\": \"The SWC-101 label is reasonable because the contract contains multiple integer arithmetic issues without proper safeguards. These include unprotected subtraction in undoFee that could underflow and boundary condition vulnerabilities with uint128 maximum values.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The SWC-101 label is reasonable because the contract contains multiple integer arithmetic issues without proper safeguards. These include unprotected subtraction in undoFee that could underflow and boundary condition vulnerabilities with uint128 maximum values.",
+      "evidence": [
+        "Integer underflow in undoFee function due to unprotected subtraction",
+        "Boundary condition vulnerability with maximum uint128 values in setFeeRate",
+        "Incomplete SafeMath protection in critical arithmetic operations"
+      ],
+      "raw": "{\n  \"reason\": \"The SWC-101 label is reasonable because the contract contains multiple integer arithmetic issues without proper safeguards. These include unprotected subtraction in undoFee that could underflow and boundary condition vulnerabilities with uint128 maximum values.\",\n  \"evidence\": [\n    \"Integer underflow in undoFee function due to unprotected subtraction\",\n    \"Boundary condition vulnerability with maximum uint128 values in setFeeRate\",\n    \"Incomplete SafeMath protection in critical arithmetic operations\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "26f3d72a-64b3-42fd-96b4-b887e65447f0",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 5,
+        "full_report_chars": 2285,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

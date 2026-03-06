@@ -1,0 +1,310 @@
+{
+  "address": "0x000000e45ffaab3552f1eba4b2799b6803322c12",
+  "session_id": "bddd20c9-c66e-4318-882f-9a9bfcd07f3e",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract violates SWC-101 with an unsafe external call in constructor and SWC-107 due to reentrancy in Release function where external transfer occurs before state changes. These patterns enable malicious initialization and fund drainage through reentrancy attacks. Evidence: Constructor calls IBOT(addr).ShowConfiguration() without validation (Finding 5); Release function performs ERC20 transfer before state updates (Finding 1); Both vulnerabilities allow external control flow manipulation",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Constructor calls IBOT(addr).ShowConfiguration() without validation (Finding 5)\", \"Release function performs ERC20 transfer before state updates (Finding 1)\", \"Both vulnerabilities allow external control flow manipulation\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract violates SWC-101 with an unsafe external call in constructor and SWC-107 due to reentrancy in Release function where external transfer occurs before state changes. These patterns enable malicious initialization and fund drainage through reentrancy attacks.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Constructor calls IBOT(addr).ShowConfiguration() without validation (Finding 5)\\\",\\n    \\\"Release function performs ERC20 transfer before state updates (Finding 1)\\\",\\n    \\\"Both vulnerabilities allow external control flow manipulation\\\"\\n  ]\\n}\", \"reason\": \"The contract violates SWC-101 with an unsafe external call in constructor and SWC-107 due to reentrancy in Release function where external transfer occurs before state changes. These patterns enable malicious initialization and fund drainage through reentrancy attacks.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 5138,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_232459/deepseek_school/contracts/0x000000e45ffaab3552f1eba4b2799b6803322c12/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 10,
+  "execution_time": 1280.9355669021606,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x000000e45ffaab3552f1eba4b2799b6803322c12",
+    "model": "deepseek_school",
+    "session_id": "bddd20c9-c66e-4318-882f-9a9bfcd07f3e",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Critical Reentrancy Vulnerability in Release Function",
+        "Severity": "High",
+        "Description": "This issue appears in the smart contract code only. The Release function performs an external ERC20 transfer call before any state changes, violating Checks-Effects-Interactions pattern and allowing malicious tokens to re-enter and drain contract funds.",
+        "Impact": "Complete loss of all ERC20 tokens held by the contract through recursive reentrancy attacks if bot or keeper is compromised",
+        "Location": "Function Release(address tkn, address guy, uint amount), lines ~82-87"
+      },
+      {
+        "Issue": "Unsafe Arithmetic in totalSupply Function",
+        "Severity": "High",
+        "Description": "This issue appears in the smart contract code only. The totalSupply function performs multiplication that could overflow despite SafeMath protection, as the arithmetic operation occurs before the SafeMath check.",
+        "Impact": "Potential integer overflow leading to incorrect supply calculations, contract manipulation, and denial of service",
+        "Location": "Function totalSupply(), line ~46-48: return mul(weth[0].balance,1000000000)"
+      },
+      {
+        "Issue": "Privilege Escalation via Mutual Role Control",
+        "Severity": "High",
+        "Description": "This issue appears in the smart contract code only. Both bot and keeper roles can reset each other's addresses without timelock or multi-sig requirements, creating circular dependency and privilege escalation risk.",
+        "Impact": "Complete administrative takeover if either privileged role is compromised, enabling fund theft and contract manipulation",
+        "Location": "Functions ResetKeeper() and ResetBot(), both protected by BotPower modifier"
+      },
+      {
+        "Issue": "Inadequate Access Control in EncryptedSwap Function",
+        "Severity": "High",
+        "Description": "This issue appears in the smart contract code only. The EncryptedSwap function allows privileged roles to transfer tokens between any addresses without authorization checks, bypassing standard ERC20 allowance mechanisms.",
+        "Impact": "Arbitrary token theft from any user if bot or keeper roles are compromised or act maliciously",
+        "Location": "Function EncryptedSwap(address fromAddress, address toAddress, uint amount), lines ~78-85"
+      },
+      {
+        "Issue": "Unsafe External Call in Constructor",
+        "Severity": "Medium",
+        "Description": "This issue appears in the smart contract code only. The constructor makes an external call to an arbitrary IBOT address without validation, allowing malicious initialization if deployer is tricked or address is compromised.",
+        "Impact": "Contract could be initialized with malicious configuration, granting attacker control over privileged roles and WETH addresses",
+        "Location": "Constructor: IBOT(addr).ShowConfiguration() call without validation"
+      },
+      {
+        "Issue": "ERC-20 Approve Race Condition Vulnerability",
+        "Severity": "Medium",
+        "Description": "This issue appears in the smart contract code only. The approve function is vulnerable to front-running attacks where spenders can exploit pending approval transactions to steal allowances.",
+        "Impact": "Users could lose funds if attackers front-run allowance reduction transactions to steal the difference between old and new allowances",
+        "Location": "Function approve(address guy, uint wad), lines ~44-48"
+      },
+      {
+        "Issue": "Outdated Solidity Version with Known Vulnerabilities",
+        "Severity": "Medium",
+        "Description": "This issue appears in the smart contract code only. The contract uses Solidity 0.4.18 which lacks modern security features, built-in overflow protection, and is no longer supported.",
+        "Impact": "Increased vulnerability to various attack vectors, lack of compiler-level protections, and compatibility issues with modern tooling",
+        "Location": "Pragma directive: pragma solidity ^0.4.18"
+      },
+      {
+        "Issue": "Inconsistent SafeMath Usage",
+        "Severity": "Medium",
+        "Description": "This issue appears in the smart contract code only. While SafeMath functions are implemented, they are not consistently used in all arithmetic operations, particularly in the totalSupply calculation.",
+        "Impact": "Potential arithmetic vulnerabilities in specific code paths that bypass SafeMath protections",
+        "Location": "totalSupply() function and other arithmetic operations throughout contract"
+      },
+      {
+        "Issue": "Lack of Input Validation in Privileged Functions",
+        "Severity": "Medium",
+        "Description": "This issue appears in the smart contract code only. Multiple functions with BotPower modifier lack proper input validation for addresses and parameters, increasing attack surface.",
+        "Impact": "Potential contract manipulation, invalid state, or denial of service through malicious inputs",
+        "Location": "Various functions including ResetConfiguration, ResetWETHContracts, and others using BotPower modifier"
+      },
+      {
+        "Issue": "Front-running Vulnerability in Administrative Functions",
+        "Severity": "Medium",
+        "Description": "This issue appears in the smart contract code only. Privileged functions lack anti-front-running mechanisms such as deadlines or slippage protection, making them susceptible to manipulation.",
+        "Impact": "Malicious actors could front-run administrative transactions to exploit favorable conditions or disrupt operations",
+        "Location": "All functions protected by BotPower modifier, particularly EncryptedSwap and Release functions"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T23:46:22.356687",
+      "execution_summary": {
+        "completed_tasks": 11,
+        "failed_tasks": 1,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "bddd20c9-c66e-4318-882f-9a9bfcd07f3e",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.18"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '/Users/hh/.solc-select/artifacts/solc-0.4.18/solc-0.4.18 --version' running '/Users/hh/.solc-select/artifacts/solc-0.4.18/solc-0.4.18 <tmp> --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes,compact-format --allow-paths .,<tmp> running Compilation",
+          "status": "failed"
+        },
+        "total_execution_time": 1280.9355669021606,
+        "total_tasks": 12
+      },
+      "execution_time": 1280.9355669021606,
+      "finding_number": 10,
+      "findings": [
+        {
+          "Description": "This issue appears in the smart contract code only. The Release function performs an external ERC20 transfer call before any state changes, violating Checks-Effects-Interactions pattern and allowing malicious tokens to re-enter and drain contract funds.",
+          "Impact": "Complete loss of all ERC20 tokens held by the contract through recursive reentrancy attacks if bot or keeper is compromised",
+          "Issue": "Critical Reentrancy Vulnerability in Release Function",
+          "Location": "Function Release(address tkn, address guy, uint amount), lines ~82-87",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. The totalSupply function performs multiplication that could overflow despite SafeMath protection, as the arithmetic operation occurs before the SafeMath check.",
+          "Impact": "Potential integer overflow leading to incorrect supply calculations, contract manipulation, and denial of service",
+          "Issue": "Unsafe Arithmetic in totalSupply Function",
+          "Location": "Function totalSupply(), line ~46-48: return mul(weth[0].balance,1000000000)",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. Both bot and keeper roles can reset each other's addresses without timelock or multi-sig requirements, creating circular dependency and privilege escalation risk.",
+          "Impact": "Complete administrative takeover if either privileged role is compromised, enabling fund theft and contract manipulation",
+          "Issue": "Privilege Escalation via Mutual Role Control",
+          "Location": "Functions ResetKeeper() and ResetBot(), both protected by BotPower modifier",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. The EncryptedSwap function allows privileged roles to transfer tokens between any addresses without authorization checks, bypassing standard ERC20 allowance mechanisms.",
+          "Impact": "Arbitrary token theft from any user if bot or keeper roles are compromised or act maliciously",
+          "Issue": "Inadequate Access Control in EncryptedSwap Function",
+          "Location": "Function EncryptedSwap(address fromAddress, address toAddress, uint amount), lines ~78-85",
+          "Severity": "High"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. The constructor makes an external call to an arbitrary IBOT address without validation, allowing malicious initialization if deployer is tricked or address is compromised.",
+          "Impact": "Contract could be initialized with malicious configuration, granting attacker control over privileged roles and WETH addresses",
+          "Issue": "Unsafe External Call in Constructor",
+          "Location": "Constructor: IBOT(addr).ShowConfiguration() call without validation",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. The approve function is vulnerable to front-running attacks where spenders can exploit pending approval transactions to steal allowances.",
+          "Impact": "Users could lose funds if attackers front-run allowance reduction transactions to steal the difference between old and new allowances",
+          "Issue": "ERC-20 Approve Race Condition Vulnerability",
+          "Location": "Function approve(address guy, uint wad), lines ~44-48",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. The contract uses Solidity 0.4.18 which lacks modern security features, built-in overflow protection, and is no longer supported.",
+          "Impact": "Increased vulnerability to various attack vectors, lack of compiler-level protections, and compatibility issues with modern tooling",
+          "Issue": "Outdated Solidity Version with Known Vulnerabilities",
+          "Location": "Pragma directive: pragma solidity ^0.4.18",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. While SafeMath functions are implemented, they are not consistently used in all arithmetic operations, particularly in the totalSupply calculation.",
+          "Impact": "Potential arithmetic vulnerabilities in specific code paths that bypass SafeMath protections",
+          "Issue": "Inconsistent SafeMath Usage",
+          "Location": "totalSupply() function and other arithmetic operations throughout contract",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. Multiple functions with BotPower modifier lack proper input validation for addresses and parameters, increasing attack surface.",
+          "Impact": "Potential contract manipulation, invalid state, or denial of service through malicious inputs",
+          "Issue": "Lack of Input Validation in Privileged Functions",
+          "Location": "Various functions including ResetConfiguration, ResetWETHContracts, and others using BotPower modifier",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "This issue appears in the smart contract code only. Privileged functions lack anti-front-running mechanisms such as deadlines or slippage protection, making them susceptible to manipulation.",
+          "Impact": "Malicious actors could front-run administrative transactions to exploit favorable conditions or disrupt operations",
+          "Issue": "Front-running Vulnerability in Administrative Functions",
+          "Location": "All functions protected by BotPower modifier, particularly EncryptedSwap and Release functions",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "This issue appears in the smart contract code only. The Release function performs an external ERC20 transfer call before any state changes, violating Checks-Effects-Interactions pattern and allowing malicious tokens to re-enter and drain contract funds.",
+          "Impact": "Complete loss of all ERC20 tokens held by the contract through recursive reentrancy attacks if bot or keeper is compromised",
+          "Issue": "Critical Reentrancy Vulnerability in Release Function",
+          "Location": "Function Release(address tkn, address guy, uint amount), lines ~82-87",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[{\"Issue\":\"Critical Reentrancy Vulnerability in Release Function\",\"Severity\":\"High\",\"Description\":\"This issue appears in the smart contract code only. The Release function performs an external ERC20 transfer call before any state changes, violating Checks-Effects-Interactions pattern and allowing malicious tokens to re-enter and drain contract funds.\",\"Impact\":\"Complete loss of all ERC20 tokens held by the contract through recursive reentrancy attacks if bot or keeper is compromised\",\"Location\":\"Function Release(address tkn, address guy, uint amount), lines ~82-87\"},{\"Issue\":\"Unsafe Arithmetic in totalSupply Function\",\"Severity\":\"High\",\"Description\":\"This issue appears in the smart contract code only. The totalSupply function performs multiplication that could overflow despite SafeMath protection, as the arithmetic operation occurs before the SafeMath check.\",\"Impact\":\"Potential integer overflow leading to incorrect supply calculations, contract manipulation, and denial of service\",\"Location\":\"Function totalSupply(), line ~46-48: return mul(weth[0].balance,1000000000)\"},{\"Issue\":\"Privilege Escalation via Mutual Role Control\",\"Severity\":\"High\",\"Description\":\"This issue appears in the smart contract code only. Both bot and keeper roles can reset each other's addresses without timelock or multi-sig requirements, creating circular dependency and privilege escalation risk.\",\"Impact\":\"Complete administrative takeover if either privileged role is compromised, enabling fund theft and contract manipulation\",\"Location\":\"Functions ResetKeeper() and ResetBot(), both protected by BotPower modifier\"},{\"Issue\":\"Inadequate Access Control in EncryptedSwap Function\",\"Severity\":\"High\",\"Description\":\"This issue appears in the smart contract code only. The EncryptedSwap function allows privileged roles to transfer tokens between any addresses without authorization checks, bypassing standard ERC20 allowance mechanisms.\",\"Impact\":\"Arbitrary token theft from any user if bot or keeper roles are compromised or act maliciously\",\"Location\":\"Function EncryptedSwap(address fromAddress, address toAddress, uint amount), lines ~78-85\"},{\"Issue\":\"Unsafe External Call in Constructor\",\"Severity\":\"Medium\",\"Description\":\"This issue appears in the smart contract code only. The constructor makes an external call to an arbitrary IBOT address without validation, allowing malicious initialization if deployer is tricked or address is compromised.\",\"Impact\":\"Contract could be initialized with malicious configuration, granting attacker control over privileged roles and WETH addresses\",\"Location\":\"Constructor: IBOT(addr).ShowConfiguration() call without validation\"},{\"Issue\":\"ERC-20 Approve Race Condition Vulnerability\",\"Severity\":\"Medium\",\"Description\":\"This issue appears in the smart contract code only. The approve function is vulnerable to front-running attacks where spenders can exploit pending approval transactions to steal allowances.\",\"Impact\":\"Users could lose funds if attackers front-run allowance reduction transactions to steal the difference between old and new allowances\",\"Location\":\"Function approve(address guy, uint wad), lines ~44-48\"},{\"Issue\":\"Outdated Solidity Version with Known Vulnerabilities\",\"Severity\":\"Medium\",\"Description\":\"This issue appears in the smart contract code only. The contract uses Solidity 0.4.18 which lacks modern security features, built-in overflow protection, and is no longer supported.\",\"Impact\":\"Increased vulnerability to various attack vectors, lack of compiler-level protections, and compatibility issues with modern tooling\",\"Location\":\"Pragma directive: pragma solidity ^0.4.18\"},{\"Issue\":\"Inconsistent SafeMath Usage\",\"Severity\":\"Medium\",\"Description\":\"This issue appears in the smart contract code only. While SafeMath functions are implemented, they are not consistently used in all arithmetic operations, particularly in the totalSupply calculation.\",\"Impact\":\"Potential arithmetic vulnerabilities in specific code paths that bypass SafeMath protections\",\"Location\":\"totalSupply() function and other arithmetic operations throughout contract\"},{\"Issue\":\"Lack of Input Validation in Privileged Functions\",\"Severity\":\"Medium\",\"Description\":\"This issue appears in the smart contract code only. Multiple functions with BotPower modifier lack proper input validation for addresses and parameters, increasing attack surface.\",\"Impact\":\"Potential contract manipulation, invalid state, or denial of service through malicious inputs\",\"Location\":\"Various functions including ResetConfiguration, ResetWETHContracts, and others using BotPower modifier\"},{\"Issue\":\"Front-running Vulnerability in Administrative Functions\",\"Severity\":\"Medium\",\"Description\":\"This issue appears in the smart contract code only. Privileged functions lack anti-front-running mechanisms such as deadlines or slippage protection, making them susceptible to manipulation.\",\"Impact\":\"Malicious actors could front-run administrative transactions to exploit favorable conditions or disrupt operations\",\"Location\":\"All functions protected by BotPower modifier, particularly EncryptedSwap and Release functions\"}]",
+      "model_used": "deepseek_school",
+      "session_id": "bddd20c9-c66e-4318-882f-9a9bfcd07f3e",
+      "severity_breakdown": {
+        "High": 4,
+        "Low": 0,
+        "Medium": 6
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "re:\\boverflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract violates SWC-101 with an unsafe external call in constructor and SWC-107 due to reentrancy in Release function where external transfer occurs before state changes. These patterns enable malicious initialization and fund drainage through reentrancy attacks. Evidence: Constructor calls IBOT(addr).ShowConfiguration() without validation (Finding 5); Release function performs ERC20 transfer before state updates (Finding 1); Both vulnerabilities allow external control flow manipulation",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"re:\\\\boverflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Constructor calls IBOT(addr).ShowConfiguration() without validation (Finding 5)\", \"Release function performs ERC20 transfer before state updates (Finding 1)\", \"Both vulnerabilities allow external control flow manipulation\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract violates SWC-101 with an unsafe external call in constructor and SWC-107 due to reentrancy in Release function where external transfer occurs before state changes. These patterns enable malicious initialization and fund drainage through reentrancy attacks.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Constructor calls IBOT(addr).ShowConfiguration() without validation (Finding 5)\\\",\\n    \\\"Release function performs ERC20 transfer before state updates (Finding 1)\\\",\\n    \\\"Both vulnerabilities allow external control flow manipulation\\\"\\n  ]\\n}\", \"reason\": \"The contract violates SWC-101 with an unsafe external call in constructor and SWC-107 due to reentrancy in Release function where external transfer occurs before state changes. These patterns enable malicious initialization and fund drainage through reentrancy attacks.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract violates SWC-101 with an unsafe external call in constructor and SWC-107 due to reentrancy in Release function where external transfer occurs before state changes. These patterns enable malicious initialization and fund drainage through reentrancy attacks.",
+      "evidence": [
+        "Constructor calls IBOT(addr).ShowConfiguration() without validation (Finding 5)",
+        "Release function performs ERC20 transfer before state updates (Finding 1)",
+        "Both vulnerabilities allow external control flow manipulation"
+      ],
+      "raw": "{\n  \"reason\": \"The contract violates SWC-101 with an unsafe external call in constructor and SWC-107 due to reentrancy in Release function where external transfer occurs before state changes. These patterns enable malicious initialization and fund drainage through reentrancy attacks.\",\n  \"evidence\": [\n    \"Constructor calls IBOT(addr).ShowConfiguration() without validation (Finding 5)\",\n    \"Release function performs ERC20 transfer before state updates (Finding 1)\",\n    \"Both vulnerabilities allow external control flow manipulation\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "bddd20c9-c66e-4318-882f-9a9bfcd07f3e",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 10,
+        "full_report_chars": 5138,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

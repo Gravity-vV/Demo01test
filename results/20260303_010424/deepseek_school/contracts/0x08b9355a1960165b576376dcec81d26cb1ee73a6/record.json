@@ -1,0 +1,295 @@
+{
+  "address": "0x08b9355a1960165b576376dcec81d26cb1ee73a6",
+  "session_id": "cd34206e-6dae-4d3d-9acf-fb510bc04893",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "The contract contains multiple arithmetic operations without overflow protection (SWC-101) and violates checks-effects-interactions pattern by transferring funds before state updates (SWC-107). These vulnerabilities enable integer manipulation and reentrancy attacks that could drain all contract funds. Evidence: Integer overflow/underflow in processKick(), setShares(), and kickerCount increments without SafeMath; pullShares(), clear(), and airDrop() transfer ETH before updating state variables; Multiple .transfer() calls lack success checks, risking locked funds after state changes",
+  "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Integer overflow/underflow in processKick(), setShares(), and kickerCount increments without SafeMath\", \"pullShares(), clear(), and airDrop() transfer ETH before updating state variables\", \"Multiple .transfer() calls lack success checks, risking locked funds after state changes\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple arithmetic operations without overflow protection (SWC-101) and violates checks-effects-interactions pattern by transferring funds before state updates (SWC-107). These vulnerabilities enable integer manipulation and reentrancy attacks that could drain all contract funds.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Integer overflow/underflow in processKick(), setShares(), and kickerCount increments without SafeMath\\\",\\n    \\\"pullShares(), clear(), and airDrop() transfer ETH before updating state variables\\\",\\n    \\\"Multiple .transfer() calls lack success checks, risking locked funds after state changes\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple arithmetic operations without overflow protection (SWC-101) and violates checks-effects-interactions pattern by transferring funds before state updates (SWC-107). These vulnerabilities enable integer manipulation and reentrancy attacks that could drain all contract funds.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4812,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_010424/deepseek_school/contracts/0x08b9355a1960165b576376dcec81d26cb1ee73a6/report.md",
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 10,
+  "execution_time": 1610.161838054657,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x08b9355a1960165b576376dcec81d26cb1ee73a6",
+    "model": "deepseek_school",
+    "session_id": "cd34206e-6dae-4d3d-9acf-fb510bc04893",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy vulnerability in fund transfer functions",
+        "Severity": "High",
+        "Description": "Multiple functions transfer ETH before updating state variables, violating checks-effects-interactions pattern. Issue appears in the smart contract code only.",
+        "Impact": "Complete drainage of contract funds through recursive reentrancy attacks, theft of all player deposits and winnings",
+        "Location": "pullShares() function (line ~184), clear() function (line ~283), airDrop() function (line ~196)"
+      },
+      {
+        "Issue": "Integer overflow/underflow vulnerabilities in arithmetic operations",
+        "Severity": "High",
+        "Description": "Multiple arithmetic operations performed without overflow protection. Issue appears in the smart contract code only.",
+        "Impact": "Incorrect token/share calculations, potential fund loss or manipulation, contract state corruption",
+        "Location": "processKick() function, setShares() function, storeWinnerShare() function, kickerCount increments"
+      },
+      {
+        "Issue": "Insecure access control mechanisms",
+        "Severity": "High",
+        "Description": "Multiple functions lack proper access control, including unrestricted ownership transfer and unprotected critical functions. Issue appears in the smart contract code only.",
+        "Impact": "Unauthorized fund transfers, contract manipulation, privilege escalation, permanent contract control takeover",
+        "Location": "changeOwner(), changeHouseAddress(), WithdrawFromKickTheCoin.release(), setKtcAddress() functions"
+      },
+      {
+        "Issue": "Unchecked external calls with potential fund loss",
+        "Severity": "High",
+        "Description": "Multiple .transfer() calls without success/failure checking. Issue appears in the smart contract code only.",
+        "Impact": "Permanent fund loss when transfers fail after state changes, locked contract balances, failed payouts to legitimate recipients",
+        "Location": "pullShares(), airDrop(), clear(), release() functions across all contracts"
+      },
+      {
+        "Issue": "Front-running vulnerability in commission reward mechanism",
+        "Severity": "Medium",
+        "Description": "Predictable first and second kicker rewards create economic incentive for front-running. Issue appears in the smart contract code only.",
+        "Impact": "Commission rewards systematically captured by front-runners, unfair playing field, reduced legitimate participation",
+        "Location": "processKick() function (lines ~237-250), setShares() function (lines ~224-232)"
+      },
+      {
+        "Issue": "Block number manipulation vulnerability in game timing",
+        "Severity": "Medium",
+        "Description": "Game logic relies on block.number for critical timing mechanisms. Issue appears in the smart contract code only.",
+        "Impact": "Miners could influence game outcomes, manipulation of sundown grace period timing, unfair advantage to miner-participants",
+        "Location": "kickTheCoin(), isGameActive(), sundown(), clear() functions using block.number comparisons"
+      },
+      {
+        "Issue": "Incorrect winner share calculation and distribution",
+        "Severity": "Medium",
+        "Description": "storeWinnerShare() function incorrectly awards entire pot to last player instead of proper commission distribution. Issue appears in the smart contract code only.",
+        "Impact": "Unfair distribution depriving legitimate commission recipients, undermines game economic model, potential financial losses",
+        "Location": "storeWinnerShare() private function"
+      },
+      {
+        "Issue": "State transition race condition vulnerability",
+        "Severity": "Medium",
+        "Description": "Non-atomic state transition between game phases allows manipulation. Issue appears in the smart contract code only.",
+        "Impact": "Legitimate winners denied winnings, attackers can reset game to prevent payouts, funds can be locked",
+        "Location": "kickTheCoin(), hasWinner(), isGameActive() functions interaction"
+      },
+      {
+        "Issue": "Missing input validation for critical parameters",
+        "Severity": "Medium",
+        "Description": "Multiple functions lack zero-address validation and parameter bounds checking. Issue appears in the smart contract code only.",
+        "Impact": "Critical addresses could be set to zero permanently locking funds, game parameters could be set to unreasonable values",
+        "Location": "changeOwner(), changeHouseAddress(), changeGameParameters(), airDrop() functions"
+      },
+      {
+        "Issue": "Unbounded array growth in factory contract",
+        "Severity": "Medium",
+        "Description": "Arrays grow indefinitely without pagination or limits. Issue appears in the smart contract code only.",
+        "Impact": "Potential gas limit issues, degraded performance, inability to retrieve complete system information",
+        "Location": "KickTheCoinFactory games array and founderToCreatedGames mapping"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T03:07:10.346114",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "session_id": "cd34206e-6dae-4d3d-9acf-fb510bc04893",
+        "static_analysis": {
+          "mode": "auto",
+          "pragma_versions": [
+            "0.4.15"
+          ],
+          "reason": "Slither returned no JSON. Diagnostics: '<tmp> --version' running '<tmp> --version' running",
+          "status": "failed"
+        },
+        "total_execution_time": 1610.161838054657,
+        "total_tasks": 12
+      },
+      "execution_time": 1610.161838054657,
+      "finding_number": 10,
+      "findings": [
+        {
+          "Description": "Multiple functions transfer ETH before updating state variables, violating checks-effects-interactions pattern. Issue appears in the smart contract code only.",
+          "Impact": "Complete drainage of contract funds through recursive reentrancy attacks, theft of all player deposits and winnings",
+          "Issue": "Reentrancy vulnerability in fund transfer functions",
+          "Location": "pullShares() function (line ~184), clear() function (line ~283), airDrop() function (line ~196)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple arithmetic operations performed without overflow protection. Issue appears in the smart contract code only.",
+          "Impact": "Incorrect token/share calculations, potential fund loss or manipulation, contract state corruption",
+          "Issue": "Integer overflow/underflow vulnerabilities in arithmetic operations",
+          "Location": "processKick() function, setShares() function, storeWinnerShare() function, kickerCount increments",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple functions lack proper access control, including unrestricted ownership transfer and unprotected critical functions. Issue appears in the smart contract code only.",
+          "Impact": "Unauthorized fund transfers, contract manipulation, privilege escalation, permanent contract control takeover",
+          "Issue": "Insecure access control mechanisms",
+          "Location": "changeOwner(), changeHouseAddress(), WithdrawFromKickTheCoin.release(), setKtcAddress() functions",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple .transfer() calls without success/failure checking. Issue appears in the smart contract code only.",
+          "Impact": "Permanent fund loss when transfers fail after state changes, locked contract balances, failed payouts to legitimate recipients",
+          "Issue": "Unchecked external calls with potential fund loss",
+          "Location": "pullShares(), airDrop(), clear(), release() functions across all contracts",
+          "Severity": "High"
+        },
+        {
+          "Description": "Predictable first and second kicker rewards create economic incentive for front-running. Issue appears in the smart contract code only.",
+          "Impact": "Commission rewards systematically captured by front-runners, unfair playing field, reduced legitimate participation",
+          "Issue": "Front-running vulnerability in commission reward mechanism",
+          "Location": "processKick() function (lines ~237-250), setShares() function (lines ~224-232)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Game logic relies on block.number for critical timing mechanisms. Issue appears in the smart contract code only.",
+          "Impact": "Miners could influence game outcomes, manipulation of sundown grace period timing, unfair advantage to miner-participants",
+          "Issue": "Block number manipulation vulnerability in game timing",
+          "Location": "kickTheCoin(), isGameActive(), sundown(), clear() functions using block.number comparisons",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "storeWinnerShare() function incorrectly awards entire pot to last player instead of proper commission distribution. Issue appears in the smart contract code only.",
+          "Impact": "Unfair distribution depriving legitimate commission recipients, undermines game economic model, potential financial losses",
+          "Issue": "Incorrect winner share calculation and distribution",
+          "Location": "storeWinnerShare() private function",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Non-atomic state transition between game phases allows manipulation. Issue appears in the smart contract code only.",
+          "Impact": "Legitimate winners denied winnings, attackers can reset game to prevent payouts, funds can be locked",
+          "Issue": "State transition race condition vulnerability",
+          "Location": "kickTheCoin(), hasWinner(), isGameActive() functions interaction",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Multiple functions lack zero-address validation and parameter bounds checking. Issue appears in the smart contract code only.",
+          "Impact": "Critical addresses could be set to zero permanently locking funds, game parameters could be set to unreasonable values",
+          "Issue": "Missing input validation for critical parameters",
+          "Location": "changeOwner(), changeHouseAddress(), changeGameParameters(), airDrop() functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "Arrays grow indefinitely without pagination or limits. Issue appears in the smart contract code only.",
+          "Impact": "Potential gas limit issues, degraded performance, inability to retrieve complete system information",
+          "Issue": "Unbounded array growth in factory contract",
+          "Location": "KickTheCoinFactory games array and founderToCreatedGames mapping",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "Multiple functions transfer ETH before updating state variables, violating checks-effects-interactions pattern. Issue appears in the smart contract code only.",
+          "Impact": "Complete drainage of contract funds through recursive reentrancy attacks, theft of all player deposits and winnings",
+          "Issue": "Reentrancy vulnerability in fund transfer functions",
+          "Location": "pullShares() function (line ~184), clear() function (line ~283), airDrop() function (line ~196)",
+          "Severity": "High"
+        }
+      },
+      "full_report": "[\n  {\n    \"Issue\": \"Reentrancy vulnerability in fund transfer functions\",\n    \"Severity\": \"High\",\n    \"Description\": \"Multiple functions transfer ETH before updating state variables, violating checks-effects-interactions pattern. Issue appears in the smart contract code only.\",\n    \"Impact\": \"Complete drainage of contract funds through recursive reentrancy attacks, theft of all player deposits and winnings\",\n    \"Location\": \"pullShares() function (line ~184), clear() function (line ~283), airDrop() function (line ~196)\"\n  },\n  {\n    \"Issue\": \"Integer overflow/underflow vulnerabilities in arithmetic operations\",\n    \"Severity\": \"High\",\n    \"Description\": \"Multiple arithmetic operations performed without overflow protection. Issue appears in the smart contract code only.\",\n    \"Impact\": \"Incorrect token/share calculations, potential fund loss or manipulation, contract state corruption\",\n    \"Location\": \"processKick() function, setShares() function, storeWinnerShare() function, kickerCount increments\"\n  },\n  {\n    \"Issue\": \"Insecure access control mechanisms\",\n    \"Severity\": \"High\",\n    \"Description\": \"Multiple functions lack proper access control, including unrestricted ownership transfer and unprotected critical functions. Issue appears in the smart contract code only.\",\n    \"Impact\": \"Unauthorized fund transfers, contract manipulation, privilege escalation, permanent contract control takeover\",\n    \"Location\": \"changeOwner(), changeHouseAddress(), WithdrawFromKickTheCoin.release(), setKtcAddress() functions\"\n  },\n  {\n    \"Issue\": \"Unchecked external calls with potential fund loss\",\n    \"Severity\": \"High\",\n    \"Description\": \"Multiple .transfer() calls without success/failure checking. Issue appears in the smart contract code only.\",\n    \"Impact\": \"Permanent fund loss when transfers fail after state changes, locked contract balances, failed payouts to legitimate recipients\",\n    \"Location\": \"pullShares(), airDrop(), clear(), release() functions across all contracts\"\n  },\n  {\n    \"Issue\": \"Front-running vulnerability in commission reward mechanism\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Predictable first and second kicker rewards create economic incentive for front-running. Issue appears in the smart contract code only.\",\n    \"Impact\": \"Commission rewards systematically captured by front-runners, unfair playing field, reduced legitimate participation\",\n    \"Location\": \"processKick() function (lines ~237-250), setShares() function (lines ~224-232)\"\n  },\n  {\n    \"Issue\": \"Block number manipulation vulnerability in game timing\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Game logic relies on block.number for critical timing mechanisms. Issue appears in the smart contract code only.\",\n    \"Impact\": \"Miners could influence game outcomes, manipulation of sundown grace period timing, unfair advantage to miner-participants\",\n    \"Location\": \"kickTheCoin(), isGameActive(), sundown(), clear() functions using block.number comparisons\"\n  },\n  {\n    \"Issue\": \"Incorrect winner share calculation and distribution\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"storeWinnerShare() function incorrectly awards entire pot to last player instead of proper commission distribution. Issue appears in the smart contract code only.\",\n    \"Impact\": \"Unfair distribution depriving legitimate commission recipients, undermines game economic model, potential financial losses\",\n    \"Location\": \"storeWinnerShare() private function\"\n  },\n  {\n    \"Issue\": \"State transition race condition vulnerability\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Non-atomic state transition between game phases allows manipulation. Issue appears in the smart contract code only.\",\n    \"Impact\": \"Legitimate winners denied winnings, attackers can reset game to prevent payouts, funds can be locked\",\n    \"Location\": \"kickTheCoin(), hasWinner(), isGameActive() functions interaction\"\n  },\n  {\n    \"Issue\": \"Missing input validation for critical parameters\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Multiple functions lack zero-address validation and parameter bounds checking. Issue appears in the smart contract code only.\",\n    \"Impact\": \"Critical addresses could be set to zero permanently locking funds, game parameters could be set to unreasonable values\",\n    \"Location\": \"changeOwner(), changeHouseAddress(), changeGameParameters(), airDrop() functions\"\n  },\n  {\n    \"Issue\": \"Unbounded array growth in factory contract\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Arrays grow indefinitely without pagination or limits. Issue appears in the smart contract code only.\",\n    \"Impact\": \"Potential gas limit issues, degraded performance, inability to retrieve complete system information\",\n    \"Location\": \"KickTheCoinFactory games array and founderToCreatedGames mapping\"\n  }\n]",
+      "model_used": "deepseek_school",
+      "session_id": "cd34206e-6dae-4d3d-9acf-fb510bc04893",
+      "severity_breakdown": {
+        "High": 4,
+        "Low": 0,
+        "Medium": 6
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-101",
+        "SWC-107"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 8.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:overflow",
+          "kw:underflow",
+          "re:\\boverflow\\b",
+          "re:\\bunderflow\\b"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-101(8.0), SWC-107(8.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "The contract contains multiple arithmetic operations without overflow protection (SWC-101) and violates checks-effects-interactions pattern by transferring funds before state updates (SWC-107). These vulnerabilities enable integer manipulation and reentrancy attacks that could drain all contract funds. Evidence: Integer overflow/underflow in processKick(), setShares(), and kickerCount increments without SafeMath; pullShares(), clear(), and airDrop() transfer ETH before updating state variables; Multiple .transfer() calls lack success checks, risking locked funds after state changes",
+    "rule_scores_json": "{\"SWC-101\": 8.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:overflow\", \"kw:underflow\", \"re:\\\\boverflow\\\\b\", \"re:\\\\bunderflow\\\\b\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Integer overflow/underflow in processKick(), setShares(), and kickerCount increments without SafeMath\", \"pullShares(), clear(), and airDrop() transfer ETH before updating state variables\", \"Multiple .transfer() calls lack success checks, risking locked funds after state changes\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"The contract contains multiple arithmetic operations without overflow protection (SWC-101) and violates checks-effects-interactions pattern by transferring funds before state updates (SWC-107). These vulnerabilities enable integer manipulation and reentrancy attacks that could drain all contract funds.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Integer overflow/underflow in processKick(), setShares(), and kickerCount increments without SafeMath\\\",\\n    \\\"pullShares(), clear(), and airDrop() transfer ETH before updating state variables\\\",\\n    \\\"Multiple .transfer() calls lack success checks, risking locked funds after state changes\\\"\\n  ]\\n}\", \"reason\": \"The contract contains multiple arithmetic operations without overflow protection (SWC-101) and violates checks-effects-interactions pattern by transferring funds before state updates (SWC-107). These vulnerabilities enable integer manipulation and reentrancy attacks that could drain all contract funds.\"}",
+    "static_tool_used": false,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "The contract contains multiple arithmetic operations without overflow protection (SWC-101) and violates checks-effects-interactions pattern by transferring funds before state updates (SWC-107). These vulnerabilities enable integer manipulation and reentrancy attacks that could drain all contract funds.",
+      "evidence": [
+        "Integer overflow/underflow in processKick(), setShares(), and kickerCount increments without SafeMath",
+        "pullShares(), clear(), and airDrop() transfer ETH before updating state variables",
+        "Multiple .transfer() calls lack success checks, risking locked funds after state changes"
+      ],
+      "raw": "{\n  \"reason\": \"The contract contains multiple arithmetic operations without overflow protection (SWC-101) and violates checks-effects-interactions pattern by transferring funds before state updates (SWC-107). These vulnerabilities enable integer manipulation and reentrancy attacks that could drain all contract funds.\",\n  \"evidence\": [\n    \"Integer overflow/underflow in processKick(), setShares(), and kickerCount increments without SafeMath\",\n    \"pullShares(), clear(), and airDrop() transfer ETH before updating state variables\",\n    \"Multiple .transfer() calls lack success checks, risking locked funds after state changes\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "cd34206e-6dae-4d3d-9acf-fb510bc04893",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 10,
+        "full_report_chars": 4812,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}

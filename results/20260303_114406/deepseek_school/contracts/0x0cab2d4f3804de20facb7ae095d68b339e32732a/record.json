@@ -1,0 +1,283 @@
+{
+  "address": "0x0cab2d4f3804de20facb7ae095d68b339e32732a",
+  "session_id": "904f2642-e1e4-4bb1-a4a8-7e2e80979862",
+  "audit_status": "completed",
+  "model": "deepseek_school",
+  "pred_swc_list": "SWC-101|SWC-107",
+  "pred_swc_count": 2,
+  "is_other": 0,
+  "pred_source": "rule_multi",
+  "pred_reason": "SWC-101 is applicable due to the reentrancy vulnerability in approveAndCall where external calls precede state finalization, allowing recursive exploits. SWC-107 fits as the contract lacks access controls in certAuthIssuesCerticate and other privileged functions, enabling unauthorized state changes. Evidence: Reentrancy in approveAndCall: external call to spender.receiveApproval() before state finalization (lines 170-176).; Missing access control in certAuthIssuesCerticate: any address can transfer owner's tokens (lines 248-255).; No onlyOwner modifier in multiple functions (e.g., farmerRequestCertificate), allowing arbitrary caller execution.",
+  "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+  "rule_matched_json": "{\"SWC-101\": [\"kw:integer arithmetic\", \"re:integer arithmetic\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+  "llm_fallback_json": "{}",
+  "llm_explanation_json": "{\"evidence\": [\"Reentrancy in approveAndCall: external call to spender.receiveApproval() before state finalization (lines 170-176).\", \"Missing access control in certAuthIssuesCerticate: any address can transfer owner's tokens (lines 248-255).\", \"No onlyOwner modifier in multiple functions (e.g., farmerRequestCertificate), allowing arbitrary caller execution.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to the reentrancy vulnerability in approveAndCall where external calls precede state finalization, allowing recursive exploits. SWC-107 fits as the contract lacks access controls in certAuthIssuesCerticate and other privileged functions, enabling unauthorized state changes.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Reentrancy in approveAndCall: external call to spender.receiveApproval() before state finalization (lines 170-176).\\\",\\n    \\\"Missing access control in certAuthIssuesCerticate: any address can transfer owner's tokens (lines 248-255).\\\",\\n    \\\"No onlyOwner modifier in multiple functions (e.g., farmerRequestCertificate), allowing arbitrary caller execution.\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to the reentrancy vulnerability in approveAndCall where external calls precede state finalization, allowing recursive exploits. SWC-107 fits as the contract lacks access controls in certAuthIssuesCerticate and other privileged functions, enabling unauthorized state changes.\"}",
+  "full_report_available": 1,
+  "full_report_chars": 4561,
+  "full_report_path": "/Users/hh/MacCodes/reaserch/demo01/test/results/20260303_114406/deepseek_school/contracts/0x0cab2d4f3804de20facb7ae095d68b339e32732a/report.md",
+  "rag_used": 0,
+  "rag_enabled": 1,
+  "rag_effective_task_count": 0,
+  "rag_effective_evidence_count": 0,
+  "rag_similarity_threshold": 0.72,
+  "audit_attempts": 1,
+  "empty_report_retries_used": 0,
+  "finding_number": 8,
+  "execution_time": 1663.8433301448822,
+  "gt_swc_set": "SWC-101",
+  "error": "",
+  "raw": {
+    "address": "0x0cab2d4f3804de20facb7ae095d68b339e32732a",
+    "model": "deepseek_school",
+    "session_id": "904f2642-e1e4-4bb1-a4a8-7e2e80979862",
+    "audit_status": "completed",
+    "error": "",
+    "findings": [
+      {
+        "Issue": "Reentrancy Vulnerability in approveAndCall",
+        "Severity": "High",
+        "Description": "The approveAndCall function makes an external call to spender.receiveApproval() after updating state variables but before completing all state changes, creating a classic reentrancy vulnerability. This issue appears in the smart contract code and was identified through manual audit analysis.",
+        "Impact": "Attackers could drain funds from user accounts, manipulate approval amounts, and disrupt contract functionality through repeated reentrancy attacks.",
+        "Location": "InGRedientToken.approveAndCall() function (lines 170-176)"
+      },
+      {
+        "Issue": "Unauthorized Token Transfers in certAuthIssuesCerticate",
+        "Severity": "High",
+        "Description": "The certAuthIssuesCerticate function lacks access control, allowing any address to transfer tokens from the contract owner to any farmer. This issue appears in the smart contract code and was identified through manual audit analysis.",
+        "Impact": "Complete drainage of the owner's token balance (1,000,000 tokens), total loss of all tokens in the contract, and complete compromise of the token economy.",
+        "Location": "InGRedientToken.certAuthIssuesCerticate() function (lines 248-255)"
+      },
+      {
+        "Issue": "Improper Access Control in Privileged Functions",
+        "Severity": "Medium",
+        "Description": "Multiple functions that should be restricted to the owner lack the onlyOwner modifier, allowing any user to call them. This issue appears in the smart contract code and was identified through manual audit analysis.",
+        "Impact": "Unauthorized token transfers, manipulation of allowances, and disruption of the token's operational logic and economic model.",
+        "Location": "farmerRequestCertificate, sellsIngrWithoutDepletion, sellsIntermediateGoodWithDepletion, comminglerSellsProductSKUWithProRataIngred, transferAndWriteUrl functions"
+      },
+      {
+        "Issue": "Unsafe Arithmetic in Percentage Calculations",
+        "Severity": "Medium",
+        "Description": "The sellsIntermediateGoodWithDepletion function performs division before multiplication with integer arithmetic, leading to precision loss and potential token burning. This issue appears in the smart contract code and was identified through manual audit analysis.",
+        "Impact": "Cumulative token loss over multiple transactions, discrepancy between expected and actual token transfers, and economic imbalance in the token ecosystem.",
+        "Location": "InGRedientToken.sellsIntermediateGoodWithDepletion() function (lines 250-257)"
+      },
+      {
+        "Issue": "Variable Shadowing in certAuthIssuesCerticate",
+        "Severity": "Low",
+        "Description": "The owner parameter in certAuthIssuesCerticate shadows the state variable Owned.owner, causing confusion and incorrect behavior. This issue appears in both the smart contract code and the static analysis results.",
+        "Impact": "Incorrect state variable usage, potential for improper token transfers, and code maintainability issues.",
+        "Location": "InGRedientToken.certAuthIssuesCerticate() function parameter and static analysis finding"
+      },
+      {
+        "Issue": "Missing Zero Address Check in Ownership Transfer",
+        "Severity": "Low",
+        "Description": "The transferOwnership function lacks a zero-check on the _newOwner parameter. This issue appears in the static analysis results only.",
+        "Impact": "Potential loss of contract ownership if zero address is accidentally set as new owner.",
+        "Location": "Owned.transferOwnership() function and static analysis finding"
+      },
+      {
+        "Issue": "Encode-Packed Collision in Address Generation",
+        "Severity": "Low",
+        "Description": "The genAddressFromGTIN13date function uses abi.encodePacked() with multiple dynamic arguments, which can lead to hash collisions. This issue appears in the static analysis results only.",
+        "Impact": "Potential for address collisions, which could lead to incorrect token allocations or transfer destinations.",
+        "Location": "InGRedientToken.genAddressFromGTIN13date() function and static analysis finding"
+      },
+      {
+        "Issue": "Locked Ether in Contract",
+        "Severity": "Medium",
+        "Description": "The contract has a payable fallback function that reverts but no function to withdraw ether, potentially locking any accidentally sent ETH. This issue appears in the static analysis results only.",
+        "Impact": "Any ETH sent to the contract will be permanently locked and unrecoverable.",
+        "Location": "Fallback function and static analysis finding"
+      }
+    ],
+    "result_payload": {
+      "created_at": "2026-03-03T14:08:35.301602",
+      "execution_summary": {
+        "completed_tasks": 12,
+        "failed_tasks": 0,
+        "rag_effective_retrieval_tasks": 0,
+        "rag_effective_retrieved_evidence": 0,
+        "rag_enabled": true,
+        "rag_fallback_threshold": 0.68,
+        "rag_similarity_threshold": 0.72,
+        "rag_total_retrieved_evidence": 0,
+        "rag_used": false,
+        "session_id": "904f2642-e1e4-4bb1-a4a8-7e2e80979862",
+        "static_analysis": {
+          "command": "/Users/hh/MacCodes/reaserch/demo01/SmartAuditFlow/smart-contract-audit/venv/bin/slither /var/folders/z3/0y_nzrjd5ljbj_82xy72z3dc0000gn/T/saf-slither-znwf91ux/InputContract.sol --fail-none --exclude-informational ...",
+          "mode": "auto",
+          "pragma_versions": [
+            "0.5.2"
+          ],
+          "status": "success",
+          "tool": "slither-0.11.0"
+        },
+        "total_execution_time": 1663.8433301448822,
+        "total_tasks": 12
+      },
+      "execution_time": 1663.8433301448822,
+      "finding_number": 8,
+      "findings": [
+        {
+          "Description": "The approveAndCall function makes an external call to spender.receiveApproval() after updating state variables but before completing all state changes, creating a classic reentrancy vulnerability. This issue appears in the smart contract code and was identified through manual audit analysis.",
+          "Impact": "Attackers could drain funds from user accounts, manipulate approval amounts, and disrupt contract functionality through repeated reentrancy attacks.",
+          "Issue": "Reentrancy Vulnerability in approveAndCall",
+          "Location": "InGRedientToken.approveAndCall() function (lines 170-176)",
+          "Severity": "High"
+        },
+        {
+          "Description": "The certAuthIssuesCerticate function lacks access control, allowing any address to transfer tokens from the contract owner to any farmer. This issue appears in the smart contract code and was identified through manual audit analysis.",
+          "Impact": "Complete drainage of the owner's token balance (1,000,000 tokens), total loss of all tokens in the contract, and complete compromise of the token economy.",
+          "Issue": "Unauthorized Token Transfers in certAuthIssuesCerticate",
+          "Location": "InGRedientToken.certAuthIssuesCerticate() function (lines 248-255)",
+          "Severity": "High"
+        },
+        {
+          "Description": "Multiple functions that should be restricted to the owner lack the onlyOwner modifier, allowing any user to call them. This issue appears in the smart contract code and was identified through manual audit analysis.",
+          "Impact": "Unauthorized token transfers, manipulation of allowances, and disruption of the token's operational logic and economic model.",
+          "Issue": "Improper Access Control in Privileged Functions",
+          "Location": "farmerRequestCertificate, sellsIngrWithoutDepletion, sellsIntermediateGoodWithDepletion, comminglerSellsProductSKUWithProRataIngred, transferAndWriteUrl functions",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The sellsIntermediateGoodWithDepletion function performs division before multiplication with integer arithmetic, leading to precision loss and potential token burning. This issue appears in the smart contract code and was identified through manual audit analysis.",
+          "Impact": "Cumulative token loss over multiple transactions, discrepancy between expected and actual token transfers, and economic imbalance in the token ecosystem.",
+          "Issue": "Unsafe Arithmetic in Percentage Calculations",
+          "Location": "InGRedientToken.sellsIntermediateGoodWithDepletion() function (lines 250-257)",
+          "Severity": "Medium"
+        },
+        {
+          "Description": "The owner parameter in certAuthIssuesCerticate shadows the state variable Owned.owner, causing confusion and incorrect behavior. This issue appears in both the smart contract code and the static analysis results.",
+          "Impact": "Incorrect state variable usage, potential for improper token transfers, and code maintainability issues.",
+          "Issue": "Variable Shadowing in certAuthIssuesCerticate",
+          "Location": "InGRedientToken.certAuthIssuesCerticate() function parameter and static analysis finding",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The transferOwnership function lacks a zero-check on the _newOwner parameter. This issue appears in the static analysis results only.",
+          "Impact": "Potential loss of contract ownership if zero address is accidentally set as new owner.",
+          "Issue": "Missing Zero Address Check in Ownership Transfer",
+          "Location": "Owned.transferOwnership() function and static analysis finding",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The genAddressFromGTIN13date function uses abi.encodePacked() with multiple dynamic arguments, which can lead to hash collisions. This issue appears in the static analysis results only.",
+          "Impact": "Potential for address collisions, which could lead to incorrect token allocations or transfer destinations.",
+          "Issue": "Encode-Packed Collision in Address Generation",
+          "Location": "InGRedientToken.genAddressFromGTIN13date() function and static analysis finding",
+          "Severity": "Low"
+        },
+        {
+          "Description": "The contract has a payable fallback function that reverts but no function to withdraw ether, potentially locking any accidentally sent ETH. This issue appears in the static analysis results only.",
+          "Impact": "Any ETH sent to the contract will be permanently locked and unrecoverable.",
+          "Issue": "Locked Ether in Contract",
+          "Location": "Fallback function and static analysis finding",
+          "Severity": "Medium"
+        }
+      ],
+      "format_validation": {
+        "findings_validated": true,
+        "required_fields": [
+          "Issue",
+          "Severity",
+          "Description",
+          "Impact",
+          "Location"
+        ],
+        "sample_finding": {
+          "Description": "The approveAndCall function makes an external call to spender.receiveApproval() after updating state variables but before completing all state changes, creating a classic reentrancy vulnerability. This issue appears in the smart contract code and was identified through manual audit analysis.",
+          "Impact": "Attackers could drain funds from user accounts, manipulate approval amounts, and disrupt contract functionality through repeated reentrancy attacks.",
+          "Issue": "Reentrancy Vulnerability in approveAndCall",
+          "Location": "InGRedientToken.approveAndCall() function (lines 170-176)",
+          "Severity": "High"
+        }
+      },
+      "full_report": "```json\n[\n  {\n    \"Issue\": \"Reentrancy Vulnerability in approveAndCall\",\n    \"Severity\": \"High\",\n    \"Description\": \"The approveAndCall function makes an external call to spender.receiveApproval() after updating state variables but before completing all state changes, creating a classic reentrancy vulnerability. This issue appears in the smart contract code and was identified through manual audit analysis.\",\n    \"Impact\": \"Attackers could drain funds from user accounts, manipulate approval amounts, and disrupt contract functionality through repeated reentrancy attacks.\",\n    \"Location\": \"InGRedientToken.approveAndCall() function (lines 170-176)\"\n  },\n  {\n    \"Issue\": \"Unauthorized Token Transfers in certAuthIssuesCerticate\",\n    \"Severity\": \"High\",\n    \"Description\": \"The certAuthIssuesCerticate function lacks access control, allowing any address to transfer tokens from the contract owner to any farmer. This issue appears in the smart contract code and was identified through manual audit analysis.\",\n    \"Impact\": \"Complete drainage of the owner's token balance (1,000,000 tokens), total loss of all tokens in the contract, and complete compromise of the token economy.\",\n    \"Location\": \"InGRedientToken.certAuthIssuesCerticate() function (lines 248-255)\"\n  },\n  {\n    \"Issue\": \"Improper Access Control in Privileged Functions\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"Multiple functions that should be restricted to the owner lack the onlyOwner modifier, allowing any user to call them. This issue appears in the smart contract code and was identified through manual audit analysis.\",\n    \"Impact\": \"Unauthorized token transfers, manipulation of allowances, and disruption of the token's operational logic and economic model.\",\n    \"Location\": \"farmerRequestCertificate, sellsIngrWithoutDepletion, sellsIntermediateGoodWithDepletion, comminglerSellsProductSKUWithProRataIngred, transferAndWriteUrl functions\"\n  },\n  {\n    \"Issue\": \"Unsafe Arithmetic in Percentage Calculations\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The sellsIntermediateGoodWithDepletion function performs division before multiplication with integer arithmetic, leading to precision loss and potential token burning. This issue appears in the smart contract code and was identified through manual audit analysis.\",\n    \"Impact\": \"Cumulative token loss over multiple transactions, discrepancy between expected and actual token transfers, and economic imbalance in the token ecosystem.\",\n    \"Location\": \"InGRedientToken.sellsIntermediateGoodWithDepletion() function (lines 250-257)\"\n  },\n  {\n    \"Issue\": \"Variable Shadowing in certAuthIssuesCerticate\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The owner parameter in certAuthIssuesCerticate shadows the state variable Owned.owner, causing confusion and incorrect behavior. This issue appears in both the smart contract code and the static analysis results.\",\n    \"Impact\": \"Incorrect state variable usage, potential for improper token transfers, and code maintainability issues.\",\n    \"Location\": \"InGRedientToken.certAuthIssuesCerticate() function parameter and static analysis finding\"\n  },\n  {\n    \"Issue\": \"Missing Zero Address Check in Ownership Transfer\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The transferOwnership function lacks a zero-check on the _newOwner parameter. This issue appears in the static analysis results only.\",\n    \"Impact\": \"Potential loss of contract ownership if zero address is accidentally set as new owner.\",\n    \"Location\": \"Owned.transferOwnership() function and static analysis finding\"\n  },\n  {\n    \"Issue\": \"Encode-Packed Collision in Address Generation\",\n    \"Severity\": \"Low\",\n    \"Description\": \"The genAddressFromGTIN13date function uses abi.encodePacked() with multiple dynamic arguments, which can lead to hash collisions. This issue appears in the static analysis results only.\",\n    \"Impact\": \"Potential for address collisions, which could lead to incorrect token allocations or transfer destinations.\",\n    \"Location\": \"InGRedientToken.genAddressFromGTIN13date() function and static analysis finding\"\n  },\n  {\n    \"Issue\": \"Locked Ether in Contract\",\n    \"Severity\": \"Medium\",\n    \"Description\": \"The contract has a payable fallback function that reverts but no function to withdraw ether, potentially locking any accidentally sent ETH. This issue appears in the static analysis results only.\",\n    \"Impact\": \"Any ETH sent to the contract will be permanently locked and unrecoverable.\",\n    \"Location\": \"Fallback function and static analysis finding\"\n  }\n]\n```",
+      "model_used": "deepseek_school",
+      "session_id": "904f2642-e1e4-4bb1-a4a8-7e2e80979862",
+      "severity_breakdown": {
+        "High": 2,
+        "Low": 3,
+        "Medium": 3
+      }
+    },
+    "rule_result": {
+      "labels": [
+        "SWC-107",
+        "SWC-101"
+      ],
+      "source": "rule_multi",
+      "scores": {
+        "SWC-101": 4.0,
+        "SWC-105": 0.0,
+        "SWC-106": 0.0,
+        "SWC-107": 8.0,
+        "SWC-115": 0.0
+      },
+      "matched": {
+        "SWC-101": [
+          "kw:integer arithmetic",
+          "re:integer arithmetic"
+        ],
+        "SWC-105": [],
+        "SWC-106": [],
+        "SWC-107": [
+          "kw:reentrancy",
+          "re:\\bre-?entran",
+          "re:reentrancy"
+        ],
+        "SWC-115": []
+      },
+      "reason": "Rule hits: SWC-107(8.0), SWC-101(4.0)"
+    },
+    "llm_result": {},
+    "rule_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "llm_labels": [],
+    "pred_labels": [
+      "SWC-101",
+      "SWC-107"
+    ],
+    "pred_swc_list": "SWC-101|SWC-107",
+    "pred_source": "rule_multi",
+    "is_other": 0,
+    "pred_reason": "SWC-101 is applicable due to the reentrancy vulnerability in approveAndCall where external calls precede state finalization, allowing recursive exploits. SWC-107 fits as the contract lacks access controls in certAuthIssuesCerticate and other privileged functions, enabling unauthorized state changes. Evidence: Reentrancy in approveAndCall: external call to spender.receiveApproval() before state finalization (lines 170-176).; Missing access control in certAuthIssuesCerticate: any address can transfer owner's tokens (lines 248-255).; No onlyOwner modifier in multiple functions (e.g., farmerRequestCertificate), allowing arbitrary caller execution.",
+    "rule_scores_json": "{\"SWC-101\": 4.0, \"SWC-105\": 0.0, \"SWC-106\": 0.0, \"SWC-107\": 8.0, \"SWC-115\": 0.0}",
+    "rule_matched_json": "{\"SWC-101\": [\"kw:integer arithmetic\", \"re:integer arithmetic\"], \"SWC-105\": [], \"SWC-106\": [], \"SWC-107\": [\"kw:reentrancy\", \"re:\\\\bre-?entran\", \"re:reentrancy\"], \"SWC-115\": []}",
+    "llm_fallback_json": "{}",
+    "llm_explanation_json": "{\"evidence\": [\"Reentrancy in approveAndCall: external call to spender.receiveApproval() before state finalization (lines 170-176).\", \"Missing access control in certAuthIssuesCerticate: any address can transfer owner's tokens (lines 248-255).\", \"No onlyOwner modifier in multiple functions (e.g., farmerRequestCertificate), allowing arbitrary caller execution.\"], \"ok\": true, \"raw\": \"{\\n  \\\"reason\\\": \\\"SWC-101 is applicable due to the reentrancy vulnerability in approveAndCall where external calls precede state finalization, allowing recursive exploits. SWC-107 fits as the contract lacks access controls in certAuthIssuesCerticate and other privileged functions, enabling unauthorized state changes.\\\",\\n  \\\"evidence\\\": [\\n    \\\"Reentrancy in approveAndCall: external call to spender.receiveApproval() before state finalization (lines 170-176).\\\",\\n    \\\"Missing access control in certAuthIssuesCerticate: any address can transfer owner's tokens (lines 248-255).\\\",\\n    \\\"No onlyOwner modifier in multiple functions (e.g., farmerRequestCertificate), allowing arbitrary caller execution.\\\"\\n  ]\\n}\", \"reason\": \"SWC-101 is applicable due to the reentrancy vulnerability in approveAndCall where external calls precede state finalization, allowing recursive exploits. SWC-107 fits as the contract lacks access controls in certAuthIssuesCerticate and other privileged functions, enabling unauthorized state changes.\"}",
+    "static_tool_used": false,
+    "rag_used": 0,
+    "rag_enabled": true,
+    "rag_effective_task_count": 0,
+    "rag_effective_evidence_count": 0,
+    "rag_similarity_threshold": 0.72,
+    "llm_explanation": {
+      "ok": true,
+      "reason": "SWC-101 is applicable due to the reentrancy vulnerability in approveAndCall where external calls precede state finalization, allowing recursive exploits. SWC-107 fits as the contract lacks access controls in certAuthIssuesCerticate and other privileged functions, enabling unauthorized state changes.",
+      "evidence": [
+        "Reentrancy in approveAndCall: external call to spender.receiveApproval() before state finalization (lines 170-176).",
+        "Missing access control in certAuthIssuesCerticate: any address can transfer owner's tokens (lines 248-255).",
+        "No onlyOwner modifier in multiple functions (e.g., farmerRequestCertificate), allowing arbitrary caller execution."
+      ],
+      "raw": "{\n  \"reason\": \"SWC-101 is applicable due to the reentrancy vulnerability in approveAndCall where external calls precede state finalization, allowing recursive exploits. SWC-107 fits as the contract lacks access controls in certAuthIssuesCerticate and other privileged functions, enabling unauthorized state changes.\",\n  \"evidence\": [\n    \"Reentrancy in approveAndCall: external call to spender.receiveApproval() before state finalization (lines 170-176).\",\n    \"Missing access control in certAuthIssuesCerticate: any address can transfer owner's tokens (lines 248-255).\",\n    \"No onlyOwner modifier in multiple functions (e.g., farmerRequestCertificate), allowing arbitrary caller execution.\"\n  ]\n}"
+    },
+    "audit_attempts": [
+      {
+        "attempt": 1,
+        "session_id": "904f2642-e1e4-4bb1-a4a8-7e2e80979862",
+        "audit_status": "completed",
+        "error": "",
+        "finding_number": 8,
+        "full_report_chars": 4561,
+        "empty_report": false
+      }
+    ],
+    "selected_is_empty_report": false,
+    "empty_report_retries_used": 0
+  },
+  "static_summary_chars": 0,
+  "static_summary_path": ""
+}
