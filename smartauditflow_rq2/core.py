@@ -895,7 +895,7 @@ def render_progress_bar(percentage: float, width: int = 24) -> str:
 
 
 class ParallelProgressBoard:
-    """Render one in-place progress bar line per contract for parallel execution."""
+    """Render in-place progress lines for currently running contracts only."""
 
     def __init__(self, model: str, addresses: Sequence[str]) -> None:
         self.model = model
@@ -939,18 +939,37 @@ class ParallelProgressBoard:
     def _redraw_locked(self) -> None:
         if not self.enabled:
             return
-        if self._line_count <= 0:
+        previous_line_count = self._line_count
+        if previous_line_count <= 0 and not self._lines:
             return
-        sys.stdout.write(f"\x1b[{self._line_count}A")
+        if previous_line_count > 0:
+            sys.stdout.write(f"\x1b[{previous_line_count}A")
         for line in self._lines:
             sys.stdout.write("\x1b[2K\r" + line + "\n")
+        # Clear stale lines when current running set shrinks.
+        for _ in range(max(0, previous_line_count - len(self._lines))):
+            sys.stdout.write("\x1b[2K\r\n")
+        self._line_count = len(self._lines)
         sys.stdout.flush()
 
     def update(self, address: str, event: Dict[str, Any]) -> None:
         if not self.enabled:
             return
+        status = text_compact(event.get("status") or "queued").lower()
+        hidden_statuses = {"submitted", "queued", "created"}
+        should_show = status not in hidden_statuses
         with self._lock:
             idx = self._index.get(address)
+            if not should_show:
+                if idx is None:
+                    return
+                self._lines.pop(idx)
+                del self._index[address]
+                for tracked_addr, tracked_idx in list(self._index.items()):
+                    if tracked_idx > idx:
+                        self._index[tracked_addr] = tracked_idx - 1
+                self._redraw_locked()
+                return
             if idx is None:
                 idx = len(self._lines)
                 self._index[address] = idx
