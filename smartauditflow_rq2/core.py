@@ -2071,11 +2071,6 @@ def run_for_model(
         gt_swc_by_addr.setdefault(gt_row["address"], set()).add(gt_row["SWC_ID"])
 
     concurrency = max(1, int(options["concurrency"]))
-    if concurrency != 1:
-        print(
-            f"[{model}] strict blocking mode enabled; overriding concurrency {concurrency} -> 1"
-        )
-        concurrency = 1
     live_progress = bool(options.get("live_progress", False))
     sequential_live = live_progress and concurrency == 1
     parallel_live = live_progress and concurrency > 1
