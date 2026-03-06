@@ -34,6 +34,10 @@ from urllib import request as urlrequest
 from .rule_reports import build_rule_score_fieldnames, compute_rule_score_rows
 
 
+class FatalAuditStop(Exception):
+    """Raised when upstream LLM retries exhaust and auditing must halt."""
+
+
 TARGET_SWCS: List[str] = ["SWC-101", "SWC-105", "SWC-106", "SWC-107", "SWC-115"]
 OTHER_LABEL = "SWC-OTHER"
 ALL_LABELS: List[str] = TARGET_SWCS + [OTHER_LABEL]
@@ -270,7 +274,24 @@ class LlmFallbackClassifier:
         self.request_timeout = request_timeout
         self.retries = retries
 
+    @staticmethod
+    def _models_call_timeout_seconds(model_timeout: int) -> int:
+        # Backend model layer now retries in-process with fixed 10s backoff and >=20 attempts.
+        # Avoid client timeout/retry from spawning overlapping duplicate /api/models/call requests.
+        attempts = 20
+        backoff = 10
+        return (attempts * model_timeout) + ((attempts - 1) * backoff) + 120
+
     def _call_via_api(self, prompt: str, model_name: str, timeout: Optional[int] = None) -> Tuple[bool, str]:
+        return self._call_via_api_with_label(prompt, model_name=model_name, timeout=timeout, call_label="")
+
+    def _call_via_api_with_label(
+        self,
+        prompt: str,
+        model_name: str,
+        timeout: Optional[int] = None,
+        call_label: str = "",
+    ) -> Tuple[bool, str]:
         if not self.api_base:
             return False, "Missing api_base for LLM API calls"
         url = f"{self.api_base}/api/models/call"
@@ -278,14 +299,17 @@ class LlmFallbackClassifier:
             "prompt": prompt,
             "model": model_name,
             "timeout": int(timeout or self.timeout),
+            "call_label": str(call_label or "").strip(),
         }
+        per_call_timeout = int(payload["timeout"])
+        api_timeout = max(int(self.request_timeout), self._models_call_timeout_seconds(per_call_timeout))
         try:
             status, body, raw = http_json(
                 "POST",
                 url,
                 payload=payload,
-                timeout=int(self.request_timeout),
-                retries=int(self.retries),
+                timeout=api_timeout,
+                retries=0,
             )
         except Exception as exc:
             return False, str(exc)
@@ -394,7 +418,12 @@ Findings text summary:
 {combined_text[:5000]}
 """.strip()
 
-        ok, response = self._call_via_api(prompt, model_name=model_name, timeout=self.timeout)
+        ok, response = self._call_via_api_with_label(
+            prompt,
+            model_name=model_name,
+            timeout=self.timeout,
+            call_label=f"rq2 classify {address[:10]}",
+        )
         if not ok:
             return {
                 "labels": [],
@@ -483,7 +512,12 @@ Findings text summary:
 {combined_text[:5000]}
 """.strip()
 
-        ok, response = self._call_via_api(prompt, model_name=model_name, timeout=timeout or self.timeout)
+        ok, response = self._call_via_api_with_label(
+            prompt,
+            model_name=model_name,
+            timeout=timeout or self.timeout,
+            call_label=f"rq2 explain {address[:10]}",
+        )
         if not ok:
             return {
                 "ok": False,
@@ -1066,7 +1100,7 @@ def run_audit_session(
 
     results_url = f"{api_base}/api/audit/{session_id}/results"
     result_payload: Dict[str, Any] = {}
-    for _ in range(3):
+    for _ in range(10):
         code, result_body, _ = http_json(
             "GET",
             results_url,
@@ -1076,7 +1110,7 @@ def run_audit_session(
         if code == 200:
             result_payload = result_body
             break
-        if final_status == "completed":
+        if final_status in {"completed", "failed", "stopped"}:
             time.sleep(1.0)
     if progress_callback and final_status in {"completed", "failed", "stopped"}:
         final_step_name = "Done"
@@ -1243,6 +1277,12 @@ def resolve_resume_run_root(output_dir: Path, requested_run_id: str) -> Tuple[st
 
 
 def persist_full_report_for_row(row: Dict[str, Any], model_dir: Optional[Path]) -> None:
+    if text_compact(row.get("audit_status") or "") != "completed" or bool(row.get("fatal_error", False)):
+        row["full_report_available"] = 0
+        row["full_report_chars"] = 0
+        row["full_report_path"] = ""
+        row.pop("_full_report_text", None)
+        return
     report_text = str(row.pop("_full_report_text", "") or "")
 
     if not report_text:
@@ -1268,6 +1308,11 @@ def persist_full_report_for_row(row: Dict[str, Any], model_dir: Optional[Path]) 
 
 def persist_static_summary_for_row(row: Dict[str, Any], model_dir: Optional[Path]) -> None:
     """Persist per-contract static analysis summary text."""
+    if text_compact(row.get("audit_status") or "") != "completed" or bool(row.get("fatal_error", False)):
+        row["static_summary_chars"] = 0
+        row["static_summary_path"] = ""
+        row.pop("_static_tool_text", None)
+        return
     static_summary = str(row.pop("_static_tool_text", "") or "")
     row["static_summary_chars"] = len(static_summary)
 
@@ -1285,6 +1330,11 @@ def persist_static_summary_for_row(row: Dict[str, Any], model_dir: Optional[Path
 
 def persist_audit_plan_for_row(row: Dict[str, Any], model_dir: Optional[Path]) -> None:
     """Persist per-contract audit plan raw output text."""
+    if text_compact(row.get("audit_status") or "") != "completed" or bool(row.get("fatal_error", False)):
+        row["audit_plan_chars"] = 0
+        row["audit_plan_path"] = ""
+        row.pop("_audit_plan_text", None)
+        return
     audit_plan_text = str(row.pop("_audit_plan_text", "") or "")
     row["audit_plan_chars"] = len(audit_plan_text)
 
@@ -1304,6 +1354,8 @@ def persist_workflow_debug_for_row(row: Dict[str, Any], model_dir: Optional[Path
     """Persist node-level workflow debug input/output as plain text files."""
     row["workflow_debug_dir"] = ""
     if model_dir is None:
+        return
+    if text_compact(row.get("audit_status") or "") != "completed" or bool(row.get("fatal_error", False)):
         return
 
     raw = row.get("raw")
@@ -1371,6 +1423,9 @@ def persist_workflow_debug_for_row(row: Dict[str, Any], model_dir: Optional[Path
 def persist_contract_record_for_row(row: Dict[str, Any], model_dir: Optional[Path]) -> None:
     """Persist one complete per-contract record JSON immediately after audit."""
     if model_dir is None:
+        row["record_json_path"] = ""
+        return
+    if text_compact(row.get("audit_status") or "") != "completed" or bool(row.get("fatal_error", False)):
         row["record_json_path"] = ""
         return
 
@@ -1561,7 +1616,27 @@ def process_one_address(
         retries=retries,
         progress_callback=progress_callback,
     )
+    early_audit_status = text_compact(api_result.get("audit_status") or "unknown").lower()
+    early_error = text_compact(api_result.get("error") or "")
     results_payload = api_result.get("results") if isinstance(api_result.get("results"), dict) else {}
+    execution_summary = (
+        results_payload.get("execution_summary")
+        if isinstance(results_payload.get("execution_summary"), dict)
+        else {}
+    )
+    fatal_error = bool(execution_summary.get("fatal_error", False))
+    fatal_reason = text_compact(execution_summary.get("fatal_reason") or early_error or "")
+    if fatal_error or fatal_reason.lower().startswith("fatal") or "exhausted" in fatal_reason.lower():
+        raise FatalAuditStop(fatal_reason or "LLM retry limit exhausted")
+    if early_audit_status in {"start_failed", "session_lost"}:
+        raise FatalAuditStop(early_error or f"audit_status={early_audit_status}")
+    if early_audit_status == "failed":
+        if not results_payload or "workflow failed at step" in early_error.lower():
+            raise FatalAuditStop(early_error or "audit_status=failed")
+        if bool(execution_summary.get("error", False)):
+            raise FatalAuditStop(fatal_reason or "workflow execution error")
+    if early_audit_status == "timeout" and not results_payload:
+        raise FatalAuditStop(early_error or "audit status timeout without results")
     findings, _ = summarize_findings(results_payload)
 
     session_id = text_compact(api_result.get("session_id"))
@@ -1996,6 +2071,11 @@ def run_for_model(
         gt_swc_by_addr.setdefault(gt_row["address"], set()).add(gt_row["SWC_ID"])
 
     concurrency = max(1, int(options["concurrency"]))
+    if concurrency != 1:
+        print(
+            f"[{model}] strict blocking mode enabled; overriding concurrency {concurrency} -> 1"
+        )
+        concurrency = 1
     live_progress = bool(options.get("live_progress", False))
     sequential_live = live_progress and concurrency == 1
     parallel_live = live_progress and concurrency > 1
@@ -2098,9 +2178,20 @@ def run_for_model(
     )
     started_at = time.time()
 
+    fatal_triggered = False
+    fatal_reason = ""
+
     if concurrency == 1:
         for idx, address in enumerate(pending_addresses, start=1):
-            row = task(address)
+            try:
+                row = task(address)
+            except FatalAuditStop as exc:
+                fatal_triggered = True
+                fatal_reason = str(exc)
+                if sequential_live:
+                    print("")
+                print(f"[{model}] Fatal stop triggered at {address}: {fatal_reason}")
+                break
             if sequential_live:
                 print("")
             enrich_and_store_row(row)
@@ -2111,6 +2202,8 @@ def run_for_model(
         with concurrent.futures.ThreadPoolExecutor(max_workers=concurrency) as executor:
             future_to_address: Dict[concurrent.futures.Future, str] = {}
             for address in pending_addresses:
+                if fatal_triggered:
+                    break
                 future = executor.submit(task, address)
                 future_to_address[future] = address
                 if parallel_board is not None:
@@ -2127,8 +2220,31 @@ def run_for_model(
             done_count = 0
             for future in concurrent.futures.as_completed(future_to_address):
                 address = future_to_address[future]
+                if fatal_triggered:
+                    future.cancel()
+                    continue
                 try:
                     row = future.result()
+                except FatalAuditStop as exc:
+                    fatal_triggered = True
+                    fatal_reason = str(exc)
+                    if parallel_board is not None:
+                        parallel_board.complete(
+                            address,
+                            {
+                                "status": "failed",
+                                "percentage": 0.0,
+                                "step_name": "Fatal",
+                                "session_id": "",
+                                "error": fatal_reason,
+                            },
+                        )
+                    print(f"[{model}] Fatal stop triggered at {address}: {fatal_reason}")
+                    # Cancel remaining futures to avoid starting new addresses.
+                    for f in future_to_address:
+                        if f is not future:
+                            f.cancel()
+                    break
                 except Exception as exc:
                     row = {
                         "address": address,
@@ -2165,6 +2281,8 @@ def run_for_model(
                             "error": str(exc),
                         },
                     }
+                if fatal_triggered:
+                    continue
                 if parallel_board is not None:
                     parallel_board.complete(address, row)
                 enrich_and_store_row(row)
@@ -2180,6 +2298,9 @@ def run_for_model(
                     print(
                         f"[{model}] Completed {done_count}/{len(pending_addresses)} pending in {elapsed:.1f}s"
                     )
+
+    if fatal_triggered:
+        raise FatalAuditStop(fatal_reason or "Fatal stop triggered")
 
     # Deterministic order.
     contract_rows.sort(key=lambda x: x["address"])
@@ -2381,6 +2502,7 @@ def main() -> None:
 
     api_base = str(settings["api_base"]).rstrip("/")
 
+    fatal_stop = False
     for model in models:
         model_safe = sanitize_model_name(model)
         model_dir = ensure_dir(run_root / model_safe)
@@ -2389,24 +2511,29 @@ def main() -> None:
             load_existing_contract_rows(contract_csv_path) if settings["resume"] else []
         )
 
-        model_result = run_for_model(
-            model=model,
-            addresses=selected_addresses,
-            gt_rows_model=gt_rows_selected,
-            options={
-                **settings,
-                "api_base": api_base,
-                "mainnet_dir": Path(settings["mainnet_dir"]),
-                "model_dir": model_dir,
-                "stream_contract_outputs": True,
-                "keep_raw_payload": args.command == "single",
-                "resume_mode": settings["resume"],
-                "existing_contract_rows": existing_contract_rows,
-            },
-            keyword_map=keyword_map,
-            llm_classifier=llm_classifier,
-            static_index=static_index,
-        )
+        try:
+            model_result = run_for_model(
+                model=model,
+                addresses=selected_addresses,
+                gt_rows_model=gt_rows_selected,
+                options={
+                    **settings,
+                    "api_base": api_base,
+                    "mainnet_dir": Path(settings["mainnet_dir"]),
+                    "model_dir": model_dir,
+                    "stream_contract_outputs": True,
+                    "keep_raw_payload": args.command == "single",
+                    "resume_mode": settings["resume"],
+                    "existing_contract_rows": existing_contract_rows,
+                },
+                keyword_map=keyword_map,
+                llm_classifier=llm_classifier,
+                static_index=static_index,
+            )
+        except FatalAuditStop as exc:
+            print(f"[{model}] Fatal stop for model: {exc}")
+            fatal_stop = True
+            break
 
         contract_rows = model_result["contract_rows"]
         pair_rows = model_result["pair_rows"]
@@ -2481,12 +2608,12 @@ def main() -> None:
             "output_dir": str(model_dir),
         }
 
+    run_meta["fatal_stop"] = fatal_stop
     run_meta["finished_at"] = now_iso()
     (run_root / "run_meta.json").write_text(json.dumps(run_meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"Run finished: {run_root}")
-    for model in models:
-        stats = run_meta["per_model"][model]
+    for model, stats in run_meta["per_model"].items():
         print(
             f"  - {model}: processed={stats['processed_count']}, resumed_existing={stats['existing_count']}, "
             f"contract_rows={stats['contract_rows']}, "
