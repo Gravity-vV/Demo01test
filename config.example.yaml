@@ -2,7 +2,7 @@
 
 api_base: http://127.0.0.1:5001
 
-ground_truth_csv: ../EmpiricalSCST/_RQ2/manual/ground_truth/RQ2_ground_truth.csv
+ground_truth_csv: ../EmpiricalSCST/_RQ2/manual/ground_truth/RQ2_ground_truth_with_solidity_versions.csv
 mainnet_dir: ../EmpiricalSCST/mainnet
 vulnerability_json: ../EmpiricalSCST/_RQ2/RQ2_tools_vulnerabilities.json
 vulnerability_csv: ../EmpiricalSCST/_RQ2/vulnerability_types.csv
@@ -16,12 +16,11 @@ models: all
 #   - gemini
 #   - deepseek
 
-concurrency: 1
+concurrency: 10
 poll_interval: 3
 max_wait_seconds: 1800
 request_timeout: 30
 retry: 2
-
 # Optional static_tool input directory (address-based file lookup)
 # If empty, static_tool is sent as empty string
 static_tool_dir: ""

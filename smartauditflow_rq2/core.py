@@ -894,20 +894,36 @@ def render_progress_bar(percentage: float, width: int = 24) -> str:
     return "[" + ("#" * filled) + ("-" * (width - filled)) + "]"
 
 
-class ParallelProgressBoard:
-    """Render in-place progress lines for currently running contracts only."""
+class OverallProgressTracker:
+    """Render one aggregate progress line across all contracts."""
+
+    _terminal_statuses = {
+        "completed",
+        "failed",
+        "stopped",
+        "timeout",
+        "start_failed",
+        "session_lost",
+        "worker_failed",
+        "source_missing",
+    }
 
     def __init__(self, model: str, addresses: Sequence[str]) -> None:
         self.model = model
         self.addresses = list(addresses)
-        self._index: Dict[str, int] = {}
-        self._lines: List[str] = []
         self._lock = threading.Lock()
-        self.enabled = bool(self.addresses) and sys.stdout.isatty()
-        self._line_count = 0
-        if not self.enabled:
-            return
-        print(f"[{self.model}] Parallel live progress ({len(self.addresses)} contracts)")
+        self._closed = False
+        self._states: Dict[str, Dict[str, Any]] = {
+            address: {
+                "status": "queued",
+                "progress": 0.0,
+                "final": False,
+            }
+            for address in self.addresses
+        }
+        self.enabled = bool(self.addresses)
+        if self.enabled:
+            print(f"[{self.model}] Live progress ({len(self.addresses)} contracts)")
 
     def _clip(self, text: str) -> str:
         width = max(40, shutil.get_terminal_size(fallback=(140, 24)).columns)
@@ -916,86 +932,78 @@ class ParallelProgressBoard:
             return text
         return text[: max_len - 1] + "…"
 
-    def _short_addr(self, address: str) -> str:
-        return address if len(address) <= 12 else address[:12] + "..."
+    def _summary_line_locked(self) -> str:
+        total = len(self.addresses)
+        done = 0
+        completed = 0
+        failed = 0
+        running = 0
+        progress_total = 0.0
 
-    def _format_line(self, address: str, event: Dict[str, Any]) -> str:
-        status = text_compact(event.get("status") or "queued")
-        percentage = to_float(event.get("percentage"), 0.0)
-        step_name = text_compact(event.get("step_name") or "Queued")
-        elapsed = to_float(event.get("elapsed_seconds"), 0.0)
-        sid = text_compact(event.get("session_id") or "")
-        sid_short = sid[:8] if sid else "-"
-        findings = text_compact(event.get("finding_number") or "")
-        finding_suffix = f" findings={findings}" if findings else ""
-        line = (
-            f"[{self.model}] {self._short_addr(address):<16} "
-            f"{render_progress_bar(percentage)} {percentage:5.1f}% "
-            f"{status:<10} step={step_name:<16} elapsed={elapsed:6.1f}s "
-            f"sid={sid_short}{finding_suffix}"
+        for state in self._states.values():
+            status = text_compact(state.get("status") or "queued").lower()
+            progress = to_float(state.get("progress"), 0.0)
+            is_final = bool(state.get("final", False))
+            progress_total += max(0.0, min(100.0, progress))
+            if is_final:
+                done += 1
+                if status == "completed":
+                    completed += 1
+                else:
+                    failed += 1
+            elif status not in {"queued", "submitted", "created"}:
+                running += 1
+
+        pending = max(0, total - done - running)
+        overall_pct = (progress_total / total) if total else 100.0
+        return self._clip(
+            f"[{self.model}] total {render_progress_bar(overall_pct)} {overall_pct:5.1f}% "
+            f"done={done}/{total} completed={completed} failed={failed} "
+            f"running={running} pending={pending}"
         )
-        return self._clip(line)
 
-    def _redraw_locked(self) -> None:
-        if not self.enabled:
+    def _render_locked(self) -> None:
+        if not self.enabled or self._closed:
             return
-        previous_line_count = self._line_count
-        if previous_line_count <= 0 and not self._lines:
-            return
-        if previous_line_count > 0:
-            sys.stdout.write(f"\x1b[{previous_line_count}A")
-        for line in self._lines:
-            sys.stdout.write("\x1b[2K\r" + line + "\n")
-        # Clear stale lines when current running set shrinks.
-        for _ in range(max(0, previous_line_count - len(self._lines))):
-            sys.stdout.write("\x1b[2K\r\n")
-        self._line_count = len(self._lines)
-        sys.stdout.flush()
+        line = self._summary_line_locked()
+        if sys.stdout.isatty():
+            print("\x1b[2K\r" + line, end="", flush=True)
+        else:
+            print(line, flush=True)
 
     def update(self, address: str, event: Dict[str, Any]) -> None:
-        if not self.enabled:
+        if not self.enabled or address not in self._states:
             return
         status = text_compact(event.get("status") or "queued").lower()
-        hidden_statuses = {"submitted", "queued", "created"}
-        should_show = status not in hidden_statuses
+        progress = to_float(event.get("percentage"), 0.0)
+        if status in self._terminal_statuses:
+            status = "postprocess"
+            progress = min(progress, 99.0)
         with self._lock:
-            idx = self._index.get(address)
-            if not should_show:
-                if idx is None:
-                    return
-                self._lines.pop(idx)
-                del self._index[address]
-                for tracked_addr, tracked_idx in list(self._index.items()):
-                    if tracked_idx > idx:
-                        self._index[tracked_addr] = tracked_idx - 1
-                self._redraw_locked()
-                return
-            if idx is None:
-                idx = len(self._lines)
-                self._index[address] = idx
-                self._lines.append(self._format_line(address, event))
-                self._line_count = len(self._lines)
-                # First appearance: print one new line (no full redraw needed).
-                print(self._lines[idx])
-                return
-            self._lines[idx] = self._format_line(address, event)
-            self._redraw_locked()
+            state = self._states[address]
+            state["status"] = status
+            state["progress"] = max(0.0, min(99.0, progress))
+            state["final"] = False
+            self._render_locked()
 
     def complete(self, address: str, row: Dict[str, Any]) -> None:
-        if not self.enabled:
+        if not self.enabled or address not in self._states:
             return
-        status = text_compact(row.get("audit_status") or "completed")
-        pct = 100.0 if status == "completed" else 0.0
-        step = "Done" if status == "completed" else status
-        event = {
-            "status": status,
-            "percentage": pct,
-            "step_name": step,
-            "elapsed_seconds": to_float(row.get("execution_time"), 0.0),
-            "session_id": text_compact(row.get("session_id") or ""),
-            "finding_number": row.get("finding_number", ""),
-        }
-        self.update(address, event)
+        status = text_compact(row.get("audit_status") or row.get("status") or "completed").lower()
+        with self._lock:
+            state = self._states[address]
+            state["status"] = status
+            state["progress"] = 100.0
+            state["final"] = True
+            self._render_locked()
+
+    def close(self) -> None:
+        if not self.enabled or self._closed:
+            return
+        with self._lock:
+            self._closed = True
+            if sys.stdout.isatty():
+                print("")
 
 
 def run_audit_session(
@@ -1364,11 +1372,6 @@ def persist_full_report_for_row(row: Dict[str, Any], model_dir: Optional[Path]) 
 
 def persist_static_summary_for_row(row: Dict[str, Any], model_dir: Optional[Path]) -> None:
     """Persist per-contract static analysis summary text."""
-    if text_compact(row.get("audit_status") or "") != "completed" or bool(row.get("fatal_error", False)):
-        row["static_summary_chars"] = 0
-        row["static_summary_path"] = ""
-        row.pop("_static_tool_text", None)
-        return
     static_summary = str(row.pop("_static_tool_text", "") or "")
     row["static_summary_chars"] = len(static_summary)
 
@@ -1686,11 +1689,8 @@ def process_one_address(
         raise FatalAuditStop(fatal_reason or "LLM retry limit exhausted")
     if early_audit_status in {"start_failed", "session_lost"}:
         raise FatalAuditStop(early_error or f"audit_status={early_audit_status}")
-    if early_audit_status == "failed":
-        if not results_payload or "workflow failed at step" in early_error.lower():
-            raise FatalAuditStop(early_error or "audit_status=failed")
-        if bool(execution_summary.get("error", False)):
-            raise FatalAuditStop(fatal_reason or "workflow execution error")
+    if early_audit_status == "failed" and not results_payload:
+        raise FatalAuditStop(early_error or "audit_status=failed")
     if early_audit_status == "timeout" and not results_payload:
         raise FatalAuditStop(early_error or "audit status timeout without results")
     findings, _ = summarize_findings(results_payload)
@@ -1732,6 +1732,9 @@ def process_one_address(
         if isinstance(results_payload.get("execution_summary"), dict)
         else {}
     )
+    static_tool_summary_text = str(results_payload.get("static_tool_analysis", "") or "")
+    if not static_tool_summary_text:
+        static_tool_summary_text = static_tool_text
     debug_artifacts = (
         execution_summary.get("debug_artifacts")
         if isinstance(execution_summary.get("debug_artifacts"), dict)
@@ -1835,7 +1838,7 @@ def process_one_address(
         "full_report_chars": len(full_report_text),
         "full_report_path": "",
         "_audit_plan_text": audit_plan_text,
-        "_static_tool_text": static_tool_text,
+        "_static_tool_text": static_tool_summary_text,
         "_full_report_text": full_report_text,
         "rag_used": rag_used,
         "rag_enabled": rag_enabled,
@@ -1869,7 +1872,8 @@ def process_one_address(
             "rule_matched_json": rule_matched_json,
             "llm_fallback_json": llm_fallback_json,
             "llm_explanation_json": llm_explanation_json,
-            "static_tool_used": bool(static_tool_text),
+            "static_tool_used": bool(static_tool_summary_text),
+            "static_tool_analysis": static_tool_summary_text,
             "audit_plan_text": audit_plan_text,
             "debug_artifacts": debug_artifacts,
             "rag_used": rag_used,
@@ -1955,7 +1959,14 @@ def ensure_dir(path: Path) -> Path:
 
 
 def build_parser(repo_root: Path) -> argparse.ArgumentParser:
-    default_gt = repo_root / "EmpiricalSCST" / "_RQ2" / "manual" / "ground_truth" / "RQ2_ground_truth.csv"
+    default_gt = (
+        repo_root
+        / "EmpiricalSCST"
+        / "_RQ2"
+        / "manual"
+        / "ground_truth"
+        / "RQ2_ground_truth_with_solidity_versions.csv"
+    )
     default_mainnet = repo_root / "EmpiricalSCST" / "mainnet"
     default_vuln_json = repo_root / "EmpiricalSCST" / "_RQ2" / "RQ2_tools_vulnerabilities.json"
     default_vuln_csv = repo_root / "EmpiricalSCST" / "_RQ2" / "vulnerability_types.csv"
@@ -2068,11 +2079,12 @@ def build_parser(repo_root: Path) -> argparse.ArgumentParser:
         _default_output_dir=str(default_output),
         _default_run_id="",
         _default_models="deepseek_school",
-        _default_concurrency=1,
+        _default_concurrency=10,
         _default_poll_interval=3.0,
         _default_max_wait_seconds=18000,
         _default_request_timeout=30,
         _default_retry=2,
+        _default_limit=None,
         _default_static_tool_dir="",
         _default_static_tool_max_chars=12000,
         _default_enable_llm_fallback=True,
@@ -2111,12 +2123,16 @@ def run_for_model(
     static_index: Dict[str, Path],
 ) -> Dict[str, Any]:
     existing_contract_rows = options.get("existing_contract_rows", []) or []
+    resume_mode = bool(options.get("resume_mode", False))
     contract_rows: List[Dict[str, Any]] = []
     contract_rows_by_addr: Dict[str, Dict[str, Any]] = {}
     for row in existing_contract_rows:
         row_copy = dict(row)
         address = normalize_address(row_copy.get("address", ""))
         if not address:
+            continue
+        audit_status = text_compact(row_copy.get("audit_status") or "").lower()
+        if resume_mode and audit_status != "completed":
             continue
         row_copy["address"] = address
         contract_rows_by_addr[address] = row_copy
@@ -2128,16 +2144,12 @@ def run_for_model(
 
     concurrency = max(1, int(options["concurrency"]))
     live_progress = bool(options.get("live_progress", False))
-    sequential_live = live_progress and concurrency == 1
-    parallel_live = live_progress and concurrency > 1
     stream_contract_outputs = bool(options.get("stream_contract_outputs", False))
     keep_raw_payload = bool(options.get("keep_raw_payload", True))
     model_dir = Path(options["model_dir"]) if options.get("model_dir") else None
-    resume_mode = bool(options.get("resume_mode", False))
-
     done_addresses_initial = set(contract_rows_by_addr.keys())
     pending_addresses = [addr for addr in addresses if addr not in done_addresses_initial]
-    parallel_board = ParallelProgressBoard(model, pending_addresses) if parallel_live else None
+    progress_tracker = OverallProgressTracker(model, pending_addresses) if live_progress else None
 
     contract_fieldnames = contract_level_fieldnames()
     rule_fieldnames = build_rule_score_fieldnames(TARGET_SWCS)
@@ -2171,40 +2183,10 @@ def run_for_model(
             one_rule_row = compute_rule_score_rows([row], TARGET_SWCS, RULE_MULTI_MIN_SCORE)[0]
             append_csv_row(rule_output_path, one_rule_row, rule_fieldnames)
 
-    def build_progress_callback(addr: str) -> Callable[[Dict[str, Any]], None]:
-        short_addr = addr[:10] + "..." if len(addr) > 10 else addr
-
-        def _callback(event: Dict[str, Any]) -> None:
-            status = text_compact(event.get("status") or "running")
-            percentage = to_float(event.get("percentage"), 0.0)
-            step_name = text_compact(event.get("step_name") or "")
-            elapsed = to_float(event.get("elapsed_seconds"), 0.0)
-            sid = text_compact(event.get("session_id") or "")
-            sid_short = sid[:8] if sid else "-"
-            bar = render_progress_bar(percentage)
-            line = (
-                f"[{model}] {short_addr} {bar} {percentage:5.1f}% "
-                f"{status:<10} step={step_name or '-'} elapsed={elapsed:5.1f}s sid={sid_short}"
-            )
-            term_width = max(40, shutil.get_terminal_size(fallback=(120, 24)).columns)
-            max_len = max(20, term_width - 1)
-            if len(line) > max_len:
-                clipped = line[: max_len - 1] + "…"
-            else:
-                clipped = line
-            if sys.stdout.isatty():
-                print("\x1b[2K\r" + clipped, end="", flush=True)
-            else:
-                print("\r" + clipped.ljust(max_len), end="", flush=True)
-
-        return _callback
-
     def task(addr: str) -> Dict[str, Any]:
         progress_callback: Optional[Callable[[Dict[str, Any]], None]] = None
-        if sequential_live:
-            progress_callback = build_progress_callback(addr)
-        elif parallel_board is not None:
-            progress_callback = lambda event, _addr=addr: parallel_board.update(_addr, event)
+        if progress_tracker is not None:
+            progress_callback = lambda event, _addr=addr: progress_tracker.update(_addr, event)
         return process_one_address(
             address=addr,
             model=model,
@@ -2239,14 +2221,14 @@ def run_for_model(
             except FatalAuditStop as exc:
                 fatal_triggered = True
                 fatal_reason = str(exc)
-                if sequential_live:
-                    print("")
+                if progress_tracker is not None:
+                    progress_tracker.close()
                 print(f"[{model}] Fatal stop triggered at {address}: {fatal_reason}")
                 break
-            if sequential_live:
-                print("")
+            if progress_tracker is not None:
+                progress_tracker.complete(address, row)
             enrich_and_store_row(row)
-            if idx % 20 == 0 or idx == len(pending_addresses):
+            if progress_tracker is None and (idx % 20 == 0 or idx == len(pending_addresses)):
                 elapsed = time.time() - started_at
                 print(f"[{model}] Completed {idx}/{len(pending_addresses)} pending in {elapsed:.1f}s")
     else:
@@ -2257,8 +2239,8 @@ def run_for_model(
                     break
                 future = executor.submit(task, address)
                 future_to_address[future] = address
-                if parallel_board is not None:
-                    parallel_board.update(
+                if progress_tracker is not None:
+                    progress_tracker.update(
                         address,
                         {
                             "status": "submitted",
@@ -2279,17 +2261,18 @@ def run_for_model(
                 except FatalAuditStop as exc:
                     fatal_triggered = True
                     fatal_reason = str(exc)
-                    if parallel_board is not None:
-                        parallel_board.complete(
+                    if progress_tracker is not None:
+                        progress_tracker.complete(
                             address,
                             {
-                                "status": "failed",
-                                "percentage": 0.0,
+                                "audit_status": "failed",
+                                "percentage": 100.0,
                                 "step_name": "Fatal",
                                 "session_id": "",
                                 "error": fatal_reason,
                             },
                         )
+                        progress_tracker.close()
                     print(f"[{model}] Fatal stop triggered at {address}: {fatal_reason}")
                     # Cancel remaining futures to avoid starting new addresses.
                     for f in future_to_address:
@@ -2334,21 +2317,23 @@ def run_for_model(
                     }
                 if fatal_triggered:
                     continue
-                if parallel_board is not None:
-                    parallel_board.complete(address, row)
+                if progress_tracker is not None:
+                    progress_tracker.complete(address, row)
                 enrich_and_store_row(row)
                 done_count += 1
-                if parallel_board is not None:
-                    if done_count == len(pending_addresses):
-                        elapsed = time.time() - started_at
-                        print(
-                            f"[{model}] Completed {done_count}/{len(pending_addresses)} pending in {elapsed:.1f}s"
-                        )
-                elif done_count % 20 == 0 or done_count == len(pending_addresses):
+                if progress_tracker is None and (done_count % 20 == 0 or done_count == len(pending_addresses)):
                     elapsed = time.time() - started_at
                     print(
                         f"[{model}] Completed {done_count}/{len(pending_addresses)} pending in {elapsed:.1f}s"
                     )
+
+    if progress_tracker is not None:
+        progress_tracker.close()
+        if not fatal_triggered:
+            elapsed = time.time() - started_at
+            print(
+                f"[{model}] Completed {len(pending_addresses)}/{len(pending_addresses)} pending in {elapsed:.1f}s"
+            )
 
     if fatal_triggered:
         raise FatalAuditStop(fatal_reason or "Fatal stop triggered")
@@ -2443,7 +2428,7 @@ def main() -> None:
         if not settings["address"]:
             raise SystemExit("single mode requires --address or config: address")
     elif args.command == "batch":
-        limit_value = args.limit if args.limit is not None else config.get("limit")
+        limit_value = merged_setting(args, config, "limit", "_default_limit")
         settings["limit"] = int(limit_value) if limit_value is not None else None
 
     # Resolve paths.
