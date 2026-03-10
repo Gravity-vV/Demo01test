@@ -1295,6 +1295,7 @@ def contract_level_fieldnames() -> List[str]:
         "rag_effective_task_count",
         "rag_effective_evidence_count",
         "rag_similarity_threshold",
+        "rag_highest_score",
         "record_json_path",
         "audit_attempts",
         "empty_report_retries_used",
@@ -1685,11 +1686,16 @@ def process_one_address(
     )
     fatal_error = bool(execution_summary.get("fatal_error", False))
     fatal_reason = text_compact(execution_summary.get("fatal_reason") or early_error or "")
-    if fatal_error or fatal_reason.lower().startswith("fatal") or "exhausted" in fatal_reason.lower():
+    
+    # Treat 'empty content' (refusal/filter) as a localized failure, not fatal for the whole batch
+    is_empty_content_error = "empty content" in fatal_reason.lower() or "empty content" in early_error.lower()
+    
+    if (fatal_error or fatal_reason.lower().startswith("fatal") or "exhausted" in fatal_reason.lower()) and not is_empty_content_error:
         raise FatalAuditStop(fatal_reason or "LLM retry limit exhausted")
-    if early_audit_status in {"start_failed", "session_lost"}:
+    
+    if early_audit_status in {"start_failed", "session_lost"} and not is_empty_content_error:
         raise FatalAuditStop(early_error or f"audit_status={early_audit_status}")
-    if early_audit_status == "failed" and not results_payload:
+    if early_audit_status == "failed" and not results_payload and not is_empty_content_error:
         raise FatalAuditStop(early_error or "audit_status=failed")
     if early_audit_status == "timeout" and not results_payload:
         raise FatalAuditStop(early_error or "audit status timeout without results")
@@ -1746,6 +1752,7 @@ def process_one_address(
     rag_effective_task_count = int(execution_summary.get("rag_effective_retrieval_tasks", 0) or 0)
     rag_effective_evidence_count = int(execution_summary.get("rag_effective_retrieved_evidence", 0) or 0)
     rag_similarity_threshold = to_float(execution_summary.get("rag_similarity_threshold"), 0.0)
+    rag_highest_score = to_float(execution_summary.get("rag_highest_score"), 0.0)
 
     # Rule-first multi-label classification.
     rule_result = classify_by_rules(findings_text, findings, keyword_map)
@@ -1845,6 +1852,7 @@ def process_one_address(
         "rag_effective_task_count": rag_effective_task_count,
         "rag_effective_evidence_count": rag_effective_evidence_count,
         "rag_similarity_threshold": rag_similarity_threshold,
+        "rag_highest_score": rag_highest_score,
         "audit_attempts": len(attempts_meta),
         "empty_report_retries_used": retries_used,
         "finding_number": finding_number,
